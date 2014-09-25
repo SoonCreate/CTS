@@ -45,6 +45,23 @@ function _trim( $str )
     return trim($str);
 }
 
+//post参数获取
+function tpost( $name )
+{
+    return _trim(v($name));
+}
+
+//获取参数
+function p($name){
+    global $CI;
+    return $CI->input->get( $name );
+}
+
+//get参数获取
+function tget($name){
+    return _trim(p($name));
+}
+
 //处理checkbox的勾选返回结果
 function xchecked($flag){
     if($flag){

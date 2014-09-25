@@ -9,8 +9,8 @@ function initial_message(){
 function message($type,$class,$line,$args = []){
     global $CI;
     $CI->load->model('message_model','message');
-    $message = $CI->message->find_by_class_and_code($class,$line);
-    if(!is_null($message)){
+    $message = $CI->message->find_by(array('class_code'=>$class,'message_code'=>$line));
+    if(!empty($message)){
         $message['type'] = $type;
         $message['code'] = $class.'('.$line.')';
 
@@ -28,16 +28,17 @@ function message($type,$class,$line,$args = []){
 
     }
     $message['content'] = str_replace("&","",$message['content']);
-    //刷新message会话数据
-    $messages = _sess('message');
-    array_push($messages,$message);
-    set_sess('message',$messages);
+    refresh_message($message);
 }
 //临时使用的输出
 function custz_message($type,$content){
     $message['type'] = $type;
     $message['content'] = $content;
-    //刷新message会话数据
+    refresh_message($message);
+}
+
+//刷新message会话数据
+function refresh_message($message){
     $messages = _sess('message');
     array_push($messages,$message);
     set_sess('message',$messages);

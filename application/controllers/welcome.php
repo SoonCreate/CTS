@@ -29,8 +29,13 @@ class Welcome extends CI_Controller {
 	}
 
     function test(){
-        print_r(get_options('ao_order_type1'));
-
+        $this->load->model('user_model','user');
+        $data['username'] = 'yacole1';
+        $data['password'] = '111';
+//        $data['email'] = 'yacole';
+        $this->user->insert($data);
+//        $this->load->library('form_validation');
+        echo validation_errors('<div class="error">', '</div>');;
     }
 
 }

@@ -1,64 +1,48 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Valuelist_model extends CI_Model{
+class Valuelist_model extends MY_Model{
 
     function __construct(){
         parent::__construct();
-    }
-
-    function find($id){
-        return $this->db->get_where('valuelist_header',array('id'=>$id));
-    }
-
-    function find_by_name($name){
-        return $this->db->get_where('valuelist_header',array('valuelist_name'=>$name));
-    }
-
-    function find_line($name,$segment_value){
-        $h = first_row($this->find_by_name($name));
-        if(is_null($h)){
-            return array();
-        }else{
-            return $this->db->get_where('valuelist_lines',array('valuelist_id'=>$h['id'],'segment_value'=>$segment_value));
-        }
+        $this->_table = 'valuelist_header';
+        $this->load->model('valuelist_line_model','line');
+        //设置钩子
+        $this->before_create = array('before_insert');
+        $this->before_update = array('before_update');
     }
 
     function find_lines_by_parent_line_id($valuelist_id,$parent_line_id,$inactive_flag = null){
         if(is_null($inactive_flag)){
-            return $this->db->get_where('valuelist_lines',array('valuelist_id' => $valuelist_id,'parent_line_id'=>$parent_line_id));
+            return $this->line->find_all_by(array('valuelist_id' => $valuelist_id,'parent_line_id'=>$parent_line_id));
         }else{
-            return $this->db->get_where('valuelist_lines',
-                array('valuelist_id' => $valuelist_id,
-                    'parent_line_id'=>$parent_line_id,
-                    'inactive_flag'=>$inactive_flag));
+            return $this->line->find_all_by(array('valuelist_id' => $valuelist_id,'parent_line_id'=>$parent_line_id,'inactive_flag'=>$inactive_flag));
         }
 
     }
 
-    function find_active_options($name){
-        $header = first_row($this->db->get_where('valuelist_header',array('valuelist_name'=>$name)));
-        return $this->_get_options($header,0);
+    function find_active_options($valuelist_name){
+        return $this->_get_options($this->find_by(array('valuelist_name'=>$valuelist_name)),0);
     }
 
-    function find_all_options($name){
-        $header = first_row($this->db->get_where('valuelist_header',array('valuelist_name'=>$name)));
-        return $this->_get_options($header);
+    function find_all_options($valuelist_name){
+        return $this->_get_options($this->find_by(array('valuelist_name'=>$valuelist_name)));
     }
 
     function find_children_options($parent_name,$name,$segment_value){
-        $l = first_row($this->find_line($parent_name,$segment_value));
-        $me = first_row($this->find_by_name($name));
-        if(!is_null($l) && !is_null($me)){
+        $l = $this->line->find_by(array('valuelist_name'=>$parent_name,'segment_value'=>$segment_value));
+        $me = $this->find_by(array('valuelist_name'=>$name));
+        if(!empty($l) && !empty($me)){
             return $this->find_lines_by_parent_line_id($me['id'],$l['parent_line_id']);
         }else{
             return array();
         }
     }
 
-    //重构函数
+    //重构函数,return object
     function _get_options($header,$inactive_flag = null){
         $rs = null;
-        if(!is_null($header)){
+        if(!empty($header)){
+
             if($header['from_obj'] == 1){
                 //由对象创建
                 $this->db->select($header['value_fieldname'].' as value,'.$header['label_fieldname'].' as label');
@@ -83,13 +67,12 @@ class Valuelist_model extends CI_Model{
         return $rs;
     }
 
-    function insert($data){
-        $data = set_creation_date($data);
-        return $this->db->insert('valuelist_lines',$data);
+    function before_insert($data){
+       return set_creation_date($data);
     }
-    function update($id,$data){
-        $data = set_last_update($data);
-        return $this->db->update('valuelist_lines', $data,array('id' => $id));
+
+    function before_update($data){
+        return set_last_update($data);
     }
 
 }

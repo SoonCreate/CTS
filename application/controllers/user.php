@@ -18,9 +18,12 @@ class User extends CI_Controller {
         if($_POST){
             if(is_all_set($_POST,array('username','password'))
                 && is_all_has_value($_POST,array('username','password'))){
-                if( n($_POST['username']) == "admin" && $this->kv->find_value_by_key(n($_POST['username'])) == n($_POST['password'])){
+                $username = tpost('username');
+                $password = sha1(v('password'));
+                $user = first_row($this->user_model->find_by_username_and_password($username,$password));
+                if(!is_null($user)){
                     custz_message('I',_text('message_login_success'));
-                    set_sess('login','X');
+                    set_sess('uid',$user['id']);
                 }else{
                     custz_message('E',_text('message_login_failure'));
                 }
