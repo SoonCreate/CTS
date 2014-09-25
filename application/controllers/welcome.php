@@ -30,12 +30,22 @@ class Welcome extends CI_Controller {
 
     function test(){
         $this->load->model('user_model','user');
-        $data['username'] = 'yacole1';
-        $data['password'] = '111';
-//        $data['email'] = 'yacole';
+        $data['username'] = 'yacole1陈';
+//        $data['password'] = '111';
+        $data['mobile_telephone'] = 'asjdkf';
         $this->user->insert($data);
 //        $this->load->library('form_validation');
-        echo validation_errors('<div class="error">', '</div>');;
+        echo validation_errors('<div class="error">', '</div>');
+        echo form_error('username');
+    }
+
+    function username_check($username){
+        if ($username == 'test'){
+            $this->form_validation->set_message('username_check', 'The %s field can not be the word "test"');
+            return FALSE;
+        }else{
+            return TRUE;
+        }
     }
 
 }

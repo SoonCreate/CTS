@@ -212,6 +212,11 @@ function is_all_has_value($data,$keys){
     }
 }
 
+//输出label语言文件下的注释
+function label($str){
+    return _text('label_'.$str);
+}
+
 //判断是否为分类控制，再进行权限判断。默认为分类为all
 function check_auth($order_type,$order_status,$order_category = null){
     global $CI;

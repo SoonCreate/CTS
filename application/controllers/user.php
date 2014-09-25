@@ -16,22 +16,18 @@ class User extends CI_Controller {
 
     function login(){
         if($_POST){
-            if(is_all_set($_POST,array('username','password'))
-                && is_all_has_value($_POST,array('username','password'))){
-                $username = tpost('username');
-                $password = sha1(v('password'));
-                $user = first_row($this->user_model->find_by_username_and_password($username,$password));
-                if(!is_null($user)){
-                    custz_message('I',_text('message_login_success'));
-                    set_sess('uid',$user['id']);
-                }else{
-                    custz_message('E',_text('message_login_failure'));
-                }
+            $username = tpost('username');
+            $password = sha1(v('password'));
+            $user = $this->user->find_by(array('username'=>$username,'password'=>$password,'inactive_flag'=>0));
+            if(empty($user)){
+                //登录失败
+                render();
             }else{
-                custz_message('E',_text('message_data_useless'));
+                set_sess('uid',$user['id']);
+                redirect(base_url('welcome/index'));
             }
         }else{
-            $this->load->view('_login');
+            render();
         }
     }
 
@@ -42,22 +38,13 @@ class User extends CI_Controller {
 
     function create(){
         if($_POST){
-            if(is_all_has_value($_POST,array('username','password','email','mobile_telephone'))){
-                $data['password'] = sha1(v('password'));
-                $data['username'] = _trim(v('username'));
-                $data['email'] = _trim(v('email'));
-                $data['phone_number'] = _trim(v('phone_number'));
-                $data['mobile_telephone'] = _trim(v('mobile_telephone'));
-                $data['address'] = _trim(v('address'));
-                if($this->user_model->insert($data)){
-                    custz_message('E','保存成功！');
-                }else{
-                    custz_message('E','保存成功！');
-                }
-            }else{
-                custz_message('E',_text('message_data_useless'));
-            }
+            $_POST['username'] = tpost('username');
+            $_POST['password'] = sha1(v('password'));
+            if($this->user->insert($_POST)){
 
+            }else{
+
+            }
         }else{
             render();
         }

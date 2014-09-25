@@ -485,6 +485,32 @@ class MY_Model extends CI_Model
         return $this;
     }
 
+    //验证信息
+    public  function add_validate(){
+        $numargs = func_num_args();
+        $arg_list = func_get_args();
+
+        if($numargs > 2){
+            $r = array('field'=>$arg_list[0],'label'=>$arg_list[1],'rules'=>$arg_list[2]);
+            array_push($this->validate,$r);
+        }else{
+            //只有两个参数的情况
+            $r = array('field'=>$arg_list[0],'label'=>'lang:label_'.$arg_list[0],'rules'=>$arg_list[1]);
+            array_push($this->validate,$r);
+        }
+    }
+
+    public function add_validate_255($fields){
+        if(is_array($fields)){
+            foreach($fields as $f){
+                $this->add_validate($f,'max_length[255]');
+            }
+        }else{
+            $this->add_validate($fields,'max_length[255]');
+        }
+    }
+
+
     /* --------------------------------------------------------------
      * INTERNAL METHODS
      * ------------------------------------------------------------ */
