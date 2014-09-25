@@ -29,7 +29,7 @@ class Welcome extends CI_Controller {
 	}
 
     function test(){
-        print_r(get_options('ao_order_type'));
+        print_r(get_options('ao_order_type1'));
 
     }
 
