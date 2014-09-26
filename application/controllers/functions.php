@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Url extends CI_Controller {
+class Functions extends CI_Controller {
 
     function __construct(){
         parent::__construct();
@@ -15,7 +15,12 @@ class Url extends CI_Controller {
 
     function create(){
         if($_POST){
+            $data['controller'] = tpost('controller');
+            $data['action'] = tpost('action');
+            //验证url是否可访问
+            if(url_exists(site_url($data['controller'].'/'.$data['action']))){
 
+            }
         }else{
             render();
         }
@@ -33,5 +38,7 @@ class Url extends CI_Controller {
     function push_to_role(){
 
     }
+
+
 
 }

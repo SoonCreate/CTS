@@ -5,7 +5,7 @@ class Job extends CI_Controller {
     //发送报警信息
     function send_alarm_message(){
 
-        send_mail('yacole@qq.com','helper方法测试','测试<hr/>');
+        send_mail('yacole@163.com','helper方法测试','测试');
     }
 
     public function message($to = 'World')

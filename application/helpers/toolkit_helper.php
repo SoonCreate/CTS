@@ -30,8 +30,24 @@ function render($view = NULL){
     }
 }
 
-function redirect_to($url){
-    redirect(base_url($url));
+function redirect_to($controller,$action,$params = null){
+    redirect(_url($controller,$action,$params));
+}
+
+function _url($controller,$action,$params = null){
+    $paramstr = '';
+    if(!is_null($params)){
+        $i = 0;
+        foreach($params as $key=>$value){
+            if($i < 1){
+                $paramstr = $paramstr . '?'.$key .'=' . $value;
+            } else{
+                $paramstr = $paramstr . '&'.$key .'=' . $value;
+            }
+            $i = $i + 1;
+        }
+    }
+    return 'http://'._config('site_url').site_url($controller.'/'.$action.$paramstr);
 }
 
 //将结果集装换成JSON
@@ -257,12 +273,13 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
 
     print_r($config);
 
-    $CI->load->library ('email', $config);
+    $CI->load->library('email',$config);
     $email = new CI_Email();
+    $email->initialize($config);
     if(!is_null($from)){
         $email->from($from['email'],$from['name']);
     }else{
-        $email->from(_config('mail_from'));
+        $email->from(_config('mail_from'),_config('mail_from_name'));
     }
 
     $email->to($to);
@@ -278,4 +295,22 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
 
     $email->send();
     echo $email->print_debugger();
+
+}
+
+//判断链接是否存在
+function url_exists($url){
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_NOBODY, true);
+    $result = curl_exec($curl);
+    if ($result !== false) {
+        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($statusCode == 404) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }

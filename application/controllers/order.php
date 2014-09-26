@@ -27,7 +27,7 @@ class Order extends CI_Controller {
 
         }else{
             //一种时，直接跳转
-            redirect_to('order/create?type='.$rows[0]);
+            redirect_to('order','create',array('type'=>$rows[0]));
         }
 
     }
@@ -62,7 +62,7 @@ class Order extends CI_Controller {
             //获取订单类型，如果没有则跳转到chose_create
             $order_type = tget('type');
             if(is_null($order_type)){
-                redirect_to('order/choose_create');
+                redirect_to('order','choose_create');
             }else{
                 render();
             }

@@ -49,6 +49,10 @@ class Welcome extends CI_Controller {
         }
     }
 
+    function test2(){
+        echo redirect_to('welcome','test');
+    }
+
 }
 
 /* End of file welcome.php */
