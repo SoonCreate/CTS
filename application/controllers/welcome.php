@@ -21,6 +21,7 @@ class Welcome extends CI_Controller {
     function __construct(){
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
+        $this->load->model('user_model');
     }
 
 	public function index()
@@ -29,11 +30,11 @@ class Welcome extends CI_Controller {
 	}
 
     function test(){
-        $this->load->model('user_model','user');
+        $user = new User_model();
         $data['username'] = 'yacole1陈';
 //        $data['password'] = '111';
         $data['mobile_telephone'] = 'asjdkf';
-        $this->user->insert($data);
+        $user->insert($data);
 //        $this->load->library('form_validation');
         echo validation_errors('<div class="error">', '</div>');
         echo form_error('username');

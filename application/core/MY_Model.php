@@ -510,6 +510,15 @@ class MY_Model extends CI_Model
         }
     }
 
+    function rollback_and_return(){
+        $this->db->trans_rollback();
+        return false;
+    }
+
+    function commit_and_return(){
+        $this->db->trans_commit();
+        return true;
+    }
 
     /* --------------------------------------------------------------
      * INTERNAL METHODS

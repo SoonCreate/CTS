@@ -67,6 +67,15 @@ class Valuelist_model extends MY_Model{
         return $rs;
     }
 
+    function find_value_by_segment($valuelist_name,$segment){
+        $row = $this->line->find_by(array('valuelist_name'=>$valuelist_name,'segment'=>$segment));
+        if(empty($row)){
+            return $row['segment_value'];
+        }else{
+            return null;
+        }
+    }
+
     function before_insert($data){
        return set_creation_date($data);
     }

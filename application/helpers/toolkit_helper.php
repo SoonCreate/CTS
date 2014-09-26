@@ -30,24 +30,8 @@ function render($view = NULL){
     }
 }
 
-//是否登录
-function is_login()
-{
-    return _sess('uid');
-}
-//检查登陆，如果用户未登录或失效则调到登陆界面
-function check_login()
-{
-    if( !is_login() )
-    {
-        redirect_to_login();
-        die();
-    }
-}
-
-//重定向到登陆界面
-function redirect_to_login(){
-    redirect(url('bc/user','login'));
+function redirect_to($url){
+    redirect(base_url($url));
 }
 
 //将结果集装换成JSON
@@ -233,4 +217,65 @@ function check_auth($order_type,$order_status,$order_category = null){
         $data['ao_order_status'] = _config('all_values');
     }
     return $CI->auth_model->check_auth('category_control',$data);
+}
+
+//邮件发送方法
+function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
+    global $CI;
+    $config['protocol']     = _config('mail_protocol');
+    if($config['protocol'] == 'sendmail'){
+        $config['mailpath'] = _config('sendmail_path');
+    }elseif($config['protocol'] == 'smtp'){
+        $config['smtp_host'] = _config('smtp_host');
+        $config['smtp_user'] = _config('smtp_user');
+        $config['smtp_pass'] = _config('smtp_pass');
+        $config['smtp_port'] = _config('smtp_port');
+        $config['smtp_timeout'] = _config('smtp_timeout');
+    }
+    $config['charset'] = _config('mail_charset');
+    $config['mailtype'] = _config('mail_content_type');
+
+    //换行设置
+    $mail_wordwrap = _config('mail_wordwrap');
+    if($mail_wordwrap == 'true'){
+        $config['wordwrap'] = TRUE;
+        $config['wrapchars'] = intval(_config('mail_wrapchars'));
+    }else{
+        $config['wordwrap'] = FALSE;
+    }
+
+    //批量抄送
+    $bcc_batch_mode = _config('bcc_batch_mode');
+    if($bcc_batch_mode == 'true'){
+        $config['bcc_batch_mode'] = TRUE;
+        $config['bcc_batch_size'] = intval(_config('bcc_batch_size'));
+    }else{
+        $config['bcc_batch_mode'] = FALSE;
+    }
+
+    $config['newline'] = _config('mail_newline');
+
+    print_r($config);
+
+    $CI->load->library ('email', $config);
+    $email = new CI_Email();
+    if(!is_null($from)){
+        $email->from($from['email'],$from['name']);
+    }else{
+        $email->from(_config('mail_from'));
+    }
+
+    $email->to($to);
+    if(!is_null($cc)){
+        $email->cc($cc);
+    }
+    if(!is_null($bcc)){
+        $email->bcc($bcc);
+    }
+
+    $email->subject($subject);
+    $email->message($message);
+
+    $email->send();
+    echo $email->print_debugger();
 }

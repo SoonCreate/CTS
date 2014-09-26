@@ -46,9 +46,12 @@ function _trim( $str )
 }
 
 //post参数获取
-function tpost( $name )
-{
-    return _trim(v($name));
+function tpost( $name ){
+    if(v($name)){
+        return _trim(v($name));
+    }else{
+        return null;
+    }
 }
 
 //获取参数
@@ -59,7 +62,11 @@ function p($name){
 
 //get参数获取
 function tget($name){
-    return _trim(p($name));
+    if(v($name)){
+        return _trim(p($name));
+    }else{
+        return null;
+    }
 }
 
 //处理checkbox的勾选返回结果

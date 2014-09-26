@@ -410,50 +410,6 @@ function save_count()
 	$GLOBALS['__sql_count'] = lazy_get_var( $sql );
 }
 
-function sendmail( $to ,  $subject , $content ,$from = NULL )
-{
-	$content = ( strpos( $content , '<html>' ) === false )? '<html><head><meta http-equiv="Content-Language" content="zh-cn"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>'.$content.'</body></html>':$content;
-	$to = is_array( $to )?$to:array($to);
-	global $CI;
-	$CI->load->library('sendmail');
-	$CI->sendmail->to = array();
-	if( c('stmp_is_used') )
-	{
-		$CI->sendmail->IsSMTP(); 
-		$CI->sendmail->SMTPAuth = true;
-		$CI->sendmail->Host = c('stmp_host');
-		$CI->sendmail->Username = c('stmp_user');
-		$CI->sendmail->Password = c('stmp_psw');
-	}
-	$from_mail = c('stmp_is_used') ? c('stmp_mail') : ( $from ? $from :c('website_mail') ) ;
-	$CI->sendmail->From = $from_mail;
-	$CI->sendmail->FromName = c( 'site_name' );
-	$CI->sendmail->Charset = "utf-8";
-	$CI->sendmail->Encoding = "base64";
-	$count = count($to);
-	foreach( $to as $v )
-	{
-		if( $count > 1 )
-		{
-			$CI->sendmail->AddBCC($v);
-		}
-		else
-		{
-			$CI->sendmail->AddAddress($v);
-		}		
-	}
-	$replymail = $from ?$from :c('website_mail') ;
-	$CI->sendmail->AddReplyTo( $replymail , c( 'site_name' ) );
-  
-	$CI->sendmail->WordWrap = 50; 
-	$CI->sendmail->IsHTML(true);
-  
-	$CI->sendmail->Subject = $subject;
-	$CI->sendmail->Body = $content;
-
-	return $CI->sendmail->Send();
-}
-
 function get_pager(  $page , $page_all , $url_base ,$request_url = NULL )
 {
 	$middle = NULL;

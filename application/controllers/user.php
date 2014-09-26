@@ -52,31 +52,33 @@ class User extends CI_Controller {
 
     function change_password(){
         if($_POST){
-            if(is_all_set($_POST,array('old_password','new_password','re_password'))
-                && is_all_has_value($_POST,array('old_password','new_password','re_password'))){
-                if($_POST['re_password'] != $_POST['new_password']){
-                    custz_message('E',_text('message_wrong_re_password'));
-                }else{
-                    if( $this->kv->find_value_by_key('admin') == n($_POST['old_password'])){
-                        if($this->kv->update('admin',n($_POST['new_password']))){
-                            custz_message('I',_text('message_update_success'));
-                        }else{
-                            custz_message('E',_text('message_update_failure'));
-                        }
+            $id = _sess('uid');
+            $data['password'] = sha1(v('password'));
+            if($this->user->update($id,$data)){
 
-                    }else{
-                        custz_message('E',_text('message_wrong_old_password'));
-                    }
-                }
             }else{
-                custz_message('E',_text('message_data_useless'));
+
             }
         }else{
-            $this->load->view('_change_password');
+            render();
         }
     }
 
     function update(){
+        if($_POST){
+            $id = tpost('user_id');
+            if($this->user->update($id,$_POST)){
+
+            }else{
+
+            }
+        }else{
+            render();
+        }
+    }
+
+    //选择角色
+    function choose_roles(){
 
     }
 
@@ -84,10 +86,9 @@ class User extends CI_Controller {
 
     }
 
-    //前端控件权限严重
+    //前端控件权限验证
     function check_auth(){
-        $auth_data = json_decode($this->input->get('auth_data')) ;
-        echo $this->auth_model->check_auth($auth_data['auth_object'],$auth_data['auth_items']);
+        echo check_auth($this->input->get('type'),$this->input->get('status'),$this->input->get('category'));
     }
 
 }
