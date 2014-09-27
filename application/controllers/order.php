@@ -6,6 +6,7 @@ class Order extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('order_model');
+        $this->load->model('auth_model');
     }
 
 	public function index()
@@ -15,9 +16,9 @@ class Order extends CI_Controller {
 
     //在创建之前做选择
     function choose_create(){
-        $order = new Order_model();
+        $a = new Auth_model();
         //能够创建的订单列表
-        $rows = $order->order_types();
+        $rows = $a->can_create_order_types();
         if(empty($rows)){
             //不能创建任何投诉订单，提示账号未被授权
 

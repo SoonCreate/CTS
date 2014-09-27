@@ -4,6 +4,6 @@ class Valuelist_line_model extends MY_Model{
 
     function __construct(){
         parent::__construct();
-        $this->_table = 'valulist_lines_v';
+        $this->_table = 'valuelist_lines_v';
     }
 }
