@@ -36,28 +36,38 @@ class User extends CI_Controller {
         redirect(base_url('user','login'));
     }
 
-    function create(){
+    function register(){
         if($_POST){
-            $_POST['username'] = tpost('username');
-            $_POST['password'] = sha1(v('password'));
-            if($this->user->insert($_POST)){
-
+            $username = tpost('username');
+            $password = sha1(v('password'));
+            $order_type = v('order_type');
+            $user = new User_model();
+            if($user->register_save($username,$password,$order_type)){
+                echo 'done';
             }else{
-
+                echo validation_errors('<div class="error">', '</div>');
             }
         }else{
             render();
         }
     }
 
-    function change_password(){
+
+    function create(){
         if($_POST){
-            $id = _sess('uid');
+            $data['username'] = tpost('username');
             $data['password'] = sha1(v('password'));
-            if($this->user->update($id,$data)){
-
+            $data['contact'] = tpost('contact');
+            $data['email'] = tpost('email');
+            $data['phone_number'] = tpost('phone_number');
+            $data['mobile_telephone'] = tpost('mobile_telephone');
+            $data['address'] = tpost('address');
+            $data['full_name'] = tpost('full_name');
+            $user = new User_model();
+            if($user->insert($data)){
+                echo 'done';
             }else{
-
+                echo validation_errors('<div class="error">', '</div>');
             }
         }else{
             render();
