@@ -22,6 +22,11 @@ class Function_model extends MY_Model{
     }
 
     function before_update($data){
+        $this->clear_validate();
+        //服务端插入数据库之前验证
+        $this->add_validate('description','required|max_length[255]');
+        $this->add_validate('controller','required|max_length[255]');
+        $this->add_validate('action','required|max_length[255]');
         return set_last_update($data);
     }
 }

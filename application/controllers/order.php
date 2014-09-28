@@ -85,6 +85,12 @@ class Order extends CI_Controller {
 
     }
 
+    //责任人资料
+    function manager_info(){
+        //符合当前订单处理权限的责任人列表
+        //责任人姓名、联系方式、当前待处理订单数量
+    }
+
     function change_plan_complete_date(){
         //需要填写原因
     }

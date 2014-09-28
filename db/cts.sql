@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2014 at 04:09 PM
+-- Generation Time: Sep 28, 2014 at 10:55 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `ct_configs`
@@ -121,7 +121,8 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (21, 'bcc_batch_size', '批量暗送的邮件数', '200', 1, NULL, NULL, NULL, NULL),
 (22, 'mail_from', '邮件默认来自于，如果是smtp方式，必须同smtp_user', 'yacole@sooncreate.com', 1, NULL, NULL, NULL, NULL),
 (23, 'mail_from_name', '邮件来自，名称用于显示自动邮件的发件人姓名', '系统管理员', 1, NULL, NULL, NULL, NULL),
-(24, 'site_url', '网站地址', 'localhost', 1, NULL, NULL, NULL, NULL);
+(24, 'site_url', '网站地址', 'localhost', 1, NULL, NULL, NULL, NULL),
+(25, 'initial_password', '系统用户初始密码', '123456', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -177,7 +178,14 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ct_functions`
+--
+
+INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, `action`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(1, 'r_asdfasdf', 'asdfasdfff1', 'functions', 'create', 1411883219, 0, 1411883737, 0);
 
 -- --------------------------------------------------------
 
@@ -255,7 +263,15 @@ CREATE TABLE IF NOT EXISTS `ct_module_header` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ct_module_header`
+--
+
+INSERT INTO `ct_module_header` (`id`, `module_name`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(1, 'asdfsadf', 'asdf', 1411885271, 0, 1411885271, 0),
+(2, 'system_admin', '系统管理', 1411885327, 0, 1411885327, 0);
 
 -- --------------------------------------------------------
 
@@ -273,8 +289,35 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
+--
+-- Dumping data for table `ct_module_lines`
+--
+
+INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(10, 1, 1, 0, 1411892848, -1, 1411892848, -1),
+(11, 2, 1, 0, 1411894480, -1, 1411894480, -1);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_module_lines_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_module_lines_v` (
+`id` int(11)
+,`module_id` int(11)
+,`function_id` int(11)
+,`sort` int(11)
+,`creation_date` int(11)
+,`created_by` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`module_name` varchar(100)
+,`module_desc` varchar(255)
+,`function_name` varchar(100)
+,`function_desc` varchar(255)
+);
 -- --------------------------------------------------------
 
 --
@@ -427,21 +470,22 @@ CREATE TABLE IF NOT EXISTS `ct_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `ct_roles`
 --
 
 INSERT INTO `ct_roles` (`id`, `role_name`, `description`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'reporter_vender', '投诉人-供应商', NULL, NULL, NULL, NULL),
+(1, 'reporter_vender', '投诉人-供应商1', NULL, NULL, 1411882075, 0),
 (2, 'dispatcher', '调度员', NULL, NULL, NULL, NULL),
 (3, 'reporter_employee', '投诉人-内部员工', NULL, NULL, NULL, NULL),
 (4, 'reporter_customer', '投诉人-客户', NULL, NULL, NULL, NULL),
 (5, 'manager-vendor', '采购经理', NULL, NULL, NULL, NULL),
 (6, 'manager-customer', '质量经理', NULL, NULL, NULL, NULL),
 (7, 'manager-employee', '人事经理', NULL, NULL, NULL, NULL),
-(8, 'administrator', '系统管理员', NULL, NULL, NULL, NULL);
+(8, 'administrator', '系统管理员', NULL, NULL, NULL, NULL),
+(9, 'gogoa', 'gogo2', 0, 1411880798, 1411880798, 0);
 
 -- --------------------------------------------------------
 
@@ -464,13 +508,13 @@ CREATE TABLE IF NOT EXISTS `ct_role_functions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_role_modules`
+-- Table structure for table `ct_role_module_lines`
 --
 
-CREATE TABLE IF NOT EXISTS `ct_role_modules` (
+CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
-  `module_id` int(11) NOT NULL,
+  `module_line_id` int(11) NOT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -648,6 +692,7 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
   `inactive_flag` tinyint(1) NOT NULL DEFAULT '0',
   `email_flag` tinyint(1) NOT NULL DEFAULT '0',
   `sms_flag` tinyint(1) NOT NULL DEFAULT '0',
+  `initial_pass_flag` int(11) NOT NULL DEFAULT '1',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -655,26 +700,27 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`username`),
   KEY `Index_3` (`username`,`password`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=44 ;
 
 --
 -- Dumping data for table `ct_users`
 --
 
-INSERT INTO `ct_users` (`id`, `username`, `password`, `contact`, `email`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `inactive_flag`, `email_flag`, `sms_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'yacole1', '111', '', NULL, NULL, '', '', '', 0, 0, 0, 0, 1411643732, 1411643732, 0),
-(2, 'yyacole', 'b2a801fc1f6cdddb5df949c5126817cb5c8562ce', 'yy', 'yy@qq.com', 'yy', '1377777777', 'yy', 'yy', 0, 0, 0, 0, 1411817141, 1411817141, 0),
-(4, 'asfdasfd', '5122f516bc1a72641469c8970f15968403f5dbd4', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411824077, 1411824077, 0),
-(5, 'dsfasfd', '7971ef9ebd79cb6af0826251759c108e3cafdd44', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411824134, 1411824134, 0),
-(6, 'asfdas', '9e69c397d393aaf6e70a3bbaa1ca28ff4560306a', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411824220, 1411824220, 0),
-(8, 'asdfasdfasfd', '9e69c397d393aaf6e70a3bbaa1ca28ff4560306a', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411824353, 1411824353, 0),
-(34, 'asfdasdffff', 'ed70c57d7564e994e7d5f6fd6967cea8b347efbc', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411825930, 1411825930, 0),
-(35, 'asdflaskl', 'ed70c57d7564e994e7d5f6fd6967cea8b347efbc', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411825963, 1411825963, 0),
-(37, 'asdflaskldsf', 'ed70c57d7564e994e7d5f6fd6967cea8b347efbc', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411826157, 1411826157, 0),
-(39, 'asfdfff', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411826432, 1411826432, 0),
-(40, 'asfdffff', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411826457, 1411826457, 0),
-(41, 'asfdfffff', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411826496, 1411826496, 0),
-(42, 'asfdfffffd', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1411826529, 1411826529, 0);
+INSERT INTO `ct_users` (`id`, `username`, `password`, `contact`, `email`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `inactive_flag`, `email_flag`, `sms_flag`, `initial_pass_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(1, 'yacole1', '111', '111', 'dsaf@gg.com', '1111', '123456', '薛宅', '陈杨阳', 0, 1, 0, 1, 0, 1411643732, 1411873610, 0),
+(2, 'yyacole', 'b2a801fc1f6cdddb5df949c5126817cb5c8562ce', 'yy', 'yy@qq.com', 'yy', '1377777777', 'yy', 'yy', 0, 0, 0, 1, 0, 1411817141, 1411873607, 0),
+(4, 'asfdasfd', '5122f516bc1a72641469c8970f15968403f5dbd4', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 0, 1411824077, 1411873615, 0),
+(5, 'dsfasfd', '7971ef9ebd79cb6af0826251759c108e3cafdd44', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411824134, 1411824134, 0),
+(6, 'asfdas', '9e69c397d393aaf6e70a3bbaa1ca28ff4560306a', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411824220, 1411824220, 0),
+(8, 'asdfasdfasfd', '9e69c397d393aaf6e70a3bbaa1ca28ff4560306a', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411824353, 1411824353, 0),
+(34, 'asfdasdffff', 'ed70c57d7564e994e7d5f6fd6967cea8b347efbc', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411825930, 1411825930, 0),
+(35, 'asdflaskl', 'ed70c57d7564e994e7d5f6fd6967cea8b347efbc', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411825963, 1411825963, 0),
+(37, 'asdflaskldsf', 'ed70c57d7564e994e7d5f6fd6967cea8b347efbc', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411826157, 1411826157, 0),
+(39, 'asfdfff', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411826432, 1411826432, 0),
+(40, 'asfdffff', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411826457, 1411826457, 0),
+(41, 'asfdfffff', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411826496, 1411826496, 0),
+(42, 'asfdfffffd', 'dde93f95d664df0c518e10bff196d9111e30e7ad', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 1411826529, 1411826529, 0),
+(43, 'asdfsadfaa', '3da541559918a808c2402bba5012f6c60b27661c', 'asdf', NULL, NULL, '123445', NULL, NULL, 0, 0, 0, 1, 0, 1411868974, 1411868974, 0);
 
 -- --------------------------------------------------------
 
@@ -704,7 +750,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`user_id`,`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `ct_user_roles`
@@ -715,7 +761,9 @@ INSERT INTO `ct_user_roles` (`id`, `user_id`, `role_id`, `creation_date`, `creat
 (2, 39, 4, 1411826432, 0, 1411826432, 0),
 (3, 40, 1, 1411826457, 0, 1411826457, 0),
 (4, 41, 3, 1411826496, 0, 1411826496, 0),
-(5, 42, 3, 1411826529, 0, 1411826529, 0);
+(5, 42, 3, 1411826529, 0, 1411826529, 0),
+(9, 40, 1, 1411880420, 0, 1411880420, 0),
+(11, 1, 1, 1411892389, 1, 1411892389, 1);
 
 -- --------------------------------------------------------
 
@@ -855,6 +903,15 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 DROP TABLE IF EXISTS `ct_messages_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_messages_v` AS select `m`.`id` AS `id`,`m`.`class_id` AS `class_id`,`m`.`message_code` AS `message_code`,`m`.`content` AS `content`,`m`.`creation_date` AS `creation_date`,`m`.`created_by` AS `created_by`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`mc`.`class_code` AS `class_code`,`mc`.`description` AS `class_desc` from (`ct_message_classes` `mc` join `ct_messages` `m`) where (`m`.`class_id` = `mc`.`id`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_module_lines_v`
+--
+DROP TABLE IF EXISTS `ct_module_lines_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_module_lines_v` AS select `l`.`id` AS `id`,`l`.`module_id` AS `module_id`,`l`.`function_id` AS `function_id`,`l`.`sort` AS `sort`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`h`.`module_name` AS `module_name`,`h`.`description` AS `module_desc`,`fn`.`function_name` AS `function_name`,`fn`.`description` AS `function_desc` from ((`ct_module_header` `h` join `ct_module_lines` `l`) join `ct_functions` `fn`) where ((`l`.`module_id` = `h`.`id`) and (`l`.`function_id` = `fn`.`id`));
 
 -- --------------------------------------------------------
 

@@ -8,12 +8,7 @@ class User_model extends MY_Model{
         $this->load->model('role_model','role');
         $this->load->model('user_role_model','user_role');
 
-        //服务端插入数据库之前验证
-        $this->add_validate('username','required|min_length[5]|max_length[12]|is_unique[users.username]|alpha_dash');
-        $this->add_validate('password','required');
-        $this->add_validate('email','valid_email');
-        $this->add_validate('mobile_telephone','numeric');
-        $this->add_validate_255('phone_number','address','contact','full_name');
+        $this->_validate_for_insert();
 
         //设置钩子
         $this->before_create = array('before_insert');
@@ -24,12 +19,13 @@ class User_model extends MY_Model{
         return $this->vl->find_children_options('vl_order_type',$order_type,'order_default_role');
     }
 
-
     function before_insert($data){
         return set_creation_date($data);
     }
 
     function before_update($data){
+        $this->clear_validate();
+        $this->_validate();
         return set_last_update($data);
     }
 
@@ -68,4 +64,18 @@ class User_model extends MY_Model{
         return $return;
     }
 
+    private  function _validate_for_insert(){
+        $this->clear_validate();
+        //服务端插入数据库之前验证
+        $this->add_validate('username','required|min_length[5]|max_length[12]|is_unique[users.username]|alpha_dash');
+        $this->add_validate('password','required');
+        $this->_validate();
+    }
+
+    //公用验证
+    function _validate(){
+        $this->add_validate('email','valid_email');
+        $this->add_validate('mobile_telephone','numeric');
+        $this->add_validate_255('phone_number','address','contact','full_name');
+    }
 }

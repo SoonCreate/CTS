@@ -6,7 +6,6 @@ class Module_model extends MY_Model{
         parent::__construct();
         $this->_table = 'module_header';
 
-        //服务端插入数据库之前验证
         $this->add_validate('module_name','required|max_length[100]|is_unique[module_header.module_name]|alpha_dash');
         $this->add_validate('description','required|max_length[255]');
 
@@ -21,6 +20,8 @@ class Module_model extends MY_Model{
     }
 
     function before_update($data){
+        $this->clear_validate();
+        $this->add_validate('description','required|max_length[255]');
         return set_last_update($data);
     }
 }

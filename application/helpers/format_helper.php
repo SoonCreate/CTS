@@ -2,7 +2,7 @@
 
 //将结果集装换成JSON
 function rs_to_json($rs){
-    $rows = cf_format($rs->result_array());
+    $rows = _format($rs->result_array());
     if(count($rows) > 0){
         return json_encode($rows[0]);
     }else{
@@ -26,7 +26,7 @@ function rs_to_itemStore($rs,$identifier = null,$label = null){
 
 //直接输出json到itemStore
 function export_to_itemStore($rs,$identifier = null,$label = null){
-    $rows = cf_format($rs->result_array());
+    $rows = _format($rs->result_array());
     $data["identifier"] = $identifier;
     $data["label"] = $label;
     $data['items'] = $rows;
@@ -82,7 +82,7 @@ function xchecked($flag){
 }
 
 //转换数据库的时间和操作者为系统使用格式
-function cf_format($rows,$is_rs_array = true){
+function _format($rows,$is_rs_array = true){
     if($is_rs_array){
         for($i = 0; $i < count($rows);$i++){
             $rows[$i] = _format_row($rows[$i]);

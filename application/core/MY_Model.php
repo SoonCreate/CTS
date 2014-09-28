@@ -221,7 +221,6 @@ class MY_Model extends CI_Model
                 ->set($data)
                 ->update($this->_table);
             $this->_run_after_callbacks('update', array( $data, $primary_value, $result ));
-
             return $result;
         }
         else
@@ -508,6 +507,10 @@ class MY_Model extends CI_Model
         }else{
             $this->add_validate($fields,'max_length[255]');
         }
+    }
+
+    public function clear_validate(){
+        $this->validate = array();
     }
 
 

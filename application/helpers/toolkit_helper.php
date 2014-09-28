@@ -20,14 +20,9 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 }
 
 //渲染函数
-function render($view = NULL){
+function render($data = NULL){
     $CI =  &get_instance();
-    //判断是否存在view同名模版
-    if(is_null($view)){
-        $CI->load->view($CI->router->fetch_directory().'/'.$CI->router->fetch_class().'/'.$CI->router->fetch_method());
-    }else{
-        $CI->load->view($view);
-    }
+    $CI->load->view($CI->router->fetch_directory().'/'.$CI->router->fetch_class().'/'.$CI->router->fetch_method(),$data);
 }
 
 function redirect_to($controller,$action,$params = null){
@@ -64,15 +59,15 @@ function first_row($rs){
 //设置时间戳
 function set_last_update($data){
     $data['last_update_date'] = time();
-    $data['last_updated_by'] = _sess('uid');
+    $data['last_updated_by'] = _sess('uid') | -1;
     return $data;
 }
 
 function set_creation_date($data){
     $data['last_update_date'] = time();
-    $data['last_updated_by'] = _sess('uid');
+    $data['last_updated_by'] = _sess('uid') |  -1;
     $data['creation_date'] = time();;
-    $data['created_by'] = _sess('uid');
+    $data['created_by'] = _sess('uid') |  -1;
     return $data;
 }
 
