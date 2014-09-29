@@ -15,6 +15,8 @@ class Order_model extends MY_Model{
         $this->add_validate('severity','required');
         $this->add_validate('frequency','required');
         $this->add_validate('title','required|max_length[100]');
+        $this->add_validate('contact','required|max_length[255]');
+        $this->add_validate('mobile_telephone','required|max_length[255]');
 
         //设置钩子
         $this->before_create = array('before_insert');

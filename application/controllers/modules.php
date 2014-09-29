@@ -7,12 +7,14 @@ class Modules extends CI_Controller {
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('module_model');
         $this->load->model('module_line_model');
+        $this->load->model('role_module_line_model');
         $this->load->model('function_model');
     }
 
 	public function index()
 	{
         $m= new Module_model();
+        $m->order_by('sort');
 		$data['modules'] = $m->find_all();
         render($data);
 	}
@@ -21,6 +23,7 @@ class Modules extends CI_Controller {
         if($_POST){
             $data['module_name'] = tpost('module_name');
             $data['description'] = tpost('description');
+            $data['sort'] = tpost('sort');
             $m= new Module_model();
             if($m->insert($data)){
                 echo 'done';
@@ -37,6 +40,7 @@ class Modules extends CI_Controller {
         if($_POST){
             $data['id'] = v('id');
             $data['description'] = tpost('description');
+            $data['sort'] = tpost('sort');
             if($m->update($data['id'],$data)){
                 echo 'done';
             }else{
@@ -45,6 +49,28 @@ class Modules extends CI_Controller {
 
         }else{
             render($m->find(p('id')));
+        }
+    }
+
+    function destroy(){
+        $m = new Module_model();
+        $ml = new Module_line_model();
+        $rml = new Role_module_line_model();
+        $module_id = p('id');
+        $module = $m->find($module_id);
+        $role_in_use = $rml->find_all_by_view(array('module_id'=>$module_id));
+        if(!empty($module) && empty($role_in_use)){
+            $this->db->trans_start();
+            $ml->delete_by(array('module_id'=>$module_id));
+            $m->delete($module_id);
+            $this->db->trans_complete();
+            if ($this->db->trans_status() === FALSE) {
+                echo '数据库删除错误';
+            }else{
+                echo 'done';
+            }
+        }else{
+            echo '无法删除!模块正在角色被使用.';
         }
     }
 

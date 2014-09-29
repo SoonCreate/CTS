@@ -13,6 +13,8 @@ class User extends CI_Controller {
 
 	public function index(){
         $o = new User_model();
+        $o->order_by('inactive_flag');
+        $o->order_by('username');
         $data['users'] = _format($o->find_all());
         render($data);
 	}
@@ -154,7 +156,7 @@ class User extends CI_Controller {
         if($_POST){
             $ids = v('roles');
             $data['user_id'] = v('user_id');
-
+            $this->db->trans_start();
             if($ids === FALSE){
                 //删除所有
                 $ur->delete_by(array('user_id' => $data['user_id']));

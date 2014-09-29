@@ -96,7 +96,7 @@ function _format($rows,$is_rs_array = true){
 function _format_row($row){
     foreach ($row as $key => $value) {
         if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
-            $row[$key] = ( $row[$key] == 1 ? "X" : "" );
+            $row[$key] = ( $row[$key] == 1 ? "YES" : "NO" );
         }
         if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
             $row[$key] = date('Y-m-d H:i:s',$row[$key]);

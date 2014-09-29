@@ -316,7 +316,6 @@ class MY_Model extends CI_Model
     {
         $where = func_get_args();
         $this->_set_where($where);
-
         $data = $this->_run_before_callbacks('delete', array( $where ));
         $result = $this->db->delete($this->_table);
         $this->_run_after_callbacks('delete', array( $where, $result ));

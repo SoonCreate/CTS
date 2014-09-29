@@ -46,6 +46,11 @@ class Order extends CI_Controller {
                 $data['severity'] = tpost('severity');
                 $data['priority'] = tpost('frequency');
                 $data['title'] = tpost('title');
+                $data['contact'] = tpost('contact');
+                $data['phone_number'] = tpost('phone_number');
+                $data['mobile_telephone'] = tpost('mobile_telephone');
+                $data['address'] = tpost('address');
+                $data['company_name'] = tpost('company_name');
                 $content = r(v('content'));
                 $addfiles = tpost('addfiles');
                 $order = new Order_model();

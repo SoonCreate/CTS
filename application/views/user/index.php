@@ -10,6 +10,7 @@
         <th>地址</th>
         <th>通过邮件接收消息</th>
         <th>由管理员初始化密码</th>
+        <th>是否失效</th>
         <th>操作</th>
     </thead>
     <?php foreach($users as $u):?>
@@ -24,9 +25,10 @@
         <td><?= $u['address']?></td>
         <td><?= $u['email_flag']?></td>
         <td><?= $u['initial_pass_flag']?></td>
+        <td><?= $u['inactive_flag']?></td>
         <td><a href="<?= _url('user','admin_edit',array('user_id'=>$u['id']))?>">编辑</a>&nbsp;|&nbsp;
             <a href="<?= _url('user','initial_password',array('user_id'=>$u['id']))?>">密码初始化</a>&nbsp;|&nbsp;
-            <?php if($u['inactive_flag'] + 2 == 2):?>
+            <?php if($u['inactive_flag'] == 'NO'):?>
                 <a href="<?= _url('user','change_status',array('user_id'=>$u['id'],'inactive_flag'=>1))?>">失效</a>
             <?php else : ?>
                 <a href="<?= _url('user','change_status',array('user_id'=>$u['id'],'inactive_flag'=>0))?>">生效</a>

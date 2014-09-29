@@ -6,6 +6,7 @@ class Functions extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('function_model');
+        $this->load->model('role_module_line_model');
         $this->load->model('module_line_model');
         $this->load->model('module_model');
     }
@@ -29,7 +30,7 @@ class Functions extends CI_Controller {
                 if($fn->insert($data)){
                     echo 'done';
                 }else{
-                    echo 'failure';
+                    echo validation_errors('<div class="error">', '</div>');
                 }
             }else{
                 echo '无效的链接';
@@ -58,6 +59,25 @@ class Functions extends CI_Controller {
 
         }else{
             render($fn->find(p('id')));
+        }
+    }
+
+    function destroy(){
+        $f = new Function_model();
+        $ml = new Module_line_model();
+        $rml = new Role_module_line_model();
+        $function_id = p('id');
+        $fn = $f->find($function_id);
+        $role_in_use = $rml->find_all_by_view(array('function_id'=>$function_id));
+        $module_in_use = $ml->find_by(array('function_id'=>$function_id));
+        if(!empty($fn) && empty($role_in_use) && empty($module_in_use)){
+            if ($f->delete($function_id)) {
+                echo 'done';
+            }else{
+                echo '数据库删除错误';
+            }
+        }else{
+            echo '无法删除!功能正在模块或角色被使用.';
         }
     }
 
