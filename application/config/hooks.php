@@ -11,20 +11,27 @@
 */
 
 //在你的控制器实例化之后,任何方法调用之前调用.
+//$hook['post_controller_constructor'][] = array(
+//    'class'    => 'SMessage',
+//    'function' => 'initial',
+//    'filename' => 'SMessage.php',
+//    'filepath' => 'hooks'
+//);
+
 $hook['post_controller_constructor'][] = array(
-    'class'    => 'SMessage',
-    'function' => 'initial',
-    'filename' => 'SMessage.php',
+    'class'    => 'Auth',
+    'function' => 'function_check',
+    'filename' => 'Auth.php',
     'filepath' => 'hooks'
 );
 
 //在你的控制器完全运行之后调用.
-$hook['post_controller'] = array(
-    'class'    => 'SMessage',
-    'function' => 'response',
-    'filename' => 'SMessage.php',
-    'filepath' => 'hooks'
-);
+//$hook['post_controller'] = array(
+//    'class'    => 'SMessage',
+//    'function' => 'response',
+//    'filename' => 'SMessage.php',
+//    'filepath' => 'hooks'
+//);
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

@@ -21,10 +21,11 @@ class Order extends CI_Controller {
         $rows = $a->can_create_order_types();
         if(empty($rows)){
             //不能创建任何投诉订单，提示账号未被授权
-
+            echo '不能创建任何投诉订单，账号未被授权';
         }elseif(count($rows) > 1){
+            $data['objects'] = $rows;
             //同时拥有几种订单的创建权限，显示选择页
-            render('choose_create');
+            render($data);
 
         }else{
             //一种时，直接跳转
@@ -34,30 +35,31 @@ class Order extends CI_Controller {
     }
 
     function create(){
+        $order = new Order_model();
         if($_POST){
-            $data['order_type'] = tpost('type');
+            $data['order_type'] = tpost('order_type');
             $data['category'] = tpost('category');
-            $data['status'] = $this->order->default_status();
+            $data['status'] = $order->default_status();
 
             //验证提交
             //权限
-            if(check_auth($data['order_type'],$data['status'],$data['category'])){
+            if(check_order_auth($data['order_type'],$data['status'],$data['category'])){
 
                 $data['severity'] = tpost('severity');
-                $data['priority'] = tpost('frequency');
+                $data['frequency'] = tpost('frequency');
                 $data['title'] = tpost('title');
                 $data['contact'] = tpost('contact');
                 $data['phone_number'] = tpost('phone_number');
                 $data['mobile_telephone'] = tpost('mobile_telephone');
                 $data['address'] = tpost('address');
-                $data['company_name'] = tpost('company_name');
+                $data['full_name'] = tpost('full_name');
                 $content = r(v('content'));
                 $addfiles = tpost('addfiles');
-                $order = new Order_model();
+
                 if($order->save($data,$content,$addfiles)){
-
+                    echo 'done';
                 }else{
-
+                    echo validation_errors('<div class="error">', '</div>');
                 }
 
 
@@ -67,13 +69,33 @@ class Order extends CI_Controller {
         }else{
             //获取订单类型，如果没有则跳转到chose_create
             $order_type = tget('type');
+            $data['order_type'] = $order_type;
+            if(_config('category_control')){
+                $au = new Auth_model();
+                $data['categories'] = $au->can_choose_order_categories($order_type,$order->default_status());
+            }
+
             if(is_null($order_type)){
                 redirect_to('order','choose_create');
             }else{
-                render();
+                render($data);
             }
         }
 
+    }
+
+    function show(){
+        $id = p('id');
+        $om = new Order_model();
+        $order = $om->find($id);
+        //id是否有效
+        if(!empty($order)){
+            //是否只能看到自己的订单
+            $am = new Auth_model();
+            $am->check_auth('only_mine_control',array('ao_only_mine'=>'TRUE'));
+        }else{
+            show_404();
+        }
     }
 
     function change_status(){

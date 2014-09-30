@@ -16,7 +16,9 @@ class Order_model extends MY_Model{
         $this->add_validate('frequency','required');
         $this->add_validate('title','required|max_length[100]');
         $this->add_validate('contact','required|max_length[255]');
-        $this->add_validate('mobile_telephone','required|max_length[255]');
+        $this->add_validate('mobile_telephone','required|max_length[255]|numeric');
+        $this->add_validate('email','valid_email');
+        $this->add_validate_255('phone_number','address','contact','full_name');
 
         //设置钩子
         $this->before_create = array('before_insert');
@@ -32,7 +34,7 @@ class Order_model extends MY_Model{
         return $this->status->is_allow_next_status('order_status',$current_status,$next_status);
     }
 
-    function save($base_data,$content,$addfiles){
+    function save($base_data,$content,$addfiles=null){
         $this->db->trans_begin();
         $order_id = $this->insert($base_data);
         if($order_id){
@@ -40,12 +42,14 @@ class Order_model extends MY_Model{
             $data['order_id'] = $order_id;
             $data['content'] = $content;
             if(!$this->content->insert($data)){
+                echo 'content_fail';
                 $this->db->trans_rollback();
                 return false;
             }
 
             //附件
             if(!is_null($addfiles)){
+                echo 'addfile_fail';
                 $files = json_decode($addfiles);
                 if(!$this->addfile->insert($files)){
                     $this->db->trans_rollback();
@@ -53,17 +57,18 @@ class Order_model extends MY_Model{
                 }
             }
 
-            //日志status
-            $log['order_id'] = $order_id;
-            $log['log_type'] = 'status';
-            $log['new_value'] = $base_data['status'];
-            if(!$this->order_log->insert($log)){
-                $this->db->trans_rollback();
-                return false;
-            }
-
+//            //日志status
+//            $log['order_id'] = $order_id;
+//            $log['log_type'] = 'status';
+//            $log['new_value'] = $base_data['status'];
+//            if(!$this->order_log->insert($log)){
+//                $this->db->trans_rollback();
+//                return false;
+//            }
+            $this->db->trans_commit();
             return true;
         }else{
+            echo 'order_fail';
             $this->db->trans_rollback();
             return false;
         }

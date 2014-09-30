@@ -12,10 +12,11 @@ class Valuelist_model extends MY_Model{
     }
 
     function find_lines_by_parent_segment($valuelist_id,$parent_segment,$inactive_flag = null){
+        $vlm = new Valuelist_line_model();
         if(is_null($inactive_flag)){
-            return $this->vline->find_all_by(array('valuelist_id' => $valuelist_id,'parent_segment'=>$parent_segment));
+            return $vlm->find_all_by(array('valuelist_id' => $valuelist_id,'parent_segment_value'=>$parent_segment));
         }else{
-            return $this->vline->find_all_by(array('valuelist_id' => $valuelist_id,'parent_segment'=>$parent_segment,'inactive_flag'=>$inactive_flag));
+            return $vlm->find_all_by(array('valuelist_id' => $valuelist_id,'parent_segment_value'=>$parent_segment,'inactive_flag'=>$inactive_flag));
         }
 
     }
@@ -28,14 +29,34 @@ class Valuelist_model extends MY_Model{
         return $this->_get_options($this->find_by(array('valuelist_name'=>$valuelist_name)));
     }
 
-    function find_children_options($parent_name,$parent_segment_value,$name){
-        $l = $this->vline->find_by(array('valuelist_name'=>$parent_name,'segment_value'=>$parent_segment_value));
-        $me = $this->find_by(array('valuelist_name'=>$name));
-        if(!empty($l) && !empty($me)){
-            return $this->find_lines_by_parent_segment($me['id'],$l['segment']);
+    function find_all_children_options($child_valuelist_name,$parent_segment){
+        $me = $this->find_by(array('valuelist_name'=>$child_valuelist_name));
+        if(!empty($me)){
+            return $this->_options($this->find_lines_by_parent_segment($me['id'],$parent_segment));
         }else{
             return array();
         }
+    }
+
+    function find_active_children_options($child_valuelist_name,$parent_segment){
+        $me = $this->find_by(array('valuelist_name'=>$child_valuelist_name));
+        if(!empty($me)){
+            return $this->_options($this->find_lines_by_parent_segment($me['id'],$parent_segment,0));
+        }else{
+            return array();
+        }
+    }
+
+    function _options($lines){
+        $return = array();
+        if(!empty($lines)){
+            foreach($lines as $l){
+                $o['value'] = $l['segment_value'];
+                $o['label'] = $l['segment_desc'];
+                array_push($return,$o);
+            }
+        }
+        return $return;
     }
 
     //重构函数,return object

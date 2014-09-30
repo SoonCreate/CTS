@@ -21,24 +21,16 @@ class Welcome extends CI_Controller {
     function __construct(){
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
-        $this->load->model('user_model');
+        $this->load->model('auth_model');
     }
 
 	public function index()
 	{
-		$this->load->view('welcome_message');
+        set_sess('uid',44);
+        $am = new Auth_model();
+        $data['modules'] = $am->can_choose_modules();
+		$this->load->view('welcome_message',$data);
 	}
-
-    function test(){
-        $user = new User_model();
-        $data['username'] = 'yacole1陈';
-//        $data['password'] = '111';
-        $data['mobile_telephone'] = 'asjdkf';
-        $user->insert($data);
-//        $this->load->library('form_validation');
-        echo validation_errors('<div class="error">', '</div>');
-        echo form_error('username');
-    }
 
     function username_check($username){
         if ($username == 'test'){
@@ -49,8 +41,15 @@ class Welcome extends CI_Controller {
         }
     }
 
-    function test2(){
-        echo redirect_to('welcome','test');
+    function my_functions(){
+        $module_id = p('module_id');
+        $am = new Auth_model();
+        $data['functions'] = $am->can_choose_functions($module_id);
+        if(!empty($data['functions'])){
+            $this->load->view('my_functions',$data);
+        }else{
+            show_404();
+        }
     }
 
 }

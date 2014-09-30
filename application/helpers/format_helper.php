@@ -62,7 +62,7 @@ function p($name){
 
 //get参数获取
 function tget($name){
-    if(v($name)){
+    if(p($name)){
         return _trim(p($name));
     }else{
         return null;

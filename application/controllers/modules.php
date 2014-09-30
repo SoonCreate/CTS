@@ -23,7 +23,8 @@ class Modules extends CI_Controller {
         if($_POST){
             $data['module_name'] = tpost('module_name');
             $data['description'] = tpost('description');
-            $data['sort'] = tpost('sort');
+            $data['sort'] = v('sort');
+            print_r($data);
             $m= new Module_model();
             if($m->insert($data)){
                 echo 'done';

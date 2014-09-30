@@ -115,8 +115,8 @@ function get_value($valuelist_name,$label){
     return $value;
 }
 
-function get_label($valuelist_name,$value){
-    $options = get_options($valuelist_name);
+function get_label($valuelist_name,$value,$parent_segment_value = null){
+    $options = get_options($valuelist_name,$parent_segment_value);
     $label = _text('label_unknow');
     if(count($options) > 0){
         for($i=0;$i<count($options);$i++){
@@ -130,15 +130,21 @@ function get_label($valuelist_name,$value){
 }
 
 //获取值列表
-function get_options($valuelist_name){
+function get_options($valuelist_name,$parent_segment_value = null){
     global $CI;
     $CI->load->model('valuelist_model');
-    return $CI->valuelist_model->find_active_options($valuelist_name)->result_array();
+    $vlm = new Valuelist_model();
+    if(is_null($parent_segment_value)){
+        return $vlm->find_active_options($valuelist_name)->result_array();
+    }else{
+        return $vlm->find_active_children_options($valuelist_name,$parent_segment_value);
+    }
+
 }
 
 //输出到view里面的option
-function render_options($valuelist_name){
-    $options = get_options($valuelist_name);
+function render_options($valuelist_name,$parent_segment_value = null){
+    $options = get_options($valuelist_name,$parent_segment_value );
     foreach($options as $o){
         echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
     }
@@ -213,7 +219,7 @@ function label($str){
 }
 
 //判断是否为分类控制，再进行权限判断。默认为分类为all
-function check_auth($order_type,$order_status,$order_category = null){
+function check_order_auth($order_type,$order_status,$order_category = null){
     global $CI;
     $CI->load->model('auth_model');
     $data['ao_order_type'] = $order_type;
@@ -228,6 +234,17 @@ function check_auth($order_type,$order_status,$order_category = null){
         $data['ao_order_status'] = _config('all_values');
     }
     return $CI->auth_model->check_auth('category_control',$data);
+}
+
+function check_function_auth($function_name = null){
+    $CI =  &get_instance();
+    $CI->load->model('auth_model');
+    $am = new Auth_model();
+    if(is_null($function_name)){
+        return $am->check_function_auth_by_router($CI->router->fetch_class(),$CI->router->fetch_method());
+    }else{
+        return $am->check_function_auth($function_name);
+    }
 }
 
 //邮件发送方法
@@ -289,7 +306,7 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     $email->message($message);
 
     $email->send();
-    echo $email->print_debugger();
+//    echo $email->print_debugger();
 
 }
 

@@ -6,6 +6,9 @@ class Auth_model extends MY_Model{
         parent::__construct();
         $this->load->model('status_model','status');
         $this->load->model('order_model','order');
+        $this->load->model('valuelist_model');
+        $this->load->model('role_module_line_model');
+        $this->load->model('function_model');
         $this->_table = 'role_profile_lines_v';
     }
 
@@ -24,6 +27,40 @@ class Auth_model extends MY_Model{
         }else{
             //用户没有当前权限对象
             return false;
+        }
+    }
+
+    //检查是否有运行当前功能的权限
+    function check_function_auth($function_name){
+        //检查该功能是否在系统中注册，如果未注册则不参与权限验证
+        $fm = new Function_model();
+        $fn = $fm->find_by(array('function_name'=>$function_name));
+        if(empty($fn)){
+            return true;
+        }else{
+            return $this->_check_function_auth($fn['id']);
+        }
+
+    }
+
+    function check_function_auth_by_router($controller,$action){
+        //检查该功能是否在系统中注册，如果未注册则不参与权限验证
+        $fm = new Function_model();
+        $fn = $fm->find_by(array('controller'=>$controller,'action'=>$action));
+        if(empty($fn)){
+            return true;
+        }else {
+            return $this->_check_function_auth($fn['id']);
+        }
+    }
+
+    function _check_function_auth($function_id){
+        $rmlm = new Role_module_line_model();
+        $r = $rmlm->find_all_by_view(array('function_id' => $function_id));
+        if (empty($r)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -68,7 +105,7 @@ class Auth_model extends MY_Model{
                         }
                     }else{
                         //少数
-                        $return = $return + explode(',',$line['auth_value']);
+                        $return = array_merge($return,explode(',',$l_order_type['auth_value'])) ;
                     }
                 }
             }
@@ -76,6 +113,61 @@ class Auth_model extends MY_Model{
         }
         //返回消除重复项的最终值
         return array_unique($return);
+    }
+
+    //能选择的分类
+    function can_choose_order_categories($order_type,$status){
+        $return = array();
+        $profile_objects = $this->find_profiles_by_object_name('category_control')->result_array();
+        if(count($profile_objects)>0){
+            //循环拥有多少种相同权限对象的组合
+            foreach($profile_objects as $o){
+                $l_order_type = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_type'));
+                $l_order_status = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_status'));
+                $l_order_categories = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_category'));
+                //拥有初始化状态权限
+                if($l_order_type['auth_value'] == _config('all_values') ||
+                    in_array($order_type,explod(',',$l_order_type['auth_value']))){
+
+                    if($l_order_status['auth_value'] == _config('all_values')||
+                        in_array($status,explod(',',$l_order_status['auth_value']))){
+
+                        if($l_order_categories['auth_value'] == _config('all_values')){
+                            $vlm = new Valuelist_model();
+                            //所有
+                            $opts = $vlm->find_active_children_options('vl_order_category',$order_type);
+                            foreach($opts as $op){
+                                array_push($return,$op['value']);
+                            }
+                        }else{
+                            //少数
+                            $return = array_merge($return,explode(',',$l_order_categories['auth_value'])) ;
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+        //返回消除重复项的最终值
+        return array_unique($return);
+    }
+
+    //默认展示拥有权限的模块
+    function can_choose_modules(){
+        $this->db->distinct();
+        $this->db->order_by('module_sort');
+        $this->db->select('module_name,module_id,module_desc');
+        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid')))->result_array();
+    }
+
+    //默认展示拥有权限的模块下的功能
+    function can_choose_functions($module_id){
+        $this->db->distinct();
+        $this->db->order_by('sort');
+        $this->db->select('function_name,function_id,function_desc,controller,action');
+        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'module_id'=>$module_id))->result_array();
     }
 
 }
