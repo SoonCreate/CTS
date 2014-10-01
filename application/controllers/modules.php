@@ -23,6 +23,7 @@ class Modules extends CI_Controller {
         if($_POST){
             $data['module_name'] = tpost('module_name');
             $data['description'] = tpost('description');
+            $data['display_class'] = tpost('display_class');
             $data['sort'] = v('sort');
             print_r($data);
             $m= new Module_model();
@@ -42,6 +43,7 @@ class Modules extends CI_Controller {
             $data['id'] = v('id');
             $data['description'] = tpost('description');
             $data['sort'] = tpost('sort');
+            $data['display_class'] = tpost('display_class');
             if($m->update($data['id'],$data)){
                 echo 'done';
             }else{

@@ -59,16 +59,49 @@ function first_row($rs){
 //设置时间戳
 function set_last_update($data){
     $data['last_update_date'] = time();
-    $data['last_updated_by'] = _sess('uid') | -1;
+    if(_sess('uid')){
+        $data['last_updated_by'] = _sess('uid');
+    }else{
+        $data['last_updated_by'] =  -1;
+    }
     return $data;
 }
 
 function set_creation_date($data){
     $data['last_update_date'] = time();
-    $data['last_updated_by'] = _sess('uid') |  -1;
     $data['creation_date'] = time();;
-    $data['created_by'] = _sess('uid') |  -1;
+    if(_sess('uid')){
+        $data['last_updated_by'] = _sess('uid');
+        $data['created_by'] = _sess('uid');
+    }else{
+        $data['last_updated_by'] =  -1;
+        $data['created_by'] =  -1;
+    }
     return $data;
+}
+
+//姓名或公司名
+function full_name($id){
+    if($id == -1){
+        return _text('label_administrator');
+    }else{
+        if(is_null($id)){
+            return _text('label_unknow');
+        }else{
+            global $CI;
+            $CI->load->model('user_model');
+            $um = new User_model();
+            $user = $um->find($id);
+            if(empty($user)){
+                return _text('label_unknow');
+            }else{
+                return $user['full_name'];
+            }
+        }
+
+    }
+
+
 }
 
 //获取session值
@@ -236,14 +269,34 @@ function check_order_auth($order_type,$order_status,$order_category = null){
     return $CI->auth_model->check_auth('category_control',$data);
 }
 
-function check_function_auth($function_name = null){
+function check_function_auth(){
+    $args = func_get_args();
     $CI =  &get_instance();
     $CI->load->model('auth_model');
     $am = new Auth_model();
-    if(is_null($function_name)){
+
+    if(count($args) + 2 == 2){
         return $am->check_function_auth_by_router($CI->router->fetch_class(),$CI->router->fetch_method());
+    }elseif(count($args) == 2){
+        return $am->check_function_auth_by_router($args[0],$args[1]);
     }else{
-        return $am->check_function_auth($function_name);
+        return $am->check_function_auth($args[0]);
+    }
+}
+
+function is_order_allow_next_status($current_status,$next_status){
+    global $CI;
+    $CI->load->model('order_model');
+    $om = new Order_model();
+    return $om->is_allow_next_status($current_status,$next_status);
+}
+
+function is_order_locked($status){
+    $lock = _config('status_for_lock');
+    if($status == $lock){
+        return true;
+    }else{
+        return false;
     }
 }
 

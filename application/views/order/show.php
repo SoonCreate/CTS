@@ -1,0 +1,54 @@
+<h1>投诉单号：<?= $id ?></h1>
+
+<?php
+//如果订单状态为锁定，则不显示工具栏
+if(!is_order_locked($status)) :?>
+
+<?php if(is_order_allow_next_status($status,'confirmed') && check_order_auth($order_type,'confirmed',$category)):?>
+    <a href="<?= _url('order','confirm',array('id'=>$id))?>">投诉内容已确认</a>
+<?php endif;?>
+
+<?php if(is_order_allow_next_status($status,'allocated') && check_order_auth($order_type,'allocated',$category)):?>
+<a href="<?= _url('order','dispatcher',array('id'=>$id))?>">分配责任人并确认计划完成日期</a>
+<?php endif;?>
+
+<?php if(is_order_allow_next_status($status,'done') && check_order_auth($order_type,'done',$category)):?>
+    <a href="<?= _url('order','done',array('id'=>$id))?>">标志已解决</a>
+<?php endif;?>
+
+<?php if(check_function_auth('order','meeting_create')) :?>
+<a href="<?= _url('order','meeting_create',array('id'=>$id))?>">创建会议纪要</a>
+<?php endif;?>
+<hr/>
+
+<?php endif;?>
+
+严重性：<?= get_label('vl_severity',$severity) ?><br/>
+发生频率：<?= get_label('vl_frequency',$frequency) ?><br/>
+<?php if(_config('category_control')) :?>
+分类：<?= get_label('vl_order_category',$category,$order_type) ?><br/>
+<?php endif;?>
+<hr/>
+标题：<?= $title ?><br/>
+内容：<br/>
+<?php foreach($contents as $c):?>
+<?php if($c['created_by'] == _sess('uid')) :  echo '投诉人：'.$c['content']; else : echo $c['content'] ;endif; ?>
+<?php endforeach;?>
+<hr/>
+附件：
+<?php foreach($addfiles as $f):?>
+    <a href="<?= $f['full_path']?>"><?= $f['file_name']?></a>
+    <?= $f['description']?>
+<?php endforeach;?>
+<hr/>
+<form id="order_reply" method="post" action="<?= _url('order','reply')?>">
+    <textarea id="reply" name="reply" cols="40" rows="4"></textarea>
+    <input name="id" id="id" type="hidden" value="<?= $id ?>"/>
+    <button type="submit">提交</button>
+</form>
+<hr/>
+本次投诉联系人：<?= $contact ?><br/>
+手机号码：<?= $mobile_telephone ?><br/>
+公司电话：<?= $phone_number ?><br/>
+公司名称：<?= $full_name?><br/>
+公司地址：<?= $address ?><br/>

@@ -17,10 +17,20 @@ class Status_model extends MY_Model{
         }
     }
 
+    function get_label($order_status,$value){
+        $line = first_row($this->db->get_where('status_lines_v',array('status_code'=>$order_status,'segment_value'=>$value)));
+        if(is_null($line)){
+            return null;
+        }else{
+            return $line['segment_desc'];
+        }
+    }
+
     //是否允许下一步
     function is_allow_next_status($status_code,$current_status,$next_status){
-        $line = $this->line->find_by(array('status_code'=>$status_code,'segment_value'=>$current_status));
-        $line2 = $this->line->find_by(array('status_code'=>$status_code,'segment_value'=>$next_status));
+        $slm = new Status_line_model();
+        $line = $slm->find_by(array('status_code'=>$status_code,'segment_value'=>$current_status));
+        $line2 = $slm->find_by(array('status_code'=>$status_code,'segment_value'=>$next_status));
         if(!empty($line) && !empty($line2)){
             if(is_null($line['next_status'])){
                 return false;

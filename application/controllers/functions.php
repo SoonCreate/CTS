@@ -26,6 +26,8 @@ class Functions extends CI_Controller {
             if(url_exists(_url($data['controller'],$data['action']))){
                 $data['function_name'] = tpost('function_name');
                 $data['description'] = tpost('description');
+                $data['display_flag'] = tpost('display_flag');
+                $data['display_class'] = tpost('display_class');
                 $fn = new Function_model();
                 if($fn->insert($data)){
                     echo 'done';
@@ -47,6 +49,8 @@ class Functions extends CI_Controller {
             $data['description'] = tpost('description');
             $data['controller'] = tpost('controller');
             $data['action'] = tpost('action');
+            $data['display_flag'] = tpost('display_flag');
+            $data['display_class'] = tpost('display_class');
             if(url_exists(_url($data['controller'],$data['action']))){
                 if($fn->update($data['id'],$data)){
                     echo 'done';

@@ -3,6 +3,8 @@
 <a href="<?= _url('modules','index')?>">模块管理</a>
 <a href="<?= _url('functions','index')?>">功能管理</a>
 <a href="<?= _url('auth_object','index')?>">权限对象管理</a>
+<a href="<?= _url('order','log_types')?>">订单日志类型管理</a>
+<a href="<?= _url('order','index')?>">投诉订单列表</a>
 <a href="<?= _url('order','choose_create')?>">创建新投诉</a>
 <br/>
 <br/>

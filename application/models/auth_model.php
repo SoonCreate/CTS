@@ -159,7 +159,7 @@ class Auth_model extends MY_Model{
         $this->db->distinct();
         $this->db->order_by('module_sort');
         $this->db->select('module_name,module_id,module_desc');
-        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid')))->result_array();
+        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1))->result_array();
     }
 
     //默认展示拥有权限的模块下的功能
@@ -167,7 +167,7 @@ class Auth_model extends MY_Model{
         $this->db->distinct();
         $this->db->order_by('sort');
         $this->db->select('function_name,function_id,function_desc,controller,action');
-        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'module_id'=>$module_id))->result_array();
+        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1,'module_id'=>$module_id))->result_array();
     }
 
 }

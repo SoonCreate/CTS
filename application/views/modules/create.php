@@ -3,6 +3,7 @@
     <label for="module_name">*模块名</label><input name="module_name" id="module_name" type="text" /><br/>
     <label for="description">*描述</label><textarea id="description" name="description" rows="5" cols="40"></textarea><br/>
     <label for="sort">*排序码</label><input name="sort" id="sort" type="text" value="0"/><br/>
+    <label for="display_class">显示样式</label><input name="display_class" id="display_class" type="text" /><br/>
     <button type="submit">提交</button>
 </form>
 

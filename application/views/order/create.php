@@ -18,9 +18,9 @@
     <?php foreach($categories as $c):?>
             <option value="<?= $c?>"><?= get_label('vl_order_category',$c,$order_type)?></option>
     <?php endforeach;?>
-     </select>
+     </select> <br/>
     <?php endif; ?>
-    <br/>
+
 
     <label for="title">*标题</label>
     <input name="title" id="title" type="text" />

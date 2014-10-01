@@ -2,6 +2,8 @@
 
 $lang['label_version'] = "闭环跟踪系统Beta 1.0";
 
+$lang['label_administrator'] = '系统管理员';
+
 $lang['label_need_select'] = "请选择";
 $lang['label_save'] = "保存";
 $lang['label_confirm'] = "确认";

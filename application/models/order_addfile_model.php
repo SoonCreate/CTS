@@ -17,4 +17,8 @@ class Order_addfile_model extends MY_Model{
         return set_last_update($data);
     }
 
+    function find_all_by_view($where){
+        return $this->db->get_where($this->_table.'_v',$where)->result_array();
+    }
+
 }

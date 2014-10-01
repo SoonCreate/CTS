@@ -5,6 +5,8 @@
         <th>描述</th>
         <th>控制器</th>
         <th>函数</th>
+        <th>是否前端显示</th>
+        <th>显示样式</th>
         <th>操作</th>
     </thead>
     <?php foreach($functions as $fn):?>
@@ -14,6 +16,8 @@
         <td><?= $fn['description']?></td>
         <td><?= $fn['controller']?></td>
         <td><?= $fn['action']?></td>
+        <td><?= $fn['display_flag']?></td>
+        <td><?= $fn['display_class']?></td>
 
         <td><a href="<?= _url('functions','edit',array('id'=>$fn['id']))?>">编辑</a>&nbsp;|&nbsp;
             <a href="<?= _url('functions','destroy',array('id'=>$fn['id']))?>">删除</a>&nbsp;|&nbsp;
