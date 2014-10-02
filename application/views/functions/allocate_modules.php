@@ -19,6 +19,6 @@
         <?php endforeach;?>
     </table>
 
-    <input name="function_id" id="function_id" type="hidden" value="<?= _v('function_id')?>" />
+    <input name="id" id="id" type="hidden" value="<?= v('id')?>" />
     <button type="submit">提交</button>
 </form>

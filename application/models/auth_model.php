@@ -13,8 +13,8 @@ class Auth_model extends MY_Model{
     }
 
     //权限验证，输入权限对象，以及子项值
-    function check_auth($auth_object_name,$auth_items){
-        $profile_objects = $this->find_profiles_by_object_name($auth_object_name)->result_array();
+    function check_auth($auth_object_name,$auth_items,$user_id = null){
+        $profile_objects = $this->find_profiles_by_object_name($auth_object_name,$user_id)->result_array();
         if(count($profile_objects)>0){
             $pass = true;
             //循环拥有多少种相同权限对象的组合
@@ -65,9 +65,12 @@ class Auth_model extends MY_Model{
     }
 
     //当前用户的该权限对象列表
-    function find_profiles_by_object_name($object_name){
+    function find_profiles_by_object_name($object_name,$user_id = null){
+        if(is_null($user_id)){
+            $user_id = _sess('uid');
+        }
         return  $this->db->get_where('user_auth_v',
-            array('user_id' => _sess('uid'),
+            array('user_id' => $user_id,
                 'object_name' => $object_name));
     }
 
@@ -168,6 +171,20 @@ class Auth_model extends MY_Model{
         $this->db->order_by('sort');
         $this->db->select('function_name,function_id,function_desc,controller,action');
         return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1,'module_id'=>$module_id))->result_array();
+    }
+
+    function can_choose_managers($order){
+        $return = array();
+        $profiles = $this->db->get_where('user_auth_v',
+            array('object_name' => 'category_control'))->result_array();
+        if(count($profiles) > 0){
+            foreach($profiles as $p){
+                if(check_order_auth($order['order_type'],'allocated',$order['category'],$p['user_id'])){
+                    array_push($return,$p['user_id']);
+                }
+            }
+        }
+        return array_unique($return);
     }
 
 }

@@ -12,9 +12,16 @@
     <input name="field_name" id="field_name" type="text" value="<?= _v('field_name')?>" />
     <br/>
 
+    <label for="field_valuelist_id">字段值集</label>
+    <select id="field_valuelist_id" name="field_valuelist_id">
+        <option></option>
+        <?php render_options_with_value('vl_valuelist',_v('field_valuelist_id'));?>
+    </select>
+    <br/>
+
     <label for="dll_type">*数据库操作类型</label>
-    <select name="dll_type" id="dll_type" value="<?= _v('dll_type')?>">
-        <?= render_options('vl_dll_type')?>
+    <select name="dll_type" id="dll_type">
+        <?= render_options_with_value('vl_dll_type',_v('dll_type'))?>
     </select>
     <br/>
 

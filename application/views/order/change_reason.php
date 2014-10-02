@@ -4,7 +4,7 @@
     <textarea id="reason" name="reason" cols="40" rows="4"></textarea>
     <br/>
 
-    <input name="change_hash" id="change_hash" type="hidden" value="<?= _v('change_hash')?>" />
+    <input name="change_hash" id="change_hash" type="hidden" value="<?= v('change_hash')?>" />
     <button type="submit">提交</button>
 </form>
 

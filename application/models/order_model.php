@@ -29,13 +29,19 @@ class Order_model extends MY_Model{
     }
 
     function default_status(){
-        return $this->status->default_status('order_status');
+        $sm = new Status_model();
+        return $sm->default_status('order_status');
+    }
+
+    function default_next_status($current_status){
+        $sm = new Status_model();
+        return $sm->default_next_status('order_status',$current_status);
     }
 
     //在未开通分类管理时，默认分类
     function default_category($order_type){
         $vm = new Valuelist_model();
-        $r = $vm->find_active_children_options('o_default_category',$order_type);
+        $r = $vm->find_active_children_options('default_category',$order_type);
         if(empty($r)){
             return null;
         }else{
@@ -203,10 +209,35 @@ class Order_model extends MY_Model{
 
     }
 
+    function logs($order_id){
+        $olm = new Order_log_model();
+        $logs = $olm->find_all_by_view(array('order_id'=>$order_id));
+        if(empty($logs)){
+            return array();
+        }else{
+            for($i=0;$i<count($logs);$i++){
+                $logs[$i]['content'] = $this->_format_log($logs[$i],$logs[$i]['content']);
+            }
+            return $logs;
+        }
+    }
+
     function _format_log($log,$field){
+        $vm = new Valuelist_model();
         $content =  str_replace('&order_id',$log['order_id'],$field);
-        $content =  str_replace('&new_value',$log['new_value'],$content);
-        $content =  str_replace('&old_value',$log['old_value'],$content);
+        if(!is_null($log['field_valuelist_id'])){
+            $vl = $vm->find($log['field_valuelist_id']);
+            if(!empty($vl)){
+                $content =  str_replace('&new_value',get_label($vl['valuelist_name'],$log['new_value']),$content);
+                $content =  str_replace('&old_value',get_label($vl['valuelist_name'],$log['old_value']),$content);
+            }else{
+                $content =  str_replace('&new_value',$log['new_value'],$content);
+                $content =  str_replace('&old_value',$log['old_value'],$content);
+            }
+        }else{
+            $content =  str_replace('&new_value',$log['new_value'],$content);
+            $content =  str_replace('&old_value',$log['old_value'],$content);
+        }
         return $content;
     }
 

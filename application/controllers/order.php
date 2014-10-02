@@ -23,7 +23,7 @@ class Order extends CI_Controller {
         for($i=0;$i<count($os);$i++){
             $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
             $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
-            $os[$i]['status'] = $sm->get_label('order_status',$os[$i]['status']);
+            $os[$i]['status'] = $sm->get_label($os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
             $os[$i]['content'] = $om->first_content($os[$i]['id']);
             $os[$i]['managed_by'] = $os[$i]['manager_id'];
@@ -60,31 +60,20 @@ class Order extends CI_Controller {
     function create(){
         $order = new Order_model();
         if($_POST){
-            $data['order_type'] = tpost('order_type');
+
             //非分类管理，默认分类设置时可默认
-            if(_config('category_control')){
-                $data['category'] = tpost('category');
-            }else{
-                $c = $order->default_category($data['order_type']);
+            if(!_config('category_control')){
+                $c = $order->default_category(v('order_type'));
                 if(!is_null($c)){
-                    $data['category'] = $c['value'];
+                    $_POST['category'] = $c['value'];
                 }
             }
-
-            $data['status'] = $order->default_status();
-
+            $_POST['status'] = $order->default_status();
             //验证提交
             //权限
-            if(check_order_auth($data['order_type'],$data['status'],$data['category'])){
-
-                $data['severity'] = tpost('severity');
-                $data['frequency'] = tpost('frequency');
-                $data['title'] = tpost('title');
-                $data['contact'] = tpost('contact');
-                $data['phone_number'] = tpost('phone_number');
-                $data['mobile_telephone'] = tpost('mobile_telephone');
-                $data['address'] = tpost('address');
-                $data['full_name'] = tpost('full_name');
+            if(check_order_auth(v('order_type'),v('status'),v('category'))){
+                $data = _data('order_type','category','severity','frequency',
+                    'title','contact','phone_number','mobile_telephone','address','full_name');
                 $content = r(v('content'));
                 $addfiles = tpost('addfiles');
 
@@ -93,8 +82,6 @@ class Order extends CI_Controller {
                 }else{
                     echo validation_errors('<div class="error">', '</div>');
                 }
-
-
             }else{
 
             }
@@ -129,11 +116,14 @@ class Order extends CI_Controller {
             }else{
                 $ocm = new Order_content_model();
                 $oam = new Order_addfile_model();
+                $sm = new Status_model();
                 $ocm->order_by('creation_date');
                 $order['contents'] = $ocm->find_all_by(array('order_id'=>$id));
                 $oam->order_by('creation_date');
                 $order['addfiles'] = $oam->find_all_by_view(array('order_id'=>$id));
-                render($order);
+                $order['status_desc'] = $sm->get_label($order['status']);
+                $order['logs'] = _format($om->logs($id));
+                render(_format_row($order));
             }
         }else{
             show_404();
@@ -147,16 +137,11 @@ class Order extends CI_Controller {
     }
 
     function log_type_create(){
-        $oltm = new Order_log_type_model();
         if($_POST){
-            $data['log_type'] = tpost('log_type');
-            $data['description'] = tpost('description');
-            $data['title'] = tpost('title');
-            $data['content'] = tpost('content');
-            $data['field_name'] = tpost('field_name');
-            $data['dll_type'] = tpost('dll_type');
-            $data['need_reason_flag'] = v('need_reason_flag');
-            $data['notice_flag'] = v('notice_flag');
+            $oltm = new Order_log_type_model();
+            $_POST['need_reason_flag'] = v('need_reason_flag');
+            $_POST['notice_flag'] = v('notice_flag');
+            $data = _data('log_type', 'description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
             if($oltm->insert($data)){
                 echo 'done';
             }else{
@@ -190,53 +175,47 @@ class Order extends CI_Controller {
 
     function log_type_edit(){
         $oltm = new Order_log_type_model();
-        if($_POST){
-            $data['description'] = tpost('description');
-            $data['title'] = tpost('title');
-            $data['content'] = tpost('content');
-            $data['field_name'] = tpost('field_name');
-            $data['dll_type'] = tpost('dll_type');
-            $data['need_reason_flag'] = v('need_reason_flag');
-            $data['notice_flag'] = v('notice_flag');
-            if($oltm->update(v('id'),$data)){
-                echo 'done';
-            }else{
-                echo validation_errors('<div class="error">', '</div>');
-            }
+        $l = $oltm->find(v('id'));
+        if(empty($l)){
+            show_404();
         }else{
-            $data = $oltm->find(p('id'));
-            if(empty($data)){
-                show_404();
+            if($_POST){
+                $data = _data('description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
+                if($oltm->update(v('id'),$data)){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
             }else{
-                render($data);
+                render($l);
             }
         }
     }
 
+    //如果日志类型需要原因，此页面用于补充
     function change_reason(){
         $olm = new Order_log_model();
-        //如果日志类型需要原因，此页面用于补充
-        if($_POST){
-            $change_hash = tpost('change_hash');
-            $reason = tpost('reason');
-            echo $reason;
-            if($olm->update_by(array('change_hash'=>$change_hash),array('reason'=>$reason))){
-                echo 'done';
-            }else{
-                echo validation_errors('<div class="error">', '</div>');
-            }
+        $change_hash = v('change_hash');
+        $l = $olm->find_by(array('change_hash'=>$change_hash));
+        if(empty($l)){
+            show_404();
         }else{
-            $data['change_hash'] =  p('change_hash');
-            if($data['change_hash']){
-                render($data);
+            if($_POST){
+                $reason = tpost('reason');
+                if($olm->update_by(array('change_hash'=>$change_hash),array('reason'=>$reason))){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
             }else{
-                show_404();
+                render();
             }
         }
     }
 
     function confirm(){
-        $this->_update(p('id'),array('status'=>'confirmed'));
+        //默认更新下一个状态
+        $this->_update(v('id'));
     }
 
     function upload_file(){
@@ -245,12 +224,33 @@ class Order extends CI_Controller {
 
     //分配任务，制定负责人，计划完成时间
     function dispatcher(){
-        if($_POST){
-            //判断 status_for_lock 是否为锁定状态
-            $this->_update(p('id'),$data);
+        $om = new Order_model();
+        $order = $om->find(v('id'));
+        if(empty($order)){
+            show_404();
         }else{
-            render();
+            if($_POST){
+                $_POST['plan_complete_date'] = time($_POST['plan_complete_date']);
+                $data = _data('manager_id','plan_complete_date');
+                if($this->_update(v('id'),$data)){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+            }else{
+                $am = new Auth_model();
+                $data = _format($order);
+                $data['ids'] = $am->can_choose_managers($order);
+                if(empty($data['ids'])){
+                    echo '无对应的责任人';
+                }else{
+                    render($data);
+                }
+            }
+
         }
+
+
     }
 
     //责任人资料
@@ -259,18 +259,23 @@ class Order extends CI_Controller {
         //责任人姓名、联系方式、当前待处理订单数量
     }
 
+    function meeting_create(){
+
+    }
+
     function change_plan_complete_date(){
         //需要填写原因
     }
 
-    private function _update($id,$data){
+    private function _update($id,$data = null){
         $om = new Order_model();
         $order = $om->find($id);
         //id是否有效
         if(!empty($order)){
-            //先判断订单状态流是否允许更改
+            $data['status'] = $om->default_next_status($order['status']);
+            //先判断订单状态流是否允许更改,判断是否有权限更改次状态
             if(is_order_allow_next_status($order['status'],$data['status']) && check_order_auth($order['order_type'],$data['status'],$order['category'])){
-                if($om->do_update($order['id'],array('status'=>$data))){
+                if($om->do_update($order['id'],$data)){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');
@@ -278,7 +283,6 @@ class Order extends CI_Controller {
             }else{
                 echo '不允许状态流向！';
             }
-            //判断是否有权限更改次状态
         }else{
             show_404();
         }

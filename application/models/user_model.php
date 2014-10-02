@@ -17,7 +17,7 @@ class User_model extends MY_Model{
 
     function default_roles($order_type){
         $vm = new Valuelist_model();
-        return $vm->find_active_children_options('order_default_role',$order_type);
+        return $vm->find_active_children_options('default_role',$order_type);
     }
 
     function before_insert($data){

@@ -21,13 +21,8 @@ class Modules extends CI_Controller {
 
     function create(){
         if($_POST){
-            $data['module_name'] = tpost('module_name');
-            $data['description'] = tpost('description');
-            $data['display_class'] = tpost('display_class');
-            $data['sort'] = v('sort');
-            print_r($data);
             $m= new Module_model();
-            if($m->insert($data)){
+            if($m->insert(_data('module_name','description','display_class','sort'))){
                 echo 'done';
             }else{
                 echo validation_errors('<div class="error">', '</div>');
@@ -39,20 +34,22 @@ class Modules extends CI_Controller {
 
     function edit(){
         $m = new Module_model();
-        if($_POST){
-            $data['id'] = v('id');
-            $data['description'] = tpost('description');
-            $data['sort'] = tpost('sort');
-            $data['display_class'] = tpost('display_class');
-            if($m->update($data['id'],$data)){
-                echo 'done';
-            }else{
-                echo validation_errors('<div class="error">', '</div>');
-            }
-
+        $module = $m->find(v('id'));
+        if(empty($module)){
+            show_404();
         }else{
-            render($m->find(p('id')));
+            if($_POST){
+                if($m->update(v('id'),_data('module_name','description','display_class','sort'))){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+
+            }else{
+                render($module);
+            }
         }
+
     }
 
     function destroy(){
@@ -79,45 +76,51 @@ class Modules extends CI_Controller {
 
     function choose_functions(){
         $ml = new Module_line_model();
-        if($_POST){
-            $ids = v('functions');
-            $data['module_id'] = v('module_id');
-            $data['sort'] = v('sort');
-            if($ids === FALSE){
-                //删除所有
-                $ml->delete_by(array('module_id' => $data['module_id']));
-            }else{
-                //先删除已取消勾选的
-                $this->db->where_not_in('function_id',$ids);
-                $ml->delete_by(array('module_id' => $data['module_id']));
-                //新增的部分
-                $ids = array_diff($ids,$ml->find_function_ids($data['module_id']));
-                foreach($ids as $id){
-                    $data['function_id'] = $id;
-                    $ml->insert($data);
-                }
-            }
-            $this->db->trans_complete();
-            if ($this->db->trans_status() === FALSE) {
-                echo '数据库插入错误';
-            }else{
-                echo 'done';
-            }
+        $mm = new Module_model();
+        $m = $mm->find(v('module_id'));
+        if(empty($m)){
+            show_404();
         }else{
-            $module_id = p('module_id');
-            $fn = new Function_model();
-            $fns = $fn->find_all();
-            for($i=0;$i<count($fns) ;$i++){
-                $line = $ml->find_by(array('module_id'=>$module_id,'function_id'=>$fns[$i]['id']));
-                if(!empty($line)){
-                    $fns[$i]['checked'] = 'checked';
+            if($_POST){
+                $ids = v('functions');
+                $data['module_id'] = v('module_id');
+                $data['sort'] = v('sort');
+                if($ids === FALSE){
+                    //删除所有
+                    $ml->delete_by(array('module_id' => $data['module_id']));
                 }else{
-                    $fns[$i]['checked'] = '';
+                    //先删除已取消勾选的
+                    $this->db->where_not_in('function_id',$ids);
+                    $ml->delete_by(array('module_id' => $data['module_id']));
+                    //新增的部分
+                    $ids = array_diff($ids,$ml->find_function_ids($data['module_id']));
+                    foreach($ids as $id){
+                        $data['function_id'] = $id;
+                        $ml->insert($data);
+                    }
                 }
+                $this->db->trans_complete();
+                if ($this->db->trans_status() === FALSE) {
+                    echo '数据库插入错误';
+                }else{
+                    echo 'done';
+                }
+            }else{
+                $module_id = v('module_id');
+                $fn = new Function_model();
+                $fns = $fn->find_all();
+                for($i=0;$i<count($fns) ;$i++){
+                    $line = $ml->find_by(array('module_id'=>$module_id,'function_id'=>$fns[$i]['id']));
+                    if(!empty($line)){
+                        $fns[$i]['checked'] = 'checked';
+                    }else{
+                        $fns[$i]['checked'] = '';
+                    }
+                }
+                $data['functions'] = _format($fns);
+                $data['module_id'] = $module_id;
+                render($data);
             }
-            $data['functions'] = _format($fns);
-            $data['module_id'] = $module_id;
-            render($data);
         }
     }
 

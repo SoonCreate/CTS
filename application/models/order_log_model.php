@@ -24,4 +24,8 @@ class Order_log_model extends MY_Model{
         return $this->db->count_all_results($this->_table.'_v');
     }
 
+    function find_all_by_view($where){
+        return $this->db->get_where($this->_table.'_v',$where)->result_array();
+    }
+
 }

@@ -2,32 +2,44 @@
 
 <?php
 //如果订单状态为锁定，则不显示工具栏
-if(!is_order_locked($status)) :?>
+if(!is_order_locked($status)){?>
 
-<?php if(is_order_allow_next_status($status,'confirmed') && check_order_auth($order_type,'confirmed',$category)):?>
+<?php if(is_order_allow_next_status($status,'confirmed') && check_order_auth($order_type,'confirmed',$category)){?>
     <a href="<?= _url('order','confirm',array('id'=>$id))?>">投诉内容已确认</a>
-<?php endif;?>
+<?php }?>
 
-<?php if(is_order_allow_next_status($status,'allocated') && check_order_auth($order_type,'allocated',$category)):?>
+<?php if(is_order_allow_next_status($status,'allocated') && check_order_auth($order_type,'allocated',$category)){?>
 <a href="<?= _url('order','dispatcher',array('id'=>$id))?>">分配责任人并确认计划完成日期</a>
-<?php endif;?>
+<?php }?>
 
-<?php if(is_order_allow_next_status($status,'done') && check_order_auth($order_type,'done',$category)):?>
+<?php if(is_order_allow_next_status($status,'done') && check_order_auth($order_type,'done',$category)){?>
     <a href="<?= _url('order','done',array('id'=>$id))?>">标志已解决</a>
-<?php endif;?>
+<?php }?>
 
-<?php if(check_function_auth('order','meeting_create')) :?>
-<a href="<?= _url('order','meeting_create',array('id'=>$id))?>">创建会议纪要</a>
-<?php endif;?>
+    <?php if(is_order_allow_next_status($status,'closed') && check_order_auth($order_type,'closed',$category)){?>
+        <a href="<?= _url('order','close',array('id'=>$id))?>">关闭订单</a>
+    <?php }?>
+
+<?php if(check_function_auth('order','meeting_create')){ ?>
+<a href="<?= _url('order','meeting_create',array('id'=>$id)) ?>">创建会议纪要</a>
+<?php } ?>
+
+
 <hr/>
 
-<?php endif;?>
+<?php }else{?>
+    <?php if(is_order_allow_next_status($status,'reopen') && check_order_auth($order_type,'reopen',$category)){?>
+        <a href="<?= _url('order','reopen',array('id'=>$id))?>">重新开启</a>
+    <?php }?>
+<?php }?>
 
+状态：<?= $status_desc ?><br/>
 严重性：<?= get_label('vl_severity',$severity) ?><br/>
 发生频率：<?= get_label('vl_frequency',$frequency) ?><br/>
 <?php if(_config('category_control')) :?>
 分类：<?= get_label('vl_order_category',$category,$order_type) ?><br/>
 <?php endif;?>
+提交时间：<?= $creation_date ?>
 <hr/>
 标题：<?= $title ?><br/>
 内容：<br/>
@@ -52,3 +64,23 @@ if(!is_order_locked($status)) :?>
 公司电话：<?= $phone_number ?><br/>
 公司名称：<?= $full_name?><br/>
 公司地址：<?= $address ?><br/>
+<hr/>
+订单日志
+<table>
+    <thead>
+    <th>日志类型</th>
+    <th>内容</th>
+    <th>操作时间</th>
+    <th>操作人</th>
+    <th>原因</th>
+    </thead>
+    <?php foreach($logs as $l):?>
+        <tr>
+            <td><?= $l['description']?></td>
+            <td><?= $l['content']?></td>
+            <td><?= related_time($l['creation_date'])?></td>
+            <td><?= $l['created_by']?></td>
+            <td><?= $l['reason']?></td>
+        </tr>
+    <?php endforeach;?>
+</table>

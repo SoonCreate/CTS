@@ -13,7 +13,7 @@ $CI =&get_instance();
 function v( $name )
 {
 	global $CI;
-	return $CI->input->post( $name );
+	return $CI->input->get_post( $name );
 }
 
 // for the textarea contaings rich text

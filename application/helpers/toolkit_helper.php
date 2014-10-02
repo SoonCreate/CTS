@@ -95,7 +95,12 @@ function full_name($id){
             if(empty($user)){
                 return _text('label_unknow');
             }else{
-                return $user['full_name'];
+                if(is_null($user['full_name'])){
+                    return $user['username'];
+                }else{
+                    return $user['full_name'];
+                }
+
             }
         }
 
@@ -183,6 +188,31 @@ function render_options($valuelist_name,$parent_segment_value = null){
     }
 }
 
+function render_options_with_value(){
+    $args = func_get_args();
+    if(count($args) === 2){
+        $options = get_options($args[0] );
+        foreach($options as $o){
+            if($o['value'] === $args[1]){
+                echo '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
+            }else{
+                echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
+            }
+        }
+    }elseif(count($args) > 2){
+        $options = get_options($args[0],$args[1] );
+        foreach($options as $o){
+            if($o['value'] === $args[2]){
+                echo '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
+            }else{
+                echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
+            }
+        }
+    }elseif(count($args) +  2 == 2){
+        echo '<option value=""></option>';
+    }
+}
+
 function _config($config_name){
     global $CI;
     $CI->load->model('config_model');
@@ -252,21 +282,22 @@ function label($str){
 }
 
 //判断是否为分类控制，再进行权限判断。默认为分类为all
-function check_order_auth($order_type,$order_status,$order_category = null){
+function check_order_auth($order_type,$order_status,$order_category = null,$user_id = null){
     global $CI;
     $CI->load->model('auth_model');
+    $am = new Auth_model();
     $data['ao_order_type'] = $order_type;
     $data['ao_order_status'] = $order_status;
     if(_config('category_control')){
         if(is_null($order_category)){
-            $data['ao_order_status'] = _config('all_values');
+            $data['ao_order_category'] = _config('all_values');
         }else{
-            $data['ao_order_status'] = $order_status;
+            $data['ao_order_category'] = $order_status;
         }
     }else{
-        $data['ao_order_status'] = _config('all_values');
+        $data['ao_order_category'] = _config('all_values');
     }
-    return $CI->auth_model->check_auth('category_control',$data);
+    return $am->check_auth('category_control',$data,$user_id);
 }
 
 function check_function_auth(){
@@ -274,7 +305,6 @@ function check_function_auth(){
     $CI =  &get_instance();
     $CI->load->model('auth_model');
     $am = new Auth_model();
-
     if(count($args) + 2 == 2){
         return $am->check_function_auth_by_router($CI->router->fetch_class(),$CI->router->fetch_method());
     }elseif(count($args) == 2){
@@ -282,6 +312,7 @@ function check_function_auth(){
     }else{
         return $am->check_function_auth($args[0]);
     }
+
 }
 
 function is_order_allow_next_status($current_status,$next_status){
@@ -293,7 +324,7 @@ function is_order_allow_next_status($current_status,$next_status){
 
 function is_order_locked($status){
     $lock = _config('status_for_lock');
-    if($status == $lock){
+    if($status === $lock){
         return true;
     }else{
         return false;
@@ -378,4 +409,9 @@ function url_exists($url){
     } else {
         return false;
     }
+}
+
+function _data(){
+    //处理post提交的数据
+    return elements(func_get_args(),$_POST,NULL);
 }

@@ -21,7 +21,7 @@
 
         <td><a href="<?= _url('functions','edit',array('id'=>$fn['id']))?>">编辑</a>&nbsp;|&nbsp;
             <a href="<?= _url('functions','destroy',array('id'=>$fn['id']))?>">删除</a>&nbsp;|&nbsp;
-            <a href="<?= _url('functions','allocate_modules',array('function_id'=>$fn['id']))?>">分配到模块</a>
+            <a href="<?= _url('functions','allocate_modules',array('id'=>$fn['id']))?>">分配到模块</a>
         </td>
 
     </tr>

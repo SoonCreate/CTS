@@ -20,23 +20,14 @@ class Functions extends CI_Controller {
 
     function create(){
         if($_POST){
-            $data['controller'] = tpost('controller');
-            $data['action'] = tpost('action');
-            //验证url是否可访问
-            if(url_exists(_url($data['controller'],$data['action']))){
-                $data['function_name'] = tpost('function_name');
-                $data['description'] = tpost('description');
-                $data['display_flag'] = tpost('display_flag');
-                $data['display_class'] = tpost('display_class');
-                $fn = new Function_model();
-                if($fn->insert($data)){
-                    echo 'done';
-                }else{
-                    echo validation_errors('<div class="error">', '</div>');
-                }
+            $_POST['display_flag'] = v('display_flag');
+            $fn = new Function_model();
+            if($fn->insert(_data('function_name','description','controller','action','display_flag','display_class'))){
+                echo 'done';
             }else{
-                echo '无效的链接';
+                echo validation_errors('<div class="error">', '</div>');
             }
+
         }else{
             render();
         }
@@ -44,26 +35,22 @@ class Functions extends CI_Controller {
 
     function edit(){
         $fn = new Function_model();
-        if($_POST){
-            $data['id'] = v('id');
-            $data['description'] = tpost('description');
-            $data['controller'] = tpost('controller');
-            $data['action'] = tpost('action');
-            $data['display_flag'] = tpost('display_flag');
-            $data['display_class'] = tpost('display_class');
-            if(url_exists(_url($data['controller'],$data['action']))){
-                if($fn->update($data['id'],$data)){
+        $f = $fn->find(v('id'));
+        if(empty($f)){
+            show_404();
+        }else{
+            if($_POST){
+                if($fn->update(v('id'),_data('description','controller','action','display_flag','display_class'))){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');
                 }
-            }else{
-                echo '无效的链接';
-            }
 
-        }else{
-            render($fn->find(p('id')));
+            }else{
+                render($f);
+            }
         }
+
     }
 
     function destroy(){
@@ -87,48 +74,53 @@ class Functions extends CI_Controller {
 
     function allocate_modules(){
         $ml = new Module_line_model();
-        if($_POST){
-            $ids = v('modules');
-            $data['function_id'] = v('function_id');
-            $data['sort'] = v('sort');
-            $this->db->trans_start();
-
-            if($ids === FALSE){
-                //删除所有
-                $ml->delete_by(array('function_id' => $data['function_id']));
-            }else{
-                //先删除已取消勾选的
-                $this->db->where_not_in('module_id',$ids);
-                $ml->delete_by(array('function_id' => $data['function_id']));
-                //新增的部分
-                $ids = array_diff($ids,$ml->find_module_ids($data['function_id']));
-                foreach($ids as $id){
-                    $data['module_id'] = $id;
-                    $ml->insert($data);
-                }
-            }
-            $this->db->trans_complete();
-            if ($this->db->trans_status() === FALSE) {
-                echo '数据库插入错误';
-            }else{
-                echo 'done';
-            }
+        $fm = new Function_model();
+        $fn = $fm->find(v('id'));
+        if(empty($fn)){
+            show_404();
         }else{
-            $function_id = p('function_id');
-            $m = new Module_model();
-            $ms = $m->find_all();
-            for($i=0;$i<count($ms) ;$i++){
-                $line = $ml->find_by(array('module_id'=>$ms[$i]['id'],'function_id'=>$function_id));
-                if(!empty($line)){
-                    $ms[$i]['checked'] = 'checked';
+            if($_POST){
+                $ids = v('modules');
+                $data['function_id'] = v('id');
+                $data['sort'] = v('sort');
+                $this->db->trans_start();
+
+                if($ids === FALSE){
+                    //删除所有
+                    $ml->delete_by(array('function_id' => $data['function_id']));
                 }else{
-                    $ms[$i]['checked'] = '';
+                    //先删除已取消勾选的
+                    $this->db->where_not_in('module_id',$ids);
+                    $ml->delete_by(array('function_id' => $data['function_id']));
+                    //新增的部分
+                    $ids = array_diff($ids,$ml->find_module_ids($data['function_id']));
+                    foreach($ids as $id){
+                        $data['module_id'] = $id;
+                        $ml->insert($data);
+                    }
                 }
+                $this->db->trans_complete();
+                if ($this->db->trans_status() === FALSE) {
+                    echo '数据库插入错误';
+                }else{
+                    echo 'done';
+                }
+            }else{
+                $m = new Module_model();
+                $ms = $m->find_all();
+                for($i=0;$i<count($ms) ;$i++){
+                    $line = $ml->find_by(array('module_id'=>$ms[$i]['id'],'function_id'=>v('id')));
+                    if(!empty($line)){
+                        $ms[$i]['checked'] = 'checked';
+                    }else{
+                        $ms[$i]['checked'] = '';
+                    }
+                }
+                $data['modules'] = _format($ms);
+                render($data);
             }
-            $data['modules'] = _format($ms);
-            $data['function_id'] = $function_id;
-            render($data);
         }
+
     }
 
 
