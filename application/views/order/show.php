@@ -44,17 +44,17 @@ if(!is_order_locked($status)){?>
 标题：<?= $title ?><br/>
 内容：<br/>
 <?php foreach($contents as $c):?>
-<?php if($c['created_by'] == _sess('uid')) :  echo '投诉人：'.$c['content']; else : echo $c['content'] ;endif; ?>
+<?php if($c['created_by'] == _sess('uid')) :  echo '投诉人：'.$c['content']; else : echo $c['content'] ;endif; ?><br/>
 <?php endforeach;?>
 <hr/>
-附件：
+<a href="<?= _url('order','upload_file')?>">上传附件</a>附件：
 <?php foreach($addfiles as $f):?>
     <a href="<?= $f['full_path']?>"><?= $f['file_name']?></a>
     <?= $f['description']?>
 <?php endforeach;?>
 <hr/>
 <form id="order_reply" method="post" action="<?= _url('order','reply')?>">
-    <textarea id="reply" name="reply" cols="40" rows="4"></textarea>
+    <textarea id="content" name="content" cols="40" rows="4"></textarea>
     <input name="id" id="id" type="hidden" value="<?= $id ?>"/>
     <button type="submit">提交</button>
 </form>

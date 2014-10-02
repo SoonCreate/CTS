@@ -28,4 +28,8 @@ class Order_log_model extends MY_Model{
         return $this->db->get_where($this->_table.'_v',$where)->result_array();
     }
 
+    function find_by_view($where){
+        return first_row($this->db->get_where($this->_table.'_v',$where));
+    }
+
 }

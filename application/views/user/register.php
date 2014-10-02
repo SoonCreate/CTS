@@ -3,6 +3,7 @@
     <label for="username">*用户名</label><input name="username" id="username" type="text"/><br/>
     <label for="password">*密码</label><input name="password" id="password" type="text"/><br/>
     <label for="repassword">*重复密码</label><input name="repassword" id="repassword" type="text"/><br/>
+    <label for="full_name">*公司名称/姓名</label><input name="full_name" id="full_name" type="text"/><br/>
     <label for="order_type">您是我们公司的</label>
 
     <input name="order_type" id="customer" type="radio" value="customer" checked/><label for="customer">客户</label>

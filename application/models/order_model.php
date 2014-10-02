@@ -173,24 +173,30 @@ class Order_model extends MY_Model{
                         $log['new_value'] = $data[$t['field_name']];
                         $log['old_value'] = $order[$t['field_name']];
                         $log['log_type'] = $t['log_type'];
-                        $id = $olm->insert($log);
-                        if(!$id){
-                            $this->db->trans_rollback();
-                            return false;
-                        }else{
-                            //是否同时创建通知
-                            if($t['notice_flag']){
-                                $n['log_id'] = $id;
-                                $n['from_log'] = 1;
-                                $n['title'] = $this->_format_log($log,$t['title']);
-                                $n['content'] = $this->_format_log($log,$t['content']);
-                                $n['order_id'] = $order_id;
-                                if(!$nm->insert($n)){
-                                    $this->db->trans_rollback();
-                                    return false;
-                                }
-                            }
-                        }
+
+                        //新值和旧值相同，无变更时，不处理
+                        if($log['new_value'] !== $log['old_value']){
+                            $id = $olm->insert($log);
+                            if(!$id){
+                                $this->db->trans_rollback();
+                                return false;
+                            }else{
+                                //是否同时创建通知
+                                if($t['notice_flag']){
+                                    $log_v = $olm->find_by_view(array('id'=>$id));
+                                    $n['log_id'] = $id;
+                                    $n['from_log'] = 1;
+                                    $n['title'] = $this->_format_log($log_v,$t['title']);
+                                    $n['content'] = $this->_format_log($log_v,$t['content']);
+                                    $n['order_id'] = $order_id;
+                                    if(!$nm->insert($n)){
+                                        $this->db->trans_rollback();
+                                        return false;
+                                    }
+                                }//if($t['
+                            }//if(!$id
+                        }//if($log['
+
                     }
                 }
             }
@@ -211,6 +217,7 @@ class Order_model extends MY_Model{
 
     function logs($order_id){
         $olm = new Order_log_model();
+        $this->db->order_by('creation_date','desc');
         $logs = $olm->find_all_by_view(array('order_id'=>$order_id));
         if(empty($logs)){
             return array();

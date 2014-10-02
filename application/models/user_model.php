@@ -30,20 +30,21 @@ class User_model extends MY_Model{
         return set_last_update($data);
     }
 
-    function register_save($username,$password,$order_type){
-        $data['username'] = $username;
-        $data['password'] = $password;
+    function register_save($data){
         $return = false;
         $this->db->trans_begin();
-        $user_id = $this->insert($data);
+        $user_id = $this->insert(elements(array('username','password','full_name','initial_pass_flag'),$data,NULL));
         if($user_id){
+            echo $user_id;
             //内容
             $row['user_id'] = $user_id;
-            $roles = $this->default_roles($order_type);
+            $roles = $this->default_roles($data['order_type']);
+            print_r($data['order_type']);
             if(!empty($roles)){
+                print_r($roles);
                 //多个默认角色
                 foreach($roles as $role){
-                    $r = $this->role->find_by(array('role_name'=>$role['segment_value']));
+                    $r = $this->role->find_by(array('role_name'=>$role['value']));
                     if(!empty($r)){
                         $row['role_id'] = $r['id'];
                         $this->user_role->insert($row);
@@ -70,6 +71,7 @@ class User_model extends MY_Model{
         //服务端插入数据库之前验证
         $this->add_validate('username','required|min_length[5]|max_length[12]|is_unique[users.username]|alpha_dash');
         $this->add_validate('password','required');
+        $this->add_validate('full_name','required|max_length[255]');
         $this->_validate();
     }
 
@@ -77,6 +79,6 @@ class User_model extends MY_Model{
     function _validate(){
         $this->add_validate('email','valid_email');
         $this->add_validate('mobile_telephone','numeric');
-        $this->add_validate_255('phone_number','address','contact','full_name');
+        $this->add_validate_255('phone_number','address','contact');
     }
 }

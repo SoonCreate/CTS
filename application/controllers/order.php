@@ -215,11 +215,30 @@ class Order extends CI_Controller {
 
     function confirm(){
         //默认更新下一个状态
-        $this->_update(v('id'));
+        $this->_update(v('id'),array('status'=>'confirmed'));
     }
 
     function upload_file(){
+        if($_FILES){
+            $config['upload_path'] = FCPATH._config('upload_path');
+            echo $config['upload_path'];
+            $config['allowed_types'] = _config('upload_allowed_types');
+            $config['max_size'] = _config('upload_max_size');
+            $config['max_width'] = _config('upload_max_width');
+            $config['max_height'] = _config('upload_max_height');
 
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload())
+            {
+                echo $this->upload->display_errors();
+            }
+            else
+            {
+                print_r($this->upload->data());
+            }
+        }else{
+            render();
+        }
     }
 
     //分配任务，制定负责人，计划完成时间
@@ -230,21 +249,17 @@ class Order extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $_POST['plan_complete_date'] = time($_POST['plan_complete_date']);
+                $_POST['plan_complete_date'] = strtotime($_POST['plan_complete_date']);
                 $data = _data('manager_id','plan_complete_date');
-                if($this->_update(v('id'),$data)){
-                    echo 'done';
-                }else{
-                    echo validation_errors('<div class="error">', '</div>');
-                }
+                $data['status'] = 'allocated';
+                $this->_update(v('id'),$data);
             }else{
                 $am = new Auth_model();
-                $data = _format($order);
-                $data['ids'] = $am->can_choose_managers($order);
-                if(empty($data['ids'])){
+                $order['ids'] = $am->can_choose_managers($order);
+                if(empty($order['ids'])){
                     echo '无对应的责任人';
                 }else{
-                    render($data);
+                    render(_format_row($order));
                 }
             }
 
@@ -263,8 +278,32 @@ class Order extends CI_Controller {
 
     }
 
-    function change_plan_complete_date(){
-        //需要填写原因
+    //已解决
+    function done(){
+        $this->_update(v('id'),array('status'=>'done'));
+    }
+
+    function reply(){
+        $om = new Order_model();
+        $id = v('id');
+        $order = $om->find($id);
+        if(empty($order)){
+            show_404();
+        }else{
+            if($_POST){
+                $ocm = new Order_content_model();
+                $data['content'] = tpost('content');
+                $data['order_id'] = $id;
+                if($ocm->insert($data)){
+                    redirect_to('order','show',array('id'=>$id));
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+            }else{
+                shoe_404();
+            }
+
+        }
     }
 
     private function _update($id,$data = null){
@@ -272,7 +311,6 @@ class Order extends CI_Controller {
         $order = $om->find($id);
         //id是否有效
         if(!empty($order)){
-            $data['status'] = $om->default_next_status($order['status']);
             //先判断订单状态流是否允许更改,判断是否有权限更改次状态
             if(is_order_allow_next_status($order['status'],$data['status']) && check_order_auth($order['order_type'],$data['status'],$order['category'])){
                 if($om->do_update($order['id'],$data)){

@@ -47,11 +47,13 @@ class User extends CI_Controller {
 
     function register(){
         if($_POST){
-            $username = tpost('username');
-            $password = sha1(v('password'));
-            $order_type = v('order_type');
+            $data['username'] = tpost('username');
+            $data['password']  = sha1(v('password'));
+            $data['order_type'] = v('order_type');
+            $data['full_name'] = v('full_name');
+            $data['initial_pass_flag'] = 0;
             $user = new User_model();
-            if($user->register_save($username,$password,$order_type)){
+            if($user->register_save($data)){
                 echo 'done';
             }else{
                 echo validation_errors('<div class="error">', '</div>');

@@ -9,7 +9,16 @@ class Upload extends CI_Controller {
 
     public function index()
     {
+        //可选择插入，也可以新建上传
         $this->load->view('welcome_message');
+    }
+
+    function do_upload(){
+        if($_POST){
+
+        }else{
+            render();
+        }
     }
 
 }
