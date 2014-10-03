@@ -21,8 +21,8 @@
             <td><?= $o['field_name']?></td>
             <td><?= $o['dll_type']?></td>
 
-            <td><a href="<?= _url('order','log_type_edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-                <a href="<?= _url('order','log_type_destroy',array('id'=>$o['id']))?>">删除</a>
+            <td><a href="<?= _url('order_log_type','edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
+                <a href="<?= _url('order_log_type','destroy',array('id'=>$o['id']))?>">删除</a>
             </td>
 
         </tr>

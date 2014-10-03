@@ -1,5 +1,5 @@
 <h1>订单日志类型修改</h1>
-<form id="log_type_create" method="post" action="<?= _url('order','log_type_edit')?>">
+<form id="log_type_create" method="post" action="<?= _url('order_log_type','edit')?>">
     <label for="log_type">*类型名称</label>
     <input name="log_type" id="log_type" type="text" value="<?= _v('log_type')?>"  disabled />
     <br/>

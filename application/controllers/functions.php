@@ -21,8 +21,9 @@ class Functions extends CI_Controller {
     function create(){
         if($_POST){
             $_POST['display_flag'] = v('display_flag');
+            $_POST['help'] = tpost('help');
             $fn = new Function_model();
-            if($fn->insert(_data('function_name','description','controller','action','display_flag','display_class'))){
+            if($fn->insert(_data('function_name','description','controller','action','display_flag','display_class','help'))){
                 echo 'done';
             }else{
                 echo validation_errors('<div class="error">', '</div>');
@@ -40,7 +41,8 @@ class Functions extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                if($fn->update(v('id'),_data('description','controller','action','display_flag','display_class'))){
+                $_POST['help'] = tpost('help');
+                if($fn->update(v('id'),_data('description','controller','action','display_flag','display_class','help'))){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');

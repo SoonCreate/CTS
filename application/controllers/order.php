@@ -12,6 +12,7 @@ class Order extends CI_Controller {
         $this->load->model('order_log_type_model');
         $this->load->model('auth_model');
         $this->load->model('status_model');
+        $this->load->model('file_model');
     }
 
 	public function index()
@@ -130,68 +131,6 @@ class Order extends CI_Controller {
         }
     }
 
-    function log_types(){
-        $oltm = new Order_log_type_model();
-        $data['objects'] = _format($oltm->find_all());
-        render($data);
-    }
-
-    function log_type_create(){
-        if($_POST){
-            $oltm = new Order_log_type_model();
-            $_POST['need_reason_flag'] = v('need_reason_flag');
-            $_POST['notice_flag'] = v('notice_flag');
-            $data = _data('log_type', 'description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
-            if($oltm->insert($data)){
-                echo 'done';
-            }else{
-                echo validation_errors('<div class="error">', '</div>');
-            }
-        }else{
-            render();
-        }
-    }
-
-    function log_type_destroy(){
-        $oltm = new Order_log_type_model();
-        $id = p('id');
-        $o = $oltm->find($id);
-        if(!empty($o)){
-            $olm = new Order_log_model();
-            $log = $olm->find_by(array('log_type'=>$o['log_type']));
-            if(empty($log)){
-                if($oltm->delete($id)){
-                    echo 'done';
-                }else{
-                    echo validation_errors('<div class="error">', '</div>');
-                }
-            }else{
-                echo '日志类型被用于多个日志中！无法删除';
-            }
-        }else{
-            show_404();
-        }
-    }
-
-    function log_type_edit(){
-        $oltm = new Order_log_type_model();
-        $l = $oltm->find(v('id'));
-        if(empty($l)){
-            show_404();
-        }else{
-            if($_POST){
-                $data = _data('description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
-                if($oltm->update(v('id'),$data)){
-                    echo 'done';
-                }else{
-                    echo validation_errors('<div class="error">', '</div>');
-                }
-            }else{
-                render($l);
-            }
-        }
-    }
-
     //如果日志类型需要原因，此页面用于补充
     function change_reason(){
         $olm = new Order_log_model();
@@ -220,21 +159,19 @@ class Order extends CI_Controller {
 
     function upload_file(){
         if($_FILES){
-            $config['upload_path'] = FCPATH._config('upload_path');
-            echo $config['upload_path'];
-            $config['allowed_types'] = _config('upload_allowed_types');
-            $config['max_size'] = _config('upload_max_size');
-            $config['max_width'] = _config('upload_max_width');
-            $config['max_height'] = _config('upload_max_height');
-
-            $this->load->library('upload', $config);
+            $this->load->library('upload', load_upload_config());
             if ( ! $this->upload->do_upload())
             {
                 echo $this->upload->display_errors();
             }
             else
             {
-                print_r($this->upload->data());
+                $fm = new File_model();
+                if($fm->insert($this->upload->data())){
+                    print_r($this->upload->data());
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
             }
         }else{
             render();
@@ -268,16 +205,6 @@ class Order extends CI_Controller {
 
     }
 
-    //责任人资料
-    function manager_info(){
-        //符合当前订单处理权限的责任人列表
-        //责任人姓名、联系方式、当前待处理订单数量
-    }
-
-    function meeting_create(){
-
-    }
-
     //已解决
     function done(){
         $this->_update(v('id'),array('status'=>'done'));
@@ -306,6 +233,25 @@ class Order extends CI_Controller {
         }
     }
 
+    //关闭
+    function close(){
+        $this->_update(v('id'),array('status'=>'closed'));
+    }
+
+    //问题重新开启
+    function reopen(){
+        $this->_update(v('id'),array('status'=>'reopen'));
+    }
+
+    //责任人资料
+    function manager_info(){
+        //符合当前订单处理权限的责任人列表
+        //责任人姓名、联系方式、当前待处理订单数量
+    }
+
+    function change_content(){
+        //提交后5分钟内可以修改自己刚提交的内容，提高用户体验
+    }
     private function _update($id,$data = null){
         $om = new Order_model();
         $order = $om->find($id);

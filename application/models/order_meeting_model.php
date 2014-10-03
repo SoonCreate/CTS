@@ -21,4 +21,12 @@ class Order_meeting_model extends MY_Model{
         return $this->db->get_where($this->_table.'_v',$where)->result_array();
     }
 
+    function find_order_ids($meeting_id){
+        $rows = $this->find_all_by(array('meeting_id'=>$meeting_id));
+        $ids = array();
+        foreach($rows as $r){
+            array_push($ids,$r['order_id']);
+        }
+        return $ids;
+    }
 }

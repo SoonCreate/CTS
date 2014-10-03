@@ -21,7 +21,7 @@ if(!is_order_locked($status)){?>
     <?php }?>
 
 <?php if(check_function_auth('order','meeting_create')){ ?>
-<a href="<?= _url('order','meeting_create',array('id'=>$id)) ?>">创建会议纪要</a>
+<a href="<?= _url('order_meeting','index',array('order_id'=>$id)) ?>">会议记录</a>
 <?php } ?>
 
 
@@ -47,8 +47,14 @@ if(!is_order_locked($status)){?>
 <?php if($c['created_by'] == _sess('uid')) :  echo '投诉人：'.$c['content']; else : echo $c['content'] ;endif; ?><br/>
 <?php endforeach;?>
 <hr/>
-<a href="<?= _url('order','upload_file')?>">上传附件</a>附件：
-<?php foreach($addfiles as $f):?>
+
+<?php if(!is_order_locked($status)){?>
+<a href="<?= _url('order','upload_file')?>">上传附件</a>
+<?php }?>
+附件：
+<?php foreach($addfiles as $f):
+    //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
+    ?>
     <a href="<?= $f['full_path']?>"><?= $f['file_name']?></a>
     <?= $f['description']?>
 <?php endforeach;?>

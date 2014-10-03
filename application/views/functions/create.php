@@ -10,6 +10,8 @@
     <br/>
     <label for="display_class">字体图标样式</label>
     <input name="display_class" id="display_class" type="text"/><br/>
+    <label for="help">功能帮助文档</label>
+    <textarea id="help" name="help" rows="10" cols="100"></textarea><br/>
     <button type="submit">提交</button>
 </form>
 

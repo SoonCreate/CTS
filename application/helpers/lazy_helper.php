@@ -674,11 +674,15 @@ function get_thumb_name($filename){
 
 //form表单字段输出
 function _v($field_name){
-    global $CI;
-    $ov = $CI->load->get_var($field_name);
-    if(isset($ov)){
-        return $ov ;
-    } else{
-        return "";
+    if(v($field_name)){
+        return v($field_name);
+    }else{
+        global $CI;
+        $ov = $CI->load->get_var($field_name);
+        if(isset($ov)){
+            return $ov ;
+        } else{
+            return "";
+        }
     }
 }

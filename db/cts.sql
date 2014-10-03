@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2014 at 10:28 AM
+-- Generation Time: Oct 03, 2014 at 09:28 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -146,11 +146,11 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (25, 'initial_password', '系统用户初始密码', '123456', 1, NULL, NULL, NULL, NULL),
 (26, 'upload_allowed_types', '允许上传文件的MIME类型；通常文件扩展名可以做为MIME类型. 允许多个类型用竖线‘|’分开', 'gif|jpg|png|pdf|doc|docx|xls|xlsx', 1, NULL, NULL, NULL, NULL),
 (27, 'upload_overwrite', '是否覆盖。该参数为TRUE时，如果上传文件时碰到重名文件，将会把原文件覆盖；如果该参数为FALSE，上传文件重名时，CI将会在新文件的文件名后面加一个数字。', 'FALSE', 1, NULL, NULL, NULL, NULL),
-(28, 'upload_max_size', '允许上传文件大小的最大值（以K为单位）。该参数为0则不限制。注意：通常PHP也有这项限制，可以在php.ini文件中指定。通常默认为2MB。', '0', 1, NULL, NULL, NULL, NULL),
-(29, 'upload_max_width', '上传文件的宽度最大值（像素为单位）。0为不限制。', '0', 1, NULL, NULL, NULL, NULL),
-(30, 'upload_max_height', '上传文件的高度最大值（像素为单位）。0为不限制。', '0', 1, NULL, NULL, NULL, NULL),
+(28, 'upload_max_size', '允许上传文件大小的最大值（以K为单位）。该参数为0则不限制。注意：通常PHP也有这项限制，可以在php.ini文件中指定。通常默认为2MB。', '200', 1, NULL, NULL, NULL, NULL),
+(29, 'upload_max_width', '上传文件的宽度最大值（像素为单位）。0为不限制。', '1024', 1, NULL, NULL, NULL, NULL),
+(30, 'upload_max_height', '上传文件的高度最大值（像素为单位）。0为不限制。', '768', 1, NULL, NULL, NULL, NULL),
 (31, 'upload_max_filename', '文件名的最大长度。0为不限制。', '0', 1, NULL, NULL, NULL, NULL),
-(32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'FALSE', 1, NULL, NULL, NULL, NULL),
+(32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'TRUE', 1, NULL, NULL, NULL, NULL),
 (33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, NULL, NULL, NULL, NULL),
 (34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, NULL, NULL, NULL, NULL);
 
@@ -198,13 +198,14 @@ CREATE TABLE IF NOT EXISTS `ct_feedback_stars` (
 
 CREATE TABLE IF NOT EXISTS `ct_files` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(100) NOT NULL,
-  `file_type` varchar(100) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_type` varchar(255) NOT NULL,
   `file_size` float DEFAULT NULL,
-  `is_image` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `is_image` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `file_path` varchar(255) DEFAULT NULL,
   `full_path` varchar(255) DEFAULT NULL,
   `raw_name` varchar(100) DEFAULT NULL,
+  `orig_name` varchar(255) DEFAULT NULL,
   `client_name` varchar(100) DEFAULT NULL,
   `file_ext` varchar(45) DEFAULT NULL,
   `image_width` int(10) unsigned DEFAULT NULL,
@@ -216,7 +217,15 @@ CREATE TABLE IF NOT EXISTS `ct_files` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ct_files`
+--
+
+INSERT INTO `ct_files` (`id`, `file_name`, `file_type`, `file_size`, `is_image`, `file_path`, `full_path`, `raw_name`, `orig_name`, `client_name`, `file_ext`, `image_width`, `image_height`, `image_type`, `image_size_str`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(1, '07849043460b9e3f5bf54b3dd5e69793.doc', 'application/msword', 40.5, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/07849043460b9e3f5bf54b3dd5e69793.doc', '07849043460b9e3f5bf54b3dd5e69793', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '.doc', 0, 0, '', '', 1412296792, 44, 1412296792, 44),
+(2, 'f14237f81c80fbb22517a0cbb368d8ae.doc', 'application/msword', 40.5, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/f14237f81c80fbb22517a0cbb368d8ae.doc', 'f14237f81c80fbb22517a0cbb368d8ae', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '.doc', 0, 0, '', '', 1412316270, 44, 1412316270, 44);
 
 -- --------------------------------------------------------
 
@@ -230,6 +239,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `description` varchar(255) NOT NULL,
   `controller` varchar(255) NOT NULL,
   `action` varchar(255) NOT NULL,
+  `help` text,
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -244,10 +254,98 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
 -- Dumping data for table `ct_functions`
 --
 
-INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, `action`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_flag`, `display_class`) VALUES
-(1, 'order_create', '投诉订单创建', 'order', 'create', 1412060589, -1, 1412147401, 44, 1, 'goo'),
-(3, 'user_index', '用户管理首页', 'user', 'index', 1412147486, 44, 1412147486, 44, 1, NULL);
+INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, `action`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_flag`, `display_class`) VALUES
+(1, 'order_create', '投诉订单创建', 'order', 'create', '1', 1412060589, -1, 1412302661, 44, 1, 'goo'),
+(3, 'user_index', '用户管理首页', 'user', 'index', '', 1412147486, 44, 1412147486, 44, 1, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_meetings`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_meetings` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `start_date` int(10) unsigned NOT NULL,
+  `end_date` int(10) unsigned NOT NULL,
+  `site` varchar(100) NOT NULL,
+  `anchor` varchar(45) NOT NULL,
+  `recorder` varchar(45) DEFAULT NULL,
+  `actor` varchar(255) NOT NULL,
+  `discuss` text,
+  `cancel_reason` varchar(20) DEFAULT NULL,
+  `cancel_remark` text,
+  `created_by` int(11) DEFAULT NULL,
+  `creation_date` int(10) unsigned DEFAULT NULL,
+  `last_update_date` int(10) unsigned DEFAULT NULL,
+  `last_updated_by` int(10) unsigned DEFAULT NULL,
+  `inactive_flag` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `ct_meetings`
+--
+
+INSERT INTO `ct_meetings` (`id`, `title`, `start_date`, `end_date`, `site`, `anchor`, `recorder`, `actor`, `discuss`, `cancel_reason`, `cancel_remark`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `inactive_flag`) VALUES
+(1, 'asdf', 1412265600, 1412265600, 'sdfasdf', 'asdfasdf', 'asdf', 'asdfasdf', 'asdfasdf', NULL, NULL, 44, 1412301790, 1412301790, 44, 0),
+(2, 'asdfasdf', 1412352000, 1412352000, 'sadf', 'asdf', 'asdf', 'asdf', 'asdf', NULL, NULL, 44, 1412305995, 1412305995, 44, 0),
+(3, 'asdf', 1412265600, 1412265600, 'ggg', 'gg', 'gg', 'gg', NULL, '10', '阿三东帆', 44, 1412309412, 1412313261, 44, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_meeting_files`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `meeting_id` int(10) unsigned NOT NULL,
+  `file_id` int(10) unsigned NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `creation_date` int(10) unsigned DEFAULT NULL,
+  `last_update_date` int(10) unsigned DEFAULT NULL,
+  `last_updated_by` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ct_meeting_files`
+--
+
+INSERT INTO `ct_meeting_files` (`id`, `meeting_id`, `file_id`, `description`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(1, 1, 2, '会议纪要', 44, 1412316270, 1412316270, 44);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_meeting_files_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_meeting_files_v` (
+`id` int(10) unsigned
+,`file_name` varchar(255)
+,`file_type` varchar(255)
+,`file_size` float
+,`is_image` tinyint(3) unsigned
+,`file_path` varchar(255)
+,`full_path` varchar(255)
+,`raw_name` varchar(100)
+,`orig_name` varchar(255)
+,`client_name` varchar(100)
+,`file_ext` varchar(45)
+,`image_width` int(10) unsigned
+,`image_height` int(10) unsigned
+,`image_type` varchar(45)
+,`image_size_str` varchar(255)
+,`creation_date` int(11)
+,`created_by` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`meeting_id` int(10) unsigned
+,`description` varchar(255)
+);
 -- --------------------------------------------------------
 
 --
@@ -405,7 +503,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -426,7 +524,9 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (15, 37, 0, '责任人从 未知 变成 速创科技工作室1', 1, '订单 2 责任人变更', 2, 44, 1412232565, 1412232565, 44),
 (16, 38, 0, '从已确认 变成 已分配', 1, '投诉单3 状态有新的变化', 3, 44, 1412232638, 1412232638, 44),
 (17, 39, 0, '责任人从 未知 变成 速创科技工作室1', 1, '订单 3 责任人变更', 3, 44, 1412232638, 1412232638, 44),
-(18, 40, 0, '从已分配 变成 已解决', 1, '投诉单2 状态有新的变化', 2, 44, 1412232766, 1412232766, 44);
+(18, 40, 0, '从已分配 变成 已解决', 1, '投诉单2 状态有新的变化', 2, 44, 1412232766, 1412232766, 44),
+(19, 41, 0, '从已解决 变成 已关闭', 1, '投诉单2 状态有新的变化', 2, 44, 1412320728, 1412320728, 44),
+(20, 42, 0, '从已关闭 变成 重新打开', 1, '投诉单2 状态有新的变化', 2, 44, 1412320737, 1412320737, 44);
 
 -- --------------------------------------------------------
 
@@ -465,7 +565,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
 
 INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, `category`, `title`, `manager_id`, `plan_complete_date`, `contact`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `warning_count`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'employee', 'closed', 'low', 'low', '30', 'google', 1, 1412697600, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058395, 44, 1412227657, 44),
-(2, 'employee', 'done', 'low', 'low', '30', 'google', 44, 1407686400, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058525, 44, 1412232766, 44),
+(2, 'employee', 'reopen', 'low', 'low', '30', 'google', 44, 1407686400, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058525, 44, 1412320737, 44),
 (3, 'employee', 'allocated', 'low', 'low', '30', 'google', 44, 0, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058552, 44, 1412232638, 44),
 (4, 'employee', 'released', 'low', 'low', '30', 'google', 0, NULL, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058587, 44, 1412058587, 44),
 (5, 'employee', 'released', 'low', 'low', '30', 'google', 0, NULL, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058603, 44, 1412058603, 44),
@@ -523,7 +623,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles_v` (
 ,`last_updated_by` int(11)
 ,`file_id` int(11)
 ,`description` varchar(255)
-,`file_name` varchar(100)
+,`file_name` varchar(255)
 ,`full_path` varchar(255)
 );
 -- --------------------------------------------------------
@@ -606,7 +706,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -648,7 +748,9 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (37, 2, 'manager_change', '44', '1', NULL, 1412232565, 1412232565, 44, 1412232565, 44),
 (38, 3, 'status_update', 'allocated', 'confirmed', NULL, 1412232638, 1412232638, 44, 1412232638, 44),
 (39, 3, 'manager_change', '44', '0', NULL, 1412232638, 1412232638, 44, 1412232638, 44),
-(40, 2, 'status_update', 'done', 'allocated', NULL, 1412232766, 1412232766, 44, 1412232766, 44);
+(40, 2, 'status_update', 'done', 'allocated', NULL, 1412232766, 1412232766, 44, 1412232766, 44),
+(41, 2, 'status_update', 'closed', 'done', NULL, 1412320728, 1412320728, 44, 1412320728, 44),
+(42, 2, 'status_update', 'reopen', 'closed', NULL, 1412320737, 1412320737, 44, 1412320737, 44);
 
 -- --------------------------------------------------------
 
@@ -717,39 +819,50 @@ INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `con
 
 CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) NOT NULL,
-  `start_date` int(10) unsigned NOT NULL,
-  `end_date` int(10) unsigned NOT NULL,
-  `site` varchar(100) NOT NULL,
-  `anchor` varchar(45) NOT NULL,
-  `recorder` varchar(45) DEFAULT NULL,
-  `actor` varchar(255) DEFAULT NULL,
-  `discuss` text NOT NULL,
+  `order_id` int(10) unsigned NOT NULL,
+  `meeting_id` int(10) unsigned NOT NULL,
   `created_by` int(11) DEFAULT NULL,
-  `creation_date` int(10) unsigned DEFAULT NULL,
+  `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(10) unsigned DEFAULT NULL,
   `last_updated_by` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `ct_order_meetings`
+--
+
+INSERT INTO `ct_order_meetings` (`id`, `order_id`, `meeting_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(1, 2, 1, NULL, NULL, NULL, NULL),
+(2, 2, 2, 44, 1412305995, 1412305995, 44),
+(4, 3, 3, 44, 1412310745, 1412310745, 44);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_order_meeting_files`
+-- Stand-in structure for view `ct_order_meetings_v`
 --
-
-CREATE TABLE IF NOT EXISTS `ct_order_meeting_files` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `meeting_id` int(10) unsigned NOT NULL,
-  `file_id` int(10) unsigned NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `created_by` int(10) unsigned DEFAULT NULL,
-  `creation_date` int(10) unsigned DEFAULT NULL,
-  `last_update_date` int(10) unsigned DEFAULT NULL,
-  `last_updated_by` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
+CREATE TABLE IF NOT EXISTS `ct_order_meetings_v` (
+`id` int(10) unsigned
+,`title` varchar(100)
+,`start_date` int(10) unsigned
+,`end_date` int(10) unsigned
+,`site` varchar(100)
+,`anchor` varchar(45)
+,`recorder` varchar(45)
+,`actor` varchar(255)
+,`discuss` text
+,`cancel_reason` varchar(20)
+,`cancel_remark` text
+,`created_by` int(11)
+,`creation_date` int(10) unsigned
+,`last_update_date` int(10) unsigned
+,`last_updated_by` int(10) unsigned
+,`inactive_flag` int(10) unsigned
+,`order_id` int(10) unsigned
+,`order_title` varchar(100)
+);
 -- --------------------------------------------------------
 
 --
@@ -1189,7 +1302,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -1210,7 +1323,8 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `from_
 (14, 'vl_dll_type', '数据库dll操作类型', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (15, 'vl_valuelist', '值集列表', 1, 'description', 'id', 'ct_valuelist_header', 'valuelist_name like ''vl_%''', NULL, 1, NULL, NULL, NULL, NULL),
 (16, 'vl_order_status', '投诉单状态', 1, 'segment_desc', 'segment_value', 'ct_order_status_vl', NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(17, 'vl_user', '用户列表', 1, 'full_name', 'id', 'ct_users', NULL, NULL, 1, NULL, NULL, NULL, NULL);
+(17, 'vl_user', '用户列表', 1, 'full_name', 'id', 'ct_users', NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(18, 'vl_meeting_cancel', '会议取消原因', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1234,7 +1348,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -1266,7 +1380,10 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (30, 12, '20', '10', '客户投诉订单默认分类', 0, 0, 'customer', NULL, NULL, NULL, NULL),
 (31, 12, '30', '10', '内部投诉订单默认分类', 0, 0, 'employee', NULL, NULL, NULL, NULL),
 (32, 14, '10', 'update', '更新', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(33, 14, '20', 'insert', '创建', 0, 0, NULL, NULL, NULL, NULL, NULL);
+(33, 14, '20', 'insert', '创建', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(34, 18, '10', '10', '投诉问题已解决', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(35, 18, '20', '20', '创建失误', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(36, 18, '30', '30', '确认无需再召开', 0, 0, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1319,6 +1436,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `ct_meeting_files_v`
+--
+DROP TABLE IF EXISTS `ct_meeting_files_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_meeting_files_v` AS select `f`.`id` AS `id`,`f`.`file_name` AS `file_name`,`f`.`file_type` AS `file_type`,`f`.`file_size` AS `file_size`,`f`.`is_image` AS `is_image`,`f`.`file_path` AS `file_path`,`f`.`full_path` AS `full_path`,`f`.`raw_name` AS `raw_name`,`f`.`orig_name` AS `orig_name`,`f`.`client_name` AS `client_name`,`f`.`file_ext` AS `file_ext`,`f`.`image_width` AS `image_width`,`f`.`image_height` AS `image_height`,`f`.`image_type` AS `image_type`,`f`.`image_size_str` AS `image_size_str`,`f`.`creation_date` AS `creation_date`,`f`.`created_by` AS `created_by`,`f`.`last_update_date` AS `last_update_date`,`f`.`last_updated_by` AS `last_updated_by`,`omf`.`meeting_id` AS `meeting_id`,`omf`.`description` AS `description` from (`ct_files` `f` join `ct_meeting_files` `omf`) where (`omf`.`file_id` = `f`.`id`);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `ct_messages_v`
 --
 DROP TABLE IF EXISTS `ct_messages_v`;
@@ -1360,6 +1486,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_order_logs_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_logs_v` AS select `ol`.`id` AS `id`,`ol`.`order_id` AS `order_id`,`ol`.`log_type` AS `log_type`,`ol`.`new_value` AS `new_value`,`ol`.`old_value` AS `old_value`,`ol`.`reason` AS `reason`,`ol`.`change_hash` AS `change_hash`,`ol`.`creation_date` AS `creation_date`,`ol`.`created_by` AS `created_by`,`ol`.`last_update_date` AS `last_update_date`,`ol`.`last_updated_by` AS `last_updated_by`,`olt`.`description` AS `description`,`olt`.`title` AS `title`,`olt`.`content` AS `content`,`olt`.`need_reason_flag` AS `need_reason_flag`,`olt`.`field_name` AS `field_name`,`olt`.`dll_type` AS `dll_type`,`olt`.`notice_flag` AS `notice_flag`,`olt`.`field_valuelist_id` AS `field_valuelist_id` from (`ct_order_logs` `ol` join `ct_order_log_types` `olt`) where (`olt`.`log_type` = `ol`.`log_type`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_order_meetings_v`
+--
+DROP TABLE IF EXISTS `ct_order_meetings_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_meetings_v` AS select `m`.`id` AS `id`,`m`.`title` AS `title`,`m`.`start_date` AS `start_date`,`m`.`end_date` AS `end_date`,`m`.`site` AS `site`,`m`.`anchor` AS `anchor`,`m`.`recorder` AS `recorder`,`m`.`actor` AS `actor`,`m`.`discuss` AS `discuss`,`m`.`cancel_reason` AS `cancel_reason`,`m`.`cancel_remark` AS `cancel_remark`,`m`.`created_by` AS `created_by`,`m`.`creation_date` AS `creation_date`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`m`.`inactive_flag` AS `inactive_flag`,`om`.`order_id` AS `order_id`,`o`.`title` AS `order_title` from ((`ct_meetings` `m` join `ct_order_meetings` `om`) join `ct_orders` `o`) where ((`m`.`id` = `om`.`meeting_id`) and (`o`.`id` = `om`.`order_id`));
 
 -- --------------------------------------------------------
 

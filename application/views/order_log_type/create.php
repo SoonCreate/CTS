@@ -1,5 +1,5 @@
 <h1>订单日志类型创建</h1>
-<form id="log_type_create" method="post" action="<?= _url('order','log_type_create')?>">
+<form id="log_type_create" method="post" action="<?= _url('order_log_type','create')?>">
     <label for="log_type">*类型名称</label>
     <input name="log_type" id="log_type" type="text" />
     <br/>

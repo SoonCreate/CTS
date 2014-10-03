@@ -14,6 +14,6 @@
     <br/>
 
     <input name="id" id="id" type="hidden" value="<?= p('id') ?>"/>
-    <button type="submit">提交</button><a href="<?= _url('order','meeting_create',array('id'=>p('id')))?>">召开会议</a>
+    <button type="submit">提交</button>
 </form>
 

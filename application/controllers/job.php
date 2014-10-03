@@ -8,6 +8,11 @@ class Job extends CI_Controller {
         send_mail('yacole@163.com','helper方法测试','测试');
     }
 
+    //定期清理垃圾上传文件
+    function clear_upload_files(){
+
+    }
+
     public function message($to = 'World')
     {
         if($this->input->is_cli_request()){

@@ -237,6 +237,18 @@ function format_zero_to_space($value){
     }
 }
 
+function string_to_boolean($s){
+    if(strcasecmp($s,'TRUE') == 0){
+        return TRUE;
+    }else{
+        return FALSE;
+    }
+}
+
+function string_to_number($s){
+    return intval($s);
+}
+
 //判断数组中是否含有这些key
 function is_all_set($data,$keys){
     if(count($keys)>0 && $data && count($data) > 0){
@@ -335,9 +347,9 @@ function is_order_locked($status){
 function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     global $CI;
     $config['protocol']     = _config('mail_protocol');
-    if($config['protocol'] == 'sendmail'){
+    if(strcasecmp($config['protocol'], 'sendmail') == 0){
         $config['mailpath'] = _config('sendmail_path');
-    }elseif($config['protocol'] == 'smtp'){
+    }elseif(strcasecmp($config['protocol'], 'smtp') == 0){
         $config['smtp_host'] = _config('smtp_host');
         $config['smtp_user'] = _config('smtp_user');
         $config['smtp_pass'] = _config('smtp_pass');
@@ -349,18 +361,18 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
 
     //换行设置
     $mail_wordwrap = _config('mail_wordwrap');
-    if($mail_wordwrap == 'true'){
+    if(strcasecmp($mail_wordwrap, 'true') == 0){
         $config['wordwrap'] = TRUE;
-        $config['wrapchars'] = intval(_config('mail_wrapchars'));
+        $config['wrapchars'] = string_to_number(_config('mail_wrapchars'));
     }else{
         $config['wordwrap'] = FALSE;
     }
 
     //批量抄送
     $bcc_batch_mode = _config('bcc_batch_mode');
-    if($bcc_batch_mode == 'true'){
+    if(strcasecmp($bcc_batch_mode, 'true') == 0){
         $config['bcc_batch_mode'] = TRUE;
-        $config['bcc_batch_size'] = intval(_config('bcc_batch_size'));
+        $config['bcc_batch_size'] = string_to_number(_config('bcc_batch_size'));
     }else{
         $config['bcc_batch_mode'] = FALSE;
     }
@@ -394,6 +406,20 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
 
 }
 
+function load_upload_config(){
+    $config['upload_path'] = FCPATH._config('upload_path');
+    $config['allowed_types'] = _config('upload_allowed_types');
+    $config['overwrite'] =  string_to_boolean(_config('upload_overwrite'));
+    $config['encrypt_name'] =  string_to_boolean(_config('upload_encrypt_name'));
+    $config['remove_spaces'] =  string_to_boolean(_config('upload_remove_spaces'));
+
+    $config['max_size'] = string_to_number(_config('upload_max_size'));
+    $config['max_width'] = string_to_number(_config('upload_max_width'));
+    $config['max_height'] = string_to_number(_config('upload_max_height'));
+    $config['max_filename'] = string_to_number(_config('upload_max_filename'));
+    return $config;
+}
+
 //判断链接是否存在
 function url_exists($url){
     $curl = curl_init($url);
@@ -414,4 +440,9 @@ function url_exists($url){
 function _data(){
     //处理post提交的数据
     return elements(func_get_args(),$_POST,NULL);
+}
+
+//输出文件链接
+function render_file_link($file){
+    echo '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
