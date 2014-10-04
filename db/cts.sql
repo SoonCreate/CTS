@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 04, 2014 at 08:33 AM
+-- Generation Time: Oct 04, 2014 at 02:45 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `ct_authobj_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object_id` int(11) NOT NULL,
-  `valuelist_id` int(11) NOT NULL,
-  `default_value` text NOT NULL,
+  `valuelist_id` int(11) NOT NULL COMMENT '项目值集',
+  `default_value` text NOT NULL COMMENT '默认值',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -76,8 +76,8 @@ CREATE TABLE IF NOT EXISTS `ct_authobj_lines_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `object_name` varchar(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `object_name` varchar(20) NOT NULL COMMENT '权限对象名称',
+  `description` varchar(255) NOT NULL COMMENT '描述',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -102,17 +102,17 @@ INSERT INTO `ct_authority_objects` (`id`, `object_name`, `description`, `creatio
 
 CREATE TABLE IF NOT EXISTS `ct_configs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `config_name` varchar(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `config_value` varchar(255) NOT NULL,
-  `editable_flag` tinyint(1) NOT NULL DEFAULT '1',
+  `config_name` varchar(20) NOT NULL COMMENT '配置名称',
+  `description` varchar(255) NOT NULL COMMENT '描述',
+  `config_value` varchar(255) NOT NULL COMMENT '配置值',
+  `editable_flag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否可被前台编辑',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `ct_configs`
@@ -152,7 +152,9 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (31, 'upload_max_filename', '文件名的最大长度。0为不限制。', '0', 1, NULL, NULL, NULL, NULL),
 (32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'TRUE', 1, NULL, NULL, NULL, NULL),
 (33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, NULL, NULL, NULL, NULL),
-(34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, NULL, NULL, NULL, NULL);
+(34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, NULL, NULL, NULL, NULL),
+(35, 'word_truncate', '文字截断默认长度', '100', 1, NULL, NULL, NULL, NULL),
+(36, 'allow_register', '是否允许用户注册', 'TRUE', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -163,7 +165,7 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 CREATE TABLE IF NOT EXISTS `ct_feedbacks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
-  `content` text,
+  `content` text COMMENT '反馈意见内容',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -180,8 +182,8 @@ CREATE TABLE IF NOT EXISTS `ct_feedbacks` (
 CREATE TABLE IF NOT EXISTS `ct_feedback_stars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `feedback_id` int(11) NOT NULL,
-  `feedback_type` varchar(20) NOT NULL,
-  `stars` int(1) NOT NULL DEFAULT '0',
+  `feedback_type` varchar(20) NOT NULL COMMENT '反馈类型',
+  `stars` int(1) NOT NULL DEFAULT '0' COMMENT '打分',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -198,20 +200,20 @@ CREATE TABLE IF NOT EXISTS `ct_feedback_stars` (
 
 CREATE TABLE IF NOT EXISTS `ct_files` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(255) NOT NULL,
-  `file_type` varchar(255) NOT NULL,
-  `file_size` float DEFAULT NULL,
-  `is_image` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `file_path` varchar(255) DEFAULT NULL,
-  `full_path` varchar(255) DEFAULT NULL,
-  `raw_name` varchar(100) DEFAULT NULL,
-  `orig_name` varchar(255) DEFAULT NULL,
-  `client_name` varchar(100) DEFAULT NULL,
-  `file_ext` varchar(45) DEFAULT NULL,
-  `image_width` int(10) unsigned DEFAULT NULL,
-  `image_height` int(10) unsigned DEFAULT NULL,
-  `image_type` varchar(45) DEFAULT NULL,
-  `image_size_str` varchar(255) DEFAULT NULL,
+  `file_name` varchar(255) NOT NULL COMMENT '已上传的文件名（包括扩展名）',
+  `file_type` varchar(255) NOT NULL COMMENT '文件的Mime类型',
+  `file_size` float DEFAULT NULL COMMENT '图像大小，单位是kb',
+  `is_image` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否是图像。 1 =是图像。 0 = 不是图像。',
+  `file_path` varchar(255) DEFAULT NULL COMMENT '不包括文件名的文件绝对路径',
+  `full_path` varchar(255) DEFAULT NULL COMMENT '包括文件名在内的文件绝对路径',
+  `raw_name` varchar(100) DEFAULT NULL COMMENT '不包括扩展名在内的文件名部分',
+  `orig_name` varchar(255) DEFAULT NULL COMMENT '上传的文件最初的文件名。这只有在设置上传文件重命名（encrypt_name）时才有效。',
+  `client_name` varchar(100) DEFAULT NULL COMMENT '上传的文件在客户端的文件名。',
+  `file_ext` varchar(45) DEFAULT NULL COMMENT '文件扩展名（包括‘.’）',
+  `image_width` int(10) unsigned DEFAULT NULL COMMENT '图像宽度',
+  `image_height` int(10) unsigned DEFAULT NULL COMMENT '图像高度',
+  `image_type` varchar(45) DEFAULT NULL COMMENT '文件类型，即文件扩展名（不包括‘.’）',
+  `image_size_str` varchar(255) DEFAULT NULL COMMENT '一个包含width和height的字符串。用于放在一个img标签里。',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -236,11 +238,11 @@ INSERT INTO `ct_files` (`id`, `file_name`, `file_type`, `file_size`, `is_image`,
 
 CREATE TABLE IF NOT EXISTS `ct_functions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `function_name` varchar(100) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `controller` varchar(255) NOT NULL,
-  `action` varchar(255) NOT NULL,
-  `help` text,
+  `function_name` varchar(100) NOT NULL COMMENT '功能名称',
+  `description` varchar(255) NOT NULL COMMENT '描述',
+  `controller` varchar(255) NOT NULL COMMENT '控制器',
+  `action` varchar(255) NOT NULL COMMENT '函数',
+  `help` text COMMENT '帮助文档',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -268,21 +270,21 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 
 CREATE TABLE IF NOT EXISTS `ct_meetings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) NOT NULL,
-  `start_date` int(10) unsigned NOT NULL,
-  `end_date` int(10) unsigned NOT NULL,
-  `site` varchar(100) NOT NULL,
-  `anchor` varchar(45) NOT NULL,
-  `recorder` varchar(45) DEFAULT NULL,
-  `actor` varchar(255) NOT NULL,
-  `discuss` text,
-  `cancel_reason` varchar(20) DEFAULT NULL,
-  `cancel_remark` text,
+  `title` varchar(100) NOT NULL COMMENT '会议主题',
+  `start_date` int(10) unsigned NOT NULL COMMENT '开始时间',
+  `end_date` int(10) unsigned NOT NULL COMMENT '结束时间',
+  `site` varchar(100) NOT NULL COMMENT '会议地点',
+  `anchor` varchar(45) NOT NULL COMMENT '主持人',
+  `recorder` varchar(45) DEFAULT NULL COMMENT '记录人',
+  `actor` varchar(255) NOT NULL COMMENT '参与者',
+  `discuss` text COMMENT '会议决议',
+  `cancel_reason` varchar(20) DEFAULT NULL COMMENT '取消原因',
+  `cancel_remark` text COMMENT '备注',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(10) unsigned DEFAULT NULL,
   `last_update_date` int(10) unsigned DEFAULT NULL,
   `last_updated_by` int(10) unsigned DEFAULT NULL,
-  `inactive_flag` int(10) unsigned NOT NULL DEFAULT '0',
+  `inactive_flag` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '失效标识',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
@@ -305,7 +307,7 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `meeting_id` int(10) unsigned NOT NULL,
   `file_id` int(10) unsigned NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL COMMENT '文件描述',
   `created_by` int(10) unsigned DEFAULT NULL,
   `creation_date` int(10) unsigned DEFAULT NULL,
   `last_update_date` int(10) unsigned DEFAULT NULL,
@@ -357,9 +359,9 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `class_id` int(11) NOT NULL,
-  `message_code` varchar(20) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `class_id` int(11) NOT NULL COMMENT '分类ID',
+  `message_code` varchar(20) NOT NULL COMMENT '消息码',
+  `content` varchar(255) NOT NULL COMMENT '消息内容',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -393,8 +395,8 @@ CREATE TABLE IF NOT EXISTS `ct_messages_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_message_classes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `class_code` varchar(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `class_code` varchar(20) NOT NULL COMMENT '分类码',
+  `description` varchar(255) NOT NULL COMMENT '描述',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -418,14 +420,14 @@ INSERT INTO `ct_message_classes` (`id`, `class_code`, `description`, `creation_d
 
 CREATE TABLE IF NOT EXISTS `ct_module_header` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_name` varchar(100) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `sort` int(11) NOT NULL DEFAULT '0',
+  `module_name` varchar(100) NOT NULL COMMENT '模块名称',
+  `description` varchar(255) NOT NULL COMMENT '描述',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
-  `display_class` varchar(100) DEFAULT NULL,
+  `display_class` varchar(100) DEFAULT NULL COMMENT '抬头图标样式码',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
@@ -444,9 +446,9 @@ INSERT INTO `ct_module_header` (`id`, `module_name`, `description`, `sort`, `cre
 
 CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `module_id` int(11) NOT NULL,
-  `function_id` int(11) NOT NULL,
-  `sort` int(11) NOT NULL DEFAULT '0',
+  `module_id` int(11) NOT NULL COMMENT '模块ID',
+  `function_id` int(11) NOT NULL COMMENT '功能ID',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -497,46 +499,72 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines_v` (
 CREATE TABLE IF NOT EXISTS `ct_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `log_id` int(11) DEFAULT NULL,
-  `read_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `content` text,
-  `from_log` tinyint(1) NOT NULL DEFAULT '0',
-  `title` varchar(200) NOT NULL,
-  `order_id` int(11) DEFAULT NULL,
+  `read_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已读',
+  `content` text COMMENT '内容',
+  `from_log` tinyint(1) NOT NULL DEFAULT '0' COMMENT '来自日志',
+  `title` varchar(200) NOT NULL COMMENT '标题',
+  `order_id` int(11) DEFAULT NULL COMMENT '订单ID',
+  `received_by` int(11) NOT NULL COMMENT '接收人',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53 ;
 
 --
 -- Dumping data for table `ct_notices`
 --
 
-INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `title`, `order_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(1, 21, 0, '', 1, '', 1, 44, 1412149769, 1412149769, 44),
-(2, 22, 0, '', 1, '', 2, 44, 1412150096, 1412150096, 44),
-(6, 26, 0, '从confirmed 变成 released', 1, '投诉单3 状态有新的变化', 3, 44, 1412150362, 1412150362, 44),
-(7, 27, 0, '从allocated 变成 confirmed', 1, '投诉单1 状态有新的变化', 1, 44, 1412216119, 1412216119, 44),
-(8, 28, 0, '从done 变成 allocated', 1, '投诉单1 状态有新的变化', 1, 44, 1412227442, 1412227442, 44),
-(9, 29, 0, '从closed 变成 done', 1, '投诉单1 状态有新的变化', 1, 44, 1412227657, 1412227657, 44),
-(10, 30, 0, '从allocated 变成 confirmed', 1, '投诉单2 状态有新的变化', 2, 44, 1412227892, 1412227892, 44),
-(11, 33, 0, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 1412228471, 1412228471, 44),
-(12, 34, 0, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 1412228630, 1412228630, 44),
-(13, 35, 0, '责任人从 44 变成 40', 1, '订单 2 责任人变更', 2, 44, 1412228630, 1412228630, 44),
-(14, 36, 0, '责任人从 40 变成 1', 1, '订单 2 责任人变更', 2, 44, 1412228914, 1412228914, 44),
-(15, 37, 0, '责任人从 未知 变成 速创科技工作室1', 1, '订单 2 责任人变更', 2, 44, 1412232565, 1412232565, 44),
-(16, 38, 0, '从已确认 变成 已分配', 1, '投诉单3 状态有新的变化', 3, 44, 1412232638, 1412232638, 44),
-(17, 39, 0, '责任人从 未知 变成 速创科技工作室1', 1, '订单 3 责任人变更', 3, 44, 1412232638, 1412232638, 44),
-(18, 40, 0, '从已分配 变成 已解决', 1, '投诉单2 状态有新的变化', 2, 44, 1412232766, 1412232766, 44),
-(19, 41, 0, '从已解决 变成 已关闭', 1, '投诉单2 状态有新的变化', 2, 44, 1412320728, 1412320728, 44),
-(20, 42, 0, '从已关闭 变成 重新打开', 1, '投诉单2 状态有新的变化', 2, 44, 1412320737, 1412320737, 44),
-(21, 43, 0, '从已提交 变成 已确认', 1, '投诉单5 状态有新的变化', 5, 44, 1412399511, 1412399511, 44),
-(22, 44, 0, '从已确认 变成 已分配', 1, '投诉单5 状态有新的变化', 5, 44, 1412399578, 1412399578, 44),
-(23, 45, 0, '责任人从 未知 变成 速创科技工作室1', 1, '订单 5 责任人变更', 5, 44, 1412399578, 1412399578, 44),
-(24, 46, 0, '从已分配 变成 已解决', 1, '投诉单5 状态有新的变化', 5, 44, 1412399669, 1412399669, 44),
-(25, 47, 0, '从已解决 变成 已关闭', 1, '投诉单5 状态有新的变化', 5, 44, 1412399684, 1412399684, 44),
-(26, 48, 0, '从已关闭 变成 重新打开', 1, '投诉单5 状态有新的变化', 5, 44, 1412399692, 1412399692, 44);
+INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `title`, `order_id`, `received_by`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(1, 21, 1, '', 1, '', 1, 44, 44, 1412149769, 1412425460, 44),
+(2, 22, 1, '', 1, '', 2, 44, 44, 1412150096, 1412425460, 44),
+(6, 26, 1, '从confirmed 变成 released', 1, '投诉单3 状态有新的变化', 3, 44, 44, 1412150362, 1412425460, 44),
+(7, 27, 1, '从allocated 变成 confirmed', 1, '投诉单1 状态有新的变化', 1, 44, 44, 1412216119, 1412425460, 44),
+(8, 28, 1, '从done 变成 allocated', 1, '投诉单1 状态有新的变化', 1, 44, 44, 1412227442, 1412425460, 44),
+(9, 29, 1, '从closed 变成 done', 1, '投诉单1 状态有新的变化', 1, 44, 44, 1412227657, 1412425460, 44),
+(10, 30, 1, '从allocated 变成 confirmed', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412227892, 1412425460, 44),
+(11, 33, 1, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412228471, 1412425460, 44),
+(12, 34, 1, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412228630, 1412425460, 44),
+(13, 35, 1, '责任人从 44 变成 40', 1, '订单 2 责任人变更', 2, 44, 44, 1412228630, 1412425460, 44),
+(14, 36, 1, '责任人从 40 变成 1', 1, '订单 2 责任人变更', 2, 44, 44, 1412228914, 1412425460, 44),
+(15, 37, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 2 责任人变更', 2, 44, 44, 1412232565, 1412425460, 44),
+(16, 38, 1, '从已确认 变成 已分配', 1, '投诉单3 状态有新的变化', 3, 44, 44, 1412232638, 1412425460, 44),
+(17, 39, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 3 责任人变更', 3, 44, 44, 1412232638, 1412425460, 44),
+(18, 40, 1, '从已分配 变成 已解决', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412232766, 1412425460, 44),
+(19, 41, 1, '从已解决 变成 已关闭', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412320728, 1412425460, 44),
+(20, 42, 1, '从已关闭 变成 重新打开', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412320737, 1412425460, 44),
+(21, 43, 1, '从已提交 变成 已确认', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399511, 1412425460, 44),
+(22, 44, 1, '从已确认 变成 已分配', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399578, 1412425460, 44),
+(23, 45, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 5 责任人变更', 5, 44, 44, 1412399578, 1412425460, 44),
+(24, 46, 1, '从已分配 变成 已解决', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399669, 1412425460, 44),
+(25, 47, 1, '从已解决 变成 已关闭', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399684, 1412425460, 44),
+(26, 48, 1, '从已关闭 变成 重新打开', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399692, 1412425460, 44),
+(27, 49, 1, '从已提交 变成 已确认', 1, '投诉单9 状态有新的变化', 9, 44, 44, 1412407466, 1412425460, 44),
+(28, 50, 1, '从已确认 变成 已分配', 1, '投诉单9 状态有新的变化', 9, 44, 44, 1412407511, 1412425460, 44),
+(29, 51, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 9 责任人变更', 9, 44, 44, 1412407511, 1412425460, 44),
+(30, 52, 1, '从已提交 变成 已确认', 1, '投诉单17 状态有新的变化', 17, 44, 44, 1412407646, 1412425460, 44),
+(31, 53, 1, '从已确认 变成 已分配', 1, '投诉单17 状态有新的变化', 17, 44, 44, 1412407667, 1412425460, 44),
+(32, 54, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 17 责任人变更', 17, 44, 44, 1412407667, 1412425460, 44),
+(33, 55, 1, '从已提交 变成 已确认', 1, '投诉单7 状态有新的变化', 7, 44, 44, 1412407737, 1412425460, 44),
+(34, 56, 1, '从已确认 变成 已分配', 1, '投诉单7 状态有新的变化', 7, 44, 44, 1412407744, 1412425460, 44),
+(35, 57, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 7 责任人变更', 7, 44, 44, 1412407744, 1412425460, 44),
+(36, 58, 1, '从已提交 变成 已确认', 1, '投诉单8 状态有新的变化', 8, 44, 44, 1412407914, 1412425460, 44),
+(37, 59, 1, '从已确认 变成 已分配', 1, '投诉单8 状态有新的变化', 8, 44, 44, 1412407920, 1412425460, 44),
+(38, 60, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 8 责任人变更', 8, 44, 44, 1412407920, 1412425460, 44),
+(39, 61, 1, '从已提交 变成 已确认', 1, '投诉单10 状态有新的变化', 10, 44, 44, 1412408011, 1412425460, 44),
+(40, 62, 1, '从已确认 变成 已分配', 1, '投诉单10 状态有新的变化', 10, 44, 44, 1412408161, 1412425460, 44),
+(41, 63, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 10 责任人变更', 10, 44, 44, 1412408161, 1412425460, 44),
+(42, 64, 1, '从重新打开 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412408787, 1412425460, 44),
+(43, 65, 1, '计划完成时间变更从1407686400 改为 1407686400 ', 1, '订单$order_id 计划完成日期变更', 2, 44, 44, 1412408787, 1412425460, 44),
+(44, 66, 1, '计划完成时间变更从2014-08-11 00:00:00 改为 2014-08-11 00:30:00 ', 1, '订单$order_id 计划完成日期变更', 2, 44, 44, 1412410328, 1412425460, 44),
+(45, 67, 1, '从已提交 变成 已确认', 1, '投诉单4 状态有新的变化', 4, 44, 44, 1412412631, 1412425460, 44),
+(46, 68, 1, '责任人从 速创科技工作室1 变成 asdfsadf', 1, '订单 2 责任人变更', 2, 44, 44, 1412412997, 1412425460, 44),
+(47, 69, 1, '从已确认 变成 已分配', 1, '投诉单4 状态有新的变化', 4, 44, 44, 1412415137, 1412425460, 44),
+(48, 70, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 4 责任人变更', 4, 44, 44, 1412415138, 1412425460, 44),
+(49, 71, 1, '计划完成时间变更从 改为 2014-09-10 00:00:00 ', 1, '订单$order_id 计划完成日期变更', 4, 44, 44, 1412415138, 1412425460, 44),
+(51, 73, 1, '责任人从 速创科技工作室1 变成 恭喜发财', 1, '订单 4 责任人变更', 4, 44, 44, 1412415685, 1412425460, 44),
+(52, 73, 0, '责任人从 速创科技工作室1 变成 恭喜发财', 1, '订单 4 责任人变更', 4, 66, 44, 1412415686, 1412415686, 44);
 
 -- --------------------------------------------------------
 
@@ -546,20 +574,20 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 
 CREATE TABLE IF NOT EXISTS `ct_orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_type` varchar(20) NOT NULL,
-  `status` varchar(20) NOT NULL,
-  `severity` varchar(20) NOT NULL,
-  `frequency` varchar(20) NOT NULL,
-  `category` varchar(20) DEFAULT NULL,
-  `title` varchar(100) NOT NULL,
-  `manager_id` int(11) NOT NULL,
-  `plan_complete_date` int(11) DEFAULT NULL,
-  `contact` varchar(255) NOT NULL,
-  `phone_number` varchar(255) DEFAULT NULL,
-  `mobile_telephone` varchar(255) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `full_name` varchar(255) DEFAULT NULL,
-  `warning_count` int(11) NOT NULL DEFAULT '0',
+  `order_type` varchar(20) NOT NULL COMMENT '订单类型',
+  `status` varchar(20) NOT NULL COMMENT '订单状态',
+  `severity` varchar(20) NOT NULL COMMENT '严重程度',
+  `frequency` varchar(20) NOT NULL COMMENT '发生频率',
+  `category` varchar(20) DEFAULT NULL COMMENT '分类',
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `manager_id` int(11) DEFAULT NULL COMMENT '负责人',
+  `plan_complete_date` int(11) DEFAULT NULL COMMENT '计划完成时间',
+  `contact` varchar(255) NOT NULL COMMENT '联系人',
+  `phone_number` varchar(255) DEFAULT NULL COMMENT '办公室电话',
+  `mobile_telephone` varchar(255) NOT NULL COMMENT '手机号码',
+  `address` varchar(255) DEFAULT NULL COMMENT '联系地址',
+  `full_name` varchar(255) DEFAULT NULL COMMENT '公司名称/员工姓名',
+  `warning_count` int(11) NOT NULL DEFAULT '0' COMMENT '报警次数',
   `creation_date` int(11) NOT NULL,
   `created_by` int(11) NOT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -575,22 +603,22 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
 
 INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, `category`, `title`, `manager_id`, `plan_complete_date`, `contact`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `warning_count`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'employee', 'closed', 'low', 'low', '30', 'google', 1, 1412697600, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058395, 44, 1412227657, 44),
-(2, 'employee', 'reopen', 'low', 'low', '30', 'google', 44, 1407686400, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058525, 44, 1412320737, 44),
+(2, 'employee', 'allocated', 'low', 'low', '30', 'google', 66, 1407688200, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058525, 44, 1412412997, 44),
 (3, 'employee', 'allocated', 'low', 'low', '30', 'google', 44, 0, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058552, 44, 1412232638, 44),
-(4, 'employee', 'released', 'low', 'low', '30', 'google', 0, NULL, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058587, 44, 1412058587, 44),
+(4, 'employee', 'allocated', 'low', 'low', '30', 'google', 66, 1410278400, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058587, 44, 1412415685, 44),
 (5, 'employee', 'reopen', 'low', 'low', '30', 'google', 44, 1412352000, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058603, 44, 1412399692, 44),
 (6, 'employee', 'released', 'low', 'low', '30', 'google', 0, NULL, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058653, 44, 1412058653, 44),
-(7, 'vendor', 'released', 'low', 'low', '10', 'asdf', 0, NULL, 'asdf', NULL, 'asdf', NULL, NULL, 0, 1412058707, 44, 1412058707, 44),
-(8, 'vendor', 'released', 'low', 'middle', '20', '啊水电费', 0, NULL, '啊水电费', '0571', '13777777777', '烦烦烦', '方法', 0, 1412059034, 44, 1412059034, 44),
-(9, 'vendor', 'released', 'low', 'middle', '20', '啊水电费', 0, NULL, '啊水电费', '0571', '13777777777', '烦烦烦', '方法', 0, 1412059093, 44, 1412059093, 44),
-(10, 'vendor', 'released', 'low', 'high', '10', '啊水电费', 0, NULL, '啊水电费', '0571', '13777777777', '烦烦烦', '方法', 0, 1412059118, 44, 1412059118, 44),
+(7, 'vendor', 'allocated', 'low', 'low', '10', 'asdf', 44, 1399305600, 'asdf', NULL, 'asdf', NULL, NULL, 0, 1412058707, 44, 1412407881, 44),
+(8, 'vendor', 'allocated', 'low', 'middle', '20', '啊水电费', 44, 1399305600, '啊水电费', '0571', '13777777777', '烦烦烦', '方法', 0, 1412059034, 44, 1412407920, 44),
+(9, 'vendor', 'allocated', 'low', 'middle', '20', '啊水电费', 44, 1410278400, '啊水电费', '0571', '13777777777', '烦烦烦', '方法', 0, 1412059093, 44, 1412407511, 44),
+(10, 'vendor', 'allocated', 'low', 'high', '10', '啊水电费', 44, 1399392000, '啊水电费', '0571', '13777777777', '烦烦烦', '方法', 0, 1412059118, 44, 1412408633, 44),
 (11, 'vendor', 'released', 'middle', 'high', '10', '啊水电费', 0, NULL, '啊水电费', '0571', '13777777777', '烦烦烦', '方法', 0, 1412059234, 44, 1412059234, 44),
 (12, 'vendor', 'released', 'low', 'low', '10', 'asdf', 0, NULL, 'asdf', NULL, '1111', NULL, NULL, 0, 1412122645, 44, 1412122645, 44),
 (13, 'vendor', 'released', 'low', 'low', '10', 'asdf', 0, NULL, 'asdf', NULL, '1111', NULL, NULL, 0, 1412122807, 44, 1412122807, 44),
 (14, 'employee', 'released', 'low', 'low', '10', 'dsg', 0, NULL, 'asd', NULL, '111', NULL, NULL, 0, 1412124607, 44, 1412124607, 44),
 (15, 'vendor', 'released', 'low', 'middle', '10', 'asdf', 0, NULL, 'asdf', NULL, '1111', NULL, NULL, 0, 1412125865, 44, 1412125865, 44),
 (16, 'vendor', 'released', 'low', 'low', '10', 'asdf', 0, NULL, 'asdf', NULL, '111', NULL, NULL, 0, 1412132305, 44, 1412132305, 44),
-(17, 'vendor', 'released', 'low', 'low', '10', 'asdf', 0, NULL, 'asdf', NULL, '111', NULL, NULL, 0, 1412132354, 44, 1412132354, 44),
+(17, 'vendor', 'allocated', 'low', 'low', '10', 'asdf', 44, 1399305600, 'asdf', NULL, '111', NULL, NULL, 0, 1412132354, 44, 1412407695, 44),
 (18, 'vendor', 'released', 'low', 'low', '10', 'asdf', 0, NULL, 'asdf', NULL, '111', NULL, NULL, 0, 1412132369, 44, 1412132369, 44),
 (19, 'vendor', 'released', 'low', 'low', '10', '11', 0, NULL, '1', NULL, '111', NULL, NULL, 0, 1412132416, 44, 1412132416, 44),
 (20, 'vendor', 'released', 'low', 'low', '10', '11', 0, NULL, '1', NULL, '111', NULL, NULL, 0, 1412133624, 44, 1412133624, 44),
@@ -608,13 +636,13 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 
 CREATE TABLE IF NOT EXISTS `ct_order_addfiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
-  `file_id` int(11) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `file_id` int(11) NOT NULL COMMENT '文件ID',
+  `description` varchar(255) NOT NULL COMMENT '文件描述',
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -653,8 +681,8 @@ CREATE TABLE IF NOT EXISTS `ct_order_category_vl` (
 
 CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
-  `content` text NOT NULL,
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `content` text NOT NULL COMMENT '内容',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -704,12 +732,12 @@ INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `cre
 
 CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
-  `log_type` varchar(20) NOT NULL,
-  `new_value` varchar(255) NOT NULL,
-  `old_value` varchar(255) DEFAULT NULL,
-  `reason` text,
-  `change_hash` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `log_type` varchar(20) NOT NULL COMMENT '日志类型',
+  `new_value` varchar(255) NOT NULL COMMENT '新值',
+  `old_value` varchar(255) DEFAULT NULL COMMENT '旧值',
+  `reason` text COMMENT '原因',
+  `change_hash` int(11) NOT NULL COMMENT '修改序列',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -717,7 +745,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=74 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -767,7 +795,31 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (45, 5, 'manager_change', '44', '0', '修改责任人', 1412399578, 1412399578, 44, 1412399602, 44),
 (46, 5, 'status_update', 'done', 'allocated', NULL, 1412399669, 1412399669, 44, 1412399669, 44),
 (47, 5, 'status_update', 'closed', 'done', NULL, 1412399684, 1412399684, 44, 1412399684, 44),
-(48, 5, 'status_update', 'reopen', 'closed', NULL, 1412399692, 1412399692, 44, 1412399692, 44);
+(48, 5, 'status_update', 'reopen', 'closed', NULL, 1412399692, 1412399692, 44, 1412399692, 44),
+(49, 9, 'status_update', 'confirmed', 'released', NULL, 1412407465, 1412407465, 44, 1412407465, 44),
+(50, 9, 'status_update', 'allocated', 'confirmed', NULL, 1412407511, 1412407511, 44, 1412407511, 44),
+(51, 9, 'manager_change', '44', '0', NULL, 1412407511, 1412407511, 44, 1412407511, 44),
+(52, 17, 'status_update', 'confirmed', 'released', NULL, 1412407646, 1412407646, 44, 1412407646, 44),
+(53, 17, 'status_update', 'allocated', 'confirmed', NULL, 1412407666, 1412407666, 44, 1412407666, 44),
+(54, 17, 'manager_change', '44', '0', NULL, 1412407666, 1412407667, 44, 1412407667, 44),
+(55, 7, 'status_update', 'confirmed', 'released', NULL, 1412407737, 1412407737, 44, 1412407737, 44),
+(56, 7, 'status_update', 'allocated', 'confirmed', NULL, 1412407744, 1412407744, 44, 1412407744, 44),
+(57, 7, 'manager_change', '44', '0', NULL, 1412407744, 1412407744, 44, 1412407744, 44),
+(58, 8, 'status_update', 'confirmed', 'released', NULL, 1412407914, 1412407914, 44, 1412407914, 44),
+(59, 8, 'status_update', 'allocated', 'confirmed', NULL, 1412407920, 1412407920, 44, 1412407920, 44),
+(60, 8, 'manager_change', '44', '0', NULL, 1412407920, 1412407920, 44, 1412407920, 44),
+(61, 10, 'status_update', 'confirmed', 'released', NULL, 1412408011, 1412408011, 44, 1412408011, 44),
+(62, 10, 'status_update', 'allocated', 'confirmed', NULL, 1412408161, 1412408161, 44, 1412408161, 44),
+(63, 10, 'manager_change', '44', '0', NULL, 1412408161, 1412408161, 44, 1412408161, 44),
+(64, 2, 'status_update', 'allocated', 'reopen', NULL, 1412408787, 1412408787, 44, 1412408787, 44),
+(65, 2, 'pcd_update', '1407686400', '1407686400', NULL, 1412408787, 1412408787, 44, 1412408787, 44),
+(66, 2, 'pcd_update', '1407688200', '1407686400', '爱上对方', 1412410328, 1412410328, 44, 1412410331, 44),
+(67, 4, 'status_update', 'confirmed', 'released', NULL, 1412412630, 1412412630, 44, 1412412630, 44),
+(68, 2, 'manager_change', '66', '44', 'gogo', 1412412997, 1412412997, 44, 1412413010, 44),
+(69, 4, 'status_update', 'allocated', 'confirmed', NULL, 1412415137, 1412415137, 44, 1412415137, 44),
+(70, 4, 'manager_change', '44', '0', NULL, 1412415137, 1412415138, 44, 1412415138, 44),
+(71, 4, 'pcd_update', '1410278400', NULL, NULL, 1412415137, 1412415138, 44, 1412415138, 44),
+(73, 4, 'manager_change', '66', '44', 'adf', 1412415685, 1412415685, 44, 1412415689, 44);
 
 -- --------------------------------------------------------
 
@@ -803,21 +855,21 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_order_log_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `log_type` varchar(45) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content` text NOT NULL,
-  `need_reason_flag` tinyint(4) NOT NULL DEFAULT '0',
-  `field_name` varchar(100) NOT NULL,
-  `dll_type` varchar(20) NOT NULL,
-  `notice_flag` int(11) NOT NULL DEFAULT '1',
+  `log_type` varchar(45) NOT NULL COMMENT '日志类型',
+  `description` varchar(255) NOT NULL COMMENT '描述',
+  `title` varchar(255) NOT NULL COMMENT '标题格式',
+  `content` text NOT NULL COMMENT '内容格式',
+  `need_reason_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否需要填写原因',
+  `field_name` varchar(100) NOT NULL COMMENT '字段',
+  `dll_type` varchar(20) NOT NULL COMMENT '操作类型',
+  `notice_flag` int(11) NOT NULL DEFAULT '1' COMMENT '是否通知到相关人员',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
-  `field_valuelist_id` int(10) unsigned DEFAULT NULL,
+  `field_valuelist_id` int(10) unsigned DEFAULT NULL COMMENT '字段值集',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_order_log_types`
@@ -826,7 +878,8 @@ CREATE TABLE IF NOT EXISTS `ct_order_log_types` (
 INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `content`, `need_reason_flag`, `field_name`, `dll_type`, `notice_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `field_valuelist_id`) VALUES
 (2, 'status_insert', '新建是状态日志记录', '投诉单&order_id 状态有新的变化', '从&old_value 变成 &new_value', 0, 'status', 'insert', 0, 44, 1412131199, 1412228114, 44, 16),
 (3, 'status_update', '状态更新', '投诉单&order_id 状态有新的变化', '从&old_value 变成 &new_value', 0, 'status', 'update', 1, 44, 1412149621, 1412228124, 44, 16),
-(4, 'manager_change', '责任人修改', '订单 &order_id 责任人变更', '责任人从 &old_value 变成 &new_value', 1, 'manager_id', 'update', 1, 44, 1412228612, 1412232535, 44, 17);
+(4, 'manager_change', '责任人修改', '订单 &order_id 责任人变更', '责任人从 &old_value 变成 &new_value', 1, 'manager_id', 'update', 1, 44, 1412228612, 1412232535, 44, 17),
+(5, 'pcd_update', '计划完成时间变更', '订单&order_id 计划完成日期变更', '计划完成时间变更从&old_value 改为 &new_value ', 1, 'plan_complete_date', 'update', 1, 44, 1412408774, 1412415288, 44, 0);
 
 -- --------------------------------------------------------
 
@@ -836,8 +889,8 @@ INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `con
 
 CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `order_id` int(10) unsigned NOT NULL,
-  `meeting_id` int(10) unsigned NOT NULL,
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
+  `meeting_id` int(10) unsigned NOT NULL COMMENT '会议ID',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(10) unsigned DEFAULT NULL,
@@ -907,8 +960,8 @@ CREATE TABLE IF NOT EXISTS `ct_order_status_vl` (
 
 CREATE TABLE IF NOT EXISTS `ct_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `role_name` varchar(20) NOT NULL COMMENT '角色名称',
+  `description` varchar(255) NOT NULL COMMENT '描述',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -935,31 +988,13 @@ INSERT INTO `ct_roles` (`id`, `role_name`, `description`, `created_by`, `creatio
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_role_functions`
---
-
-CREATE TABLE IF NOT EXISTS `ct_role_functions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) NOT NULL,
-  `function_id` int(11) NOT NULL,
-  `allow_flag` tinyint(1) NOT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `creation_dat` int(11) DEFAULT NULL,
-  `last_update_date` int(11) DEFAULT NULL,
-  `last_updated_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ct_role_module_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) NOT NULL,
-  `module_line_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
+  `module_line_id` int(11) NOT NULL COMMENT '模块功能',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1013,7 +1048,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines_v` (
 CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
-  `object_id` int(11) NOT NULL,
+  `object_id` int(11) NOT NULL COMMENT '权限对象ID',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1039,8 +1074,8 @@ INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `
 CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `profile_id` int(11) NOT NULL,
-  `object_line_id` int(11) NOT NULL,
-  `auth_value` text NOT NULL,
+  `object_line_id` int(11) NOT NULL COMMENT '权限对象项目',
+  `auth_value` text NOT NULL COMMENT '项目值',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1088,8 +1123,8 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_status_header` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `status_code` varchar(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `status_code` varchar(20) NOT NULL COMMENT '状态码',
+  `description` varchar(255) NOT NULL COMMENT '描述',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1114,17 +1149,17 @@ INSERT INTO `ct_status_header` (`id`, `status_code`, `description`, `creation_da
 CREATE TABLE IF NOT EXISTS `ct_status_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status_id` int(11) NOT NULL,
-  `segment` varchar(20) NOT NULL,
-  `segment_value` varchar(255) NOT NULL,
-  `segment_desc` varchar(255) NOT NULL,
-  `next_status` varchar(255) DEFAULT NULL,
-  `back_status` varchar(20) DEFAULT NULL,
-  `default_flag` tinyint(1) NOT NULL DEFAULT '0',
+  `segment` varchar(20) NOT NULL COMMENT '段',
+  `segment_value` varchar(255) NOT NULL COMMENT '段值',
+  `segment_desc` varchar(255) NOT NULL COMMENT '段描述',
+  `next_status` varchar(255) DEFAULT NULL COMMENT '下一步状态列表',
+  `back_status` varchar(20) DEFAULT NULL COMMENT '冲销后状态',
+  `default_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '默认标识',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
-  `default_next_status` varchar(20) DEFAULT NULL,
+  `default_next_status` varchar(20) DEFAULT NULL COMMENT '默认下一步',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`status_id`,`segment`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
@@ -1171,19 +1206,19 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(200) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `sex` varchar(20) NOT NULL DEFAULT 'male',
-  `contact` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `phone_number` varchar(255) DEFAULT NULL,
-  `mobile_telephone` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `full_name` varchar(255) NOT NULL,
-  `inactive_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `email_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `sms_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `initial_pass_flag` int(11) NOT NULL DEFAULT '1',
+  `username` varchar(200) NOT NULL COMMENT '用户名',
+  `password` varchar(255) NOT NULL COMMENT '密码',
+  `sex` varchar(20) NOT NULL DEFAULT 'male' COMMENT '性别',
+  `contact` varchar(255) DEFAULT NULL COMMENT '默认联系人',
+  `email` varchar(255) DEFAULT NULL COMMENT '邮件地址',
+  `phone_number` varchar(255) DEFAULT NULL COMMENT '办公电话',
+  `mobile_telephone` varchar(255) DEFAULT NULL COMMENT '手机号码',
+  `address` varchar(255) DEFAULT NULL COMMENT '联系地址',
+  `full_name` varchar(255) NOT NULL COMMENT '公司名称/员工姓名',
+  `inactive_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '失效标识',
+  `email_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否接收邮件',
+  `sms_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否接收短信',
+  `initial_pass_flag` int(11) NOT NULL DEFAULT '1' COMMENT '密码初始化标识',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1198,12 +1233,12 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
 --
 
 INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `inactive_flag`, `email_flag`, `sms_flag`, `initial_pass_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(44, 'yacole', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '陈杨阳', 'yacole@sooncreate.com', '13777777777', '13989775601', '乐清柳市镇', '速创科技工作室1', 0, 0, 0, 1, -1, 1412039595, 1412229918, 44),
+(44, 'yacole', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '陈杨阳', 'yacole@qq.com', '13777777777', '13989775601', '乐清柳市镇', '速创科技工作室1', 0, 1, 0, 1, -1, 1412039595, 1412412801, 44),
 (45, 'yacole1', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', NULL, NULL, NULL, NULL, NULL, '陈杨阳', 0, 0, 0, 1, 44, 1412229944, 1412229944, 44),
 (46, 'yacole2', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', NULL, NULL, NULL, NULL, NULL, '陈杨阳', 0, 0, 0, 1, 44, 1412230134, 1412230134, 44),
 (47, 'hellogs', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '高哨', 0, 0, 0, 1, 44, 1412230196, 1412230196, 44),
-(48, 'yacole111', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', NULL, NULL, NULL, NULL, NULL, 'asdfasdf', 0, 0, 0, 1, 44, 1412230229, 1412230229, 44),
-(66, 'asdfasdf', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', NULL, NULL, NULL, NULL, NULL, 'asdfsadf', 0, 0, 0, 0, 44, 1412231054, 1412231054, 44),
+(48, 'yacole111', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', '', 'gs1357@qq.com', '', '', '', 'asdfasdf', 0, 1, 0, 1, 44, 1412230229, 1412415433, 44),
+(66, 'asdfasdf', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', '', 'gs1357@qq.com', '', '', '', '恭喜发财', 0, 1, 0, 0, 44, 1412231054, 1412415498, 44),
 (67, 'yyyyyy', '3421ecde2a5de6543b48460b867cf323b018bc22', 'female', '', '', '', '', '', 'yyyyyy', 0, 0, 0, 0, 44, 1412404281, 1412404332, 44),
 (68, 'ddddd', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'female', 'ddd', NULL, NULL, '111', NULL, 'ddd', 0, 0, 0, 1, 44, 1412404348, 1412404348, 44);
 
@@ -1272,8 +1307,8 @@ CREATE TABLE IF NOT EXISTS `ct_user_functions_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `role_id` int(11) NOT NULL COMMENT '角色ID',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1308,15 +1343,15 @@ INSERT INTO `ct_user_roles` (`id`, `user_id`, `role_id`, `creation_date`, `creat
 
 CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `valuelist_name` varchar(20) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `from_obj` tinyint(4) DEFAULT '0',
-  `label_fieldname` varchar(100) DEFAULT NULL,
-  `value_fieldname` varchar(100) DEFAULT NULL,
-  `source_view` varchar(100) DEFAULT NULL,
-  `condition` text,
-  `parent_id` int(11) DEFAULT NULL,
-  `editable_flag` tinyint(1) NOT NULL DEFAULT '1',
+  `valuelist_name` varchar(20) NOT NULL COMMENT '值集名称',
+  `description` varchar(255) NOT NULL COMMENT '描述',
+  `from_obj` tinyint(4) DEFAULT '0' COMMENT '是否表/视图对象',
+  `label_fieldname` varchar(100) DEFAULT NULL COMMENT '描述字段',
+  `value_fieldname` varchar(100) DEFAULT NULL COMMENT '值字段',
+  `source_view` varchar(100) DEFAULT NULL COMMENT '源表/视图',
+  `condition` text COMMENT '查询条件',
+  `parent_id` int(11) DEFAULT NULL COMMENT '父值集',
+  `editable_flag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否可编辑',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1357,12 +1392,12 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `from_
 CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `valuelist_id` int(11) NOT NULL,
-  `segment` varchar(20) NOT NULL,
-  `segment_value` varchar(255) NOT NULL,
-  `segment_desc` varchar(255) NOT NULL,
-  `inactive_flag` tinyint(1) NOT NULL DEFAULT '0',
-  `sort` int(11) NOT NULL DEFAULT '0',
-  `parent_segment_value` varchar(20) DEFAULT NULL,
+  `segment` varchar(20) NOT NULL COMMENT '段',
+  `segment_value` varchar(255) NOT NULL COMMENT '段值',
+  `segment_desc` varchar(255) NOT NULL COMMENT '段描述',
+  `inactive_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '失效标识',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
+  `parent_segment_value` varchar(20) DEFAULT NULL COMMENT '父值集值',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,

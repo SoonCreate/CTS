@@ -13,6 +13,7 @@ class Order extends CI_Controller {
         $this->load->model('auth_model');
         $this->load->model('status_model');
         $this->load->model('file_model');
+        $this->load->model('notice_model');
     }
 
 	public function index()
@@ -237,6 +238,12 @@ class Order extends CI_Controller {
     //关闭
     function close(){
         $this->_update(v('id'),array('status'=>'closed'));
+        //关闭之后发送反馈信息给创建人填写
+
+
+
+
+
     }
 
     //问题重新开启
@@ -253,6 +260,7 @@ class Order extends CI_Controller {
     function change_content(){
         //提交后5分钟内可以修改自己刚提交的内容，提高用户体验
     }
+
     private function _update($id,$data = null){
         $om = new Order_model();
         $order = $om->find($id);
