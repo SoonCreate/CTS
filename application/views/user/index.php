@@ -42,4 +42,7 @@
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('user','create')?>">新建用户</a>|<a href="<?= _url('user','register')?>">用户注册</a>
+<a href="<?= _url('user','create')?>">新建用户</a>
+<?php if(string_to_boolean(_config('allow_register'))) :?>
+    |<a href="<?= _url('user','register')?>">用户注册</a>
+<?php endif ;?>

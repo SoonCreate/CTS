@@ -1,3 +1,4 @@
+<a href="<?= _url('user','notice_read_all')?>">全部标注为已读</a>
 <table>
     <thead>
     <th>消息编号</th>

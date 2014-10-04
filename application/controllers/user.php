@@ -48,20 +48,24 @@ class User extends CI_Controller {
     }
 
     function register(){
-        if($_POST){
-            $data['username'] = tpost('username');
-            $data['password']  = sha1(v('password'));
-            $data['order_type'] = v('order_type');
-            $data['full_name'] = v('full_name');
-            $data['initial_pass_flag'] = 0;
-            $user = new User_model();
-            if($user->register_save($data)){
-                echo 'done';
+        if(string_to_boolean(_config('allow_register'))){
+            if($_POST){
+                $data['username'] = tpost('username');
+                $data['password']  = sha1(v('password'));
+                $data['order_type'] = v('order_type');
+                $data['full_name'] = v('full_name');
+                $data['initial_pass_flag'] = 0;
+                $user = new User_model();
+                if($user->register_save($data)){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                render();
             }
         }else{
-            render();
+            show_404();
         }
     }
 
@@ -216,11 +220,25 @@ class User extends CI_Controller {
 
     function notice_show(){
         $nm = new Notice_model();
-        $n = $nm->find(v('id'));
+        $n = $nm->find_by(array('id'=>v('id'),'received_by'=>_sess('uid')));
         if(empty($n)){
             show_404();
         }else{
+            //更新成已读
+            if(!$n['read_flag']){
+                $nm->update($n['id'],array('read_flag'=>1));
+            }
             render($n);
+        }
+    }
+
+    //全部标注为已读
+    function notice_read_all(){
+        $nm = new Notice_model();
+        if($nm->update_by(array('received_by'=>_sess('uid')),array('read_flag'=>1))){
+            echo 'done';
+        }else{
+            redirect_to('user','notices');
         }
     }
 

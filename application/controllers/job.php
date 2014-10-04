@@ -13,6 +13,11 @@ class Job extends CI_Controller {
 
     }
 
+    //自动反馈
+    function auto_feedback(){
+
+    }
+
     public function message($to = 'World')
     {
         if($this->input->is_cli_request()){
