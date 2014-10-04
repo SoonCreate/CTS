@@ -37,4 +37,4 @@
         </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('order_meeting','create',array('order_id'=>v('id')))?>">召开新会议</a>
+<a href="<?= _url('order_meeting','create',array('order_id'=>_v('order_id')))?>">召开新会议</a>

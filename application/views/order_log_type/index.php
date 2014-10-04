@@ -28,4 +28,4 @@
         </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('order','log_type_create')?>">新建日志类型</a>
+<a href="<?= _url('order_log_type','create')?>">新建日志类型</a>

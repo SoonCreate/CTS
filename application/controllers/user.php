@@ -76,6 +76,7 @@ class User extends CI_Controller {
             $data['mobile_telephone'] = tpost('mobile_telephone');
             $data['address'] = tpost('address');
             $data['full_name'] = tpost('full_name');
+            $data['sex'] = tpost('sex');
             $user = new User_model();
             if($user->insert($data)){
                 echo 'done';

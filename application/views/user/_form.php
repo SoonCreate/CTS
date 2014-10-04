@@ -1,5 +1,8 @@
 <label for="full_name">*公司名称/姓名</label><input name="full_name" id="full_name" type="text" value="<?= _v('full_name')?>"/><br/>
 <label for="contact">联系人</label><input name="contact" id="contact" type="text" value="<?= _v('contact')?>"/><br/>
+<label for="sex">性别</label>
+<?php render_radio_with_value('sex','vl_sex',_v('sex'));?>
+<br/>
 <label for="email">EMAIL</label><input name="email" id="email" type="text" value="<?= _v('email')?>"/><br/>
 <label for="mobile_telephone">手机号码</label>
 <input name="mobile_telephone" id="mobile_telephone" type="text" value="<?= _v('mobile_telephone')?>"/><br/>

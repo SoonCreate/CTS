@@ -187,7 +187,19 @@ function render_options($valuelist_name,$parent_segment_value = null){
         echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
     }
 }
-
+//输出到view里的radio
+function render_radio($name,$valuelist_name,$parent_segment_value = null){
+    $options = get_options($valuelist_name,$parent_segment_value );
+    for($i=0;$i<count($options);$i++){
+        if($i>0){
+            echo '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
+                '"/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
+        }else{
+            echo '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
+                '" checked/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
+        }
+    }
+}
 function render_options_with_value(){
     $args = func_get_args();
     if(count($args) === 2){
@@ -210,6 +222,39 @@ function render_options_with_value(){
         }
     }elseif(count($args) +  2 == 2){
         echo '<option value=""></option>';
+    }
+}
+
+function render_radio_with_value(){
+    $args = func_get_args();
+    if(count($args) === 3){
+        $options = get_options($args[1] );
+        if($args[2]){
+            foreach($options as $o){
+                if($o['value'] === $args[2]){
+                    echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                        '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
+                }else{
+                    echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                        '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
+                }
+            }
+        }else{
+            render_radio($args[0],$args[1]);
+        }
+    }elseif(count($args) > 3){
+        $options = get_options($args[1],$args[2] );
+        foreach($options as $o){
+            if($o['value'] === $args[3]){
+                echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                    '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
+            }else{
+                echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                    '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
+            }
+        }
+    }elseif(count($args) +  2 == 2){
+        echo '';
     }
 }
 

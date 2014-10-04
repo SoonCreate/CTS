@@ -35,13 +35,10 @@ class User_model extends MY_Model{
         $this->db->trans_begin();
         $user_id = $this->insert(elements(array('username','password','full_name','initial_pass_flag'),$data,NULL));
         if($user_id){
-            echo $user_id;
             //内容
             $row['user_id'] = $user_id;
             $roles = $this->default_roles($data['order_type']);
-            print_r($data['order_type']);
             if(!empty($roles)){
-                print_r($roles);
                 //多个默认角色
                 foreach($roles as $role){
                     $r = $this->role->find_by(array('role_name'=>$role['value']));

@@ -160,6 +160,7 @@ class Order extends CI_Controller {
     function upload_file(){
         if($_FILES){
             $this->load->library('upload', load_upload_config());
+            print_r(load_upload_config());
             if ( ! $this->upload->do_upload())
             {
                 echo $this->upload->display_errors();

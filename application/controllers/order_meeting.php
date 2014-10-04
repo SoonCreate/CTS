@@ -108,6 +108,7 @@ class Order_meeting extends CI_Controller {
             show_404();
         }else{
             if($_FILES && $_POST){
+
                 $this->load->library('upload', load_upload_config());
                 if ( ! $this->upload->do_upload())
                 {

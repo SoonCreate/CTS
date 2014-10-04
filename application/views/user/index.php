@@ -4,6 +4,7 @@
         <th>用户名</th>
         <th>EMAIL</th>
         <th>联系人</th>
+        <th>性别</th>
         <th>手机号码</th>
         <th>固定电话</th>
         <th>公司名称/员工名称</th>
@@ -19,6 +20,7 @@
         <td><?= $u['username']?></td>
         <td><?= $u['email']?></td>
         <td><?= $u['contact']?></td>
+        <td><?= get_label('vl_sex',$u['sex'])?></td>
         <td><?= $u['mobile_telephone']?></td>
         <td><?= $u['phone_number']?></td>
         <td><?= $u['full_name']?></td>

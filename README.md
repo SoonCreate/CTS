@@ -1,4 +1,6 @@
-CTS by sooncreate studio
+企业投诉闭环跟踪系统 Complaint Track System
 ===
+系统基于PHP和DOJO，支持desktop和tablet的响应式访问，支持IE8+浏览器！
+系统可根据企业需求个性化配置，默认拥有以下角色：客户、供应商、内部员工、调度员、内部投诉记录人员、质量经理、人事经理、采购经理等
+具体项目demo地址稍后放出，尽情期待！
 
-Complaint Track System
