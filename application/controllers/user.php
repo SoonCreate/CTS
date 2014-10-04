@@ -9,6 +9,8 @@ class User extends CI_Controller {
         $this->load->model('user_model','user');
         $this->load->model('role_model','role');
         $this->load->model('user_role_model','user_role');
+        $this->load->model('notice_model');
+        $this->load->model('order_model');
     }
 
 	public function index(){
@@ -201,6 +203,25 @@ class User extends CI_Controller {
 
     function forget_password(){
 
+    }
+
+    //用户消息
+    function notices(){
+        $nm =  new Notice_model();
+        $nm->order_by('creation_date','desc');
+        $notices = $nm->find_all_by(array('received_by' => _sess('uid')));
+        $data['notices'] = _format($notices);
+        render($data);
+    }
+
+    function notice_show(){
+        $nm = new Notice_model();
+        $n = $nm->find(v('id'));
+        if(empty($n)){
+            show_404();
+        }else{
+            render($n);
+        }
     }
 
     //前端控件权限验证

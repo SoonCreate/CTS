@@ -9,4 +9,7 @@
 <label for="phone_number">固定电话</label><input name="phone_number" id="phone_number" type="text" value="<?= _v('phone_number')?>"/><br/>
 
 <label for="address">地址</label><input name="address" id="address" type="text" value="<?= _v('address')?>"/><br/>
-<label for="email_flag">通过邮件接收消息</label><input name="email_flag" id="email_flag" type="checkbox" value="<?= _v('email_flag') || 1?>"/><br/>
+<label for="email_flag">通过邮件接收消息</label>
+<input name="email_flag" id="email_flag" type="checkbox" value="<?= _v('email_flag') || 1?>" <?php
+    if(_v('email_flag')) : echo 'checked' ;endif;
+?>/><br/>

@@ -24,7 +24,9 @@
         <?= render_options_with_value('vl_dll_type',_v('dll_type'))?>
     </select>
     <br/>
-
+    <strong>
+        可用的显示字段为：&order_id ; &new_value ; &old_value ; &reason
+    </strong>
     <label for="title">*标题格式</label>
     <input name="title" id="title" type="text" value="<?= _v('title')?>" />
     <br/>
@@ -38,7 +40,7 @@
         }
     ?>
     <input type="checkbox" value="1" name="need_reason_flag" id="need_reason_flag" <?= $checked ?>/>
-    <label for="need_reason_flag">是否需要填写原因</label>
+    <label for="need_reason_flag">是否需要填写原因(如果初始为空值，则第一次变更不记录原因)</label>
     <br/>
     <?php  $checked  = 'checked';
     if(!_v('notice_flag')){

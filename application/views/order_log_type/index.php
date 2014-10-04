@@ -14,8 +14,8 @@
         <tr>
             <td><?= $o['log_type']?></td>
             <td><?= $o['description']?></td>
-            <td><?= word_substr($o['title'],200)?></td>
-            <td><?=word_substr($o['content'],200)?></td>
+            <td><?= word_truncate($o['title'])?></td>
+            <td><?= word_truncate($o['content'])?></td>
             <td><?= $o['need_reason_flag']?></td>
             <td><?= $o['notice_flag']?></td>
             <td><?= $o['field_name']?></td>

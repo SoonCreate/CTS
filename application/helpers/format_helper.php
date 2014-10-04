@@ -126,3 +126,11 @@ function toJSString($data){
     }
     return implode(',',$data);
 }
+
+function word_truncate($srt,$finish = null)
+{
+    if(is_null($finish)){
+        $finish = string_to_number(_config('word_truncate'));
+    }
+    return word_substr($srt,$finish);
+}

@@ -20,7 +20,7 @@
             <td><?= $o['anchor']?></td>
             <td><?= $o['recorder']?></td>
             <td><?= $o['actor']?></td>
-            <td><?=word_substr($o['discuss'],200)?></td>
+            <td><?= word_truncate($o['discuss'])?></td>
             <td><?= $o['inactive_flag']?></td>
             <td>
                 <a href="<?= _url('order_meeting','show',array('id'=>$o['id']))?>">查看</a>

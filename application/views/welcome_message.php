@@ -15,6 +15,8 @@
     <label for="id">直接输入订单号：</label>
     <input name="id" id="id" /><button type="submit">查找</button>
 </form>
+
+<a href="<?= _url('user','notices')?>">我的消息</a><br/>
 <h1>我的模块</h1>
 <?php if(isset($modules)):?>
     <ul>

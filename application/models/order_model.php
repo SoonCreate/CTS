@@ -78,7 +78,6 @@ class Order_model extends MY_Model{
             $data['order_id'] = $order_id;
             $data['content'] = $content;
             if(!$this->content->insert($data)){
-                echo 'content_fail';
                 $this->db->trans_rollback();
                 return false;
             }
@@ -100,8 +99,6 @@ class Order_model extends MY_Model{
             if(!empty($insert_logs)){
                 foreach($insert_logs as $t){
                     if(isset($base_data[$t['field_name']])){
-
-                        $need_reason = $t['need_reason_flag'];
                         $log['order_id'] = $order_id;
                         $log['new_value'] = $base_data[$t['field_name']];
                         $log['log_type'] = $t['log_type'];
@@ -114,12 +111,19 @@ class Order_model extends MY_Model{
                             if($t['notice_flag']){
                                 $n['log_id'] = $id;
                                 $n['from_log'] = 1;
+                                $n['received_by'] = _sess('uid');
                                 $n['title'] = $this->_format_log($log,'title');
                                 $n['content'] = $this->_format_log($log,'content');
                                 $n['order_id'] = $order_id;
-                                if(!$nm->insert($n)){
+                                $notice_id = $nm->insert($n);
+                                if(!$notice_id){
                                     $this->db->trans_rollback();
                                     return false;
+                                }else{
+                                    //如果初始为空值，则第一次变更不记录原因
+                                    if($log['old_value']){
+                                        $need_reason = $t['need_reason_flag'];
+                                    }
                                 }
                             }
                         }
@@ -129,13 +133,11 @@ class Order_model extends MY_Model{
             //日志status
             $this->db->trans_commit();
             //如果需要填写原因，则直接跳转的原因补充页
-            echo $need_reason;
             if($need_reason){
                 redirect_to('order','change_reason',array('change_hash'=>$change_hash));
             }
             return true;
         }else{
-            echo 'order_fail';
             $this->db->trans_rollback();
             return false;
         }
@@ -183,6 +185,7 @@ class Order_model extends MY_Model{
                                     $log_v = $olm->find_by_view(array('id'=>$id));
                                     $n['log_id'] = $id;
                                     $n['from_log'] = 1;
+                                    $n['received_by'] = $order['created_by'];
                                     $n['title'] = $this->_format_log($log_v,$t['title']);
                                     $n['content'] = $this->_format_log($log_v,$t['content']);
                                     $n['order_id'] = $order_id;

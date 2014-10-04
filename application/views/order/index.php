@@ -24,7 +24,7 @@
         <td><?= $o['created_by']?></td>
         <td><?= $o['status']?></td>
         <td><?= $o['title']?></td>
-        <td><?= word_substr($o['content'],200)?></td>
+        <td><?= word_truncate($o['content'])?></td>
         <td><?= $o['managed_by']?></td>
         <td><?= related_time($o['creation_date'])?></td>
         <td><?= $o['plan_complete_date']?></td>
