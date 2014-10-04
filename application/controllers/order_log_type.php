@@ -7,6 +7,7 @@ class Order_log_type extends CI_Controller {
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('order_log_type_model');
         $this->load->model('order_log_model');
+        $this->load->model('order_model');
     }
 
     function index(){
@@ -27,7 +28,9 @@ class Order_log_type extends CI_Controller {
                 echo validation_errors('<div class="error">', '</div>');
             }
         }else{
-            render();
+            $om = new Order_model();
+            $data['fields'] = $om->field_list();
+            render($data);
         }
     }
 

@@ -167,15 +167,12 @@ class Order_model extends MY_Model{
                 $log['change_hash'] = $change_hash;
                 foreach($insert_logs as $t){
                     if(isset($data[$t['field_name']])){
-
-                        $need_reason = $t['need_reason_flag'];
                         $log['order_id'] = $order_id;
                         $log['new_value'] = $data[$t['field_name']];
                         $log['old_value'] = $order[$t['field_name']];
                         $log['log_type'] = $t['log_type'];
-
                         //新值和旧值相同，无变更时，不处理
-                        if($log['new_value'] !== $log['old_value']){
+                        if($log['new_value'] != $log['old_value']){
                             $id = $olm->insert($log);
                             if(!$id){
                                 $this->db->trans_rollback();
@@ -192,6 +189,11 @@ class Order_model extends MY_Model{
                                     if(!$nm->insert($n)){
                                         $this->db->trans_rollback();
                                         return false;
+                                    }else{
+                                        //如果初始为空值，则第一次变更不记录原因
+                                        if($log['old_value']){
+                                            $need_reason = $t['need_reason_flag'];
+                                        }
                                     }
                                 }//if($t['
                             }//if(!$id
@@ -238,14 +240,20 @@ class Order_model extends MY_Model{
                 $content =  str_replace('&new_value',get_label($vl['valuelist_name'],$log['new_value']),$content);
                 $content =  str_replace('&old_value',get_label($vl['valuelist_name'],$log['old_value']),$content);
             }else{
-                $content =  str_replace('&new_value',$log['new_value'],$content);
-                $content =  str_replace('&old_value',$log['old_value'],$content);
+                $content =  str_replace('&new_value',_f($log['field_name'],$log['new_value']),$content);
+                $content =  str_replace('&old_value',_f($log['field_name'],$log['old_value']),$content);
             }
         }else{
-            $content =  str_replace('&new_value',$log['new_value'],$content);
-            $content =  str_replace('&old_value',$log['old_value'],$content);
+            $content =  str_replace('&new_value',_f($log['field_name'],$log['new_value']),$content);
+            $content =  str_replace('&old_value',_f($log['field_name'],$log['old_value']),$content);
         }
         return $content;
+    }
+
+    function field_list(){
+        return lazy_get_data("select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
+        where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_ORDERS'
+        and COLUMN_NAME not in ('id','created_by','creation_date','last_updated_by','last_update_date')");
     }
 
 

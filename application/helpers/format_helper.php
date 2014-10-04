@@ -95,23 +95,27 @@ function _format($rows,$is_rs_array = true){
 //格式化函数
 function _format_row($row){
     foreach ($row as $key => $value) {
-        //处理null
-        if(is_null($row[$key])){
-            $row[$key] = "";
-        }else{
-            if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
-                $row[$key] = ( $row[$key] == 1 ? "YES" : "NO" );
-            }
-            if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
-                $row[$key] = date('Y-m-d H:i:s',$row[$key]);
-            }
-
-            if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {
-                $row[$key] = full_name($row[$key]);
-            }
-        }
+        $row[$key] = _f($key,$value);
     }
     return $row;
+}
+
+function _f($key,$value){
+    if(is_null($value)){
+        $value = "";
+    }else{
+        if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
+            $value = ( $value == 1 ? "YES" : "NO" );
+        }
+        if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
+            $value = date('Y-m-d H:i:s',$value);
+        }
+
+        if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {
+            $value = full_name($value);
+        }
+    }
+    return $value;
 }
 
 //在html页面中数组转字符串
