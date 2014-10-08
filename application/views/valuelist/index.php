@@ -8,7 +8,8 @@
         <th>值字段</th>
         <th>源表/视图</th>
         <th>查询条件</th>
-        <th>父值集ID</th>
+        <th>父值集</th>
+        <th>父值集描述</th>
         <th>是否可编辑</th>
         <th>操作</th>
     </thead>
@@ -18,21 +19,21 @@
         <td><?= $o['valuelist_name']?></td>
         <td><?= $o['description']?></td>
         <td><?= $o['object_flag'] ?></td>
-        <td><a href="<?= _url('user','admin_edit',array('user_id'=>$u['id']))?>">编辑</a>&nbsp;|&nbsp;
-            <a href="<?= _url('user','initial_password',array('user_id'=>$u['id']))?>">密码初始化</a>&nbsp;|&nbsp;
-            <?php if($u['inactive_flag'] == 'NO'):?>
-                <a href="<?= _url('user','change_status',array('user_id'=>$u['id'],'inactive_flag'=>1))?>">失效</a>
-            <?php else : ?>
-                <a href="<?= _url('user','change_status',array('user_id'=>$u['id'],'inactive_flag'=>0))?>">生效</a>
-            <?php endif; ?>
-            &nbsp;|&nbsp;
-            <a href="<?= _url('user','choose_roles',array('user_id'=>$u['id']))?>">分配角色</a>
+        <td><?= $o['label_fieldname'] ?></td>
+        <td><?= $o['value_fieldname'] ?></td>
+        <td><?= $o['source_view'] ?></td>
+        <td><?= $o['condition'] ?></td>
+        <td><?= $o['parent_name'] ?></td>
+        <td><?= $o['parent_desc'] ?></td>
+        <td><?= $o['editable_flag'] ?></td>
+        <td>
+            <a href="<?= _url('valuelist','edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
+            <?php if($o['object_flag'] == 'NO') : ?>
+            <a href="<?= _url('valuelist','items',array('id'=>$o['id']))?>">管理项目</a>
+            <?php endif;?>
         </td>
 
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('user','create')?>">新建用户</a>
-<?php if(string_to_boolean(_config('allow_register'))) :?>
-    |<a href="<?= _url('user','register')?>">用户注册</a>
-<?php endif ;?>
+<a href="<?= _url('valuelist','create')?>">新建值集</a>

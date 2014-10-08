@@ -94,4 +94,34 @@ class Valuelist_model extends MY_Model{
             return null;
         }
     }
+
+    //两种方式保存时验证内容不同
+    function save_from_object($data){
+        $this->clear_validate();
+        $this->add_validate('description','required|max_length[255]');
+        $this->add_validate('object_flag','required|numeric');
+        $this->add_validate('label_fieldname','required|alpha_dash');
+        $this->add_validate('value_fieldname','required|alpha_dash');
+        $this->add_validate('source_view','required|alpha_dash');
+        if(!isset($data['id'])){
+            //insert
+            $this->add_validate('valuelist_name','required|max_length[20]|min_length[5]|is_unique[valuelist_header.valuelist_name]|alpha_dash');
+            return $this->insert($data);
+        }else{
+            return $this->update($data['id'],$data);
+        }
+
+    }
+
+    function save_normal($data){
+        $this->clear_validate();
+        $this->add_validate('description','required|max_length[255]');
+        if(!isset($data['id'])){
+            //insert
+            $this->add_validate('valuelist_name','required|max_length[20]|min_length[5]|is_unique[valuelist_header.valuelist_name]|alpha_dash');
+            return $this->insert($data);
+        }else{
+            return $this->update($data['id'],$data);
+        }
+    }
 }

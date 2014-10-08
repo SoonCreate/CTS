@@ -562,7 +562,6 @@ class MY_Model extends CI_Model
 
     //设置时间戳
     public function set_last_update($data){
-        echo time();
         $data['last_update_date'] = time();
         if(_sess('uid')){
             $data['last_updated_by'] = _sess('uid');
@@ -585,6 +584,18 @@ class MY_Model extends CI_Model
         return $data;
     }
 
+    //获取数据库注释
+    public function get_comment($column_name = null){
+        if(is_null($column_name)){
+            $query = $this->db->query( "select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
+        where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_{$this->_table}'" );
+        }else{
+            $query = $this->db->query( "select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
+        where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_{$this->_table}' and COLUMN_NAME = ".$column_name );
+        }
+        $result = $query->result_array();
+        return $result;
+    }
 
     /* --------------------------------------------------------------
      * INTERNAL METHODS
