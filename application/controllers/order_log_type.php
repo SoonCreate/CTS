@@ -6,8 +6,6 @@ class Order_log_type extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('order_log_type_model');
-        $this->load->model('order_log_model');
-        $this->load->model('order_model');
     }
 
     function index(){
@@ -28,6 +26,7 @@ class Order_log_type extends CI_Controller {
                 echo validation_errors('<div class="error">', '</div>');
             }
         }else{
+            $this->load->model('order_model');
             $om = new Order_model();
             $data['fields'] = $om->field_list();
             render($data);
@@ -42,7 +41,7 @@ class Order_log_type extends CI_Controller {
         }else{
             if($_POST){
                 $data = _data('description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
-                if($oltm->update(v('id'),$data)){
+                if($oltm->update($l['if'],$data)){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');
@@ -55,9 +54,10 @@ class Order_log_type extends CI_Controller {
 
     function destroy(){
         $oltm = new Order_log_type_model();
-        $id = p('id');
+        $id = v('id');
         $o = $oltm->find($id);
         if(!empty($o)){
+            $this->load->model('order_log_model');
             $olm = new Order_log_model();
             $log = $olm->find_by(array('log_type'=>$o['log_type']));
             if(empty($log)){

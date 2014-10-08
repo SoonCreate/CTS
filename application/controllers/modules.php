@@ -6,9 +6,6 @@ class Modules extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('module_model');
-        $this->load->model('module_line_model');
-        $this->load->model('role_module_line_model');
-        $this->load->model('function_model');
     }
 
 	public function index()
@@ -39,7 +36,7 @@ class Modules extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                if($m->update(v('id'),_data('module_name','description','display_class','sort'))){
+                if($m->update($module['id'],_data('module_name','description','display_class','sort'))){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');
@@ -53,6 +50,8 @@ class Modules extends CI_Controller {
     }
 
     function destroy(){
+        $this->load->model('module_line_model');
+        $this->load->model('role_module_line_model');
         $m = new Module_model();
         $ml = new Module_line_model();
         $rml = new Role_module_line_model();
@@ -75,6 +74,7 @@ class Modules extends CI_Controller {
     }
 
     function choose_functions(){
+        $this->load->model('module_line_model');
         $ml = new Module_line_model();
         $mm = new Module_model();
         $m = $mm->find(v('module_id'));
@@ -106,11 +106,11 @@ class Modules extends CI_Controller {
                     echo 'done';
                 }
             }else{
-                $module_id = v('module_id');
+                $this->load->model('function_model');
                 $fn = new Function_model();
                 $fns = $fn->find_all();
                 for($i=0;$i<count($fns) ;$i++){
-                    $line = $ml->find_by(array('module_id'=>$module_id,'function_id'=>$fns[$i]['id']));
+                    $line = $ml->find_by(array('module_id'=>$m['id'],'function_id'=>$fns[$i]['id']));
                     if(!empty($line)){
                         $fns[$i]['checked'] = 'checked';
                     }else{
@@ -118,7 +118,7 @@ class Modules extends CI_Controller {
                     }
                 }
                 $data['functions'] = _format($fns);
-                $data['module_id'] = $module_id;
+                $data['module_id'] = $m['id'];
                 render($data);
             }
         }

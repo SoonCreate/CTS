@@ -6,12 +6,9 @@ class Role extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('role_model');
-        $this->load->model('role_profile_model');
         $this->load->model('role_profile_line_model');
         $this->load->model('user_role_model');
-        $this->load->model('user_model');
         $this->load->model('role_module_line_model');
-        $this->load->model('module_line_model');
     }
 
 	public function index()
@@ -58,6 +55,7 @@ class Role extends CI_Controller {
     }
 
     function destroy(){
+        $this->load->model('role_profile_model');
         $r = new Role_model();
         $ur = new User_role_model();
         $role_id = p('id');
@@ -123,7 +121,8 @@ class Role extends CI_Controller {
                     echo 'done';
                 }
             }else{
-                $role_id = v('role_id');
+                $this->load->model('user_model');
+                $role_id = $role['id'];
                 $u = new User_model();
                 $users = $u->find_all();
                 for($i=0;$i<count($users) ;$i++){
@@ -173,9 +172,10 @@ class Role extends CI_Controller {
                     echo 'done';
                 }
             }else{
-                $role_id = p('role_id');
+                $role_id = $role['id'];
+                $this->load->model('module_line_model');
                 $fn = new Module_line_model();
-                $fns = $fn->find_all_from_view();
+                $fns = $fn->find_all_by_view();
                 for($i=0;$i<count($fns) ;$i++){
                     $line = $rml->find_by(array('module_line_id'=>$fns[$i]['id'],'role_id'=>$role_id));
                     if(!empty($line)){
@@ -194,7 +194,7 @@ class Role extends CI_Controller {
 
     function profiles(){
         $pl = new Role_profile_line_model();
-        $role_id = p('role_id');
+        $role_id = v('role_id');
         $lines = $pl->find_all_from_view(array('role_id'=>$role_id));
         $data['objects'] = _format($lines);
         $data['role_id'] = $role_id;

@@ -11,8 +11,7 @@ class User_model extends MY_Model{
         $this->_validate_for_insert();
 
         //设置钩子
-        $this->before_create = array('before_insert');
-        $this->before_update = array('before_update');
+        array_unshift($this->before_update,'before_update');
     }
 
     function default_roles($order_type){
@@ -20,14 +19,10 @@ class User_model extends MY_Model{
         return $vm->find_active_children_options('default_role',$order_type);
     }
 
-    function before_insert($data){
-        return set_creation_date($data);
-    }
-
     function before_update($data){
         $this->clear_validate();
         $this->_validate();
-        return set_last_update($data);
+        return $data;
     }
 
     function register_save($data){

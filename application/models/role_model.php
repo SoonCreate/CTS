@@ -9,22 +9,16 @@ class Role_model extends MY_Model{
         $this->add_validate('description','required|max_length[255]');
 
         //设置钩子
-        $this->before_create = array('before_insert');
-        $this->before_update = array('before_update');
+        array_unshift($this->before_update,'before_update');
     }
 
     function find_all_active_roles(){
         return $this->find_all_by(array('inactive_flag'=>0));
     }
-
-    function before_insert($data){
-        return set_creation_date($data);
-    }
-
     function before_update($data){
         $this->clear_validate();
         $this->add_validate('description','required|max_length[255]');
         $this->add_validate('inactive_flag','required');
-        return set_last_update($data);
+        return $data;
     }
 }

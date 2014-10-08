@@ -23,9 +23,9 @@ class MY_Model extends CI_Model
      * The various callbacks available to the model. Each are
      * simple lists of method names (methods will be run on $this).
      */
-    protected $before_create = array();
+    protected $before_create = array('set_creation_date');
     protected $after_create = array();
-    protected $before_update = array();
+    protected $before_update = array('set_last_update');
     protected $after_update = array();
     protected $before_get = array();
     protected $after_get = array();
@@ -114,6 +114,25 @@ class MY_Model extends CI_Model
         return $row;
     }
 
+    //来自视图
+    public function find_by_view()
+    {
+        $where = func_get_args();
+        $this->_set_where($where);
+
+        $this->_run_before_callbacks('get');
+
+        $this->limit(1);
+
+        $row = $this->db->get($this->_table.'_v')
+            ->{$this->_return_type()}();
+        $this->_temporary_return_type = $this->return_type;
+
+        $this->_run_after_callbacks('get', array( $row ));
+
+        return $row;
+    }
+
 
     /**
      * Fetch an array of records based on an array of primary values.
@@ -134,6 +153,27 @@ class MY_Model extends CI_Model
         $this->_set_where($where);
 
         return $this->find_all();
+    }
+
+    public function find_all_by_view()
+    {
+        if(count(func_get_args()) > 0){
+            $where = func_get_args();
+            $this->_set_where($where);
+        }
+
+        $this->_run_before_callbacks('get');
+
+        $result = $this->db->get($this->_table.'_v')
+            ->{$this->_return_type(1)}();
+        $this->_temporary_return_type = $this->return_type;
+
+        foreach ($result as &$row)
+        {
+            $row = $this->_run_after_callbacks('get', array( $row ));
+        }
+
+        return $result;
     }
 
     /**
@@ -385,6 +425,14 @@ class MY_Model extends CI_Model
         return $this->db->count_all_results($this->_table);
     }
 
+    public function count_by_view()
+    {
+        $where = func_get_args();
+        $this->_set_where($where);
+
+        return $this->db->count_all_results($this->_table.'_v');
+    }
+
     /**
      * Fetch a total count of rows, disregarding any previous conditions
      */
@@ -510,6 +558,31 @@ class MY_Model extends CI_Model
 
     public function clear_validate(){
         $this->validate = array();
+    }
+
+    //设置时间戳
+    public function set_last_update($data){
+        echo time();
+        $data['last_update_date'] = time();
+        if(_sess('uid')){
+            $data['last_updated_by'] = _sess('uid');
+        }else{
+            $data['last_updated_by'] =  -1;
+        }
+        return $data;
+    }
+
+    public function set_creation_date($data){
+        $data['last_update_date'] = time();
+        $data['creation_date'] = time();;
+        if(_sess('uid')){
+            $data['last_updated_by'] = _sess('uid');
+            $data['created_by'] = _sess('uid');
+        }else{
+            $data['last_updated_by'] =  -1;
+            $data['created_by'] =  -1;
+        }
+        return $data;
     }
 
 

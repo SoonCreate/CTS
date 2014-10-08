@@ -13,13 +13,7 @@ class Order_log_type_model extends MY_Model{
         $this->add_validate('dll_type','required');
 
         //设置钩子
-        $this->before_create = array('before_insert');
-        $this->before_update = array('before_update');
-    }
-
-
-    function before_insert($data){
-        return set_creation_date($data);
+        array_unshift($this->before_update,'before_update');
     }
 
     function before_update($data){
@@ -29,7 +23,7 @@ class Order_log_type_model extends MY_Model{
         $this->add_validate('content','required|max_length[255]');
         $this->add_validate('field_name','required|max_length[100]');
         $this->add_validate('dll_type','required');
-        return set_last_update($data);
+        return $data;
     }
 
 }

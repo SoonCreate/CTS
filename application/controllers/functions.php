@@ -6,9 +6,6 @@ class Functions extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('function_model');
-        $this->load->model('role_module_line_model');
-        $this->load->model('module_line_model');
-        $this->load->model('module_model');
     }
 
 	public function index()
@@ -42,7 +39,7 @@ class Functions extends CI_Controller {
         }else{
             if($_POST){
                 $_POST['help'] = tpost('help');
-                if($fn->update(v('id'),_data('description','controller','action','display_flag','display_class','help'))){
+                if($fn->update($f['id'],_data('description','controller','action','display_flag','display_class','help'))){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');
@@ -56,6 +53,8 @@ class Functions extends CI_Controller {
     }
 
     function destroy(){
+        $this->load->model('role_module_line_model');
+        $this->load->model('module_line_model');
         $f = new Function_model();
         $ml = new Module_line_model();
         $rml = new Role_module_line_model();
@@ -75,6 +74,7 @@ class Functions extends CI_Controller {
     }
 
     function allocate_modules(){
+        $this->load->model('module_line_model');
         $ml = new Module_line_model();
         $fm = new Function_model();
         $fn = $fm->find(v('id'));
@@ -108,6 +108,7 @@ class Functions extends CI_Controller {
                     echo 'done';
                 }
             }else{
+                $this->load->model('module_model');
                 $m = new Module_model();
                 $ms = $m->find_all();
                 for($i=0;$i<count($ms) ;$i++){

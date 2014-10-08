@@ -7,18 +7,6 @@ class Order_content_model extends MY_Model{
 
         //服务端插入数据库之前验证
         $this->add_validate('content','required');
-
-        //设置钩子
-        $this->before_create = array('before_insert');
-        $this->before_update = array('before_update');
-    }
-
-    function before_insert($data){
-        return set_creation_date($data);
-    }
-
-    function before_update($data){
-        return set_last_update($data);
     }
 
 }

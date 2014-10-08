@@ -7,7 +7,6 @@ class Auth_object extends CI_Controller {
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('authority_object_model');
         $this->load->model('authobj_line_model');
-        $this->load->model('role_profile_line_model');
     }
 
     function index(){
@@ -32,28 +31,34 @@ class Auth_object extends CI_Controller {
     }
 
     function edit(){
-        $o = new Authority_object_model();
-        if($_POST){
-            $data['id'] = v('id');
-            $data['description'] = tpost('description');
-            if($o->update($data['id'],$data)){
-                echo 'done';
-            }else{
-                echo validation_errors('<div class="error">', '</div>');
-            }
-
+        $aom = new Authority_object_model();
+        $ao = $aom->find(v('id'));
+        if(empty($ao)){
+            show_404();
         }else{
-            render($o->find(p('id')));
+            if($_POST){
+                $data['description'] = tpost('description');
+                if($aom->update($ao['id'],$data)){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+
+            }else{
+                render($ao);
+            }
         }
+
     }
 
     function destroy(){
+        $this->load->model('role_profile_line_model');
         $ao = new Authority_object_model();
         $aol = new Authobj_line_model();
         $rpl = new Role_profile_line_model();
         $object_id = p('id');
         $auth_obj = $ao->find($object_id);
-        $role_in_use = $rpl->find_all_from_view(array('object_id'=>$object_id));
+        $role_in_use = $rpl->find_all_by_view(array('object_id'=>$object_id));
         if(!empty($auth_obj) && empty($role_in_use)){
             $this->db->trans_start();
             $aol->delete_by(array('object_id'=>$object_id));
@@ -71,7 +76,7 @@ class Auth_object extends CI_Controller {
 
     function items(){
         $o = new Authobj_line_model();
-        $data['items'] = $o->find_all_by_object_id_view(p('id'));
+        $data['items'] = $o->find_all_by_view(array('object_id'=>v('id')));
         render($data);
     }
 

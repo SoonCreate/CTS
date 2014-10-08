@@ -5,12 +5,7 @@ class User extends CI_Controller {
     function __construct(){
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
-        $this->load->model('auth_model');
-        $this->load->model('user_model','user');
-        $this->load->model('role_model','role');
-        $this->load->model('user_role_model','user_role');
-        $this->load->model('notice_model');
-        $this->load->model('order_model');
+        $this->load->model('user_model');
     }
 
 	public function index(){
@@ -161,48 +156,57 @@ class User extends CI_Controller {
 
     //选择角色
     function choose_roles(){
+        $this->load->model('user_role_model');
         $ur = new User_role_model();
-        if($_POST){
-            $ids = v('roles');
-            $data['user_id'] = v('user_id');
-            $this->db->trans_start();
-            if($ids === FALSE){
-                //删除所有
-                $ur->delete_by(array('user_id' => $data['user_id']));
-            }else{
-                //先删除已取消勾选的
-                $this->db->where_not_in('role_id',$ids);
-                $ur->delete_by(array('user_id' => $data['user_id']));
-                //新增的部分
-                $ids = array_diff($ids,$ur->find_user_ids($data['user_id']));
-                foreach($ids as $id){
-                    $data['role_id'] = $id;
-                    $ur->insert($data);
-                }
-            }
-            $this->db->trans_complete();
-
-            if ($this->db->trans_status() === FALSE) {
-                echo '数据库插入错误';
-            }else{
-                echo 'done';
-            }
+        $um = new User_model();
+        $user = $um->find(v('user_id'));
+        if(empty($user)){
+            show_404();
         }else{
-            $user_id = p('user_id');
-            $r = new Role_model();
-            $roles = $r->find_all();
-            for($i=0;$i<count($roles) ;$i++){
-                $user_role = $ur->find_by(array('user_id'=>$user_id,'role_id'=>$roles[$i]['id']));
-                if(!empty($user_role)){
-                    $roles[$i]['checked'] = 'checked';
+            if($_POST){
+                $ids = v('roles');
+                $data['user_id'] = $user['id'];
+                $this->db->trans_start();
+                if($ids === FALSE){
+                    //删除所有
+                    $ur->delete_by(array('user_id' => $data['user_id']));
                 }else{
-                    $roles[$i]['checked'] = '';
+                    //先删除已取消勾选的
+                    $this->db->where_not_in('role_id',$ids);
+                    $ur->delete_by(array('user_id' => $data['user_id']));
+                    //新增的部分
+                    $ids = array_diff($ids,$ur->find_user_ids($data['user_id']));
+                    foreach($ids as $id){
+                        $data['role_id'] = $id;
+                        $ur->insert($data);
+                    }
                 }
+                $this->db->trans_complete();
+
+                if ($this->db->trans_status() === FALSE) {
+                    echo '数据库插入错误';
+                }else{
+                    echo 'done';
+                }
+            }else{
+                $user_id = $user['id'];
+                $this->load->model('role_model');
+                $r = new Role_model();
+                $roles = $r->find_all();
+                for($i=0;$i<count($roles) ;$i++){
+                    $user_role = $ur->find_by(array('user_id'=>$user_id,'role_id'=>$roles[$i]['id']));
+                    if(!empty($user_role)){
+                        $roles[$i]['checked'] = 'checked';
+                    }else{
+                        $roles[$i]['checked'] = '';
+                    }
+                }
+                $data['roles'] = $roles;
+                $data['user_id'] = $user_id;
+                render($data);
             }
-            $data['roles'] = $roles;
-            $data['user_id'] = $user_id;
-            render($data);
         }
+
     }
 
     function forget_password(){
@@ -211,14 +215,16 @@ class User extends CI_Controller {
 
     //用户消息
     function notices(){
+        $this->load->model('notice_model');
         $nm =  new Notice_model();
-        $nm->order_by('creation_date','desc');
+        $nm->order_by('id','desc');
         $notices = $nm->find_all_by(array('received_by' => _sess('uid')));
         $data['notices'] = _format($notices);
         render($data);
     }
 
     function notice_show(){
+        $this->load->model('notice_model');
         $nm = new Notice_model();
         $n = $nm->find_by(array('id'=>v('id'),'received_by'=>_sess('uid')));
         if(empty($n)){
@@ -228,12 +234,18 @@ class User extends CI_Controller {
             if(!$n['read_flag']){
                 $nm->update($n['id'],array('read_flag'=>1));
             }
-            render($n);
+            if($n['direct_url']){
+                redirect($n['direct_url']);
+            }else{
+                render($n);
+            }
+
         }
     }
 
     //全部标注为已读
     function notice_read_all(){
+        $this->load->model('notice_model');
         $nm = new Notice_model();
         if($nm->update_by(array('received_by'=>_sess('uid')),array('read_flag'=>1))){
             echo 'done';

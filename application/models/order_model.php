@@ -22,10 +22,6 @@ class Order_model extends MY_Model{
         $this->add_validate('mobile_telephone','required|max_length[255]|numeric');
         $this->add_validate('email','valid_email');
         $this->add_validate_255('phone_number','address','contact','full_name');
-
-        //设置钩子
-        $this->before_create = array('before_insert');
-        $this->before_update = array('before_update');
     }
 
     function default_status(){
@@ -112,6 +108,7 @@ class Order_model extends MY_Model{
                                 $n['log_id'] = $id;
                                 $n['from_log'] = 1;
                                 $n['received_by'] = _sess('uid');
+                                $n['with_manager'] = 1;
                                 $n['title'] = $this->_format_log($log,'title');
                                 $n['content'] = $this->_format_log($log,'content');
                                 $n['order_id'] = $order_id;
@@ -147,14 +144,6 @@ class Order_model extends MY_Model{
         $order = $this->find($order_id);
     }
 
-    function before_insert($data){
-        return set_creation_date($data);
-    }
-
-    function before_update($data){
-        return set_last_update($data);
-    }
-
     function do_update($order_id,$data){
         $oltm = new Order_log_type_model();
         $olm = new Order_log_model();
@@ -186,6 +175,7 @@ class Order_model extends MY_Model{
                                     $n['log_id'] = $id;
                                     $n['from_log'] = 1;
                                     $n['received_by'] = $order['created_by'];
+                                    $n['with_manager'] = 1;
                                     $n['title'] = $this->_format_log($log_v,$t['title']);
                                     $n['content'] = $this->_format_log($log_v,$t['content']);
                                     $n['order_id'] = $order_id;

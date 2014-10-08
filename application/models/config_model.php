@@ -4,8 +4,6 @@ class Config_model extends MY_Model{
 
     function __construct(){
         parent::__construct();
-        //设置钩子
-        $this->before_update = array('before_update');
     }
 
     function find_value_by_name($config_name){
@@ -15,10 +13,6 @@ class Config_model extends MY_Model{
             $value = $row['config_value'];
         }
         return $value;
-    }
-
-    function before_update($data){
-        return set_last_update($data);
     }
 
 }

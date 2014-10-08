@@ -445,8 +445,8 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
 
     $email->subject($subject);
     $email->message($message);
-
-    $email->send();
+    //暂停发送，正是上线启用
+//    $email->send();
 //    echo $email->print_debugger();
 
 }

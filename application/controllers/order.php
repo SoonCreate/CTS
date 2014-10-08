@@ -6,18 +6,13 @@ class Order extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('order_model');
-        $this->load->model('order_content_model');
-        $this->load->model('order_addfile_model');
-        $this->load->model('order_log_model');
-        $this->load->model('order_log_type_model');
         $this->load->model('auth_model');
-        $this->load->model('status_model');
-        $this->load->model('file_model');
-        $this->load->model('notice_model');
     }
 
 	public function index()
 	{
+        $this->load->model('status_model');
+        $this->load->model('order_log_model');
         $om = new Order_model();
         $sm = new Status_model();
         $olm = new Order_log_model();
@@ -116,6 +111,9 @@ class Order extends CI_Controller {
             if($am->check_auth('only_mine_control',array('ao_only_mine'=>'TRUE')) && $order['created_by'] != _sess('uid')){
                 show_404();
             }else{
+                $this->load->model('status_model');
+                $this->load->model('order_addfile_model');
+                $this->load->model('order_content_model');
                 $ocm = new Order_content_model();
                 $oam = new Order_addfile_model();
                 $sm = new Status_model();
@@ -134,6 +132,7 @@ class Order extends CI_Controller {
 
     //如果日志类型需要原因，此页面用于补充
     function change_reason(){
+        $this->load->model('order_log_model');
         $olm = new Order_log_model();
         $change_hash = v('change_hash');
         $l = $olm->find_by(array('change_hash'=>$change_hash));
@@ -168,6 +167,7 @@ class Order extends CI_Controller {
             }
             else
             {
+                $this->load->model('file_model');
                 $fm = new File_model();
                 if($fm->insert($this->upload->data())){
                     print_r($this->upload->data());
@@ -220,6 +220,7 @@ class Order extends CI_Controller {
             show_404();
         }else{
             if($_POST){
+                $this->load->model('order_content_model');
                 $ocm = new Order_content_model();
                 $data['content'] = tpost('content');
                 $data['order_id'] = $id;
@@ -237,18 +238,36 @@ class Order extends CI_Controller {
 
     //关闭
     function close(){
-        $this->_update(v('id'),array('status'=>'closed'));
-        //关闭之后发送反馈信息给创建人填写
+        $this->load->model('notice_model');
+        $om = new Order_model();
+        $id = v('id');
+        $order = $om->find($id);
+        if(empty($order)){
+            show_404();
+        }else{
+            $this->_update($order['id'],array('status'=>'closed'));
+            //关闭之后发送反馈信息给创建人填写
+            $nm = new Notice_model();
+            $data['order_id'] = $order['id'];
+            $data['with_manager'] = 0;
+            $data['received_by'] = $order['created_by'];
+            $data['title'] = '关于投诉单'.$data['order_id'].'的反馈';
+            $data['direct_url'] = _url('order','feedback',array('id'=>$data['order_id'] ));
+            $nm->insert($data);
 
-
-
-
-
+        }
     }
 
     //问题重新开启
     function reopen(){
-        $this->_update(v('id'),array('status'=>'reopen'));
+        $om = new Order_model();
+        $id = v('id');
+        $order = $om->find($id);
+        if(empty($order)){
+            show_404();
+        }else{
+            $this->_update(v('id'),array('status'=>'reopen'));
+        }
     }
 
     //责任人资料
@@ -259,6 +278,36 @@ class Order extends CI_Controller {
 
     function change_content(){
         //提交后5分钟内可以修改自己刚提交的内容，提高用户体验
+    }
+
+    //用户反馈
+    function feedback(){
+        $om = new Order_model();
+        $order = $om->find(v('id'));
+        if(empty($order)){
+            show_404();
+        }else{
+            if($_POST){
+
+            }else{
+                $data['stars'] = get_options('vl_feedback');
+                render($data);
+            }
+        }
+    }
+
+    function feedback_show(){
+        $this->load->model('feedback_model');
+        $fm = new Feedback_model();
+        $f = $fm->find(v('id'));
+        if(empty($f)){
+            show_404();
+        }else{
+            $this->load->model('feedback_star_model');
+            $fsm = new Feedback_star_model();
+            $f['stars'] = $fsm->find_all_by(array('feedback_id'=>$f['id']));
+            render($f);
+        }
     }
 
     private function _update($id,$data = null){

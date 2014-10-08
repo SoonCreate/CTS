@@ -7,6 +7,9 @@
 <a href="<?= _url('order','index')?>">投诉订单列表</a>
 <a href="<?= _url('order','choose_create')?>">创建新投诉</a>
 <a href="<?= _url('order_meeting','create')?>">召开会议</a>
+<a href="<?= _url('valuelist','index')?>">值集管理</a>
+<a href="<?= _url('message','index')?>">消息管理</a>
+<a href="<?= _url('config','index')?>">系统配置</a>
 <br/>
 <br/>
 <br/>

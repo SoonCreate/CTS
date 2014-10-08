@@ -36,7 +36,7 @@ class Notice_model extends MY_Model{
             $this->load->model('order_model');
             $om = new Order_model();
             $order = $om->find($data['order_id']);
-            if(!empty($order) && $order['manager_id'] && ($data['received_by'] != $order['manager_id'])){
+            if(!empty($order) && $order['manager_id'] && ($data['received_by'] != $order['manager_id'] && $data['with_manager'])){
                 $data['received_by'] = $order['manager_id'];
                 unset($data['id']);
                 $this->insert($data);

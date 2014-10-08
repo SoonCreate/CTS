@@ -14,10 +14,6 @@ class Meeting_model extends MY_Model{
         $this->add_validate('recorder','max_length[45]');
         $this->add_validate('actor','required|max_length[255]');
 
-        //设置钩子
-        $this->before_create = array('before_insert');
-        $this->before_update = array('before_update');
-
         $this->load->model('order_meeting_model');
     }
 
@@ -60,21 +56,5 @@ class Meeting_model extends MY_Model{
 
         $this->db->trans_commit();
         return true;
-    }
-
-    function _insert(){
-
-    }
-
-    function _update(){
-
-    }
-    
-    function before_insert($data){
-        return set_creation_date($data);
-    }
-
-    function before_update($data){
-        return set_last_update($data);
     }
 }

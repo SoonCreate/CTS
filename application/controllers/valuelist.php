@@ -9,7 +9,10 @@ class Valuelist extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('welcome_message');
+        $this->load->model('valuelist_model');
+        $vm = new Valuelist_model();
+        $data['objects'] = _format_row($vm->find_all());
+        render($data);
     }
 
 

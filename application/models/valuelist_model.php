@@ -5,10 +5,7 @@ class Valuelist_model extends MY_Model{
     function __construct(){
         parent::__construct();
         $this->_table = 'valuelist_header';
-        $this->load->model('valuelist_line_model','vline');
-        //设置钩子
-        $this->before_create = array('before_insert');
-        $this->before_update = array('before_update');
+        $this->load->model('valuelist_line_model');
     }
 
     function find_lines_by_parent_segment($valuelist_id,$parent_segment,$inactive_flag = null){
@@ -64,7 +61,7 @@ class Valuelist_model extends MY_Model{
         $rs = null;
         if(!empty($header)){
 
-            if($header['from_obj'] == 1){
+            if($header['object_flag'] == 1){
                 //由对象创建
                 $this->db->select($header['value_fieldname'].' as value,'.$header['label_fieldname'].' as label');
                 $this->db->from($header['source_view']);
@@ -89,20 +86,12 @@ class Valuelist_model extends MY_Model{
     }
 
     function find_value_by_segment($valuelist_name,$segment){
-        $row = $this->vline->find_by(array('valuelist_name'=>$valuelist_name,'segment'=>$segment));
+        $vlm = new Valuelist_line_model();
+        $row = $vlm->find_by(array('valuelist_name'=>$valuelist_name,'segment'=>$segment));
         if(empty($row)){
             return $row['segment_value'];
         }else{
             return null;
         }
     }
-
-    function before_insert($data){
-       return set_creation_date($data);
-    }
-
-    function before_update($data){
-        return set_last_update($data);
-    }
-
 }

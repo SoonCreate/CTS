@@ -9,7 +9,6 @@ class Order_meeting extends CI_Controller {
         $this->load->model('meeting_file_model');
         $this->load->model('order_model');
         $this->load->model('meeting_model');
-        $this->load->model('file_model');
     }
 
     function index(){
@@ -116,6 +115,7 @@ class Order_meeting extends CI_Controller {
                 }
                 else
                 {
+                    $this->load->model('file_model');
                     $fm = new File_model();
                     $omf = new Meeting_file_model();
                     $this->db->trans_begin();
