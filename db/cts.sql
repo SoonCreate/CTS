@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 04, 2014 at 02:45 PM
+-- Generation Time: Oct 09, 2014 at 04:36 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -258,9 +258,9 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
 --
 
 INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, `action`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_flag`, `display_class`) VALUES
-(1, 'order_create', '投诉订单创建', 'order', 'create', '1', 1412060589, -1, 1412302661, 44, 1, 'goo'),
-(3, 'user_index', '用户管理首页', 'user', 'index', '', 1412147486, 44, 1412147486, 44, 1, NULL),
-(4, 'order_meeting_create', '会议创建', 'order_meeting', 'create', NULL, 1412400036, 44, 1412400036, 44, 1, '');
+(1, 'order_create', '投诉订单创建', 'order', 'create', '1', 1412060589, -1, 1412302661, 44, 1, 'goo1'),
+(3, 'user_index', '用户管理首页1', 'user', 'index', NULL, 1412147486, 44, 1412742003, 44, 1, ''),
+(4, 'order_meeting_create', '会议创建4', 'order_meeting', 'create', NULL, 1412400036, 44, 1412400036, 44, 1, '');
 
 -- --------------------------------------------------------
 
@@ -505,66 +505,71 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `title` varchar(200) NOT NULL COMMENT '标题',
   `order_id` int(11) DEFAULT NULL COMMENT '订单ID',
   `received_by` int(11) NOT NULL COMMENT '接收人',
+  `direct_url` varchar(255) DEFAULT NULL COMMENT '直接跳转至URL',
+  `with_manager` tinyint(4) NOT NULL DEFAULT '1',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `ct_notices`
 --
 
-INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `title`, `order_id`, `received_by`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(1, 21, 1, '', 1, '', 1, 44, 44, 1412149769, 1412425460, 44),
-(2, 22, 1, '', 1, '', 2, 44, 44, 1412150096, 1412425460, 44),
-(6, 26, 1, '从confirmed 变成 released', 1, '投诉单3 状态有新的变化', 3, 44, 44, 1412150362, 1412425460, 44),
-(7, 27, 1, '从allocated 变成 confirmed', 1, '投诉单1 状态有新的变化', 1, 44, 44, 1412216119, 1412425460, 44),
-(8, 28, 1, '从done 变成 allocated', 1, '投诉单1 状态有新的变化', 1, 44, 44, 1412227442, 1412425460, 44),
-(9, 29, 1, '从closed 变成 done', 1, '投诉单1 状态有新的变化', 1, 44, 44, 1412227657, 1412425460, 44),
-(10, 30, 1, '从allocated 变成 confirmed', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412227892, 1412425460, 44),
-(11, 33, 1, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412228471, 1412425460, 44),
-(12, 34, 1, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412228630, 1412425460, 44),
-(13, 35, 1, '责任人从 44 变成 40', 1, '订单 2 责任人变更', 2, 44, 44, 1412228630, 1412425460, 44),
-(14, 36, 1, '责任人从 40 变成 1', 1, '订单 2 责任人变更', 2, 44, 44, 1412228914, 1412425460, 44),
-(15, 37, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 2 责任人变更', 2, 44, 44, 1412232565, 1412425460, 44),
-(16, 38, 1, '从已确认 变成 已分配', 1, '投诉单3 状态有新的变化', 3, 44, 44, 1412232638, 1412425460, 44),
-(17, 39, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 3 责任人变更', 3, 44, 44, 1412232638, 1412425460, 44),
-(18, 40, 1, '从已分配 变成 已解决', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412232766, 1412425460, 44),
-(19, 41, 1, '从已解决 变成 已关闭', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412320728, 1412425460, 44),
-(20, 42, 1, '从已关闭 变成 重新打开', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412320737, 1412425460, 44),
-(21, 43, 1, '从已提交 变成 已确认', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399511, 1412425460, 44),
-(22, 44, 1, '从已确认 变成 已分配', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399578, 1412425460, 44),
-(23, 45, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 5 责任人变更', 5, 44, 44, 1412399578, 1412425460, 44),
-(24, 46, 1, '从已分配 变成 已解决', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399669, 1412425460, 44),
-(25, 47, 1, '从已解决 变成 已关闭', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399684, 1412425460, 44),
-(26, 48, 1, '从已关闭 变成 重新打开', 1, '投诉单5 状态有新的变化', 5, 44, 44, 1412399692, 1412425460, 44),
-(27, 49, 1, '从已提交 变成 已确认', 1, '投诉单9 状态有新的变化', 9, 44, 44, 1412407466, 1412425460, 44),
-(28, 50, 1, '从已确认 变成 已分配', 1, '投诉单9 状态有新的变化', 9, 44, 44, 1412407511, 1412425460, 44),
-(29, 51, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 9 责任人变更', 9, 44, 44, 1412407511, 1412425460, 44),
-(30, 52, 1, '从已提交 变成 已确认', 1, '投诉单17 状态有新的变化', 17, 44, 44, 1412407646, 1412425460, 44),
-(31, 53, 1, '从已确认 变成 已分配', 1, '投诉单17 状态有新的变化', 17, 44, 44, 1412407667, 1412425460, 44),
-(32, 54, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 17 责任人变更', 17, 44, 44, 1412407667, 1412425460, 44),
-(33, 55, 1, '从已提交 变成 已确认', 1, '投诉单7 状态有新的变化', 7, 44, 44, 1412407737, 1412425460, 44),
-(34, 56, 1, '从已确认 变成 已分配', 1, '投诉单7 状态有新的变化', 7, 44, 44, 1412407744, 1412425460, 44),
-(35, 57, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 7 责任人变更', 7, 44, 44, 1412407744, 1412425460, 44),
-(36, 58, 1, '从已提交 变成 已确认', 1, '投诉单8 状态有新的变化', 8, 44, 44, 1412407914, 1412425460, 44),
-(37, 59, 1, '从已确认 变成 已分配', 1, '投诉单8 状态有新的变化', 8, 44, 44, 1412407920, 1412425460, 44),
-(38, 60, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 8 责任人变更', 8, 44, 44, 1412407920, 1412425460, 44),
-(39, 61, 1, '从已提交 变成 已确认', 1, '投诉单10 状态有新的变化', 10, 44, 44, 1412408011, 1412425460, 44),
-(40, 62, 1, '从已确认 变成 已分配', 1, '投诉单10 状态有新的变化', 10, 44, 44, 1412408161, 1412425460, 44),
-(41, 63, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 10 责任人变更', 10, 44, 44, 1412408161, 1412425460, 44),
-(42, 64, 1, '从重新打开 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, 44, 1412408787, 1412425460, 44),
-(43, 65, 1, '计划完成时间变更从1407686400 改为 1407686400 ', 1, '订单$order_id 计划完成日期变更', 2, 44, 44, 1412408787, 1412425460, 44),
-(44, 66, 1, '计划完成时间变更从2014-08-11 00:00:00 改为 2014-08-11 00:30:00 ', 1, '订单$order_id 计划完成日期变更', 2, 44, 44, 1412410328, 1412425460, 44),
-(45, 67, 1, '从已提交 变成 已确认', 1, '投诉单4 状态有新的变化', 4, 44, 44, 1412412631, 1412425460, 44),
-(46, 68, 1, '责任人从 速创科技工作室1 变成 asdfsadf', 1, '订单 2 责任人变更', 2, 44, 44, 1412412997, 1412425460, 44),
-(47, 69, 1, '从已确认 变成 已分配', 1, '投诉单4 状态有新的变化', 4, 44, 44, 1412415137, 1412425460, 44),
-(48, 70, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 4 责任人变更', 4, 44, 44, 1412415138, 1412425460, 44),
-(49, 71, 1, '计划完成时间变更从 改为 2014-09-10 00:00:00 ', 1, '订单$order_id 计划完成日期变更', 4, 44, 44, 1412415138, 1412425460, 44),
-(51, 73, 1, '责任人从 速创科技工作室1 变成 恭喜发财', 1, '订单 4 责任人变更', 4, 44, 44, 1412415685, 1412425460, 44),
-(52, 73, 0, '责任人从 速创科技工作室1 变成 恭喜发财', 1, '订单 4 责任人变更', 4, 66, 44, 1412415686, 1412415686, 44);
+INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `title`, `order_id`, `received_by`, `direct_url`, `with_manager`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(1, 21, 1, '', 1, '', 1, 44, '', 1, 44, 1412149769, 1412425460, 44),
+(2, 22, 1, '', 1, '', 2, 44, '', 1, 44, 1412150096, 1412425460, 44),
+(6, 26, 1, '从confirmed 变成 released', 1, '投诉单3 状态有新的变化', 3, 44, '', 1, 44, 1412150362, 1412425460, 44),
+(7, 27, 1, '从allocated 变成 confirmed', 1, '投诉单1 状态有新的变化', 1, 44, '', 1, 44, 1412216119, 1412425460, 44),
+(8, 28, 1, '从done 变成 allocated', 1, '投诉单1 状态有新的变化', 1, 44, '', 1, 44, 1412227442, 1412425460, 44),
+(9, 29, 1, '从closed 变成 done', 1, '投诉单1 状态有新的变化', 1, 44, '', 1, 44, 1412227657, 1412425460, 44),
+(10, 30, 1, '从allocated 变成 confirmed', 1, '投诉单2 状态有新的变化', 2, 44, '', 1, 44, 1412227892, 1412425460, 44),
+(11, 33, 1, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, '', 1, 44, 1412228471, 1412425460, 44),
+(12, 34, 1, '从已分配 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, '', 1, 44, 1412228630, 1412425460, 44),
+(13, 35, 1, '责任人从 44 变成 40', 1, '订单 2 责任人变更', 2, 44, '', 1, 44, 1412228630, 1412425460, 44),
+(14, 36, 1, '责任人从 40 变成 1', 1, '订单 2 责任人变更', 2, 44, '', 1, 44, 1412228914, 1412425460, 44),
+(15, 37, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 2 责任人变更', 2, 44, '', 1, 44, 1412232565, 1412425460, 44),
+(16, 38, 1, '从已确认 变成 已分配', 1, '投诉单3 状态有新的变化', 3, 44, '', 1, 44, 1412232638, 1412425460, 44),
+(17, 39, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 3 责任人变更', 3, 44, '', 1, 44, 1412232638, 1412425460, 44),
+(18, 40, 1, '从已分配 变成 已解决', 1, '投诉单2 状态有新的变化', 2, 44, '', 1, 44, 1412232766, 1412425460, 44),
+(19, 41, 1, '从已解决 变成 已关闭', 1, '投诉单2 状态有新的变化', 2, 44, '', 1, 44, 1412320728, 1412425460, 44),
+(20, 42, 1, '从已关闭 变成 重新打开', 1, '投诉单2 状态有新的变化', 2, 44, '', 1, 44, 1412320737, 1412425460, 44),
+(21, 43, 1, '从已提交 变成 已确认', 1, '投诉单5 状态有新的变化', 5, 44, '', 1, 44, 1412399511, 1412425460, 44),
+(22, 44, 1, '从已确认 变成 已分配', 1, '投诉单5 状态有新的变化', 5, 44, '', 1, 44, 1412399578, 1412425460, 44),
+(23, 45, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 5 责任人变更', 5, 44, '', 1, 44, 1412399578, 1412425460, 44),
+(24, 46, 1, '从已分配 变成 已解决', 1, '投诉单5 状态有新的变化', 5, 44, '', 1, 44, 1412399669, 1412425460, 44),
+(25, 47, 1, '从已解决 变成 已关闭', 1, '投诉单5 状态有新的变化', 5, 44, '', 1, 44, 1412399684, 1412425460, 44),
+(26, 48, 1, '从已关闭 变成 重新打开', 1, '投诉单5 状态有新的变化', 5, 44, '', 1, 44, 1412399692, 1412425460, 44),
+(27, 49, 1, '从已提交 变成 已确认', 1, '投诉单9 状态有新的变化', 9, 44, '', 1, 44, 1412407466, 1412425460, 44),
+(28, 50, 1, '从已确认 变成 已分配', 1, '投诉单9 状态有新的变化', 9, 44, '', 1, 44, 1412407511, 1412425460, 44),
+(29, 51, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 9 责任人变更', 9, 44, '', 1, 44, 1412407511, 1412425460, 44),
+(30, 52, 1, '从已提交 变成 已确认', 1, '投诉单17 状态有新的变化', 17, 44, '', 1, 44, 1412407646, 1412425460, 44),
+(31, 53, 1, '从已确认 变成 已分配', 1, '投诉单17 状态有新的变化', 17, 44, '', 1, 44, 1412407667, 1412425460, 44),
+(32, 54, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 17 责任人变更', 17, 44, '', 1, 44, 1412407667, 1412425460, 44),
+(33, 55, 1, '从已提交 变成 已确认', 1, '投诉单7 状态有新的变化', 7, 44, '', 1, 44, 1412407737, 1412425460, 44),
+(34, 56, 1, '从已确认 变成 已分配', 1, '投诉单7 状态有新的变化', 7, 44, '', 1, 44, 1412407744, 1412425460, 44),
+(35, 57, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 7 责任人变更', 7, 44, '', 1, 44, 1412407744, 1412425460, 44),
+(36, 58, 1, '从已提交 变成 已确认', 1, '投诉单8 状态有新的变化', 8, 44, '', 1, 44, 1412407914, 1412425460, 44),
+(37, 59, 1, '从已确认 变成 已分配', 1, '投诉单8 状态有新的变化', 8, 44, '', 1, 44, 1412407920, 1412425460, 44),
+(38, 60, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 8 责任人变更', 8, 44, '', 1, 44, 1412407920, 1412425460, 44),
+(39, 61, 1, '从已提交 变成 已确认', 1, '投诉单10 状态有新的变化', 10, 44, '', 1, 44, 1412408011, 1412425460, 44),
+(40, 62, 1, '从已确认 变成 已分配', 1, '投诉单10 状态有新的变化', 10, 44, '', 1, 44, 1412408161, 1412425460, 44),
+(41, 63, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 10 责任人变更', 10, 44, '', 1, 44, 1412408161, 1412425460, 44),
+(42, 64, 1, '从重新打开 变成 已分配', 1, '投诉单2 状态有新的变化', 2, 44, '', 1, 44, 1412408787, 1412425460, 44),
+(43, 65, 1, '计划完成时间变更从1407686400 改为 1407686400 ', 1, '订单$order_id 计划完成日期变更', 2, 44, '', 1, 44, 1412408787, 1412425460, 44),
+(44, 66, 1, '计划完成时间变更从2014-08-11 00:00:00 改为 2014-08-11 00:30:00 ', 1, '订单$order_id 计划完成日期变更', 2, 44, '', 1, 44, 1412410328, 1412425460, 44),
+(45, 67, 1, '从已提交 变成 已确认', 1, '投诉单4 状态有新的变化', 4, 44, '', 1, 44, 1412412631, 1412425460, 44),
+(46, 68, 1, '责任人从 速创科技工作室1 变成 asdfsadf', 1, '订单 2 责任人变更', 2, 44, '', 1, 44, 1412412997, 1412425460, 44),
+(47, 69, 1, '从已确认 变成 已分配', 1, '投诉单4 状态有新的变化', 4, 44, '', 1, 44, 1412415137, 1412425460, 44),
+(48, 70, 1, '责任人从 未知 变成 速创科技工作室1', 1, '订单 4 责任人变更', 4, 44, '', 1, 44, 1412415138, 1412425460, 44),
+(49, 71, 1, '计划完成时间变更从 改为 2014-09-10 00:00:00 ', 1, '订单$order_id 计划完成日期变更', 4, 44, '', 1, 44, 1412415138, 1412425460, 44),
+(51, 73, 1, '责任人从 速创科技工作室1 变成 恭喜发财', 1, '订单 4 责任人变更', 4, 44, '', 1, 44, 1412415685, 1412425460, 44),
+(52, 73, 0, '责任人从 速创科技工作室1 变成 恭喜发财', 1, '订单 4 责任人变更', 4, 66, '', 1, 44, 1412415686, 1412415686, 44),
+(53, 74, 1, '从已分配 变成 已关闭', 1, '投诉单2 状态有新的变化', 2, 44, NULL, 1, 44, 1412732259, 1412732278, 44),
+(54, 74, 0, '从已分配 变成 已关闭', 1, '投诉单2 状态有新的变化', 2, 66, NULL, 1, 44, 1412732259, 1412732259, 44),
+(55, NULL, 1, NULL, 0, '关于投诉单2的反馈', 2, 44, 'http://localhost/cts/index.php/order/feedback?id=2', 0, 44, 1412732259, 1412732499, 44);
 
 -- --------------------------------------------------------
 
@@ -603,7 +608,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
 
 INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, `category`, `title`, `manager_id`, `plan_complete_date`, `contact`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `warning_count`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'employee', 'closed', 'low', 'low', '30', 'google', 1, 1412697600, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058395, 44, 1412227657, 44),
-(2, 'employee', 'allocated', 'low', 'low', '30', 'google', 66, 1407688200, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058525, 44, 1412412997, 44),
+(2, 'employee', 'closed', 'low', 'low', '30', 'google', 66, 1407688200, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058525, 44, 1412732259, 44),
 (3, 'employee', 'allocated', 'low', 'low', '30', 'google', 44, 0, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058552, 44, 1412232638, 44),
 (4, 'employee', 'allocated', 'low', 'low', '30', 'google', 66, 1410278400, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058587, 44, 1412415685, 44),
 (5, 'employee', 'reopen', 'low', 'low', '30', 'google', 44, 1412352000, '陈先生', NULL, '13736777206', NULL, NULL, 0, 1412058603, 44, 1412399692, 44),
@@ -745,7 +750,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=74 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -819,7 +824,8 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (69, 4, 'status_update', 'allocated', 'confirmed', NULL, 1412415137, 1412415137, 44, 1412415137, 44),
 (70, 4, 'manager_change', '44', '0', NULL, 1412415137, 1412415138, 44, 1412415138, 44),
 (71, 4, 'pcd_update', '1410278400', NULL, NULL, 1412415137, 1412415138, 44, 1412415138, 44),
-(73, 4, 'manager_change', '66', '44', 'adf', 1412415685, 1412415685, 44, 1412415689, 44);
+(73, 4, 'manager_change', '66', '44', 'adf', 1412415685, 1412415685, 44, 1412415689, 44),
+(74, 2, 'status_update', 'closed', 'allocated', NULL, 1412732259, 1412732259, 44, 1412732259, 44);
 
 -- --------------------------------------------------------
 
@@ -1000,7 +1006,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -1238,7 +1244,7 @@ INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`,
 (46, 'yacole2', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', NULL, NULL, NULL, NULL, NULL, '陈杨阳', 0, 0, 0, 1, 44, 1412230134, 1412230134, 44),
 (47, 'hellogs', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '高哨', 0, 0, 0, 1, 44, 1412230196, 1412230196, 44),
 (48, 'yacole111', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', '', 'gs1357@qq.com', '', '', '', 'asdfasdf', 0, 1, 0, 1, 44, 1412230229, 1412415433, 44),
-(66, 'asdfasdf', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', '', 'gs1357@qq.com', '', '', '', '恭喜发财', 0, 1, 0, 0, 44, 1412231054, 1412415498, 44),
+(66, 'asdfasdf', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', '', 'gs1357@qq.com', '', '', '', '恭喜发财1', 0, 1, 0, 0, 44, 1412231054, 1412744428, 44),
 (67, 'yyyyyy', '3421ecde2a5de6543b48460b867cf323b018bc22', 'female', '', '', '', '', '', 'yyyyyy', 0, 0, 0, 0, 44, 1412404281, 1412404332, 44),
 (68, 'ddddd', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'female', 'ddd', NULL, NULL, '111', NULL, 'ddd', 0, 0, 0, 1, 44, 1412404348, 1412404348, 44);
 
@@ -1345,7 +1351,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `valuelist_name` varchar(20) NOT NULL COMMENT '值集名称',
   `description` varchar(255) NOT NULL COMMENT '描述',
-  `from_obj` tinyint(4) DEFAULT '0' COMMENT '是否表/视图对象',
+  `object_flag` tinyint(4) DEFAULT '0' COMMENT '是否表/视图对象',
   `label_fieldname` varchar(100) DEFAULT NULL COMMENT '描述字段',
   `value_fieldname` varchar(100) DEFAULT NULL COMMENT '值字段',
   `source_view` varchar(100) DEFAULT NULL COMMENT '源表/视图',
@@ -1358,14 +1364,14 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
 --
 
-INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `from_obj`, `label_fieldname`, `value_fieldname`, `source_view`, `condition`, `parent_id`, `editable_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'vl_order_type', '投诉订单类型', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `object_flag`, `label_fieldname`, `value_fieldname`, `source_view`, `condition`, `parent_id`, `editable_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(1, 'vl_order_type', '投诉订单类型1', 0, NULL, NULL, NULL, NULL, 0, 1, NULL, NULL, 1412753720, 44),
 (2, 'vl_severity', '严重程度', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (3, 'vl_priority', '优先级', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (4, 'vl_frequency', '发生频率', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
@@ -1377,12 +1383,24 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `from_
 (11, 'ao_only_mine', '只能查询自己的订单', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (12, 'default_category', '订单默认的分类（在分类未开启时）', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
 (14, 'vl_dll_type', '数据库dll操作类型', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(15, 'vl_valuelist', '值集列表', 1, 'description', 'id', 'ct_valuelist_header', 'valuelist_name like ''vl_%''', NULL, 1, NULL, NULL, NULL, NULL),
+(15, 'vl_valuelist', '值集列表', 1, 'label', 'value', 'ct_valuelist_header_vl', '', NULL, 1, NULL, NULL, NULL, NULL),
 (16, 'vl_order_status', '投诉单状态', 1, 'segment_desc', 'segment_value', 'ct_order_status_vl', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (17, 'vl_user', '用户列表', 1, 'full_name', 'id', 'ct_users', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (18, 'vl_meeting_cancel', '会议取消原因', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(19, 'vl_sex', '用户性别', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+(19, 'vl_sex', '用户性别', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(20, 'vl_feedback', '订单反馈项目', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(21, '', '投诉订单类型1', 0, NULL, NULL, NULL, NULL, 0, 1, 1412753519, 44, 1412753519, 44),
+(22, 'vl_test', 'vl_test', 1, 'value', 'label', 'ct_valuelist_hader', '', 1, 1, 1412754189, 44, 1412754359, 44);
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_valuelist_header_vl`
+--
+CREATE TABLE IF NOT EXISTS `ct_valuelist_header_vl` (
+`value` int(11)
+,`label` varchar(278)
+);
 -- --------------------------------------------------------
 
 --
@@ -1405,7 +1423,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -1414,7 +1432,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
 INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_value`, `segment_desc`, `inactive_flag`, `sort`, `parent_segment_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 1, '10', 'vendor', '供应商投诉单', 0, 1, '0', NULL, NULL, NULL, NULL),
 (2, 1, '20', 'employee', '内部员工投诉单', 0, 2, '0', NULL, NULL, NULL, NULL),
-(3, 1, '30', 'customer', '客户投诉单', 0, 0, '0', NULL, NULL, NULL, NULL),
+(3, 1, '30', 'customer', '客户投诉单', 0, 0, '0', NULL, NULL, 1412817806, -1),
 (4, 2, '30', 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
 (5, 2, '20', 'middle', '中', 0, 0, '0', NULL, NULL, NULL, NULL),
 (6, 2, '10', 'high', '高', 0, 0, '0', NULL, NULL, NULL, NULL),
@@ -1442,7 +1460,9 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (35, 18, '20', '20', '创建失误', 0, 0, NULL, NULL, NULL, NULL, NULL),
 (36, 18, '30', '30', '确认无需再召开', 0, 0, NULL, NULL, NULL, NULL, NULL),
 (37, 19, '10', 'male', '男', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(38, 19, '20', 'female', '女', 0, 0, NULL, NULL, NULL, NULL, NULL);
+(38, 19, '20', 'female', '女', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(39, 20, '10', '10', '响应速度', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(40, 20, '20', '20', '服务态度', 0, 0, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1452,7 +1472,7 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 CREATE TABLE IF NOT EXISTS `ct_valuelist_lines_v` (
 `valuelist_name` varchar(20)
 ,`description` varchar(255)
-,`from_obj` tinyint(4)
+,`object_flag` tinyint(4)
 ,`label_fieldname` varchar(100)
 ,`value_fieldname` varchar(100)
 ,`source_view` varchar(100)
@@ -1612,11 +1632,20 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `ct_valuelist_header_vl`
+--
+DROP TABLE IF EXISTS `ct_valuelist_header_vl`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_header_vl` AS select `ct_valuelist_header`.`id` AS `value`,concat(`ct_valuelist_header`.`valuelist_name`,' - ',`ct_valuelist_header`.`description`) AS `label` from `ct_valuelist_header` where (`ct_valuelist_header`.`valuelist_name` like 'vl_%');
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `ct_valuelist_lines_v`
 --
 DROP TABLE IF EXISTS `ct_valuelist_lines_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_lines_v` AS select `h`.`valuelist_name` AS `valuelist_name`,`h`.`description` AS `description`,`h`.`from_obj` AS `from_obj`,`h`.`label_fieldname` AS `label_fieldname`,`h`.`value_fieldname` AS `value_fieldname`,`h`.`source_view` AS `source_view`,`h`.`condition` AS `condition`,`h`.`parent_id` AS `parent_id`,`l`.`id` AS `id`,`l`.`valuelist_id` AS `valuelist_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`inactive_flag` AS `inactive_flag`,`l`.`sort` AS `sort`,`l`.`parent_segment_value` AS `parent_segment`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by` from (`ct_valuelist_header` `h` join `ct_valuelist_lines` `l`) where (`h`.`id` = `l`.`valuelist_id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_lines_v` AS select `h`.`valuelist_name` AS `valuelist_name`,`h`.`description` AS `description`,`h`.`object_flag` AS `object_flag`,`h`.`label_fieldname` AS `label_fieldname`,`h`.`value_fieldname` AS `value_fieldname`,`h`.`source_view` AS `source_view`,`h`.`condition` AS `condition`,`h`.`parent_id` AS `parent_id`,`l`.`id` AS `id`,`l`.`valuelist_id` AS `valuelist_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`inactive_flag` AS `inactive_flag`,`l`.`sort` AS `sort`,`l`.`parent_segment_value` AS `parent_segment`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by` from (`ct_valuelist_header` `h` join `ct_valuelist_lines` `l`) where (`h`.`id` = `l`.`valuelist_id`);
 
 -- --------------------------------------------------------
 
