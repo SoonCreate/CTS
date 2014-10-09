@@ -118,7 +118,7 @@ class Valuelist extends CI_Controller {
                         }else{
                             $has = false;
                             foreach($lines as $l){
-                                if($l['segment_value'] == $parent_segment){
+                                if($l['value'] == $parent_segment){
                                     $has = true;
                                     break;
                                 }
@@ -149,11 +149,11 @@ class Valuelist extends CI_Controller {
     function item_create(){
         $vm = new Valuelist_model();
         $parent_segment = v('parent_segment');
-        $h = $vm->find(v('id'));
+        $valuelist_id = v('id');
+        $h = $vm->find($valuelist_id);
         if(empty($h)){
             show_404();
         }else{
-            $vlm = new Valuelist_line_model();
             //如果存在父值集，没有指定父值集项目的时候，默认第一项
             if($h['parent_id']){
                 $parent = $vm->find($h['parent_id']);
@@ -167,13 +167,14 @@ class Valuelist extends CI_Controller {
                         }else{
                             $has = false;
                             foreach($lines as $l){
-                                if($l['segment_value'] == $parent_segment){
+                                if($l['value'] == $parent_segment){
                                     $has = true;
                                     break;
                                 }
                             }
                             if($has){
-                                render();
+
+                                $this->_item_create();
                             }else{
                                 echo '父值集无'.$parent_segment.'项目';
                             }
@@ -184,7 +185,7 @@ class Valuelist extends CI_Controller {
                     }
                 }
             }else{
-                render();
+                $this->_item_create();
             }
         }
     }
@@ -202,6 +203,45 @@ class Valuelist extends CI_Controller {
                 echo 'fail';
             }
         }
+    }
+
+    private function _item_create(){
+        $vlm = new Valuelist_line_model();
+        $valulist_id = v('id');
+        $parent_segment = v('parent_segment');
+        if($_POST){
+            //验证唯一性
+            $line = $vlm->find_by(array('valuelist_id'=>$valulist_id,'parent_segment_value'=>$parent_segment,'segment'=>v('segment')));
+            if(empty($line)){
+                $_POST['valuelist_id'] = $valulist_id;
+                $_POST['parent_segment_value'] = $parent_segment;
+                $_POST['inactive_flag'] = v('inactive_flag');
+                if($vlm->insert(_data('valuelist_id','segment','segment_value','segment_desc','sort','inactive_flag','parent_segment_value'))){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+            }else{
+                echo '值已存在，请检查输入';
+            }
+        }else{
+
+            //默认段值
+            if($parent_segment){
+                $this->db->select_max('segment');
+                $line = $vlm->find_all_by(array('valuelist_id'=>$valulist_id,'parent_segment_value'=>$parent_segment));
+
+            }else{
+                $this->db->select_max('segment');
+                $line = $vlm->find_all_by(array('valuelist_id'=>$valulist_id));
+            }
+            $data['default_segment'] = string_to_number($line[0]['segment']) + 10;
+            $this->load->view('valuelist/item_create',$data);
+        }
+    }
+
+    function item_edit(){
+
     }
 
 }
