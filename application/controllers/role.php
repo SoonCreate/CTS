@@ -6,6 +6,9 @@ class Role extends CI_Controller {
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('role_model');
+        $this->load->model('authority_object_model');
+
+        $this->load->model('role_profile_model');
         $this->load->model('role_profile_line_model');
         $this->load->model('user_role_model');
         $this->load->model('role_module_line_model');
@@ -212,17 +215,101 @@ class Role extends CI_Controller {
 
     }
 
-    function profiles(){
-        $pl = new Role_profile_line_model();
-        $role_id = v('role_id');
-        $lines = $pl->find_all_by_view(array('role_id'=>$role_id));
-        $data['objects'] = _format($lines);
-        $data['role_id'] = $role_id;
-        render($data);
+    function profile(){
+        $rpm = new Role_profile_model();
+        $rm = new Role_model();
+        $role = $rm->find(v('role_id'));
+        if(empty($role)){
+            show_404();
+        }else{
+            $lines = $rpm->find_all_by_view(array('role_id'=>$role['id']));
+            $data['objects'] = _format($lines);
+            render($data);
+        }
     }
 
     function profile_add_object(){
         //选择权限对象时过滤值集以ao_开头
+        $rm = new Role_model();
+        $r = $rm->find(v('role_id'));
+        if(empty($r)){
+            show_404();
+        }else{
+            if($_POST){
+                $object_id = v('object_id');
+                $this->load->model('authobj_line_model');
+                $rpm = new Role_profile_model();
+                $alm = new Authobj_line_model();
+                $lines = $alm->find_all_by(array('object_id'=>$object_id));
+                $this->db->trans_start();
+                $profile['role_id'] = $r['id'];
+                $profile['object_id'] = $object_id;
+                $profile_id = $rpm->insert($profile);
+                foreach($lines as $l){
+                    $line['profile_id'] = $profile_id;
+                    $line['object_line_id'] = $l['id'];
+                    $line['auth_value'] = $l['default_value'];
+                }
+                if ($this->db->trans_status() === FALSE) {
+                    echo '数据库插入错误';
+                }else{
+                    echo 'done';
+                }
+            }else{
+                $aom = new Authority_object_model();
+                $data['objects'] = $aom->find_all();
+                render($data);
+            }
+        }
+    }
 
+    function profile_destroy(){
+        $rpm = new Role_profile_model();
+        $profile = $rpm->find(v('id'));
+        if(empty($profile)){
+            show_404();
+        }else{
+            $rplm = new Role_profile_line_model();
+            $this->db->trans_start();
+            $rplm->delete_by(array('profile_id'=>$profile['id']));
+            $rpm->delete($profile['id']);
+            if ($this->db->trans_status() === FALSE) {
+                echo '数据库错误';
+            }else{
+                echo 'done';
+            }
+        }
+    }
+
+    function profile_object_items(){
+        $rpm = new Role_profile_model();
+        $profile = $rpm->find(v('id'));
+        if(empty($profile)){
+            show_404();
+        }else{
+            $rplm = new Role_profile_line_model();
+            $data['objects'] = _format($rplm->find_all_by_view(array('profile_id'=>$profile['id'])));
+            render($data);
+        }
+    }
+
+    //权限对象值编辑
+    function profile_object_item_edit(){
+        $rpm = new Role_profile_line_model();
+        $line = $rpm->find(v('id'));
+        if(empty($line)){
+            show_404();
+        }else{
+            if($_POST){
+                if($rpm->update($line['id'],_data('auth_value'))){
+                    echo 'done';
+                }else{
+                    echo 'fail';
+                }
+            }else{
+                render($line);
+            }
+
+        }
     }
 }

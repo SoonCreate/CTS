@@ -12,6 +12,7 @@ class MY_Model extends CI_Model
      * guessed by pluralising the model name.
      */
     protected $_table;
+    protected $_view;
 
     /**
      * This model's default primary key or unique identifier.
@@ -124,7 +125,7 @@ class MY_Model extends CI_Model
 
         $this->limit(1);
 
-        $row = $this->db->get($this->_table.'_v')
+        $row = $this->db->get($this->_view)
             ->{$this->_return_type()}();
         $this->_temporary_return_type = $this->return_type;
 
@@ -164,7 +165,7 @@ class MY_Model extends CI_Model
 
         $this->_run_before_callbacks('get');
 
-        $result = $this->db->get($this->_table.'_v')
+        $result = $this->db->get($this->_view)
             ->{$this->_return_type(1)}();
         $this->_temporary_return_type = $this->return_type;
 
@@ -430,7 +431,7 @@ class MY_Model extends CI_Model
         $where = func_get_args();
         $this->_set_where($where);
 
-        return $this->db->count_all_results($this->_table.'_v');
+        return $this->db->count_all_results($this->_view);
     }
 
     /**
@@ -684,6 +685,7 @@ class MY_Model extends CI_Model
         if ($this->_table == NULL)
         {
             $this->_table = plural(preg_replace('/(_m|_model)?$/', '', strtolower(get_class($this))));
+            $this->_view = $this->_table.'_v';
         }
     }
 

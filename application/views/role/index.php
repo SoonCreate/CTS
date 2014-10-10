@@ -15,7 +15,7 @@
             <a href="<?= _url('role','destroy',array('id'=>$o['id']))?>">删除</a> &nbsp;|&nbsp;
             <a href="<?= _url('role','allocate_users',array('role_id'=>$o['id']))?>">分配到用户</a>&nbsp;|&nbsp;
             <a href="<?= _url('role','choose_functions',array('role_id'=>$o['id']))?>">功能模块管理</a>&nbsp;|&nbsp;
-            <a href="<?= _url('role','profiles',array('role_id'=>$o['id']))?>">权限对象管理</a>
+            <a href="<?= _url('role','profile',array('role_id'=>$o['id']))?>">权限对象管理</a>
         </td>
 
     </tr>

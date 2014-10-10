@@ -44,7 +44,15 @@ if(!is_order_locked($status)){?>
 标题：<?= $title ?><br/>
 内容：<br/>
 <?php foreach($contents as $c):?>
-<?php if($c['created_by'] == _sess('uid')) :  echo '投诉人：'.$c['content']; else : echo $c['content'] ;endif; ?><br/>
+<?php if($c['created_by'] == _sess('uid')) {
+        echo '投诉人：' . $c['content'];
+    }else {
+        if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){
+            echo full_name($c['created_by']) .'：'.$c['content'];
+        }else{
+            echo $c['content'];
+        }
+    } ?><br/>
 <?php endforeach;?>
 <hr/>
 
@@ -77,20 +85,23 @@ if(!is_order_locked($status)){?>
     <th>日志类型</th>
     <th>内容</th>
     <th>操作时间</th>
+<?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))):?>
     <th>操作人</th>
     <th>原因</th>
+    <?php endif;?>
+
     </thead>
     <?php foreach($logs as $l):
-        echo $l['log_type'];
-        if(check_auth('log_display_control',array('ao_log_type'=>$l['log_type']))){
         ?>
         <tr>
             <td><?= $l['description']?></td>
             <td><?= $l['content']?></td>
             <td><?= related_time($l['creation_date'])?></td>
-            <td><?= $l['created_by']?></td>
-            <td><?= $l['reason']?></td>
+            <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))):?>
+                <td><?= $l['created_by']?></td>
+                <td><?= $l['reason']?></td>
+            <?php endif;?>
+
         </tr>
-    <?php }
-    endforeach;?>
+    <?php endforeach;?>
 </table>

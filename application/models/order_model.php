@@ -214,13 +214,19 @@ class Order_model extends MY_Model{
         $olm = new Order_log_model();
         $this->db->order_by('creation_date','desc');
         $logs = $olm->find_all_by_view(array('order_id'=>$order_id));
+        $return = array();
         if(empty($logs)){
             return array();
         }else{
             for($i=0;$i<count($logs);$i++){
-                $logs[$i]['content'] = $this->_format_log($logs[$i],$logs[$i]['content']);
+                //检查是否拥有日志类型的查看权限
+                if(check_auth('log_display_control',array('ao_log_type'=>$logs[$i]['log_type']))){
+                    $logs[$i]['content'] = $this->_format_log($logs[$i],$logs[$i]['content']);
+                    array_push($return,$logs[$i]);
+                }
+//                $logs[$i]['content'] = $this->_format_log($logs[$i],$logs[$i]['content']);
             }
-            return $logs;
+            return $return;
         }
     }
 
