@@ -81,7 +81,13 @@ class Auth_object extends CI_Controller {
     }
 
     function item_edit(){
+        $alm = new Authobj_line_model();
+        $line = $alm->find('id');
+        if(empty($line)){
+            show_404();
+        }else{
 
+        }
     }
 
     function item_create(){

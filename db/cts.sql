@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2014 at 12:34 PM
+-- Generation Time: Oct 10, 2014 at 02:33 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `ct_authobj_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`object_id`,`valuelist_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象明细表' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象明细表' AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `ct_authobj_lines`
@@ -48,7 +48,8 @@ INSERT INTO `ct_authobj_lines` (`id`, `object_id`, `valuelist_id`, `default_valu
 (4, 1, 6, 'all', NULL, NULL, NULL, NULL),
 (5, 1, 8, 'all', NULL, NULL, NULL, NULL),
 (6, 2, 11, 'TRUE', NULL, NULL, NULL, NULL),
-(7, 3, 25, 'all', NULL, NULL, NULL, NULL);
+(7, 3, 25, 'all', NULL, NULL, NULL, NULL),
+(8, 4, 11, 'TRUE', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -85,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `object_name` (`object_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象表' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_authority_objects`
@@ -94,7 +95,8 @@ CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
 INSERT INTO `ct_authority_objects` (`id`, `object_name`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'category_control', '订单控制权限对象1', NULL, NULL, 1411958674, -1),
 (2, 'only_mine_control', '只能自己的订单', 1412066866, -1, 1412066866, -1),
-(3, 'log_display_control', '订单日志类型显示控制', 1412928745, 44, 1412928745, 44);
+(3, 'log_display_control', '订单日志类型显示控制', 1412928745, 44, 1412928745, 44),
+(4, 'log_display_fullname', '投诉单日志是否显示操作人姓名', 1412937910, 44, 1412937910, 44);
 
 -- --------------------------------------------------------
 
@@ -1073,7 +1075,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`role_id`,`object_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `ct_role_profiles`
@@ -1082,8 +1084,26 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
 INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 1, 1, NULL, NULL, NULL, NULL),
 (2, 1, 2, NULL, NULL, NULL, NULL),
-(3, 1, 3, NULL, NULL, NULL, NULL);
+(3, 1, 3, NULL, NULL, NULL, NULL),
+(4, 1, 4, NULL, NULL, NULL, NULL),
+(5, 1, 4, 1412942024, 44, 1412942024, 44);
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_role_profiles_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_role_profiles_v` (
+`id` int(11)
+,`role_id` int(11)
+,`object_id` int(11)
+,`creation_date` int(11)
+,`created_by` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`object_name` varchar(20)
+,`object_desc` varchar(255)
+);
 -- --------------------------------------------------------
 
 --
@@ -1101,7 +1121,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`profile_id`,`object_line_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `ct_role_profile_lines`
@@ -1112,7 +1132,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (2, 1, 4, 'all', NULL, NULL, NULL, NULL),
 (3, 1, 5, 'all', NULL, NULL, NULL, NULL),
 (4, 2, 6, 'TRUE', NULL, NULL, NULL, NULL),
-(5, 3, 7, 'all', NULL, NULL, NULL, NULL);
+(5, 3, 7, 'status_update', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1622,6 +1642,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_role_module_lines_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_role_module_lines_v` AS select `l`.`id` AS `role_module_line_id`,`l`.`role_id` AS `role_id`,`ml`.`id` AS `id`,`ml`.`module_id` AS `module_id`,`ml`.`function_id` AS `function_id`,`ml`.`sort` AS `sort`,`ml`.`creation_date` AS `creation_date`,`ml`.`created_by` AS `created_by`,`ml`.`last_update_date` AS `last_update_date`,`ml`.`last_updated_by` AS `last_updated_by`,`ml`.`module_name` AS `module_name`,`ml`.`module_desc` AS `module_desc`,`ml`.`function_name` AS `function_name`,`ml`.`function_desc` AS `function_desc`,`ml`.`module_sort` AS `module_sort`,`ml`.`controller` AS `controller`,`ml`.`action` AS `action`,`ml`.`display_flag` AS `display_flag`,`ml`.`function_display_class` AS `function_display_class`,`ml`.`module_display_class` AS `module_display_class` from (`ct_role_module_lines` `l` join `ct_module_lines_v` `ml`) where (`l`.`module_line_id` = `ml`.`id`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_role_profiles_v`
+--
+DROP TABLE IF EXISTS `ct_role_profiles_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_role_profiles_v` AS select `rp`.`id` AS `id`,`rp`.`role_id` AS `role_id`,`rp`.`object_id` AS `object_id`,`rp`.`creation_date` AS `creation_date`,`rp`.`created_by` AS `created_by`,`rp`.`last_update_date` AS `last_update_date`,`rp`.`last_updated_by` AS `last_updated_by`,`ao`.`object_name` AS `object_name`,`ao`.`description` AS `object_desc` from (`ct_role_profiles` `rp` join `ct_authority_objects` `ao`) where (`rp`.`object_id` = `ao`.`id`);
 
 -- --------------------------------------------------------
 
