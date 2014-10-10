@@ -1,8 +1,8 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-$lang['label_version'] = "闭环跟踪系统Beta 1.0";
+$lang['system_version'] = "闭环跟踪系统Beta 1.0";
 
-$lang['label_administrator'] = '系统管理员';
+$lang['administrator'] = '系统管理员';
 
 $lang['label_need_select'] = "请选择";
 $lang['label_save'] = "保存";

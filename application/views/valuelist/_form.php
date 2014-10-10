@@ -13,7 +13,10 @@
 <input name="value_fieldname" id="value_fieldname" type="text" value="<?= _v('value_fieldname')?>"/><br/>
 
 <label for="source_view">源表/视图</label>
-<input name="source_view" id="source_view" type="text" value="<?= _v('source_view')?>"/><br/>
+<select id="source_view" name="source_view">
+<?php render_options_with_value('vl_tables',_v('source_view'))?>
+</select>
+<br/>
 
 <label for="condition">查询条件</label>
 <textarea name="condition" id="condition" type="text"><?= _v('condition')?></textarea><br/>

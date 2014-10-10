@@ -42,7 +42,8 @@ function _url($controller,$action,$params = null){
             $i = $i + 1;
         }
     }
-    return 'http://'._config('site_url').site_url($controller.'/'.$action.$paramstr);
+//    return 'http://'._config('site_url').site_url($controller.'/'.$action.$paramstr);
+    return site_url($controller.'/'.$action.$paramstr);
 }
 
 //将结果集装换成JSON
@@ -83,7 +84,7 @@ function set_creation_date($data){
 //姓名或公司名
 function full_name($id){
     if($id == -1){
-        return _text('label_administrator');
+        return _text('administrator');
     }else{
         if(is_null($id)){
             return _text('label_unknow');
@@ -490,4 +491,19 @@ function _data(){
 //输出文件链接
 function render_file_link($file){
     echo '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
+}
+
+if ( ! function_exists('lang'))
+{
+    function lang($line, $id = '')
+    {
+        $line = _text($line);
+
+        if ($id != '')
+        {
+            $line = '<label for="'.$id.'">'.$line."</label>";
+        }
+
+        return $line;
+    }
 }

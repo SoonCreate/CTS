@@ -4,6 +4,7 @@ class Config_model extends MY_Model{
 
     function __construct(){
         parent::__construct();
+        $this->add_validate('config_value','required|max_length[255]');
     }
 
     function find_value_by_name($config_name){

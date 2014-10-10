@@ -308,7 +308,7 @@ function _text()
 	}
 	else
 	{
-		return false;
+		return $arg_list[0];
 	}
 	
 }

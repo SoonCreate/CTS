@@ -9,18 +9,32 @@ class Configs extends CI_Controller {
     }
 
     function index(){
-    }
-
-    function create(){
-
+        $cm = new Config_model();
+        $data['objects'] = $cm->find_all();
+        render($data);
     }
 
     function edit(){
+        $cm = new Config_model();
+        $config = $cm->find(v('id'));
+        if(empty($config)){
+            show_404();
+        }else{
+            if($config['editable_flag']){
+                if($_POST){
+                    if($cm->update($config['id'],_data('config_value'))){
+                        echo 'done';
+                    }else{
+                        echo validation_errors('<div class="error">', '</div>');
+                    }
+                }else{
+                    render($config);
+                }
 
-    }
-
-    function destroy(){
-
+            }else{
+                show_404();
+            }
+        }
     }
 
 

@@ -195,7 +195,7 @@ class Role extends CI_Controller {
     function profiles(){
         $pl = new Role_profile_line_model();
         $role_id = v('role_id');
-        $lines = $pl->find_all_from_view(array('role_id'=>$role_id));
+        $lines = $pl->find_all_by_view(array('role_id'=>$role_id));
         $data['objects'] = _format($lines);
         $data['role_id'] = $role_id;
         render($data);
