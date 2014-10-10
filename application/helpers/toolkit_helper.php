@@ -368,6 +368,14 @@ function check_function_auth(){
 
 }
 
+//验证当前用户是否拥有权限
+function check_auth($auth_object_name,$auth_items,$user_id = null){
+    $CI =  &get_instance();
+    $CI->load->model('auth_model');
+    $am = new Auth_model();
+    return $am->check_auth($auth_object_name,$auth_items,$user_id);
+}
+
 function is_order_allow_next_status($current_status,$next_status){
     global $CI;
     $CI->load->model('order_model');

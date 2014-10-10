@@ -88,6 +88,26 @@ class Role extends CI_Controller {
         }
     }
 
+    //为了简化操作，角色可以拷贝
+    function copy_from(){
+        if($_POST){
+            $rm = new Role_model();
+            $role = $rm->find(v('from'));
+            if(empty($role)){
+                show_404();
+            }else{
+                //拷贝基础数据
+
+                //拷贝profile和权限对象明细
+
+                //拷贝功能模块
+
+            }
+        }else{
+            render();
+        }
+    }
+
     //分配到用户
     function allocate_users(){
         $ur = new User_role_model();

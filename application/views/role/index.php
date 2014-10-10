@@ -21,4 +21,5 @@
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('role','create')?>">新建角色</a>
+<a href="<?= _url('role','create')?>">新建角色</a>&nbsp;|&nbsp;
+<a href="<?= _url('role','copy_from')?>" title="以拷贝的方式创建">拷贝</a>

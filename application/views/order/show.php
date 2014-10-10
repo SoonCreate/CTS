@@ -80,7 +80,10 @@ if(!is_order_locked($status)){?>
     <th>操作人</th>
     <th>原因</th>
     </thead>
-    <?php foreach($logs as $l):?>
+    <?php foreach($logs as $l):
+        echo $l['log_type'];
+        if(check_auth('log_display_control',array('ao_log_type'=>$l['log_type']))){
+        ?>
         <tr>
             <td><?= $l['description']?></td>
             <td><?= $l['content']?></td>
@@ -88,5 +91,6 @@ if(!is_order_locked($status)){?>
             <td><?= $l['created_by']?></td>
             <td><?= $l['reason']?></td>
         </tr>
-    <?php endforeach;?>
+    <?php }
+    endforeach;?>
 </table>

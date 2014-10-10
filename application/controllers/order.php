@@ -108,7 +108,7 @@ class Order extends CI_Controller {
         if(!empty($order)){
             //是否只能看到自己的订单
             $am = new Auth_model();
-            if($am->check_auth('only_mine_control',array('ao_only_mine'=>'TRUE')) && $order['created_by'] != _sess('uid')){
+            if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE')) && $order['created_by'] != _sess('uid')){
                 show_404();
             }else{
                 $this->load->model('status_model');

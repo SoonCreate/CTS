@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 09, 2014 at 04:36 AM
+-- Generation Time: Oct 10, 2014 at 12:34 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `ct_authobj_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`object_id`,`valuelist_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象明细表' AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `ct_authobj_lines`
@@ -47,7 +47,8 @@ INSERT INTO `ct_authobj_lines` (`id`, `object_id`, `valuelist_id`, `default_valu
 (3, 1, 9, 'all', NULL, NULL, NULL, NULL),
 (4, 1, 6, 'all', NULL, NULL, NULL, NULL),
 (5, 1, 8, 'all', NULL, NULL, NULL, NULL),
-(6, 2, 11, 'TRUE', NULL, NULL, NULL, NULL);
+(6, 2, 11, 'TRUE', NULL, NULL, NULL, NULL),
+(7, 3, 25, 'all', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -84,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `object_name` (`object_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象表' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ct_authority_objects`
@@ -92,7 +93,8 @@ CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
 
 INSERT INTO `ct_authority_objects` (`id`, `object_name`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'category_control', '订单控制权限对象1', NULL, NULL, 1411958674, -1),
-(2, 'only_mine_control', '只能自己的订单', 1412066866, -1, 1412066866, -1);
+(2, 'only_mine_control', '只能自己的订单', 1412066866, -1, 1412066866, -1),
+(3, 'log_display_control', '订单日志类型显示控制', 1412928745, 44, 1412928745, 44);
 
 -- --------------------------------------------------------
 
@@ -112,14 +114,14 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `ct_configs`
 --
 
 INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'company_name', '公司名称', '浙江天正集团', 1, NULL, NULL, NULL, NULL),
+(1, 'company_name', '公司名称', '浙江天正集团1', 1, NULL, NULL, 1412919552, 44),
 (2, 'logo_file', 'Logo文件路径', '1', 1, NULL, NULL, NULL, NULL),
 (3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, NULL, NULL, NULL, NULL),
 (4, 'category_control', '投诉订单分类功能开关', '0', 1, NULL, NULL, NULL, NULL),
@@ -171,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `ct_feedbacks` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投诉单反馈表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -190,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `ct_feedback_stars` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`feedback_id`,`feedback_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投诉单反馈明细表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -219,7 +221,7 @@ CREATE TABLE IF NOT EXISTS `ct_files` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='上传文件记录表' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ct_files`
@@ -251,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -286,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `ct_meetings` (
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   `inactive_flag` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '失效标识',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议信息表' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ct_meetings`
@@ -313,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
   `last_update_date` int(10) unsigned DEFAULT NULL,
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议文件记录表' AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `ct_meeting_files`
@@ -362,13 +364,22 @@ CREATE TABLE IF NOT EXISTS `ct_messages` (
   `class_id` int(11) NOT NULL COMMENT '分类ID',
   `message_code` varchar(20) NOT NULL COMMENT '消息码',
   `content` varchar(255) NOT NULL COMMENT '消息内容',
+  `language` varchar(20) NOT NULL DEFAULT 'zh-CN' COMMENT '语言环境',
+  `help` text COMMENT '帮助文档',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `class_id` (`class_id`,`message_code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `class_id` (`class_id`,`message_code`,`language`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息表' AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `ct_messages`
+--
+
+INSERT INTO `ct_messages` (`id`, `class_id`, `message_code`, `content`, `language`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(2, 3, '10', '数据库保存成功！', 'zh-CN', NULL, 1412917791, 44, 1412926006, 44);
 
 -- --------------------------------------------------------
 
@@ -386,6 +397,7 @@ CREATE TABLE IF NOT EXISTS `ct_messages_v` (
 ,`last_updated_by` int(11)
 ,`class_code` varchar(20)
 ,`class_desc` varchar(255)
+,`language` varchar(20)
 );
 -- --------------------------------------------------------
 
@@ -403,14 +415,14 @@ CREATE TABLE IF NOT EXISTS `ct_message_classes` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `class_code` (`class_code`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息分类表' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ct_message_classes`
 --
 
 INSERT INTO `ct_message_classes` (`id`, `class_code`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'DB', '数据库相关消息', NULL, NULL, NULL, NULL);
+(3, 'db', '数据库操作相关消息', 1412917773, 44, 1412917773, 44);
 
 -- --------------------------------------------------------
 
@@ -429,7 +441,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   `display_class` varchar(100) DEFAULT NULL COMMENT '抬头图标样式码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ct_module_header`
@@ -454,7 +466,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -512,7 +524,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -600,7 +612,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_type`,`status`,`manager_id`) USING BTREE,
   KEY `Index_3` (`created_by`,`creation_date`,`status`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `ct_orders`
@@ -650,7 +662,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles` (
   `description` varchar(255) NOT NULL COMMENT '文件描述',
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投诉单附件表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -694,7 +706,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `ct_order_contents`
@@ -750,7 +762,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=75 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=75 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -875,7 +887,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_log_types` (
   `last_updated_by` int(11) DEFAULT NULL,
   `field_valuelist_id` int(10) unsigned DEFAULT NULL COMMENT '字段值集',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志类型表' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_order_log_types`
@@ -903,7 +915,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_order_meetings`
@@ -974,7 +986,7 @@ CREATE TABLE IF NOT EXISTS `ct_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统角色信息表' AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `ct_roles`
@@ -1006,7 +1018,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -1061,7 +1073,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`role_id`,`object_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ct_role_profiles`
@@ -1069,7 +1081,8 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
 
 INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 1, 1, NULL, NULL, NULL, NULL),
-(2, 1, 2, NULL, NULL, NULL, NULL);
+(2, 1, 2, NULL, NULL, NULL, NULL),
+(3, 1, 3, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1088,7 +1101,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`profile_id`,`object_line_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_role_profile_lines`
@@ -1098,7 +1111,8 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (1, 1, 3, 'all', NULL, NULL, NULL, NULL),
 (2, 1, 4, 'all', NULL, NULL, NULL, NULL),
 (3, 1, 5, 'all', NULL, NULL, NULL, NULL),
-(4, 2, 6, 'TRUE', NULL, NULL, NULL, NULL);
+(4, 2, 6, 'TRUE', NULL, NULL, NULL, NULL),
+(5, 3, 7, 'all', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1137,7 +1151,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`status_code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ct_status_header`
@@ -1168,7 +1182,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines` (
   `default_next_status` varchar(20) DEFAULT NULL COMMENT '默认下一步',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`status_id`,`segment`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态步骤表' AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `ct_status_lines`
@@ -1207,6 +1221,15 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `ct_tables_vl`
+--
+CREATE TABLE IF NOT EXISTS `ct_tables_vl` (
+`value` varchar(64)
+,`label` text
+);
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ct_users`
 --
 
@@ -1232,7 +1255,7 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`username`),
   KEY `Index_3` (`username`,`password`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=69 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统用户信息表' AUTO_INCREMENT=69 ;
 
 --
 -- Dumping data for table `ct_users`
@@ -1321,7 +1344,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`user_id`,`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `ct_user_roles`
@@ -1364,7 +1387,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -1380,17 +1403,20 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (8, 'ao_order_category', '订单分类权限对象', 1, 'segment_desc', 'segment_value', 'ct_order_category_vl', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (9, 'ao_order_type', '订单类型权限对象', 1, 'segment_desc', 'segment_value', 'ct_valuelist_vl', 'valuelist_name = ''vl_order_type''', NULL, 1, NULL, NULL, NULL, NULL),
 (10, 'default_role', '订单类型默认角色', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
-(11, 'ao_only_mine', '只能查询自己的订单', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(11, 'ao_true_or_false', '权限对象选择是/否', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (12, 'default_category', '订单默认的分类（在分类未开启时）', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
 (14, 'vl_dll_type', '数据库dll操作类型', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(15, 'vl_valuelist', '值集列表', 1, 'label', 'value', 'ct_valuelist_header_vl', '', NULL, 1, NULL, NULL, NULL, NULL),
+(15, 'vl_valuelist', '值集列表', 1, 'label', 'value', 'ct_valuelist_header_vl', '', NULL, 0, NULL, NULL, NULL, NULL),
 (16, 'vl_order_status', '投诉单状态', 1, 'segment_desc', 'segment_value', 'ct_order_status_vl', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (17, 'vl_user', '用户列表', 1, 'full_name', 'id', 'ct_users', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (18, 'vl_meeting_cancel', '会议取消原因', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (19, 'vl_sex', '用户性别', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (20, 'vl_feedback', '订单反馈项目', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (21, '', '投诉订单类型1', 0, NULL, NULL, NULL, NULL, 0, 1, 1412753519, 44, 1412753519, 44),
-(22, 'vl_test', 'vl_test', 1, 'value', 'label', 'ct_valuelist_hader', '', 1, 1, 1412754189, 44, 1412754359, 44);
+(22, 'vl_test', 'vl_test', 0, NULL, NULL, NULL, NULL, 0, 1, 1412754189, 44, 1412914188, 44),
+(23, 'vl_tables', '系统表/视图值集', 1, 'label', 'value', 'ct_tables_vl', '', NULL, 0, 1412907002, 44, 1412907002, 44),
+(24, 'vl_roles', '系统角色列表', 1, 'description', 'id', 'ct_roles', '', NULL, 1, 1412927876, 44, 1412928109, 44),
+(25, 'ao_log_type', '投诉单日志类型', 1, 'description', 'log_type', 'ct_order_log_types', NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1423,7 +1449,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=47 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -1432,7 +1458,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
 INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_value`, `segment_desc`, `inactive_flag`, `sort`, `parent_segment_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 1, '10', 'vendor', '供应商投诉单', 0, 1, '0', NULL, NULL, NULL, NULL),
 (2, 1, '20', 'employee', '内部员工投诉单', 0, 2, '0', NULL, NULL, NULL, NULL),
-(3, 1, '30', 'customer', '客户投诉单', 0, 0, '0', NULL, NULL, 1412817806, -1),
+(3, 1, '30', 'customer', '客户投诉单1', 0, 1, '0', NULL, NULL, 1412902860, 44),
 (4, 2, '30', 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
 (5, 2, '20', 'middle', '中', 0, 0, '0', NULL, NULL, NULL, NULL),
 (6, 2, '10', 'high', '高', 0, 0, '0', NULL, NULL, NULL, NULL),
@@ -1443,7 +1469,7 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (11, 4, '20', 'middle', '偶尔发生', 0, 0, '0', NULL, NULL, NULL, NULL),
 (12, 4, '30', 'high', '发生频率很高', 0, 0, '0', NULL, NULL, NULL, NULL),
 (16, 7, '10', '10', '供应商投诉默认分类', 0, 0, 'vendor', NULL, NULL, NULL, NULL),
-(18, 10, '10', 'reporter_vender', '供应商', 0, 0, 'vendor', NULL, NULL, NULL, NULL),
+(18, 10, '10', 'reporter_vender', '供应商', 0, 1, 'vendor', NULL, NULL, 1412902890, 44),
 (21, 10, '10', 'reporter_customer', '客户', 0, 0, 'customer', NULL, NULL, NULL, NULL),
 (22, 10, '10', 'reporter_employee', '内部员工', 0, 0, 'employee', NULL, NULL, NULL, NULL),
 (24, 7, '20', '20', '分类二', 0, 0, 'vendor', NULL, NULL, NULL, NULL),
@@ -1462,7 +1488,11 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (37, 19, '10', 'male', '男', 0, 0, NULL, NULL, NULL, NULL, NULL),
 (38, 19, '20', 'female', '女', 0, 0, NULL, NULL, NULL, NULL, NULL),
 (39, 20, '10', '10', '响应速度', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(40, 20, '20', '20', '服务态度', 0, 0, NULL, NULL, NULL, NULL, NULL);
+(40, 20, '20', '20', '服务态度', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(43, 7, '20', '20', '默认分类2', 0, 0, 'customer', 1412824646, -1, 1412824646, -1),
+(44, 7, '30', '30', '3', 0, 2, 'customer', 1412824672, -1, 1412824702, -1),
+(45, 7, '40', '40', '4', 0, 1, 'customer', 1412825288, -1, 1412825288, -1),
+(46, 10, '20', '201', 'asdf', 0, 1, 'vendor', 1412903034, 44, 1412903055, 44);
 
 -- --------------------------------------------------------
 
@@ -1528,7 +1558,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_messages_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_messages_v` AS select `m`.`id` AS `id`,`m`.`class_id` AS `class_id`,`m`.`message_code` AS `message_code`,`m`.`content` AS `content`,`m`.`creation_date` AS `creation_date`,`m`.`created_by` AS `created_by`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`mc`.`class_code` AS `class_code`,`mc`.`description` AS `class_desc` from (`ct_message_classes` `mc` join `ct_messages` `m`) where (`m`.`class_id` = `mc`.`id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_messages_v` AS select `m`.`id` AS `id`,`m`.`class_id` AS `class_id`,`m`.`message_code` AS `message_code`,`m`.`content` AS `content`,`m`.`creation_date` AS `creation_date`,`m`.`created_by` AS `created_by`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`mc`.`class_code` AS `class_code`,`mc`.`description` AS `class_desc`,`m`.`language` AS `language` from (`ct_message_classes` `mc` join `ct_messages` `m`) where (`m`.`class_id` = `mc`.`id`);
 
 -- --------------------------------------------------------
 
@@ -1610,6 +1640,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_status_lines_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_lines_v` AS select `h`.`status_code` AS `status_code`,`h`.`description` AS `description`,`l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`next_status` AS `next_status`,`l`.`back_status` AS `back_status`,`l`.`default_flag` AS `default_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`default_next_status` AS `default_next_status` from (`ct_status_header` `h` join `ct_status_lines` `l`) where (`h`.`id` = `l`.`status_id`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_tables_vl`
+--
+DROP TABLE IF EXISTS `ct_tables_vl`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_tables_vl` AS select `information_schema`.`tables`.`TABLE_NAME` AS `value`,concat(`information_schema`.`tables`.`TABLE_NAME`,' - ',`information_schema`.`tables`.`TABLE_COMMENT`) AS `label` from `information_schema`.`tables` where (`information_schema`.`tables`.`TABLE_SCHEMA` = 'cts');
 
 -- --------------------------------------------------------
 
