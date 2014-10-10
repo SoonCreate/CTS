@@ -64,7 +64,7 @@ $autoload['libraries'] = array('session','database','layout');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','format','lazy','message','toolkit','array','download');
+$autoload['helper'] = array('url','format','lazy','message','toolkit','array','download','translator');
 
 
 /*
@@ -96,7 +96,7 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array('label');
+$autoload['language'] = array();
 
 
 /*

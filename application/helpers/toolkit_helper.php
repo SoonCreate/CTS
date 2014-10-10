@@ -84,17 +84,17 @@ function set_creation_date($data){
 //姓名或公司名
 function full_name($id){
     if($id == -1){
-        return _text('administrator');
+        return label('administrator');
     }else{
         if(is_null($id)){
-            return _text('label_unknow');
+            return label('unknow');
         }else{
             global $CI;
             $CI->load->model('user_model');
             $um = new User_model();
             $user = $um->find($id);
             if(empty($user)){
-                return _text('label_unknow');
+                return label('unknow');
             }else{
                 if(is_null($user['full_name'])){
                     return $user['username'];
@@ -334,11 +334,6 @@ function is_all_has_value($data,$keys){
     }
 }
 
-//输出label语言文件下的注释
-function label($str){
-    return _text('label_'.$str);
-}
-
 //判断是否为分类控制，再进行权限判断。默认为分类为all
 function check_order_auth($order_type,$order_status,$order_category = null,$user_id = null){
     global $CI;
@@ -493,17 +488,3 @@ function render_file_link($file){
     echo '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
 
-if ( ! function_exists('lang'))
-{
-    function lang($line, $id = '')
-    {
-        $line = _text($line);
-
-        if ($id != '')
-        {
-            $line = '<label for="'.$id.'">'.$line."</label>";
-        }
-
-        return $line;
-    }
-}

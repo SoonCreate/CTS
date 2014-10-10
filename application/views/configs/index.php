@@ -1,6 +1,6 @@
 <table>
     <thead>
-        <th><?php echo  _text('username');?></th>
+        <th>配置名称</th>
         <th>描述</th>
         <th>值</th>
         <th>操作</th>

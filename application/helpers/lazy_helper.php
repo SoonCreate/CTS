@@ -275,44 +275,7 @@ function flash_message()
             </div>'; 
     } 
     return $html; 
-}  
-
-//输出language设置
-function _text()
-{
-	global $CI;
-
-	$numargs = func_num_args();
-
-	$arg_list = func_get_args();
-
-	$out_data = $CI->lang->line($arg_list[0]);
-
-	if( $out_data )
-	{
-		if ( $numargs > 1 )
-		{
-			$app = '$out_data = sprintf( $out_data ';
-
-			for ($i = 1; $i < $numargs; $i++)
-			{
-				$app = $app.",\$arg_list[$i]";
-			}
-
-			$app = $app.");";
-	
-			eval($app);
-		}
-		
-		return $out_data;
-	}
-	else
-	{
-		return $arg_list[0];
-	}
-	
 }
-
 
 function myhash( $id = NULL )
 {

@@ -23,10 +23,15 @@ class Messages extends CI_Controller {
         }else{
             $mm = new Message_model();
             if($_POST){
-                if($mm->insert(_data('message_code','content','class_id'))){
-                    echo 'done';
+                $data = _data('message_code','content','class_id','language');
+                if($this->_is_message_exists($data['message_code'],$data['class_id'],$data['language'])){
+                    echo '消息条目已存在!';
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    if($mm->insert($data)){
+                        echo 'done';
+                    }else{
+                        echo validation_errors('<div class="error">', '</div>');
+                    }
                 }
             }else{
                 render();
@@ -41,11 +46,17 @@ class Messages extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                if($mm->update($message['id'],_data('content'))){
-                    echo 'done';
+                $data = _data('content','language');
+                if($this->_is_message_exists($message['message_code'],$message['class_id'],$data['language'])){
+                    echo '消息条目已存在!';
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    if($mm->update($message['id'],_data('content','language'))){
+                        echo 'done';
+                    }else{
+                        echo validation_errors('<div class="error">', '</div>');
+                    }
                 }
+
             }else{
                 render($message);
             }
@@ -129,6 +140,16 @@ class Messages extends CI_Controller {
             $mm = new Message_model();
             $class['objects'] = $mm->find_all_by_view(array('class_id'=>$class['id']));
             render($class);
+        }
+    }
+
+    private function _is_message_exists($message_code,$class_id,$language){
+        $mm = new Message_model();
+        $message = $mm->find_by(array('message_code'=>$message_code,'class_id'=>$class_id,'language'=>$language));
+        if(!empty($message)){
+            return true;
+        }else{
+            return false;
         }
     }
 

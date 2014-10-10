@@ -8,6 +8,7 @@ class Message_model extends MY_Model{
         $this->add_validate('message_code','required|max_length[20]|alpha_dash');
         $this->add_validate('class_id','required');
         $this->add_validate('content','required|max_length[255]');
+        $this->add_validate('language','required|max_length[255]');
 
         //设置钩子
         array_unshift($this->before_update,'before_update');
@@ -16,6 +17,7 @@ class Message_model extends MY_Model{
     function before_update(){
         $this->clear_validate();
         $this->add_validate('content','required|max_length[255]');
+        $this->add_validate('language','required|max_length[255]');
     }
 
 }

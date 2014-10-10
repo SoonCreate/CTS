@@ -9,7 +9,8 @@ function initial_message(){
 function message($type,$class,$line,$args = []){
     global $CI;
     $CI->load->model('message_model','message');
-    $message = $CI->message->find_by(array('class_code'=>$class,'message_code'=>$line));
+    $mm = new Message_model();
+    $message = $mm->find_by_view(array('class_code'=>$class,'message_code'=>$line,'language'=>env_language()));
     if(!empty($message)){
         $message['type'] = $type;
         $message['code'] = $class.'('.$line.')';
@@ -42,4 +43,15 @@ function refresh_message($message){
     $messages = _sess('message');
     array_push($messages,$message);
     set_sess('message',$messages);
+}
+
+//view 中输出label
+if ( ! function_exists('env_language')) {
+    function env_language()
+    {
+        //判断浏览器语言
+        $default_lang_arr = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        $strarr = explode(",", $default_lang_arr);
+        return $strarr[0];
+    }
 }
