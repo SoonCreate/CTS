@@ -19,13 +19,13 @@ class Valuelist_line_model extends MY_Model{
         $this->clear_validate();
         //服务端插入数据库之前验证
         $this->add_validate('segment','required|max_length[20]|numeric');
+        $this->add_validate('valuelist_id','required|numeric');
         $this->_validate();
     }
 
     //公用验证
     function _validate(){
         //服务端插入数据库之前验证
-        $this->add_validate('valuelist_id','required|numeric');
         $this->add_validate('segment_value','required|max_length[255]|alpha_dash');
         $this->add_validate('segment_desc','required|max_length[255]');
         $this->add_validate('sort','required|numeric');

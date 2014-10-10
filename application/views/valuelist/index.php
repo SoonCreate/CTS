@@ -27,10 +27,13 @@
         <td><?= $o['parent_desc'] ?></td>
         <td><?= $o['editable_flag'] ?></td>
         <td>
-            <a href="<?= _url('valuelist','edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-            <?php if($o['object_flag'] == 'NO') : ?>
-            <a href="<?= _url('valuelist','items',array('id'=>$o['id']))?>">管理项目</a>
-            <?php endif;?>
+            <a href="<?= _url('valuelist','edit',array('id'=>$o['id']))?>">编辑</a>
+            &nbsp;|&nbsp;<a href="<?= _url('valuelist','items',array('id'=>$o['id']))?>">
+            <?php if($o['object_flag'] == 'NO') { ?>
+                管理项目</a>
+                <?php }else{ ?>
+                查看项目</a>
+            <?php }?>
         </td>
 
     </tr>

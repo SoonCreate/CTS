@@ -63,17 +63,23 @@ class Valuelist extends CI_Controller {
             if($v['editable_flag']){
                 if($_POST){
                     $object_flag = v('object_flag');
+                    $data = _data('id','description','object_flag','label_fieldname','value_fieldname','source_view','condition','parent_id');
                     //如果是来自表/视图
                     if($object_flag){
-                        $_POST['object_flag'] = 1;
-                        if($vm->save_from_object(_data('id','description','object_flag','label_fieldname','value_fieldname','source_view','condition'))){
+                        $data['object_flag'] = 1;
+                        $data['parent_id'] = NULL;
+                        if($vm->save_from_object($data)){
                             echo 'done';
                         }else{
                             echo validation_errors('<div class="error">', '</div>');
                         }
                     }else{
-                        $_POST['object_flag'] = 0;
-                        if($vm->save_normal(_data('id','description','parent_id','object_flag'))){
+                        $data['object_flag'] = 0;
+                        $data['label_fieldname'] = NULL;
+                        $data['value_fieldname'] = NULL;
+                        $data['source_view'] = NULL;
+                        $data['condition'] = NULL;
+                        if($vm->save_normal($data)){
                             echo 'done';
                         }else{
                             echo validation_errors('<div class="error">', '</div>');
@@ -93,56 +99,63 @@ class Valuelist extends CI_Controller {
     //值集项目
     function items(){
         $vm = new Valuelist_model();
+        $vlm = new Valuelist_line_model();
         $parent_segment = v('parent_segment');
         $h = $vm->find(v('id'));
         if(empty($h)){
             show_404();
         }else{
-            $vlm = new Valuelist_line_model();
-            //如果存在父值集，没有指定父值集项目的时候，默认第一项
-            if($h['parent_id']){
-                $parent = $vm->find($h['parent_id']);
-                if(empty($parent)){
-                    echo '父值集不存在';
-                }else{
-                    $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
-                    if(count($lines) > 0){
-                        if(!$parent_segment){
-                            $parent['segment'] = $lines[0];
-                            $parent_segment = $lines[0]['value'];
-                            $data['parent'] = $parent;
-                            $data['lines'] = $lines;
-                            $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id'],'parent_segment'=>$parent_segment));
-                            $data['objects'] = _format($data['objects']);
-                            render($data);
-                        }else{
-                            $has = false;
-                            foreach($lines as $l){
-                                if($l['value'] == $parent_segment){
-                                    $has = true;
-                                    break;
-                                }
-                            }
-                            if($has){
+            if($h['object_flag']){
+                $data['objects'] = get_options($h['valuelist_name']);
+                //来自表对象则不能进行项目编辑，只能显示
+                $this->load->view('valuelist/items_from_object',$data);
+            }else{
+                //如果存在父值集，没有指定父值集项目的时候，默认第一项
+                if($h['parent_id']){
+                    $parent = $vm->find($h['parent_id']);
+                    if(empty($parent)){
+                        echo '父值集不存在';
+                    }else{
+                        $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
+                        if(count($lines) > 0){
+                            if(!$parent_segment){
+                                $parent['segment'] = $lines[0];
+                                $parent_segment = $lines[0]['value'];
                                 $data['parent'] = $parent;
                                 $data['lines'] = $lines;
                                 $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id'],'parent_segment'=>$parent_segment));
                                 $data['objects'] = _format($data['objects']);
                                 render($data);
                             }else{
-                                echo '父值集无'.$parent_segment.'项目';
+                                $has = false;
+                                foreach($lines as $l){
+                                    if($l['value'] == $parent_segment){
+                                        $has = true;
+                                        break;
+                                    }
+                                }
+                                if($has){
+                                    $data['parent'] = $parent;
+                                    $data['lines'] = $lines;
+                                    $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id'],'parent_segment'=>$parent_segment));
+                                    $data['objects'] = _format($data['objects']);
+                                    render($data);
+                                }else{
+                                    echo '父值集无'.$parent_segment.'项目';
+                                }
                             }
-                        }
 
-                    }else{
-                        echo '父值集无项目';
+                        }else{
+                            echo '父值集无项目';
+                        }
                     }
+                }else{
+                    $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id']));
+                    $data['objects'] = _format($data['objects']);
+                    render($data);
                 }
-            }else{
-                $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id']));
-                $data['objects'] = _format($data['objects']);
-                render($data);
             }
+
         }
     }
 
@@ -197,10 +210,29 @@ class Valuelist extends CI_Controller {
             show_404();
         }else{
             $data['inactive_flag'] = v('inactive_flag');
-            if($vlm->update($l['id'],$data)){
+            if($vlm->update($l['id'],$data,true)){
                 echo 'done';
             }else{
                 echo 'fail';
+            }
+        }
+    }
+
+    function item_edit(){
+        $vlm = new Valuelist_line_model();
+        $item = $vlm->find(v('id'));
+        if(empty($item)){
+            show_404();
+        }else{
+            if($_POST){
+                $_POST['inactive_flag'] = v('inactive_flag');
+                if($vlm->update($item['id'],_data('segment_value','segment_desc','sort','inactive_flag'))){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+            }else{
+                render($item);
             }
         }
     }
@@ -240,8 +272,5 @@ class Valuelist extends CI_Controller {
         }
     }
 
-    function item_edit(){
-
-    }
 
 }
