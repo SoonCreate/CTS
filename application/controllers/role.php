@@ -239,6 +239,7 @@ class Role extends CI_Controller {
                 $object_id = v('object_id');
                 $this->load->model('authobj_line_model');
                 $rpm = new Role_profile_model();
+                $rplm = new Role_profile_line_model();
                 $alm = new Authobj_line_model();
                 $lines = $alm->find_all_by(array('object_id'=>$object_id));
                 $this->db->trans_start();
@@ -249,6 +250,7 @@ class Role extends CI_Controller {
                     $line['profile_id'] = $profile_id;
                     $line['object_line_id'] = $l['id'];
                     $line['auth_value'] = $l['default_value'];
+                    $rplm->insert($line);
                 }
                 if ($this->db->trans_status() === FALSE) {
                     echo '数据库插入错误';

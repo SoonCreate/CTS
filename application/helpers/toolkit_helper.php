@@ -169,25 +169,33 @@ function get_label($valuelist_name,$value,$parent_segment_value = null){
 }
 
 //获取值列表
-function get_options($valuelist_name,$parent_segment_value = null){
+function get_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE){
     global $CI;
     $CI->load->model('valuelist_model');
     $vlm = new Valuelist_model();
+    $rt = array();
     if(is_null($parent_segment_value)){
-        return $vlm->find_active_options($valuelist_name)->result_array();
+        $rt = $vlm->find_active_options($valuelist_name)->result_array();
     }else{
-        return $vlm->find_active_children_options($valuelist_name,$parent_segment_value);
+        $rt = $vlm->find_active_children_options($valuelist_name,$parent_segment_value);
     }
 
+    if($all_value){
+        $data['value'] = _config('all_values');
+        $data['label'] = label('all_value');
+        array_unshift($rt,$data);
+    }
+    return $rt;
 }
 
 //输出到view里面的option
-function render_options($valuelist_name,$parent_segment_value = null){
-    $options = get_options($valuelist_name,$parent_segment_value );
+function render_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE){
+    $options = get_options($valuelist_name,$parent_segment_value ,$all_value);
     foreach($options as $o){
         echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
     }
 }
+
 //输出到view里的radio
 function render_radio($name,$valuelist_name,$parent_segment_value = null){
     $options = get_options($valuelist_name,$parent_segment_value );
@@ -201,29 +209,32 @@ function render_radio($name,$valuelist_name,$parent_segment_value = null){
         }
     }
 }
+
+//根据值输出options
 function render_options_with_value(){
     $args = func_get_args();
-    if(count($args) === 2){
-        $options = get_options($args[0] );
-        foreach($options as $o){
-            if($o['value'] === $args[1]){
-                echo '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
-            }else{
-                echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
-            }
+    $value = '';
+    if(count($args) == 2){
+        $options = get_options($args[0]);
+        $value = $args[1];
+    }elseif(count($args) == 3){
+        $options = get_options($args[0],$args[1]);
+        $value = $args[2];
+    }elseif(count($args) > 3){
+        $options = get_options($args[0],$args[1],$args[3]);
+        $value = $args[2];
+    }
+    foreach($options as $o){
+        if($o['value'] ==  $value){
+            echo '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
+        }else{
+            echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
         }
-    }elseif(count($args) > 2){
-        $options = get_options($args[0],$args[1] );
-        foreach($options as $o){
-            if($o['value'] === $args[2]){
-                echo '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
-            }else{
-                echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
-            }
-        }
-    }elseif(count($args) +  2 == 2){
+    }
+    if(count($args) +  2 == 2){
         echo '<option value=""></option>';
     }
+
 }
 
 function render_radio_with_value(){

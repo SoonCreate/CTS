@@ -75,27 +75,70 @@ class Auth_object extends CI_Controller {
     }
 
     function items(){
-        $o = new Authobj_line_model();
-        $data['items'] = $o->find_all_by_view(array('object_id'=>v('id')));
+        $alm = new Authobj_line_model();
+        $data['items'] = $alm->find_all_by_view(array('object_id'=>v('id')));
         render($data);
     }
 
     function item_edit(){
         $alm = new Authobj_line_model();
-        $line = $alm->find('id');
+        $line = $alm->find_by_view(array('id'=>v('id')));
         if(empty($line)){
             show_404();
         }else{
+            if($_POST){
+                if($alm->update($line['id'],_data('default_value'))){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+            }else{
+                render($line);
+            }
 
         }
     }
 
     function item_create(){
+        $aom = new Authority_object_model();
+        $o = $aom->find(v('object_id'));
+        if(empty($o)){
+            show_404();
+        }else{
+            if($_POST){
+                $alm = new Authobj_line_model();
+                if($alm->insert(_data('valuelist_id','object_id','default_value'))){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+            }else{
+                render();
+            }
 
+        }
     }
 
     function item_destroy(){
-
+        $alm = new Authobj_line_model();
+        $line = $alm->find(v('id'));
+        if(empty($line)){
+            show_404();
+        }else{
+            $this->load->model('role_profile_line_model');
+            //是否被使用到角色中
+            $rplm = new Role_profile_line_model();
+            $l = $rplm->find_by(array('object_line_id'=>$line['id']));
+            if(empty($l)){
+                if($alm->delete($line['id'])){
+                    echo 'done';
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
+            }else{
+                echo '权限对象被多个角色使用，无法删除！';
+            }
+        }
     }
 
 }
