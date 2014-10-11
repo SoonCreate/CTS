@@ -188,8 +188,12 @@ class Role extends CI_Controller {
                     $rml->delete_by(array('role_id' => $data['role_id']));
                 }else{
                     $this->load->model('module_line_model');
+                    $this->load->model('function_object_model');
+                    $this->load->model('function_obj_line_model');
 //                    $this->load->
                     $mlm = new Module_line_model();
+                    $fom = new Function_object_model();
+                    $folm = new Function_obj_line_model();
                     //先删除已取消勾选的
                     $this->db->where_not_in('module_line_id',$ids);
                     $profiles = $rpm->find_all();
@@ -207,6 +211,30 @@ class Role extends CI_Controller {
                         $rml->insert($data);
                         $item = $mlm->find_by_view(array('id'=>$id));
                         if(!empty($item)){
+                            //获取function的权限对象为profile中的默认权限对象
+                            $ps = $fom->find_all_by(array('function_id'=>$item['function_id']));
+                            foreach ($ps as $p) {
+                                $profile['role_id'] = $data['role_id'];
+                                $profile['object_id'] = $p['object_id'];
+                                $profile['module_line_id'] = $id;
+
+                                $olms = $folm->find_all_by(array('fun_object_id'=>$p['id']));
+                                $items = array();
+                                //格式化参数items
+                                foreach($olms as $olm){
+                                    $items[$olm['object_line_id']] = $olm['default_value'];
+                                }
+                                //判断源profile中是否存在一样的权限对象和项目
+                                if(!$rpm->object_is_exists($data['role_id'],$p['object_id'],$items)){
+                                    $ml['profile_id'] = $rpm->insert($profile);
+                                    foreach($olms as $olm){
+                                        $ml['object_line_id'] = $olm['object_line_id'];
+                                        $ml['auth_value'] = $olm['default_value'];
+                                        $rplm->insert($ml);
+                                    }
+                                }
+
+                            }
 
                         }
                     }
