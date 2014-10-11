@@ -53,13 +53,18 @@ class Auth_object extends CI_Controller {
 
     function destroy(){
         $this->load->model('role_profile_line_model');
+        $this->load->model('function_object_model');
         $ao = new Authority_object_model();
         $aol = new Authobj_line_model();
         $rpl = new Role_profile_line_model();
+        $fom = new Function_object_model();
         $object_id = p('id');
         $auth_obj = $ao->find($object_id);
+        //被角色占用
         $role_in_use = $rpl->find_all_by_view(array('object_id'=>$object_id));
-        if(!empty($auth_obj) && empty($role_in_use)){
+        //被功能占用
+        $function_in_use = $fom->find_by(array('object_id'=>$object_id));
+        if(!empty($auth_obj) && empty($role_in_use) && empty($function_in_use)){
             $this->db->trans_start();
             $aol->delete_by(array('object_id'=>$object_id));
             $ao->delete($object_id);
@@ -70,14 +75,20 @@ class Auth_object extends CI_Controller {
                 echo 'done';
             }
         }else{
-            echo '无法删除!功能正在模块或角色被使用.';
+            echo '无法删除!功能正在被模块或角色被使用.';
         }
     }
 
     function items(){
-        $alm = new Authobj_line_model();
-        $data['items'] = $alm->find_all_by_view(array('object_id'=>v('id')));
-        render($data);
+        $am = new Authority_object_model();
+        $object = $am->find(v('id'));
+        if(empty($object)){
+            show_404();
+        }else{
+            $alm = new Authobj_line_model();
+            $data['items'] = $alm->find_all_by_view(array('object_id'=>$object['id']));
+            render($data);
+        }
     }
 
     function item_edit(){

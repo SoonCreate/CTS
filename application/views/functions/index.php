@@ -21,7 +21,8 @@
 
         <td><a href="<?= _url('functions','edit',array('id'=>$fn['id']))?>">编辑</a>&nbsp;|&nbsp;
             <a href="<?= _url('functions','destroy',array('id'=>$fn['id']))?>">删除</a>&nbsp;|&nbsp;
-            <a href="<?= _url('functions','allocate_modules',array('id'=>$fn['id']))?>">分配到模块</a>
+            <a href="<?= _url('functions','allocate_modules',array('id'=>$fn['id']))?>">分配到模块</a>&nbsp;|&nbsp;
+            <a href="<?= _url('functions','objects',array('id'=>$fn['id']))?>">功能中使用的权限对象</a>
         </td>
 
     </tr>

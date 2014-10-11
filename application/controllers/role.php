@@ -166,6 +166,8 @@ class Role extends CI_Controller {
     function choose_functions(){
         $rml = new Role_module_line_model();
         $rm = new Role_model();
+        $rplm = new Role_profile_line_model();
+        $rpm = new Role_profile_model();
         $role = $rm->find(v('role_id'));
         if(empty($role)){
             show_404();
@@ -175,10 +177,27 @@ class Role extends CI_Controller {
                 $data['role_id'] = v('role_id');
                 $this->db->trans_start();
                 if($ids === FALSE){
-                    //删除所有
+                    //删除功能相关profile
+                    $profiles = $rpm->find_all_by('module_line_id is not null');
+                    foreach($profiles as $p){
+                        $rplm->delete_by(array('profile_id'=>$p['id']));
+                        $rpm->delete($p['id']);
+                    }
+
+                    //删除所有功能
                     $rml->delete_by(array('role_id' => $data['role_id']));
                 }else{
+                    $this->load->model('module_line_model');
+//                    $this->load->
+                    $mlm = new Module_line_model();
                     //先删除已取消勾选的
+                    $this->db->where_not_in('module_line_id',$ids);
+                    $profiles = $rpm->find_all();
+                    foreach($profiles as $p){
+                        $rplm->delete_by(array('profile_id'=>$p['id']));
+                        $rpm->delete($p['id']);
+                    }
+
                     $this->db->where_not_in('module_line_id',$ids);
                     $rml->delete_by(array('role_id' => $data['role_id']));
                     //新增的部分
@@ -186,6 +205,10 @@ class Role extends CI_Controller {
                     foreach($ids as $id){
                         $data['module_line_id'] = $id;
                         $rml->insert($data);
+                        $item = $mlm->find_by_view(array('id'=>$id));
+                        if(!empty($item)){
+
+                        }
                     }
                 }
                 $this->db->trans_complete();
