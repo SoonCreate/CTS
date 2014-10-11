@@ -561,6 +561,11 @@ class MY_Model extends CI_Model
         $this->validate = array();
     }
 
+    //验证
+    public function run_validation($data){
+        return $this->_run_validation($data);
+    }
+
     //设置时间戳
     public function set_last_update($data){
         $data['last_update_date'] = time();

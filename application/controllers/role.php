@@ -95,15 +95,50 @@ class Role extends CI_Controller {
     function copy_from(){
         if($_POST){
             $rm = new Role_model();
-            $role = $rm->find(v('from'));
-            if(empty($role)){
+            $from = $rm->find(v('from'));
+            if(empty($from)){
                 show_404();
             }else{
-                //拷贝基础数据
+                $data = _data('role_name','description');
+                if($rm->run_validation($data)){
+                    $rplm = new Role_profile_line_model();
+                    $rpm = new Role_profile_model();
+                    $rmlm = new Role_module_line_model();
+                    $this->db->trans_start();
+                    //拷贝基础数据
+                    $role_id = $rm->insert(_data('role_name','description'));
 
-                //拷贝profile和权限对象明细
+                    //拷贝profile和权限对象明细
+                    $ps = $rpm->find_all_by(array('role_id'=>$from['id']));
+                    foreach($ps as $p){
+                        $profile['role_id'] = $role_id;
+                        $profile['object_id'] = $p['object_id'];
+                        $profile['module_line_id'] = $p['module_line_id'];
+                        $pline['profile_id'] = $rpm->insert($profile);
+                        $pls = $rplm->find_all_by(array('profile_id'=>$p['id']));
+                        foreach($pls as $pl){
+                            $pline['object_line_id'] = $pl['object_line_id'];
+                            $pline['auth_value'] = $pl['auth_value'];
+                            $rplm->insert($pline);
+                        }
+                    }
 
-                //拷贝功能模块
+                    //拷贝功能模块
+                    $mls = $rmlm->find_all_by(array('role_id'=>$from['id']));
+                    foreach($mls as $ml){
+                        $mline['role_id'] = $role_id;
+                        $mline['module_line_id'] = $ml['module_line_id'];
+                        $rmlm->insert($mline);
+                    }
+                    $this->db->trans_complete();
+                    if ($this->db->trans_status() === FALSE) {
+                        echo '数据库删除错误';
+                    }else{
+                        echo 'done';
+                    }
+                }else{
+                    echo validation_errors('<div class="error">', '</div>');
+                }
 
             }
         }else{
