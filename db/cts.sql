@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 12, 2014 at 02:03 PM
+-- Generation Time: Oct 12, 2014 at 02:26 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -265,7 +265,10 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
 INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, `action`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_flag`, `display_class`) VALUES
 (1, 'order_create', '投诉订单创建', 'order', 'create', '1', 1412060589, -1, 1412302661, 44, 1, 'goo1'),
 (3, 'user_index', '用户管理首页1', 'user', 'index', NULL, 1412147486, 44, 1412742003, 44, 1, ''),
-(4, 'order_meeting_create', '会议创建4', 'order_meeting', 'create', NULL, 1412400036, 44, 1412400036, 44, 1, '');
+(4, 'order_meeting_create', '会议创建4', 'order_meeting', 'create', NULL, 1412400036, 44, 1412400036, 44, 1, ''),
+(5, 'my_orders', '投诉管理', 'order', 'index', NULL, 1413115571, 44, 1413115571, 44, 1, ''),
+(6, 'user_edit', '用户信息', 'user', 'user_edit', NULL, 1413115703, 44, 1413115703, 44, 1, ''),
+(7, 'my_notices', '我的消息', 'user', 'notices', NULL, 1413115821, 44, 1413115821, 44, 1, '');
 
 -- --------------------------------------------------------
 
@@ -570,7 +573,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -582,9 +585,11 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (15, 3, 4, 0, 1412400062, 44, 1412400062, 44),
 (17, 4, 3, 0, 1413076633, 44, 1413076633, 44),
 (18, 5, 1, 0, 1413076637, 44, 1413076637, 44),
-(19, 6, 4, 0, 1413076644, 44, 1413076644, 44),
 (20, 7, 1, 0, 1413076650, 44, 1413076650, 44),
-(21, 8, 1, 0, 1413077333, 44, 1413077333, 44);
+(21, 8, 1, 0, 1413077333, 44, 1413077333, 44),
+(22, 6, 5, 0, 1413115587, 44, 1413115587, 44),
+(23, 4, 6, 0, 1413115730, 44, 1413115730, 44),
+(24, 7, 7, 0, 1413115831, 44, 1413115831, 44);
 
 -- --------------------------------------------------------
 
@@ -1156,7 +1161,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -1173,11 +1178,11 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (24, 12, 13, 1413034064, 44, 1413034064, 44),
 (25, 12, 14, 1413034064, 44, 1413034064, 44),
 (26, 1, 15, 1413076672, 44, 1413076672, 44),
-(27, 1, 17, 1413076672, 44, 1413076672, 44),
-(29, 1, 19, 1413076672, 44, 1413076672, 44),
-(30, 1, 20, 1413076672, 44, 1413076672, 44),
 (31, 1, 13, 1413095998, 44, 1413095998, 44),
-(32, 1, 18, 1413095998, 44, 1413095998, 44);
+(32, 1, 18, 1413095998, 44, 1413095998, 44),
+(33, 1, 22, 1413115599, 44, 1413115599, 44),
+(34, 1, 23, 1413115740, 44, 1413115740, 44),
+(35, 1, 24, 1413115836, 44, 1413115836, 44);
 
 -- --------------------------------------------------------
 
