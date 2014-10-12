@@ -69,17 +69,17 @@ class Order extends CI_Controller {
             //权限
             if(check_order_auth(v('order_type'),v('status'),v('category'))){
                 $data = _data('order_type','category','severity','frequency',
-                    'title','contact','phone_number','mobile_telephone','address','full_name');
+                    'title','contact','phone_number','mobile_telephone','address','full_name','status');
                 $content = r(v('content'));
                 $addfiles = tpost('addfiles');
 
                 if($order->save($data,$content,$addfiles)){
                     message_db_success();
                 }else{
-                    validation_error($data);
+                    validation_error();
                 }
             }else{
-                message('E','system','10');
+                message_unknow_error();
             }
         }else{
             //获取订单类型，如果没有则跳转到chose_create

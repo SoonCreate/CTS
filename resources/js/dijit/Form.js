@@ -11,6 +11,7 @@ define(["dojo/_base/declare", "dijit/form/Form", "dojo/request","dijit/registry"
             successFunction : function(){},
             noBackFunction : function(){},
             remoteHandleAs : "json",
+            errorStatus : false,
 
             reset : function(){
                 this.inherited(arguments);
@@ -25,6 +26,39 @@ define(["dojo/_base/declare", "dijit/form/Form", "dojo/request","dijit/registry"
             },
 
             onSubmit : function(){
+                alert("1111");
+                //this.runAjaxSubmit();
+                return false;
+            },
+            //处理返回结果
+            handleResponse : function(response){
+                //处理验证信息
+                if("validation" in response ){
+                    this.errorStatus = true;
+                }
+
+                //处理消息
+                if("message" in response ){
+
+                }
+
+                //处理数据
+                if("data" in response ){
+
+                }
+
+                //处理跳转
+                if("redirect" in response ){
+                    goto(response["redirect"]);
+                }
+            },
+
+            runAjaxSubmit : function () {
+                //获取消息栏
+                //var toaster = registry.byId("toaster");
+                //toaster.setContent('Twinkies are now being served in the vending machine!', 'fatal',5000);
+                //toaster.show();
+
                 //阻止提交事件
                 //evt.stopPropagation();
                 //evt.preventDefault();
@@ -42,12 +76,8 @@ define(["dojo/_base/declare", "dijit/form/Form", "dojo/request","dijit/registry"
                     },function(){
                         console.log('remote request error!');
                     });
+
                 }
-                return false;
-            },
-            //处理返回结果
-            handleResponse : function(response){
-                console.log(response);
             }
 
         });

@@ -130,10 +130,10 @@ class Auth_model extends MY_Model{
                 $l_order_categories = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_category'));
                 //拥有初始化状态权限
                 if($l_order_type['auth_value'] == _config('all_values') ||
-                    in_array($order_type,explod(',',$l_order_type['auth_value']))){
+                    in_array($order_type,explode(',',$l_order_type['auth_value']))){
 
                     if($l_order_status['auth_value'] == _config('all_values')||
-                        in_array($status,explod(',',$l_order_status['auth_value']))){
+                        in_array($status,explode(',',$l_order_status['auth_value']))){
 
                         if($l_order_categories['auth_value'] == _config('all_values')){
                             $vlm = new Valuelist_model();

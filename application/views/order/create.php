@@ -1,8 +1,15 @@
-
+<div class="formalert row" id="formalert" style="display: none">
+    <button type="button" class="close" data-dismiss="alert" onclick="formAlertclose()" id="closebtn">
+        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <ul>
+        <li>用户名已存在</li>
+        <li>内容提交超过规定</li>
+    </ul>
+</div>
 <div class="row paneltitle">
     <h3></h3>
 </div>
-<form data-dojo-type="cts/dijit/Form" id="order_create" method="post" action="<?= _url('order','create')?>">
+<form id="order_create" method="post" action="<?= _url('order','create')?>" onsubmit="return formSubmit(this);">
 <div class="container-fluid userd">
     <dl class="row dl-horizontal">
         <dt><label for="severity">*严重性</label></dt>
@@ -40,8 +47,10 @@
         <dt><label for="content">*内容</label></dt>
         <dd>
             <div data-dojo-type="dijit/Editor" id="content_editor"
-                 data-dojo-props="plugins:['bold','underline']" height="150px"></div>
-            <input name="content" id="content" type="hidden" data-dojo-type="dijit/form/TextBox"/>
+                 data-dojo-props="plugins:['bold','underline'],focused:true"
+                 onChange="synEditorContent(this)"
+                 height="150px"></div>
+            <input type="hidden" name="content" id='content' data-dojo-type="dijit/form/TextBox"/>
         </dd>
     </dl>
 </div>
@@ -77,5 +86,13 @@
 </form>
 </div>
 
+<script type="text/javascript">
+    //同步Editor的内容到hidden中
+    function synEditorContent(editor){
+        require(["dijit/registry"],function(registry){
+                var content = registry.byId("content");
+                content.set("value",editor.getValue());
+         });
+    }
 
-
+</script>

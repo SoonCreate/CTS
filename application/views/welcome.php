@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="resources/css/main.css" />
     <!-- Bootstrap-->
     <link href="resources/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/dojo/dojox/widget/Toaster/Toaster.css" >
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -28,7 +29,7 @@
     };
     </script>
     <!-- 加载dojo -->
-    <script type="text/javascript" src="//cdn.sooncreate.com/dojo/dojo/dojo.js"></script>
+    <script type="text/javascript" src="/dojo/dojo/dojo.js"></script>
     <script type="text/javascript" src="resources/js/sc.js"></script>
 
    <script type="text/javascript">
@@ -50,11 +51,11 @@
          data-dojo-props="liveSplitters: false, design: 'sidebar', region: 'center'">
 
         <div data-dojo-type="dijit/layout/TabContainer" id="mainTabContainer"
-             data-dojo-props="region: 'center',tabPosition:'left-h'" class="user-tabs ">
+             data-dojo-props="region: 'center',tabPosition:'left-h'" class=" ">
 
             <?php if(isset($modules)):?>
             <?php  foreach($modules as $m) :?>
-                    <div data-dojo-type="dijit/layout/ContentPane" id="<?= $m['module_id']?>"
+                    <div data-dojo-type="dojox/layout/ContentPane" id="<?= $m['module_id']?>"
                          title="<?= $m['module_desc']?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
                          data-dojo-props=" href:'<?= _url('welcome','my_functions',array('module_id'=>$m['module_id']))?>'"></div>
@@ -63,6 +64,8 @@
         </div>
     </div>
 </div>
-
+<div data-dojo-type="dojox/widget/Toaster" data-dojo-props="positionDirection:'tr-left'"
+     id="toaster">
+</div>
 </body>
 </html>

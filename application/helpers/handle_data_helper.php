@@ -52,11 +52,11 @@ function message_unknow_error(){
 }
 
 //输出验证form验证
-function validation_error($data){
+function validation_error(){
     if ( function_exists('form_error')) {;
-        foreach($data as $key=>$value){
+        foreach($_POST as $key=>$value){
             $v = array();
-            $e = form_error($key);
+            $e = form_error($key,"<span>","</span>");
             if($e != ''){
                 $v[$key] = $e;
                 _refresh_output('validation',$v);
