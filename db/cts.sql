@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2014 at 10:26 AM
+-- Generation Time: Oct 12, 2014 at 02:03 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -127,7 +127,7 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (1, 'company_name', '公司名称', '浙江天正集团1', 1, NULL, NULL, 1412919552, 44),
 (2, 'logo_file', 'Logo文件路径', '1', 1, NULL, NULL, NULL, NULL),
 (3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, NULL, NULL, NULL, NULL),
-(4, 'category_control', '投诉订单分类功能开关', '0', 1, NULL, NULL, NULL, NULL),
+(4, 'category_control', '投诉订单分类功能开关', '1', 1, NULL, NULL, 1413098422, 44),
 (5, 'all_values', '包含所有值', 'all', 0, NULL, NULL, NULL, NULL),
 (6, 'alarm_period', '报警周期，每次报警的时间间隔，单位为小时', '24', 1, NULL, NULL, NULL, NULL),
 (7, 'mail_protocol', 'mail, sendmail, or smtp 邮件发送协议', 'smtp', 1, NULL, NULL, NULL, NULL),
@@ -467,14 +467,17 @@ CREATE TABLE IF NOT EXISTS `ct_messages` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `class_id` (`class_id`,`message_code`,`language`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息表' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_messages`
 --
 
 INSERT INTO `ct_messages` (`id`, `class_id`, `message_code`, `content`, `language`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(2, 3, '10', '数据库保存成功！', 'zh-CN', NULL, 1412917791, 44, 1412926006, 44);
+(2, 3, '10', '数据库保存成功！', 'zh-CN', NULL, 1412917791, 44, 1412926006, 44),
+(3, 4, '10', '系统未知错误，请联系管理员！', 'zh-CN', NULL, 1413091223, 44, 1413091223, 44),
+(4, 3, '20', '数据库保存失败！', 'zh-CN', NULL, 1413094460, 44, 1413094460, 44),
+(5, 4, '20', '没有操作权限，请联系系统管理员！', 'zh-CN', NULL, 1413094784, 44, 1413094784, 44);
 
 -- --------------------------------------------------------
 
@@ -510,14 +513,15 @@ CREATE TABLE IF NOT EXISTS `ct_message_classes` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `class_code` (`class_code`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息分类表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息分类表' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_message_classes`
 --
 
 INSERT INTO `ct_message_classes` (`id`, `class_code`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(3, 'db', '数据库操作相关消息', 1412917773, 44, 1412917773, 44);
+(3, 'db', '数据库操作相关消息', 1412917773, 44, 1412917773, 44),
+(4, 'system', '系统消息类', 1413091179, 44, 1413091179, 44);
 
 -- --------------------------------------------------------
 
@@ -536,14 +540,19 @@ CREATE TABLE IF NOT EXISTS `ct_module_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   `display_class` varchar(100) DEFAULT NULL COMMENT '抬头图标样式码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `ct_module_header`
 --
 
 INSERT INTO `ct_module_header` (`id`, `module_name`, `description`, `sort`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_class`) VALUES
-(3, 'system_admin', '系统管理', 0, 1412060859, -1, 1412060859, -1, NULL);
+(3, 'system_manage', '系统管理', 99, 1412060859, -1, 1413077179, 44, 'icon-cogs'),
+(4, 'user_center', '用户中心', 2, 1413076355, 44, 1413077216, 44, 'icon-user'),
+(5, 'order_create', '发布问题', 0, 1413076497, 44, 1413077197, 44, 'icon-edit'),
+(6, 'order_manage', '我的投诉', 1, 1413076525, 44, 1413077210, 44, 'icon-comments'),
+(7, 'message_manage', '我的提醒', 3, 1413076578, 44, 1413077203, 44, 'icon-envelope'),
+(8, 'test', 'stest', 0, 1413077273, 44, 1413077273, 44, '');
 
 -- --------------------------------------------------------
 
@@ -561,7 +570,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -570,7 +579,12 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
 INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (13, 3, 1, 0, 1412060872, -1, 1412060872, -1),
 (14, 3, 3, 0, 1412147498, 44, 1412147498, 44),
-(15, 3, 4, 0, 1412400062, 44, 1412400062, 44);
+(15, 3, 4, 0, 1412400062, 44, 1412400062, 44),
+(17, 4, 3, 0, 1413076633, 44, 1413076633, 44),
+(18, 5, 1, 0, 1413076637, 44, 1413076637, 44),
+(19, 6, 4, 0, 1413076644, 44, 1413076644, 44),
+(20, 7, 1, 0, 1413076650, 44, 1413076650, 44),
+(21, 8, 1, 0, 1413077333, 44, 1413077333, 44);
 
 -- --------------------------------------------------------
 
@@ -596,6 +610,34 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines_v` (
 ,`display_flag` tinyint(3) unsigned
 ,`function_display_class` varchar(100)
 ,`module_display_class` varchar(100)
+);
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_module_line_objects_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_module_line_objects_v` (
+`id` int(11)
+,`module_id` int(11)
+,`function_id` int(11)
+,`sort` int(11)
+,`creation_date` int(11)
+,`created_by` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`module_name` varchar(100)
+,`module_desc` varchar(255)
+,`function_name` varchar(100)
+,`function_desc` varchar(255)
+,`module_sort` int(11)
+,`controller` varchar(255)
+,`action` varchar(255)
+,`display_flag` tinyint(3) unsigned
+,`function_display_class` varchar(100)
+,`module_display_class` varchar(100)
+,`object_id` int(10) unsigned
+,`object_name` varchar(20)
+,`object_desc` varchar(255)
 );
 -- --------------------------------------------------------
 
@@ -707,7 +749,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_type`,`status`,`manager_id`) USING BTREE,
   KEY `Index_3` (`created_by`,`creation_date`,`status`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `ct_orders`
@@ -1081,7 +1123,7 @@ CREATE TABLE IF NOT EXISTS `ct_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_name` (`role_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统角色信息表' AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统角色信息表' AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `ct_roles`
@@ -1096,7 +1138,8 @@ INSERT INTO `ct_roles` (`id`, `role_name`, `description`, `created_by`, `creatio
 (6, 'manager-customer', '质量经理', NULL, NULL, NULL, NULL),
 (7, 'manager-employee', '人事经理', NULL, NULL, NULL, NULL),
 (8, 'administrator', '系统管理员', NULL, NULL, NULL, NULL),
-(11, 'sadfasdf', 'asdfsadf', -1, 1411974364, 1411974364, -1);
+(11, 'sadfasdf', 'asdfsadf', -1, 1411974364, 1411974364, -1),
+(12, 'reporter_vender1', 'reporter_vender', 44, 1413034064, 1413034064, 44);
 
 -- --------------------------------------------------------
 
@@ -1113,7 +1156,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -1121,9 +1164,20 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
 
 INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 8, 13, 1412060895, -1, 1412060895, -1),
-(2, 1, 13, 1412060925, -1, 1412060925, -1),
 (3, 8, 14, 1412148323, 44, 1412148323, 44),
-(4, 1, 14, 1412225521, 44, 1412225521, 44);
+(19, 1, 14, 1413030370, 44, 1413030370, 44),
+(20, 0, 13, 1413033621, 44, 1413033621, 44),
+(21, 0, 14, 1413033621, 44, 1413033621, 44),
+(22, 0, 13, 1413033700, 44, 1413033700, 44),
+(23, 0, 14, 1413033700, 44, 1413033700, 44),
+(24, 12, 13, 1413034064, 44, 1413034064, 44),
+(25, 12, 14, 1413034064, 44, 1413034064, 44),
+(26, 1, 15, 1413076672, 44, 1413076672, 44),
+(27, 1, 17, 1413076672, 44, 1413076672, 44),
+(29, 1, 19, 1413076672, 44, 1413076672, 44),
+(30, 1, 20, 1413076672, 44, 1413076672, 44),
+(31, 1, 13, 1413095998, 44, 1413095998, 44),
+(32, 1, 18, 1413095998, 44, 1413095998, 44);
 
 -- --------------------------------------------------------
 
@@ -1169,19 +1223,23 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
   `module_line_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`role_id`,`object_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=53 ;
 
 --
 -- Dumping data for table `ct_role_profiles`
 --
 
 INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `module_line_id`) VALUES
-(1, 1, 1, NULL, NULL, NULL, NULL, NULL),
-(2, 1, 2, NULL, NULL, NULL, NULL, NULL),
-(3, 1, 3, NULL, NULL, NULL, NULL, NULL),
-(4, 1, 4, NULL, NULL, NULL, NULL, NULL),
-(5, 1, 4, 1412942024, 44, 1412942024, 44, NULL),
-(8, 2, 4, 1412992812, 44, 1412992812, 44, NULL);
+(8, 2, 4, 1412992812, 44, 1412992812, 44, NULL),
+(25, 1, 2, 1413029829, 44, 1413029829, 44, NULL),
+(39, 0, 2, 1413033621, 44, 1413033621, 44, NULL),
+(40, 0, 1, 1413033621, 44, 1413033621, 44, NULL),
+(43, 0, 1, 1413033700, 44, 1413033700, 44, NULL),
+(45, 0, 2, 1413033700, 44, 1413033700, 44, NULL),
+(47, 12, 1, 1413034064, 44, 1413034064, 44, NULL),
+(49, 12, 2, 1413034064, 44, 1413034064, 44, NULL),
+(51, 1, 1, 1413095998, 44, 1413095998, 44, 13),
+(52, 1, 3, 1413095998, 44, 1413095998, 44, 13);
 
 -- --------------------------------------------------------
 
@@ -1216,20 +1274,28 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`profile_id`,`object_line_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=61 ;
 
 --
 -- Dumping data for table `ct_role_profile_lines`
 --
 
 INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 1, 3, 'all', NULL, NULL, NULL, NULL),
-(2, 1, 4, 'all', NULL, NULL, NULL, NULL),
-(3, 1, 5, 'all', NULL, NULL, NULL, NULL),
-(4, 2, 6, 'TRUE', NULL, NULL, NULL, NULL),
-(5, 3, 7, 'status_update', NULL, NULL, NULL, NULL),
 (7, 8, 8, 'TRUE', 1412992812, 44, 1412992812, 44),
-(8, 8, 11, 'all', 1412992812, 44, 1412992812, 44);
+(8, 8, 11, 'all', 1412992812, 44, 1412992812, 44),
+(13, 25, 6, 'TRUE', 1413029829, 44, 1413029829, 44),
+(41, 43, 3, 'customer', 1413033700, 44, 1413033700, 44),
+(42, 43, 4, 'all', 1413033700, 44, 1413033700, 44),
+(43, 43, 5, 'all', 1413033700, 44, 1413033700, 44),
+(47, 45, 6, 'TRUE', 1413033700, 44, 1413033700, 44),
+(49, 47, 3, 'customer', 1413034064, 44, 1413034064, 44),
+(50, 47, 4, 'all', 1413034064, 44, 1413034064, 44),
+(51, 47, 5, 'all', 1413034064, 44, 1413034064, 44),
+(55, 49, 6, 'TRUE', 1413034064, 44, 1413034064, 44),
+(57, 51, 3, 'vendor', 1413095998, 44, 1413095998, 44),
+(58, 51, 4, 'all', 1413095998, 44, 1413095998, 44),
+(59, 51, 5, 'all', 1413095998, 44, 1413095998, 44),
+(60, 52, 7, 'manager_change', 1413095998, 44, 1413095998, 44);
 
 -- --------------------------------------------------------
 
@@ -1703,6 +1769,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_module_lines_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_module_lines_v` AS select `l`.`id` AS `id`,`l`.`module_id` AS `module_id`,`l`.`function_id` AS `function_id`,`l`.`sort` AS `sort`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`h`.`module_name` AS `module_name`,`h`.`description` AS `module_desc`,`fn`.`function_name` AS `function_name`,`fn`.`description` AS `function_desc`,`h`.`sort` AS `module_sort`,`fn`.`controller` AS `controller`,`fn`.`action` AS `action`,`fn`.`display_flag` AS `display_flag`,`fn`.`display_class` AS `function_display_class`,`h`.`display_class` AS `module_display_class` from ((`ct_module_header` `h` join `ct_module_lines` `l`) join `ct_functions` `fn`) where ((`l`.`module_id` = `h`.`id`) and (`l`.`function_id` = `fn`.`id`));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_module_line_objects_v`
+--
+DROP TABLE IF EXISTS `ct_module_line_objects_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_module_line_objects_v` AS select `ml`.`id` AS `id`,`ml`.`module_id` AS `module_id`,`ml`.`function_id` AS `function_id`,`ml`.`sort` AS `sort`,`ml`.`creation_date` AS `creation_date`,`ml`.`created_by` AS `created_by`,`ml`.`last_update_date` AS `last_update_date`,`ml`.`last_updated_by` AS `last_updated_by`,`ml`.`module_name` AS `module_name`,`ml`.`module_desc` AS `module_desc`,`ml`.`function_name` AS `function_name`,`ml`.`function_desc` AS `function_desc`,`ml`.`module_sort` AS `module_sort`,`ml`.`controller` AS `controller`,`ml`.`action` AS `action`,`ml`.`display_flag` AS `display_flag`,`ml`.`function_display_class` AS `function_display_class`,`ml`.`module_display_class` AS `module_display_class`,`fo`.`object_id` AS `object_id`,`fo`.`object_name` AS `object_name`,`fo`.`description` AS `object_desc` from (`ct_function_objects_v` `fo` join `ct_module_lines_v` `ml`) where (`ml`.`function_id` = `fo`.`function_id`);
 
 -- --------------------------------------------------------
 

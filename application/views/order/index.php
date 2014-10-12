@@ -32,7 +32,7 @@
         <td><?= $o['warning_count']?></td>
         <td><?= $o['plan_date_count']?></td>
         <td></td>
-        <td><a href="<?= _url('order','show',array('id'=>$o['id']))?>">查看</a></td>
+        <td><?php render_link(_url('order','show',array('id'=>$o['id'])),'查看')?></td>
     </tr>
     <?php endforeach;?>
 </table>
