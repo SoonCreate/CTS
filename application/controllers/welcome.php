@@ -29,8 +29,13 @@ class Welcome extends CI_Controller {
         set_sess('uid',44);
         $am = new Auth_model();
         $data['modules'] = $am->can_choose_modules();
-		$this->load->view('welcome_message',$data);
+		$this->load->view('welcome',$data);
+        $this->session->set_flashdata('item', 'value');
 	}
+
+    function welcome_message(){
+        $this->load->view('welcome_message');
+    }
 
     function username_check($username){
         if ($username == 'test'){
@@ -45,8 +50,10 @@ class Welcome extends CI_Controller {
         $module_id = p('module_id');
         $am = new Auth_model();
         $data['functions'] = $am->can_choose_functions($module_id);
-        if(!empty($data['functions'])){
+        if(count($data['functions']) > 1){
             $this->load->view('my_functions',$data);
+        }elseif(count($data['functions']) == 1){
+            redirect(_url($data['functions'][0]['controller'],$data['functions'][0]['action']));
         }else{
             show_404();
         }

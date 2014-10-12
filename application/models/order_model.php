@@ -131,7 +131,7 @@ class Order_model extends MY_Model{
             $this->db->trans_commit();
             //如果需要填写原因，则直接跳转的原因补充页
             if($need_reason){
-                redirect_to('order','change_reason',array('change_hash'=>$change_hash));
+                redirect(_url('order','change_reason',array('change_hash'=>$change_hash)));
             }
             return true;
         }else{
@@ -199,7 +199,7 @@ class Order_model extends MY_Model{
             $this->db->trans_commit();
             //如果需要填写原因，则直接跳转的原因补充页
             if($need_reason){
-                redirect_to('order','change_reason',array('change_hash'=>$change_hash));
+                redirect(_url('order','change_reason',array('change_hash'=>$change_hash)));
             }
             return true;
         }else{

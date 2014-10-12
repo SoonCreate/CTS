@@ -25,8 +25,19 @@ function render($data = NULL){
     $CI->load->view($CI->router->fetch_directory().'/'.$CI->router->fetch_class().'/'.$CI->router->fetch_method(),$data);
 }
 
-function redirect_to($controller,$action,$params = null){
-    redirect(_url($controller,$action,$params));
+//function redirect_to($controller,$action,$params = null){
+//    redirect(_url($controller,$action,$params));
+//}
+
+function render_link($url,$label,$title = '',$class = ''){
+    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$url.'\');">'.$label.'</a>';
+}
+
+function render_error($heading = '',$message = ''){
+    $CI =  &get_instance();
+    $data['heading'] = $heading;
+    $data['message'] = $message;
+    $CI->load->view('error',$data);
 }
 
 function _url($controller,$action,$params = null){

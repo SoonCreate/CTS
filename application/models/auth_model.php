@@ -161,7 +161,7 @@ class Auth_model extends MY_Model{
     function can_choose_modules(){
         $this->db->distinct();
         $this->db->order_by('module_sort');
-        $this->db->select('module_name,module_id,module_desc');
+        $this->db->select('module_name,module_id,module_desc,module_display_class');
         return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1))->result_array();
     }
 

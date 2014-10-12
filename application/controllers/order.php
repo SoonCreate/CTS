@@ -49,7 +49,7 @@ class Order extends CI_Controller {
 
         }else{
             //一种时，直接跳转
-            redirect_to('order','create',array('type'=>$rows[0]));
+            redirect(_url('order','create',array('type'=>$rows[0])));
         }
 
     }
@@ -57,7 +57,6 @@ class Order extends CI_Controller {
     function create(){
         $order = new Order_model();
         if($_POST){
-
             //非分类管理，默认分类设置时可默认
             if(!_config('category_control')){
                 $c = $order->default_category(v('order_type'));
@@ -75,12 +74,12 @@ class Order extends CI_Controller {
                 $addfiles = tpost('addfiles');
 
                 if($order->save($data,$content,$addfiles)){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error($data);
                 }
             }else{
-
+                message('E','system','10');
             }
         }else{
             //获取订单类型，如果没有则跳转到chose_create
@@ -92,7 +91,7 @@ class Order extends CI_Controller {
             }
 
             if(is_null($order_type)){
-                redirect_to('order','choose_create');
+                redirect(_url('order','choose_create'));
             }else{
                 render($data);
             }
@@ -225,7 +224,7 @@ class Order extends CI_Controller {
                 $data['content'] = tpost('content');
                 $data['order_id'] = $id;
                 if($ocm->insert($data)){
-                    redirect_to('order','show',array('id'=>$id));
+                    redirect(_url('order','show',array('id'=>$id)));
                 }else{
                     echo validation_errors('<div class="error">', '</div>');
                 }

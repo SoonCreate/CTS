@@ -36,7 +36,7 @@ class Modules extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                if($m->update($module['id'],_data('module_name','description','display_class','sort'))){
+                if($m->update($module['id'],_data('description','display_class','sort'))){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');

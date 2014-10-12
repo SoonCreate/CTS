@@ -239,43 +239,6 @@ function format_uid($uid = NULL)
 	}
 	return $uid;
 }
-function set_flash($key,$value= NULL){
-	global $CI;
-	$CI->load->library('session');
-	
-	
-	if(is_array($key))
-	{
-		$newdata = $key;
-	}
-	else
-	{
-		$newdata[$key] = $value;
-	}
-	$CI->session->set_flashdata($newdata);
-}
-function _flash($key){
-	global $CI;
-	$CI->load->library('session');
-	return $CI->session->flashdata($key);
-}
-
-function flash_message() 
-{ 
-    global $CI;
-    $flashmsg = $CI->session->flashdata('message'); 
- 
-    $html = ''; 
-    if (is_array($flashmsg)) 
-    { 
-        $html = '<div id="flashmessage" class="'.$flashmsg['type'].'"> 
-            <img style="float: right; cursor: pointer" id="closemessage" src="'.base_url().'images/cross.png" /> 
-            <strong>'.$flashmsg['title'].'</strong> 
-            <p>'.$flashmsg['content'].'</p> 
-            </div>'; 
-    } 
-    return $html; 
-}
 
 function myhash( $id = NULL )
 {

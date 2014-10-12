@@ -21,7 +21,7 @@ class Order_meeting extends CI_Controller {
             $objects = $omm->find_all_by_view(array('order_id'=>$order['id']));
             if(empty($objects)){
                 //没有记录时新建
-                redirect_to('order_meeting','create',array('order_id'=>$order['id']));
+                redirect(_url('order_meeting','create',array('order_id'=>$order['id'])));
             }else{
                 $data['objects'] = _format($objects);
                 render($data);

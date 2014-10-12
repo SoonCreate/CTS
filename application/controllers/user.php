@@ -27,9 +27,9 @@ class User extends CI_Controller {
             }else{
                 set_sess('uid',$user['id']);
                 if($user['initial_pass_flag']){
-                    redirect_to('user','change_password');
+                    redirect(_url('user','change_password'));
                 }else{
-                    redirect_to('welcome','index');
+                    redirect(_url('welcome','index'));
                 }
             }
         }else{
@@ -39,7 +39,7 @@ class User extends CI_Controller {
 
     function logout(){
         clear_all_sess();
-        redirect_to('user','login');
+        redirect(_url('user','login'));
     }
 
     function register(){
@@ -250,7 +250,7 @@ class User extends CI_Controller {
         if($nm->update_by(array('received_by'=>_sess('uid')),array('read_flag'=>1))){
             echo 'done';
         }else{
-            redirect_to('user','notices');
+            redirect(_url('user','notices'));
         }
     }
 
@@ -261,7 +261,7 @@ class User extends CI_Controller {
 
     private function  _update($id,$data){
         if($this->user->update($id,$data)){
-            redirect_to('user','index');
+            redirect(_url('user','index'));
         }else{
             echo validation_errors('<div class="error">', '</div>');
         }

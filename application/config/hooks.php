@@ -25,13 +25,20 @@ $hook['post_controller_constructor'][] = array(
     'filepath' => 'hooks'
 );
 
+$hook['post_controller_constructor'][] = array(
+    'class'    => 'SOutput',
+    'function' => 'initial_output',
+    'filename' => 'SOutput.php',
+    'filepath' => 'hooks'
+);
+
 //在你的控制器完全运行之后调用.
-//$hook['post_controller'] = array(
-//    'class'    => 'SMessage',
-//    'function' => 'response',
-//    'filename' => 'SMessage.php',
-//    'filepath' => 'hooks'
-//);
+$hook['post_controller'] = array(
+    'class'    => 'SOutput',
+    'function' => 'output',
+    'filename' => 'SOutput.php',
+    'filepath' => 'hooks'
+);
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

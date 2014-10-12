@@ -361,6 +361,7 @@ class Role extends CI_Controller {
             $this->db->trans_start();
             $rplm->delete_by(array('profile_id'=>$profile['id']));
             $rpm->delete($profile['id']);
+            $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE) {
                 echo '数据库错误';
             }else{

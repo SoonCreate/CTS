@@ -1,0 +1,533 @@
+@CHARSET "UTF-8";
+
+/*@import "../../dojo/resources/dojo.css";*/
+/*@import "../../dijit/themes/claro/document.css";*/
+/*@import "../../dijit/themes/claro/claro.css";*/
+/*@import "../../dojox/grid/resources/claroGrid.css";*/
+*{
+	box-sizing:border-box;
+}
+.row{
+	margin-left:0 !important;
+	margin-right:0 !important;
+	margin-bottom:10px !important;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+
+    font-size: 12px;
+}
+h1,h2,h3,h4{
+    font-family:Microsoft Yahei;
+    margin:0 !important;
+    padding:0;
+    display:inline-block;
+}
+#preloader {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 1em;
+    background: #fff url('../images/loadingAnimation.gif') no-repeat center center;
+    position: absolute;
+    z-index: 999;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.loading {
+    padding: 1em;
+    background: url('../images/loadingAnimation.gif') no-repeat;
+    z-index: 999;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#mainContainer {
+    height: 100%;
+    width: 100%;
+    background-color: #ECF0F1;
+    /*background-color: #BDC3C7;*/
+}
+
+#headerPane {
+	padding:5px 0;
+	height:60px;
+	font-size:28px;
+	/*background:#273F56;*/
+	position:relative;
+	z-index:2;
+	font-family:Microsoft Yahei;
+    background-color: #ECF0F1;
+	margin-bottom:20px;
+}
+.dijitTabPaneWrapper{
+    background-color: #fff;
+}
+.comlogo{
+	margin-top:5px;
+	padding:0 30px;
+	height: 35px;
+}
+.headerline{
+	height: 0px;
+	background:#4A9BD5;
+	border-bottom:1px solid #2A73A8;
+	border-top:1px solid #2A73A8;
+}
+#leftAccordion{
+	width:200px;
+	border-right:1px solid #9CADBA;
+	background:#EAF0F5;
+}
+
+
+.paneAccordion {
+    margin: 0 auto 0 auto !important;
+    text-align: center;
+	height:auto !important;
+}
+
+.dbootstrap #leftAccordion .dijitButton {
+    width: 100%;
+}
+
+.claro #leftAccordion .dijitButton .dijitButtonNode {
+    width: 140px;
+    margin-bottom: 7px;
+}
+
+code,
+.code {
+    border: 1px solid black;
+    font-size: 11px;
+    font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
+    background-color: #EEEEEE;
+    padding: 2px;
+}
+
+.tabPane{
+    padding: 1em;
+}
+
+.instructionBox{
+    text-align: left;
+    margin: 2px auto 7px;
+    padding: 8px;
+    max-width: 300px;
+    background-color: #E9F4FE;
+    border: 1px solid #759DC0;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.info {
+    /*text-align: left;
+    margin: 1em;
+    padding: 1em;
+    background-color: #E9F4FE;
+    border: 1px solid #759DC0;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);*/
+}
+
+.info li{
+    margin-left: 20px;
+}
+
+.ormInfo {
+    text-align: left;
+    margin: 1em;
+    padding: 1em;
+    background-color: #E9F4FE;
+    border: 1px solid #759DC0;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.demoJSFile{
+    background-image: url("../resources/silk/icons/page_white_code.png");
+    background-repeat: no-repeat;
+    height: 18px;
+    text-align: center;
+    width: 18px;
+    margin: 0 auto;
+}
+
+.demoFolder{
+    background-image: url("../resources/silk/icons/folder.png");
+    background-repeat: no-repeat;
+    height: 18px;
+    text-align: center;
+    width: 18px;
+    margin: 0 auto;
+}
+
+#fileGridTreePane {
+    width: 240px;
+}
+
+#fileGridGridPane {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+#confirmDialog {
+    width: 400px;
+}
+
+.messageContainer{
+    height: 60px;
+    /*line-height: 30px;*/
+    padding: 5px 5px 0 5px;
+
+}
+
+.messageContainer .messageContent{
+    margin-left: 70px;
+    margin-top: -40px;
+    table-layout:fixed;
+    word-break: break-all;
+    overflow:hidden;
+    font-size: 20px;
+}
+
+pre,code {
+    font-family: Consolas, Monaco, Courier New, Courier, monospace;
+    font-size: 12px;
+    background-color: #f9f9f9;
+    border: 1px solid #D0D0D0;
+    color: #002166;
+    display: block;
+    margin: 14px 0 14px 0;
+    padding: 12px 10px 12px 10px;
+}
+
+#body{
+    margin: 0 15px 0 15px !important;
+    padding:10px !important;
+}
+
+p.footer{
+    text-align: right;
+    font-size: 11px;
+    border-top: 1px solid #D0D0D0;
+    line-height: 32px;
+    padding: 0 10px 0 10px;
+    margin: 20px 0 0 0;
+}
+
+#container{
+    margin: 10px;
+    border: 1px solid #D0D0D0;
+}
+
+#container h1 {
+    color: #444;
+    background-color: transparent;
+    border-bottom: 1px solid #D0D0D0;
+    font-size: 19px;
+    font-weight: normal;
+    margin: 0 0 14px 0;
+    padding: 14px 15px 10px 15px;
+}
+
+.summaryRow .gridxRowTable {
+    background-color: #FFFF99;
+}
+.leftsubmenu{
+	padding:0 ;
+	margin:0;	
+}
+.leftsubmenu li{
+	
+	list-style:none;
+
+}
+
+.leftsubmenu li a{
+	color:#205484;
+	display: block;
+	line-height: 28px;
+	text-align: left;
+	padding: 2px 0px 2px 30px;
+	cursor: pointer;
+	font-family:"Microsoft Yahei";
+	background:#EAF0F5;
+}
+
+.leftsubmenu li a:hover{
+    color:#666;
+    text-decoration: none;
+	background:#D4E2EE;
+
+}
+
+/*user-center*/
+
+.user-tabs .dijitTabContainerLeft-tabs{
+    margin-left:20px;
+    width:200px;
+    border:0 solid #fff !important;
+
+}
+
+.user-tabs .dijitTabContainerLeft-tabs .dijitTab {
+
+    height: 75px;
+    margin-bottom: 10px;
+    padding:15px 0 10px 15px;
+    border: 1px solid #29BB9C;
+    background-color: #FFF;
+    font-family:"Microsoft Yahei";
+    font-weight: bolder;
+    font-size:14px;
+    color:#29BB9C;
+    margin-right: 10px;
+}
+
+.user-tabs .dijitTabContainerLeft-tabs .dijitTabChecked {
+
+    margin:0 -1px 10px 0;
+    border: 1px solid #979C9F;
+    border-right:1px solid #FFF;;
+    border-radius: 4px 0 0 4px !important;
+    background-color:#FFF !important ;
+    color:#3CACE7;
+    border-right: 0px solid #3CACE7 #29BB9C #2C3E50;
+    top:0px;
+
+}
+.user-tabs .dijitTabContainerLeft-container{
+    border: 1px solid #979C9F;
+    padding:10px;
+}
+
+.user-tabs .dijitTabContainerLeft-tabs .tabLabel{
+
+    display:block;
+    float:left;
+    height: 50px;
+    width:110px;
+    padding: 10px 0px 20px 10px;
+
+}
+.user-tabs .dijitTabContainerLeft-tabs .dijitTabChecked .tabLabel{
+    border-right: 0px solid #3CACE7;
+}
+.user-tabs .dijitTabContainerLeft-tabs .dijitTabButtonIcon{
+    display:block;
+    float:left;
+    height: 50px;
+    width:50px;
+    margin-right: 10px;
+}
+.user-tabs .dijitTabContainerLeft-tabs .dijitTab {
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+
+
+/*login form*/
+.login{
+
+    /*border: 1px solid #759dc0;
+    -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);*/
+    width:400px;
+    height:345px;
+    border-radius: 5px 5px 0 0;
+    outline: 0;
+    border: 1px solid #C7C7C7;
+    font-size: 12px;
+    line-height: 1.666;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.32);
+    background: #fafafa;
+    position:fixed;
+    left:50%;
+    top:50%;
+    margin-left:-200px;
+    margin-top:-180px;
+    background-color: #ECF0F1;
+    /*position:fixed;
+    left:50%;
+    top:50%;
+    margin-left:width/2;
+    margin-top:height/2;*/
+
+}
+.DialogTitleBar {
+
+    border-radius: 4px 4px 0 0;
+    text-align: left;
+    padding: 8px 50px;
+    height: 140px;
+    border-bottom: 1px solid #c2c2c2;
+    background: #eee;
+}
+.DialogTitleBar h3{
+    text-align: center;
+    font-family:Microsoft Yahei;
+    font-size: 18px;
+    font-weight: bold;
+}
+.DialogPaneContent {
+
+    padding: 20px 0px;
+    position: relative;
+    width:398px;
+    height:148px;
+
+}
+
+.DialogPaneContent dl dt{
+    width:120px !important;
+    display:inline-block;
+
+}
+.DialogPaneContent dl dt label{
+    padding:3px 0;
+    display:inline-block;
+    color:#222 !important;
+    font-family:Microsoft Yahei;
+
+}
+.DialogPaneContent dl dd{
+    margin-left:120px !important;
+}
+.DialogPaneActionBar {
+
+    background-color: #efefef;
+    padding: 8px 5px 2px 7px;
+    text-align: right;
+    border-top: 1px solid #fff;
+    height:50px;
+    /*  position: relative;
+      padding: 3px 5px 2px 7px;
+      border-top: 1px inset #E1E1E1;
+      background: #fafafa;
+      text-align: right;*/
+}
+
+.paneltitle{
+    border-radius: 3px 3px 0 0;
+    padding: 0 10px;
+    height: 34px;
+    line-height: 34px;
+    margin-top: 0;
+    margin-bottom:0 !important;
+    background: #E9E9E9;
+}
+.paneltitle h3{
+    color:#666;
+}
+#pro{
+    height: 5px;
+    border-bottom:1px solid #d3d3d3;
+}
+
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 5px solid transparent;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: 1px 1px 5px rgba(0,0,0,.2) inset;
+}
+
+::-webkit-scrollbar-thumb {
+    min-height: 20px;
+    background-clip: content-box;
+    box-shadow: 0 0 0 5px rgba(0,0,0,.2) inset;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+/*create*/
+.paneltitle{
+    border-radius: 3px 3px 0 0;
+    padding: 0 10px;
+    height: 34px;
+    line-height: 34px;
+    margin-top: 0;
+    margin-bottom:0 !important;
+    background: #E9E9E9;
+}
+.paneltitle h3{
+    color:#666;
+    font-size: 13px;
+}
+.userd{
+
+    background:#FAFAFA;
+    padding :20px 0 5px 0;
+    margin-bottom:20px;
+}
+.userd dl{
+    margin-bottom: 15px;
+}
+.userd dl dt{
+    width:120px !important;
+    display:inline-block;
+    float:left;
+    text-align:right;
+}
+.userd dl dd{
+    margin-left:20px !important;
+    display:inline-block;
+    float:left;
+    min-width:500px;
+}
+.userd dl dt label,
+.userd dl dd label{
+    font-weight:lighter !important;
+    padding:3px 0;
+    display:inline-block;
+    color:#757575 !important;
+}
+.userd dl dt label{
+
+}
+.userd dl dd label{
+    display:inline-block;
+    float:left;
+    margin-right:10px;
+}
+
+
+.panelbottom{
+    border-radius: 3px;
+    padding: 0 20px;
+    height: 45px;
+    line-height: 45px;
+    margin-top: 0;
+    margin-bottom:10px !important;
+    background: #E9E9E9;
+    text-align:left;
+}
