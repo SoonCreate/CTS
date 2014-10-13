@@ -1,6 +1,6 @@
 //前端触发后端链接
 function goto(target,url){
-    var wso = $dijit.byId(target);
+    var wso = $dijit.byId(target+'_module');
     if(!wso){
         wso = currentWso();
     }
@@ -187,7 +187,7 @@ function renderValidError(lines){
 
     for(var i=0;i<lines.length;i++){
         for (var key in lines[i]) {
-            var object = $dijit.byId(key);
+            var object = dijitObject(key);
             if(object){
                 //激活
                 //object.focus();
@@ -203,6 +203,7 @@ function renderValidError(lines){
 //没有定义好环境，则刷新
 function refresh_env(){
     if($env && $env.cm){
+        //预加载，加载后动画
         require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
             baseFx.fadeOut({  //Get rid of the loader once parsing is done
                 node: "preloader",
@@ -217,4 +218,89 @@ function refresh_env(){
     }else{
         history.go(0);
     }
+}
+
+//用于控件的唯一性标识
+function fixDijitId(id){
+    var rtId = "";
+    if($env && $env.cm){
+        rtId = $env.cm + "_" + id ;
+    }
+    return rtId;
+}
+
+//效果同js原先的confirm
+//content ：弹出框内容 ； callback ： 确认后要执行的内容
+function dojoConfirm(content,callback,noback,type){
+    require(["sckj/Dialog","dijit/form/Button"],
+        function(Dialog,Button){
+            //检查如果存在则销毁
+            var di = dijit.byId("confirmDialog");
+            if(di){
+                di.hide();
+                di.destroyRecursive();
+            }
+            switch(type){
+                case "E" :
+                    //此处可以再渲染
+                    content =  "<div class='messageContainer'><img src='resources/images/error.gif' width='60px' height='60px'/>" +
+                    "<div class='messageContent'>" + content + "</div></div>";
+                    break;
+                case "W" :
+                    content = "<div class='messageContainer'><img src='resources/images/warning.png' width='60px' height='60px'/>" +
+                    "<div class='messageContent'>" +content + "</div></div>";
+                    break;
+                default :
+                    content = "<div class='messageContainer'><div class='messageContent'>" +content + "</div></div>";
+                    break;
+            }
+            var confirmDialog = new Dialog({
+                content : content,
+                id : "confirmDialog",
+                title : "消息",
+                onClick : function(){
+                    if(type == "I"){
+                        this.hide();
+                    }
+                }
+            });
+            //IE优化
+//            var node = domConstruct.create("div",{class : "confirmButtonGroup"});
+            var node = document.createElement('div');
+//            node.setAttribute('class', 'confirmButtonGroup');
+            node.className = "dijitDialogPaneActionBar";
+
+            //确认按钮
+            var okbutton = new Button({
+                label : "确认",
+                onClick : function(){
+                    if(callback){
+                        callback();
+                    }
+                    confirmDialog.hide();
+                }
+            });
+            okbutton.placeAt(node,"last");
+
+            //取消按钮
+            var cancelbutton = new Button({
+                label : "取消",
+                onClick : function(){
+                    if(noback){
+                        noback();
+                    }
+                    confirmDialog.hide();
+                }
+            });
+            cancelbutton.placeAt(node,"last");
+
+            confirmDialog.containerNode.appendChild(node);
+            confirmDialog.show();
+        });
+
+}
+
+//根据id fix之后返回控件对象
+function dijitObject(id){
+    return $dijit.byId(fixDijitId(id));
 }

@@ -24,7 +24,8 @@
         parseOnLoad: true,
         async : true,
         packages: [
-            { name: "cts", location: "/cts/resources/js/"}
+            { name: "cts", location: "/cts/resources/js/"},
+            { name: "sckj", location: "/cts/resources/js/dijit"}
         ]
     };
     </script>
@@ -95,7 +96,7 @@
 
             <?php if(isset($modules)):?>
             <?php  foreach($modules as $m) :?>
-                    <div data-dojo-type="dojox/layout/ContentPane" id="<?= $m['module_id']?>"
+                    <div data-dojo-type="dojox/layout/ContentPane" id="<?= $m['module_id'].'_module'?>"
                          title="<?= $m['module_desc']?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
                          data-dojo-props=" href:'<?= $m['url']?>'"
