@@ -8,6 +8,10 @@ function goto(target,url){
     $dijit.byId("mainTabContainer").selectChild(wso,true);
 }
 
+function redirect(url){
+    window.location.href = url;
+}
+
 function isArray(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
 }

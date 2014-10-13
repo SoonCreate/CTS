@@ -42,7 +42,7 @@ class User extends CI_Controller {
             }
 
         }else{
-            render();
+            $this->load->view('user/login');
         }
     }
 /*by GS*/
