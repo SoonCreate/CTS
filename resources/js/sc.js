@@ -4,8 +4,8 @@ function goto(target,url){
     if(!wso){
         wso = currentWso();
     }
-    $dijit.byId("mainTabContainer").selectChild(wso,true);
     wso.set("href",url);
+    $dijit.byId("mainTabContainer").selectChild(wso,true);
 }
 
 function isArray(obj) {
@@ -203,6 +203,16 @@ function renderValidError(lines){
 //没有定义好环境，则刷新
 function refresh_env(){
     if($env && $env.cm){
+        require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
+            baseFx.fadeOut({  //Get rid of the loader once parsing is done
+                node: "preloader",
+                onEnd: function() {
+                    domStyle.set("preloader","display","none");
+                }
+            }).play();
+        });
+
+        //$(".preloader").style("display","none")
         console.log("current module line id : "+$env.cm);
     }else{
         history.go(0);

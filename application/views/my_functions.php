@@ -3,7 +3,7 @@
     <ul>
         <?php  foreach($functions as $fn) :?>
             <li>
-                <?php render_link(_url('welcome','go',array('id'=>$fn['id'])),$fn['function_desc'])?>
+                <?php render_link(_url('welcome','go',array('cm'=>$fn['id'])),$fn['function_desc'])?>
             </li>
         <?php  endforeach;?>
     </ul>

@@ -30,7 +30,33 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 //}
 
 function render_link($url,$label,$title = '',$class = ''){
-    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''._sess('mid').'\',\''.$url.'\');">'.$label.'</a>';
+    $module_id = _sess('mid');
+    $link = '';
+    if(is_array($url)){
+        $controller = $url[0];
+        $action = $url[1];
+        $params = $url[2];
+        $CI =  &get_instance();
+        $CI->load->model('module_line_model');
+        $mlm = new Module_line_model();
+        $cml = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action,'module_id'=>_sess('mid')));
+        if(!empty($cml)){
+            $params['cm'] = $cml['id'];
+        }else{
+            //如果当前连接不属于当前模块，随意获取某一mid
+            $mls = $mlm->find_all_by_view(array('controller'=>$controller,'action'=>$action));
+            if(!empty($mls)){
+                $ml = $mls[0];
+                $params['cm'] = $ml['id'];
+                $module_id = $ml['module_id'];
+            }
+        }
+        $link = _url($controller,$action,$params);
+    }else{
+        $link = $url;
+    }
+    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$module_id.'\',\''.$link.'\');">'.$label.'</a>';
+
 }
 
 function render_error($heading = '',$message = ''){
@@ -518,3 +544,16 @@ function render_file_link($file){
     echo '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
 
+//刷新环境
+function refresh_env(){
+    global $CI;
+    $CI->load->model('module_line_model');
+    $mlm = new Module_line_model();
+    $ml = $mlm->find_by_view(array('id'=>v('cm')));
+    if(!empty($ml)){
+        //当前的功能模块id，即module_line_id
+        set_sess('cm',$ml['id']);
+        set_sess('mid',$ml['module_id']);
+        set_sess('fid',$ml['function_id']);
+    }
+}

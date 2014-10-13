@@ -37,7 +37,19 @@
         var $ = new Object;
         var $dom = new Object;
         var $dijit = new Object;
-       require(["dojo/parser","dojo/dom","dojo/query","dijit/registry","dojo/ready"],function(parser,dom,query,registry,ready){
+       require(["dojo/parser",
+               "dojo/dom",
+               "dojo/query",
+               "dijit/registry",
+               "dojo/ready",
+               "dojo/_base/fx",
+               "dojo/dom-style",
+                "dijit/form/Select",
+                "dijit/form/TextBox",
+                "dijit/form/ValidationTextBox",
+                "dijit/Editor"
+           ],
+           function(parser,dom,query,registry,ready){
            ready(function(){
                $env = new Object;
                $ = query;
@@ -49,9 +61,24 @@
 
     </script>
     <script type="text/javascript" src="resources/js/sc.js"></script>
-
+<style type="text/css">
+    #preloader {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 1em;
+        background: #fff url('/cts/resources/images/loadingAnimation.gif') no-repeat center center;
+        position: absolute;
+        z-index: 999;
+        font-size: 24px;
+        font-weight: bold;
+    }
+</style>
  </head>
 <body class="sc">
+
+<!--<div id="preloader">Loading Application...</div>-->
+
 <div data-dojo-type="dijit/layout/BorderContainer" id="mainContainer"
      data-dojo-props="gutters:false">
     <div data-dojo-type="dijit/layout/ContentPane" id="headerPane"
@@ -71,7 +98,7 @@
                     <div data-dojo-type="dojox/layout/ContentPane" id="<?= $m['module_id']?>"
                          title="<?= $m['module_desc']?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
-                         data-dojo-props=" href:'<?= _url('welcome','my_functions',array('module_id'=>$m['module_id']))?>'"
+                         data-dojo-props=" href:'<?= $m['url']?>'"
                          onDownloadEnd = "refresh_env();"></div>
              <?php  endforeach;?>
             <?php endif;?>

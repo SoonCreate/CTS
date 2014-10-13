@@ -28,10 +28,28 @@ class Welcome extends CI_Controller {
 	{
         set_sess('uid',44);
         $am = new Auth_model();
-        $data['modules'] = $am->can_choose_modules();
+        $modules = $am->can_choose_modules();
+        //初始打开的URL运算
+        for($i = 0;$i < count($modules);$i++){
+            $fns = $am->can_choose_functions($modules[$i]['module_id']);
+            $url = "";
+            if(count($fns) > 1){
+                $url = _url('welcome','my_functions',array('module_id'=>$modules[$i]['module_id']));
+            }elseif(count($fns) == 1){
+                $url = _url($fns[0]['controller'],$fns[0]['action'],array('cm'=>$fns[0]['id']));
+            }else{
+                $url = _url('welcome','show_404');
+            }
+            $modules[$i]['url'] = $url;
+        }
+
+        $data['modules'] = $modules;
 		$this->load->view('welcome',$data);
-        $this->session->set_flashdata('item', 'value');
 	}
+
+    function show_404(){
+        show_404();
+    }
 
     function welcome_message(){
         $this->load->view('welcome_message');
@@ -46,31 +64,27 @@ class Welcome extends CI_Controller {
         }
     }
 
+    //当有多个功能时
     function my_functions(){
-        $module_id = p('module_id');
+        $module_id = v('module_id');
         $am = new Auth_model();
         $data['functions'] = $am->can_choose_functions($module_id);
-        if(count($data['functions']) > 1){
-            $this->load->view('my_functions',$data);
-        }elseif(count($data['functions']) == 1){
-            $id = $data['functions'][0]['id'];
-            redirect(_url('welcome','go',array('id'=>$id)));
-        }else{
-            show_404();
-        }
+        $this->load->view('my_functions',$data);
     }
 
-    //用户跳转功能，并记录唯一性ID
+    //用户功能页跳转，并记录唯一性ID
     function go(){
         $this->load->model('module_line_model');
         $mlm = new Module_line_model();
-        $ml = $mlm->find_by_view(array('id'=>v('id')));
+        $ml = $mlm->find_by_view(array('id'=>v('cm')));
         if(!empty($ml)){
+            $params = $this->input->get_post();
+            unset($params['cm']);
             //当前的功能模块id，即module_line_id
             set_sess('cm',$ml['id']);
             set_sess('mid',$ml['module_id']);
             set_sess('fid',$ml['function_id']);
-            redirect(_url($ml['controller'],$ml['action']));
+            redirect(_url($ml['controller'],$ml['action'],$params));
         }else{
             show_404();
         }

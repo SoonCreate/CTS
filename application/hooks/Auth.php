@@ -6,6 +6,8 @@ class Auth {
         if(!check_function_auth()){
             show_404();
             die();
+        }else{
+            refresh_env();
         }
     }
 }

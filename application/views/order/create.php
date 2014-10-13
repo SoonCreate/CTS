@@ -1,5 +1,5 @@
 <div class="row paneltitle">
-    <h3></h3>
+    <h3><?php render_link(array('order','index',array('go'=>'a')),'模块间跳转测试')?></h3>
 </div>
 <form id="order_create" method="post" action="<?= _url('order','create')?>" onsubmit="return formSubmit(this);">
 <div class="container-fluid userd">
