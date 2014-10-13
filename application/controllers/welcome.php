@@ -54,9 +54,7 @@ class Welcome extends CI_Controller {
             $this->load->view('my_functions',$data);
         }elseif(count($data['functions']) == 1){
             $id = $data['functions'][0]['id'];
-            $controller = $data['functions'][0]['controller'];
-            $action = $data['functions'][0]['action'];
-            redirect(_url('welcome','go',array('id'=>$id,'c'=>$controller,'a'=>$action)));
+            redirect(_url('welcome','go',array('id'=>$id)));
         }else{
             show_404();
         }
