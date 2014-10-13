@@ -15,8 +15,7 @@ body{
 }
 #flashMessage{
     /*width: 300px;*/
-    height: 20px;
-    background-color: #FFFFCC;
+    height: 28px;
     /*opacity: 0; /*Chrome、Safari、Firefox、Opera */
     /*filter: progid:DXImageTransform.Microsoft.Alpha(opacity=10); *//* IE6/IE7/8 */
     /*-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=40)";   /* IE8 */
@@ -24,9 +23,11 @@ body{
     float: left;
     text-align: center;
     margin-right: 120px;
-    border: 1px solid #c65d09;
     padding: 5px 5px 0 5px;
 }
+ .numcode{
+     margin-left: 10px;
+ }
 
 </style>
 <!-- 设置dojo参数 -->
@@ -49,19 +50,18 @@ body{
 <body class="sc">
     <!--div class="row"-->
         <div class="login" >
-            <form id="order_create" method="post" action="<?= _url('user','login')?>" onsubmit="return formSubmit(this);">
             <div class="DialogTitleBar">
                 <img src="<?=base_url()?>resources/images/sclogo.png" />
                 <h3>闭环系统用户登录</h3>
             </div>
             <div class="DialogPaneContent container-fluid" > 
-                <form data-dojo-type="dijit/form/Form" class="form-horizontal" id="userForm" >
+                <form data-dojo-type="dijit/form/Form" class="form-horizontal" id="userForm" method="post" action="<?= _url('user','login')?>" >
                     <script type="dojo/on" data-dojo-event="submit">
                         return false;
                     </script>
                 <dl class="row dl-horizontal">
                     <dt><label for="username">用户名：</label></dt>
-                    <dd><input data-dojo-type="dijit/form/TextBox" name="username" id="username" onblur="validateUsername(this)"/></dd>
+                    <dd><input data-dojo-type="dijit/form/TextBox" name="username" id="username" /></dd>
                 </dl>
                 <dl class="row dl-horizontal">
                     <dt><label for="password">密码：</label></dt>
@@ -69,9 +69,11 @@ body{
                 </dl>
                 <dl class="row dl-horizontal">
                     <dt><label for="code">验证码：</label></dt>
-                    <dd><!--img src="" id="getcode_num" title="看不清，点击换一张" align="absmiddle"/--><input data-dojo-type="dijit/form/TextBox" name="code" class="codebox"
+                    <dd><input data-dojo-type="dijit/form/TextBox" name="code" class="codebox"
                                    id="code" trim="true" required="true" maxlength="4" regExp="[0-9]+"
-                                   style="width: 50px" onchange="validateCode(this)"/></dd>
+                                   style="width: 50px" />
+                        <img src="<?= _url('user','get_code') ?>"  class="numcode" id="getcode_num" title="看不清，点击换一张" align="absmiddle" />
+                    </dd>
                 </dl>            
         </div>
         <div id="pro" >
@@ -99,79 +101,29 @@ body{
                 });
             });
         });
-        //远程验证用户名
-        function validateUsername(obj,fun){
-            if(obj.value != ""){
-                require(["dojo/request","dojo/dom","dojo/domReady!"],
-                    function(request,query,dom){
-                        console.info("gs1");
-                        request.get("<?= _url('user','validate_username')?>?username="+obj.value,{handleAs : "text"}).then(function(response){
-                            if(response == '0'){
-                                //obj.focus();
-                                obj.set("state","Error");
-                                //var mes = dom.byId("flashMessage");
-                               //mes.innerHTML = "hahahslf";
 
-                            }
-                            else if(response =='1'){
-                                //obj.focus();
-                                //obj.set("state","warning");
-                            }
-                            else{
-                                if(fun){
-                                    fun();
-                                }
-                            }
-                        });
+
+        //*远程验证用户密码匹配
+        function submitForm(){
+            require(["dojo/request","dojo/dom","dijit/registry","dojo/dom-construct","dojo/dom-form","dojo/domReady!"],
+                function(request,dom,registry,domConstruct,domForm){
+                    var mes = dom.byId("flashMessage");
+                    request.post("<?= _url('user','login')?>",{
+                        data: domForm.toObject("userForm"),
+                        timeout : 2000,
+                        handleAs : "json"
+                    }).then(function(response){
+                        if(response == "1")
+                            mes.innerHTML = "你输入的验证码有误";
+                        if(response == "2")
+                            mes.innerHTML = "用户名或密码有误";
+
                     });
-            }
+
+                });
         }
 
 
-/* this is test
-        require([
-            "dojo/dom",
-            "dojo/dom-attr",
-            "dojo/dom-style",
-            "dijit/registry",
-            "dijit/form/Button",
-            "dijit/Tooltip",
-            "dojo/on",
-            "dojo/parser",
-            "dojo/ready",
-            "dojo/domReady!"
-
-        ], function(dom, domAttr, domstyle, registry, Button,Tooltip, on ,parser,ready) {
-            parser.parse();
-            ready(function(){
-                var reg = dom.byId("regpost");
-                on(reg,"click",function(){
-                });
-
-                //以下是测试数据，待删除
-                var nametip = new Tooltip({
-                    connectId: ["username"]
-                    //label: "the text for the tooltip"
-                });
-                //var username = registry.byId("username");
-                //nametip.show( "sdfdsfd", dom.byId("flashMessage"), top);
-                var logon = dom.byId("logonpost");
-                //var regon = dom.byId("regpost");
-                on(logon,"click",function(){
-
-                    console.info("yyyy");
-                    //logon.setAttribute("disabled","true");
-                    //domAttr.remove("regpost","disabled");
-                   // registry.byId('regpost').set('disabled',true);
-                    //registry.byId('logonpost').set('disabled',true);
-                    //registry.byId('logonname').set('disabled',true);
-                    //registry.byId('logonpass').set('disabled',true);
-                    //dom.byId('progress').setAttribute('style',"visibility:true");
-
-                    //domAttr.set('regpost','disabled','false');
-                });
-            });
-        });*/
     </script>
 </body>
 </html>
