@@ -23,52 +23,57 @@
     .numcode{
         margin-left: 10px;
     }
+    .dijitTooltip{
+        display: none !important;
+    }
 
 </style>
-    <!--div class="row"-->
-        <div class="login" >
-            <div class="DialogTitleBar">
-                <img src="<?=base_url()?>resources/images/sclogo.png" />
-                <h3>闭环系统用户登录</h3>
-            </div>
-            <div class="DialogPaneContent container-fluid" >
-                <form class="form-horizontal" id="userForm" method="post" action="<?= _url('user','login')?>" onsubmit="return cFormSubmit(this);" >
-                <dl class="row dl-horizontal">
-                    <dt><label for="username">用户名：</label></dt>
-                    <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="username" id="username" /></dd>
-                </dl>
-                <dl class="row dl-horizontal">
-                    <dt><label for="password">密码：</label></dt>
-                    <dd><input data-dojo-type="dijit/form/ValidationTextBox" type="password"  name="password" id="password" /></dd>
-                </dl>
-                <dl class="row dl-horizontal">
-                    <dt><label for="code">验证码：</label></dt>
-                    <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="code" class="codebox"
-                                   id="code" trim="true" required="true" maxlength="4" regExp="[0-9]+"
-                                   style="width: 50px" />
-                        <img src="<?= _url('user','get_code') ?>"  class="numcode" id="getcode_num" title="看不清，点击换一张" align="absmiddle" />
-                    </dd>
-                </dl>
-                    <div class="DialogPaneActionBar">
-                        <div id="flashMessage"></div>
-                        <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
-                            <label>登录</label>
-                        </button>
-                        <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
-                            <label>注册</label>
-                        </button>
-                    </div>
-            </div>
-        <div id="pro" >
-            <div data-dojo-type="dijit/ProgressBar" style="width:400px;visibility:hidden" jsId="jsProgress" id="downloadProgress"></div>
-            <!--div class="progress progress-success progress-striped" style="visibility:hidden" id="progress">
-                <div class="bar" style="width: 5%"></div>
+<!--div class="row"-->
+<div class="login" >
+    <div class="DialogTitleBar">
+        <img src="<?=base_url()?>resources/images/sclogo.png" />
+        <h3>闭环系统用户登录</h3>
+    </div>
+    <div class="DialogPaneContent container-fluid" >
+        <form class="form-horizontal" id="userForm" method="post" action="<?= _url('user','login')?>" onsubmit="return cFormSubmit(this);" >
+            <dl class="row dl-horizontal">
+                <dt><label for="username">用户名：</label></dt>
+                <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="username" id="username" /></dd>
+            </dl>
+            <dl class="row dl-horizontal">
+                <dt><label for="password">密码：</label></dt>
+                <dd><input data-dojo-type="dijit/form/ValidationTextBox" type="password"  name="password" id="password" /></dd>
+            </dl>
+            <dl class="row dl-horizontal">
+                <dt><label for="code">验证码：</label></dt>
+                <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="code" class="codebox"
+                           id="code" trim="true" required="true" maxlength="4" regExp="[0-9]+"
+                           style="width: 50px" />
+                    <img src="<?= _url('user','get_code') ?>"  class="numcode" id="getcode_num" title="看不清，点击换一张" align="absmiddle" />
+                </dd>
+            </dl>
+            <!--div id="pro" >
+                <div data-dojo-type="dijit/ProgressBar" style="width:400px;visibility:hidden" jsId="jsProgress" id="downloadProgress"></div>
+                <div class="progress progress-success progress-striped" style="visibility:hidden" id="progress">
+                    <div class="bar" style="width: 5%"></div>
+                </div>
             </div-->
         </div>
+        <div class="DialogPaneActionBar">
+            <div id="flashMessage"></div>
+            <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
+                <label>登录</label>
+            </button>
+            <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
+                <label>注册</label>
+            </button>
+        </div>
+    </div>
 
-        </form>
-        <!--End Error Block-->
-</div>
+
+    </form>
+    <!--End Error Block-->
+
 
 <script type="text/javascript">
     function cFormSubmit(object){
@@ -81,13 +86,13 @@
                 timeout: 2000,
                 handleAs : "json"
             }).then(function(response){
-                if(response == "1")
-                    mes.innerHTML = "你输入的验证码有误";
-                if(response == "2")
-                    mes.innerHTML = "用户名或密码有误";
-            },function(){
-                console.log('remote request error!');
-            });
+                    if(response == "1")
+                        mes.innerHTML = "你输入的验证码有误";
+                    if(response == "2")
+                        mes.innerHTML = "用户名或密码有误";
+                },function(){
+                    console.log('remote request error!');
+                });
         });
         return false;
     }

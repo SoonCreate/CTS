@@ -68,12 +68,14 @@
     </dl>
     <dl class="row dl-horizontal">
         <dt><label for="address">公司地址</label></dt>
-        <dd><input name="address" id="address" type="text" data-dojo-type="sckj/form/TextBox"/></dd>
+        <dd><input name="address" id="address" type="text" data-dojo-type="sckj/form/TextBox"/>
+            <input name="order_type" id="order_type" type="hidden" value="<?= $order_type ?>"/>
+        </dd>
     </dl>
+
 
 </div>
 <div class="row panelbottom">
-    <input name="order_type" id="order_type" type="hidden" value="<?= $order_type ?>"/>
     <button type="submit" data-dojo-type="sckj/form/Button" class="success">提交</button>
 </form>
 </div>
