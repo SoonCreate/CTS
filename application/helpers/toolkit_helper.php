@@ -1,9 +1,9 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 //渲染函数
-//function render($view = NULL,$data = NULL){
-//    render_by_layout('sc',$view,$data);
-//}
+function render($data = NULL){
+    render_by_layout('wso',NULL,$data);
+}
 
 //模板
 function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
@@ -20,17 +20,17 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 }
 
 //渲染函数
-function render($data = NULL){
-    $CI =  &get_instance();
-    $CI->load->view($CI->router->fetch_directory().'/'.$CI->router->fetch_class().'/'.$CI->router->fetch_method(),$data);
-}
+//function render($data = NULL){
+//    $CI =  &get_instance();
+//    $CI->load->view($CI->router->fetch_directory().'/'.$CI->router->fetch_class().'/'.$CI->router->fetch_method(),$data);
+//}
 
 //function redirect_to($controller,$action,$params = null){
 //    redirect(_url($controller,$action,$params));
 //}
 
 function render_link($url,$label,$title = '',$class = ''){
-    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$url.'\');">'.$label.'</a>';
+    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''._sess('mid').'\',\''.$url.'\');">'.$label.'</a>';
 }
 
 function render_error($heading = '',$message = ''){

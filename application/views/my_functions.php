@@ -2,7 +2,9 @@
 <?php if(isset($functions)):?>
     <ul>
         <?php  foreach($functions as $fn) :?>
-            <li><a href="<?= _url($fn['controller'],$fn['action'])?>"><?= $fn['function_desc']?></a></li>
+            <li>
+                <?php render_link(_url('welcome','go',array('id'=>$fn['id'])),$fn['function_desc'])?>
+            </li>
         <?php  endforeach;?>
     </ul>
 <?php endif;?>

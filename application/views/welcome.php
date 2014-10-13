@@ -30,12 +30,25 @@
     </script>
     <!-- 加载dojo -->
     <script type="text/javascript" src="/dojo/dojo/dojo.js"></script>
-    <script type="text/javascript" src="resources/js/sc.js"></script>
 
-   <script type="text/javascript">
-     require(["dojo/parser"]);
+    <script type="text/javascript">
+        //全局变量
+        var $env = new Object;
+        var $ = new Object;
+        var $dom = new Object;
+        var $dijit = new Object;
+       require(["dojo/parser","dojo/dom","dojo/query","dijit/registry","dojo/ready"],function(parser,dom,query,registry,ready){
+           ready(function(){
+               $env = new Object;
+               $ = query;
+               $dom = dom;
+               $dijit = registry;
+           });
+       });
+
+
     </script>
-
+    <script type="text/javascript" src="resources/js/sc.js"></script>
 
  </head>
 <body class="sc">
@@ -58,7 +71,8 @@
                     <div data-dojo-type="dojox/layout/ContentPane" id="<?= $m['module_id']?>"
                          title="<?= $m['module_desc']?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
-                         data-dojo-props=" href:'<?= _url('welcome','my_functions',array('module_id'=>$m['module_id']))?>'"></div>
+                         data-dojo-props=" href:'<?= _url('welcome','my_functions',array('module_id'=>$m['module_id']))?>'"
+                         onDownloadEnd = "refresh_env();"></div>
              <?php  endforeach;?>
             <?php endif;?>
         </div>

@@ -53,7 +53,26 @@ class Welcome extends CI_Controller {
         if(count($data['functions']) > 1){
             $this->load->view('my_functions',$data);
         }elseif(count($data['functions']) == 1){
-            redirect(_url($data['functions'][0]['controller'],$data['functions'][0]['action']));
+            $id = $data['functions'][0]['id'];
+            $controller = $data['functions'][0]['controller'];
+            $action = $data['functions'][0]['action'];
+            redirect(_url('welcome','go',array('id'=>$id,'c'=>$controller,'a'=>$action)));
+        }else{
+            show_404();
+        }
+    }
+
+    //用户跳转功能，并记录唯一性ID
+    function go(){
+        $this->load->model('module_line_model');
+        $mlm = new Module_line_model();
+        $ml = $mlm->find_by_view(array('id'=>v('id')));
+        if(!empty($ml)){
+            //当前的功能模块id，即module_line_id
+            set_sess('cm',$ml['id']);
+            set_sess('mid',$ml['module_id']);
+            set_sess('fid',$ml['function_id']);
+            redirect(_url($ml['controller'],$ml['action']));
         }else{
             show_404();
         }

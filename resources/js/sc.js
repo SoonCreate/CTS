@@ -1,9 +1,11 @@
 //前端触发后端链接
-function goto(url){
-    var wso = currentWso();
-    if(wso){
-        wso.set("href",url);
+function goto(target,url){
+    var wso = $dijit.byId(target);
+    if(!wso){
+        wso = currentWso();
     }
+    $dijit.byId("mainTabContainer").selectChild(wso,true);
+    wso.set("href",url);
 }
 
 function isArray(obj) {
@@ -20,12 +22,10 @@ function refreshCurrentPane(){
 
 function currentWso(){
     var wso = null;
-    require(["dijit/registry"],function(registry){
-        var worksapce = registry.byId("mainTabContainer");
-        if(worksapce){
-            wso = worksapce.tablist._currentChild;
-        }
-    });
+    var worksapce = $dijit.byId("mainTabContainer");
+    if(worksapce){
+        wso = worksapce.tablist._currentChild;
+    }
     return wso;
 }
 //form对象，form提交前处理，服务端反馈为报错，服务端反馈为正常，服务端没有返回
@@ -42,12 +42,27 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
             timeout: 2000,
             handleAs : "json"
         }).then(function(response){
+            clearCurrentStatus();
             handleResponse(response,remoteFail,remoteSuccess,remoteNoBack);
         },function(){
             console.log('remote request error!');
         });
     });
     return false;
+}
+
+//清楚当前错误（dijitTextBoxError）class的dom并清除状态
+function clearCurrentStatus(){
+    require(["dojo/dom-class"],function(domClass){
+        var wso = currentWso();
+        var nodes = $(".dijitTextBoxError",wso.domNode);
+        for(var i = 0; i<nodes.length;i++){
+            var widgetid = nodes[i]["attributes"]["widgetid"]["value"];
+            if(widgetid){
+                $dijit.byId(widgetid).set("state","");
+            }
+        }
+    });
 }
 
 //处理返回值
@@ -101,53 +116,51 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
 }
 
 function showMessage(message){
-    require(["dijit/registry"],function(registry){
-        //type of message; possible values in messageTypes enumeration ("message", "warning", "error", "fatal")
-        var messageType = "message";
-        switch(message["type"]){
-            case 'I' :
-                messageType = "message";
-                break;
-            case "E" :
-                messageType = "error";
-                break;
-            case "W" :
-                messageType = "warning";
-                break;
-            default :
-                messageType = "message";
-                break;
-        }
+    //type of message; possible values in messageTypes enumeration ("message", "warning", "error", "fatal")
+    var messageType = "message";
+    switch(message["type"]){
+        case 'I' :
+            messageType = "message";
+            break;
+        case "E" :
+            messageType = "error";
+            break;
+        case "W" :
+            messageType = "warning";
+            break;
+        default :
+            messageType = "message";
+            break;
+    }
 
-        var toaster = registry.byId("toaster");
-        toaster.setContent(message["content"], messageType,5000);
-        toaster.show();
-    });
+    var toaster = $dijit.byId("toaster");
+    toaster.setContent(message["content"], messageType,5000);
+    toaster.show();
 
 }
 
 function addFormAlertLine(lines){
-    require(["dojo/dom","dojo/query","dojo/dom-construct","dojo/dom-style"],
-        function(dom,query,domConstruct,domStyle){
+    require(["dojo/dom-construct","dojo/dom-style"],
+        function(domConstruct,domStyle){
             var ul = clearFormAlertLine()
             for(var i=0;i<lines.length;i++){
                 for (var key in lines[i]) {
                     domConstruct.create("li",{innerHTML :lines[i][key]},ul);
                 }
             }
-            var o = dom.byId("formalert");
+            var o = currentAlertPane();
             domStyle.set(o,"display","block");
             //回到锚点
-            location.hash="#formalert";
+            location.hash="#"+ o.id;
         });
 }
 
 function clearFormAlertLine(){
     var ul = new Object;
-    require(["dojo/dom","dojo/query","dojo/dom-construct"],
-        function(dom,query,domConstruct){
-            var o = dom.byId("formalert");
-            var nodes = query("ul",o);
+    require(["dojo/dom-construct"],
+        function(domConstruct){
+            var o = currentAlertPane();
+            var nodes = $("ul",o);
             if(nodes.length > 0){
                 ul = nodes[0];
                 domConstruct.empty(ul);
@@ -156,29 +169,42 @@ function clearFormAlertLine(){
     return ul;
 }
 
+//当前的form错误提示区域
+function currentAlertPane(){
+    return  $dom.byId($env.cm+"_formalert");
+}
+
 function formAlertclose(){
-    require(["dojo/dom","dojo/query","dojo/dom-construct","dojo/dom-style"],
-        function(dom,query,domConstruct,domStyle){
-            var o = dom.byId("formalert");
+    require(["dojo/dom-style"],
+        function(domStyle){
+            var o = currentAlertPane();
             clearFormAlertLine();
             domStyle.set(o,"display","none");
     });
 }
 
 function renderValidError(lines){
-    require(["dijit/registry"],
-        function(registry){
-            for(var i=0;i<lines.length;i++){
-                for (var key in lines[i]) {
-                    var object = registry.byId(key);
-                    if(object){
-                        object.set("state","Error");
-                        //object.displayMessage(errorMessage);
-                    }
-                }
 
+    for(var i=0;i<lines.length;i++){
+        for (var key in lines[i]) {
+            var object = $dijit.byId(key);
+            if(object){
+                //激活
+                //object.focus();
+                object.set("state","Error");
+                //object.displayMessage(errorMessage);
             }
-        });
+        }
 
+    }
 
+}
+
+//没有定义好环境，则刷新
+function refresh_env(){
+    if($env && $env.cm){
+        console.log("current module line id : "+$env.cm);
+    }else{
+        history.go(0);
+    }
 }

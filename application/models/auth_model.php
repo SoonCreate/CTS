@@ -169,7 +169,7 @@ class Auth_model extends MY_Model{
     function can_choose_functions($module_id){
         $this->db->distinct();
         $this->db->order_by('sort');
-        $this->db->select('function_name,function_id,function_desc,controller,action');
+        $this->db->select('function_name,function_id,function_desc,controller,action,id');
         return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1,'module_id'=>$module_id))->result_array();
     }
 

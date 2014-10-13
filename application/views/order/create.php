@@ -1,11 +1,3 @@
-<div class="formalert row" id="formalert" style="display: none">
-    <button type="button" class="close" data-dismiss="alert" onclick="formAlertclose()" id="closebtn">
-        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    <ul>
-        <li>用户名已存在</li>
-        <li>内容提交超过规定</li>
-    </ul>
-</div>
 <div class="row paneltitle">
     <h3></h3>
 </div>
