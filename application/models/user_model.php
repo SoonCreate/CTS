@@ -73,4 +73,11 @@ class User_model extends MY_Model{
         $this->add_validate('mobile_telephone','numeric');
         $this->add_validate_255('phone_number','address','contact');
     }
+    function is_username_exists($username){
+        if(count($this->db->get_where('users',array('username' => $username))->result_array()) > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

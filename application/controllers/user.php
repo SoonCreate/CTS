@@ -36,6 +36,16 @@ class User extends CI_Controller {
             render();
         }
     }
+/*by GS*/
+    function validate_username(){
+        $username = $_GET['username'];
+        $user = new User_model();
+        if($user->is_username_exists($username)){
+            echo '1';
+        }else{
+            echo '0';
+        }
+    }
 
     function logout(){
         clear_all_sess();
@@ -63,7 +73,6 @@ class User extends CI_Controller {
             show_404();
         }
     }
-
 
     function create(){
         if($_POST){
