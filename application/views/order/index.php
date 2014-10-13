@@ -1,38 +1,80 @@
-<table>
-    <thead>
-        <th>投诉单号</th>
-        <th>订单类型</th>
-        <th>分类</th>
-        <th>创建人</th>
-        <th>状态</th>
-        <th>标题</th>
-        <th>内容</th>
-        <th>负责人</th>
-        <th>提交时间</th>
-        <th>计划完成时间</th>
-        <th>已延期</th>
-        <th>报警次数</th>
-        <th>计划完成日期修改次数</th>
-        <th>召开过几次会议</th>
-        <th>操作</th>
-    </thead>
-    <?php foreach($objects as $o):?>
-    <tr>
-        <td><?= $o['id']?></td>
-        <td><?= $o['order_type']?></td>
-        <td><?= $o['category']?></td>
-        <td><?= $o['created_by']?></td>
-        <td><?= $o['status']?></td>
-        <td><?= $o['title']?></td>
-        <td><?= word_truncate($o['content'])?></td>
-        <td><?= $o['managed_by']?></td>
-        <td><?= related_time($o['creation_date'])?></td>
-        <td><?= $o['plan_complete_date']?></td>
-        <td><?= $o['delay_flag']?></td>
-        <td><?= $o['warning_count']?></td>
-        <td><?= $o['plan_date_count']?></td>
-        <td></td>
-        <td><?php render_link(_url('order','show',array('id'=>$o['id'])),'查看')?></td>
-    </tr>
-    <?php endforeach;?>
-</table>
+<div id="myOrdersList"></div>
+<script type="text/javascript">
+    require(["dojo/ready",
+            "dijit/Gridx",
+            "gridx/core/model/cache/Async",
+            "dojo/store/JsonRest",
+            "dojox/grid/DataGrid",
+            "dojo/data/ObjectStore",
+            "gridx/modules/Pagination",
+            "gridx/modules/pagination/PaginationBar",
+            "gridx/modules/ColumnResizer",
+            "gridx/modules/SingleSort",
+            "gridx/modules/Filter",
+            "gridx/modules/filter/FilterBar",
+            "gridx/modules/VirtualVScroller"
+        ],
+        function(ready,Grid,AsyncCache/*,modules*/,JsonRest,DataGrid,ObjectStore,
+                 Pagination,
+                 PaginationBar,
+                 ColumnResizer,
+                 SingleSort,
+                 Filter,
+                 FilterBar,
+                 VirtualVScroller){
+            ready(function(){
+
+                var restStore = new JsonRest({idProperty: 'id', target:url('gridx/test_data/'),sortParam: "sortBy"});
+                var store = new ObjectStore({objectStore: restStore});
+                var pageSize = 20;
+                var grid = new Grid({
+                    cacheClass : AsyncCache,
+                    id : "myOrdersList",
+                    store: store ,
+                    structure: [
+                        {name : "投诉单号",field : "id",width : "160px",dataType :"number"},
+                        {name : "订单类型",field : "order_type",width : "160px",dataType :"string"},
+                        {name : "分类",field : "category",width : "120px",dataType :"string"},
+                        {name : "状态",field : "status",width : "160px",dataType :"string"},
+                        {name : "标题",field : "title",width : "160px",dataType :"string"},
+                        {name : "内容概览",field : "content",width : "160px",dataType :"string"}
+                    ],
+                    pageSize: pageSize,//发送到服务端的条目HTTP header : items=0-19
+                    modules : [
+                        {
+                            moduleClass: Pagination,
+                            initialPage: 0//20 //初始化显示在第几页
+                        },
+                        {
+                            moduleClass: PaginationBar,
+                            sizes: [20,50, 100],  //显示分页size
+                            sizeSeparator: "|"  //分页size之间分割符
+                        },
+                        ColumnResizer,
+                        {
+                            moduleClass: SingleSort
+//                        ,
+//                        initialOrder: { colId: '4', descending: true } //初始化排序
+                        },
+//                    VirtualVScroller,
+                        Filter,
+                        FilterBar
+                    ],
+                    //同步时可用已下方式进行服务端过滤 https://github.com/oria/gridx/wiki/How-to-filter-Gridx-with-any-condition%3F
+//                filterServerMode: true,
+//                filterSetupQuery: function(expr){
+//                    // return the filter query that your server can understand.
+//                    console.info(expr);
+//                },
+                    autoWidth : true,
+//                autoHeight : true,
+                    style:"margin-left: 20px;height:400px"
+
+                },"myOrdersList");
+
+                grid.startup();
+                grid.pagination.setPageSize(pageSize);
+
+            });
+        });
+</script>
