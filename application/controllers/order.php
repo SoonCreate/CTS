@@ -45,11 +45,13 @@ class Order extends CI_Controller {
         }elseif(count($rows) > 1){
             $data['objects'] = $rows;
             //同时拥有几种订单的创建权限，显示选择页
-            render($data);
+            render_view('order/choose_create',$data);
 
         }else{
             //一种时，直接跳转
-            redirect(_url('order','create',array('type'=>$rows[0])));
+//            redirect(_url('order','create',array('type'=>$rows[0])));
+            $_GET['type'] = $rows[0];
+            $this->create();
         }
 
     }
@@ -91,7 +93,7 @@ class Order extends CI_Controller {
             }
 
             if(is_null($order_type)){
-                redirect(_url('order','choose_create'));
+                $this->choose_create();
             }else{
                 render($data);
             }

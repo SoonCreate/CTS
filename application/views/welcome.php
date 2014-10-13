@@ -77,7 +77,7 @@
  </head>
 <body class="sc">
 
-<!--<div id="preloader">Loading Application...</div>-->
+<div id="preloader">Loading Application...</div>
 
 <div data-dojo-type="dijit/layout/BorderContainer" id="mainContainer"
      data-dojo-props="gutters:false">

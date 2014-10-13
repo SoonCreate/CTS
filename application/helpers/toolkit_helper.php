@@ -5,6 +5,10 @@ function render($data = NULL){
     render_by_layout('wso',NULL,$data);
 }
 
+function render_view($view = NULL,$data = NULL){
+    render_by_layout('wso',$view,$data);
+}
+
 //模板
 function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
     $CI =  &get_instance();
