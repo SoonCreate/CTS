@@ -58,11 +58,11 @@ if ( ! function_exists('lang'))
 {
     function lang($line, $id = '')
     {
-        $line = label($line);
-
         if ($id != '')
         {
-            $line = '<label for="'.$id.'">'.$line."</label>";
+            $line = '<label for="'._sess('cm').'_'.$id.'">'.label($line)."</label>";
+        }else{
+            $line = '<label for="'._sess('cm').'_'.$line.'">'.label($line)."</label>";
         }
 
         return $line;

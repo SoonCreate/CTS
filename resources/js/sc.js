@@ -1,12 +1,19 @@
 //前端触发后端链接
 function goto(target,url){
     var wso = $dijit.byId(target+'_module');
-    console.info(wso);
     if(wso == undefined){
         wso = currentWso();
     }
+    wso.history = wso.href;
     wso.set("href",url);
     $dijit.byId("mainTabContainer").selectChild(wso,true);
+}
+
+function goback(){
+    var wso = currentWso();
+    if("history" in wso){
+        wso.set('href',wso.history);
+    }
 }
 
 function currentGoto(){
@@ -209,10 +216,8 @@ function renderValidError(lines){
                 object.set("state","Error");
                 var wso = currentWso();
                 //object.displayMessage("gogo");
-                console.info(wso.domNode);
                 var nodes = $("#error_"+fixDijitId(key),wso.domNode);
                 for(var y=0;y<nodes.length;y++){
-                    console.info(nodes[y]);
                     nodes[y].innerHTML = lines[i][key];
                 }
             }
@@ -227,15 +232,18 @@ function refresh_env(){
     if($env && $env.cm){
         //预加载，加载后动画
         require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
-            baseFx.fadeOut({  //Get rid of the loader once parsing is done
-                node: "preloader",
-                onEnd: function() {
-                    domStyle.set("preloader","display","none");
-                }
-            }).play();
+            if($dom.byId("preloader")){
+                baseFx.fadeOut({  //Get rid of the loader once parsing is done
+                    node: "preloader",
+                    onEnd: function() {
+                        domStyle.set("preloader","display","none");
+                    }
+                }).play();
+            }
         });
 
         //$(".preloader").style("display","none")
+        console.info($dijit.byId('mainTabContainer'));
         console.log("current module line id : "+$env.cm);
     }else{
         history.go(0);
