@@ -36,7 +36,8 @@ class User extends CI_Controller {
                     //if($user['initial_pass_flag']){
                      //   redirect(_url('user','change_password'));
                    // }else{
-                        redirect(_url('welcome','index'));
+                        echo '3';
+                       // redirect(_url('welcome','index'));
 
                 }
             }

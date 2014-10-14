@@ -389,12 +389,10 @@ p.footer{
 }
 .DialogPaneContent {
 
-    padding: 20px 0px;
+    padding: 20px 0px !important;
     position: relative;
     width:398px;
-    height:148px;
-    border-bottom:1px solid #d3d3d3;
-
+    height:198px;
 }
 
 .DialogPaneContent dl dt{
@@ -413,12 +411,12 @@ p.footer{
     margin-left:120px !important;
 }
 .DialogPaneActionBar {
-
     background-color: #efefef;
     padding: 8px 5px 2px 7px;
     text-align: right;
     border-top: 1px solid #fff;
-    height:50px;
+    height:55px;
+
     /*  position: relative;
       padding: 3px 5px 2px 7px;
       border-top: 1px inset #E1E1E1;
@@ -439,7 +437,7 @@ p.footer{
     color:#666;
 }
 #pro{
-    height: 5px;
+    height: 10px;
     border-bottom:1px solid #d3d3d3;
 }
 
