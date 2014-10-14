@@ -561,3 +561,31 @@ function refresh_env(){
         set_sess('fid',$ml['function_id']);
     }
 }
+
+function run_validation($data,$validate)
+{
+    global $CI;
+    if(!empty($validate))
+    {
+        foreach($data as $key => $val)
+        {
+            $_POST[$key] = $val;
+        }
+
+        $CI->load->library('form_validation');
+
+        if(is_array($validate))
+        {
+            $CI->form_validation->set_rules($validate);
+            return $CI->form_validation->run();
+        }
+        else
+        {
+            return $CI->form_validation->run($validate);
+        }
+    }
+    else
+    {
+        return TRUE;
+    }
+}

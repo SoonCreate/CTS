@@ -74,9 +74,10 @@ class Order extends CI_Controller {
                     'title','contact','phone_number','mobile_telephone','address','full_name','status');
                 $content = r(v('content'));
                 $addfiles = tpost('addfiles');
-
-                if($order->save($data,$content,$addfiles)){
+                $order_id = $order->save($data,$content,$addfiles);
+                if($order_id){
                     message_db_success();
+                    redirect_to('order','show',array('id'=>$order_id));
                 }else{
                     validation_error();
                 }

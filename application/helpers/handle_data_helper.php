@@ -36,11 +36,11 @@ function message($type,$class_code,$message_code,$args = []){
 
 //数据库操作返回消息
 function message_db_failure(){
-    message('E','db','10');
+    message('E','db','20');
 }
 //数据库操作成功
 function message_db_success(){
-    message('E','db','20');
+    message('I','db','10');
 }
 //没有权限
 function message_no_authority(){
@@ -67,9 +67,29 @@ function validation_error(){
 }
 
 //前端跳转
-function redirect_to($url){
+function redirect_to($controller,$action,$params){
+    $CI =  &get_instance();
+    $CI->load->model('module_line_model');
+    $mlm = new Module_line_model();
+
+    $goto['target'] = _sess('mid');
+
+    $cml = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action,'module_id'=>_sess('mid')));
+    if(!empty($cml)){
+        $params['cm'] = $cml['id'];
+    }else{
+        //如果当前连接不属于当前模块，随意获取某一mid
+        $mls = $mlm->find_all_by_view(array('controller'=>$controller,'action'=>$action));
+        if(!empty($mls)){
+            $ml = $mls[0];
+            $params['cm'] = $ml['id'];
+            $goto['target'] = $ml['module_id'];
+        }
+    }
+
     $output = _sess('output');
-    $output['redirect'] = $url;
+    $goto['url'] = _url($controller,$action,$params);
+    $output['redirect'] = $goto;
     set_sess('output',$output);
 }
 

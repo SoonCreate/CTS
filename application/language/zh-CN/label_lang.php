@@ -29,3 +29,13 @@ $lang['label_change_password'] = "修改密码";
 $lang['label_old_password'] = "原密码";
 $lang['label_new_password'] = "新密码";
 $lang['label_re_password'] = "重复密码";
+
+$lang['label_order_type'] = "订单类型";
+$lang['label_severity'] = "重要性";
+$lang['label_frequency'] = "发生频率";
+$lang['label_title'] = "标题";
+$lang['label_contact'] = "联系人";
+$lang['label_mobile_telephone'] = "手机号码";
+$lang['label_email'] = "邮件地址";
+$lang['label_phone_number'] = "办公室电话";
+$lang['label_content'] = "内容";

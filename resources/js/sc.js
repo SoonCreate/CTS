@@ -8,6 +8,11 @@ function goto(target,url){
     $dijit.byId("mainTabContainer").selectChild(wso,true);
 }
 
+function currentGoto(){
+    var wso = currentWso();
+    wso.set("href",url);
+}
+
 function redirect(url){
     window.location.href = url;
 }
@@ -103,7 +108,7 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
 
             //处理跳转
             if("redirect" in response ){
-                goto(response["redirect"]);
+                goto(response["redirect"]['target'],response["redirect"]["url"]);
             }
         }else{
             if(remoteFail){
@@ -169,6 +174,10 @@ function clearFormAlertLine(){
                 ul = nodes[0];
                 domConstruct.empty(ul);
             }
+            var nodes = $('div[id^="error_"]',currentWso().domNode);
+            for(var y=0;y<nodes.length;y++){
+                nodes[y].innerHTML = "";
+            }
         });
     return ul;
 }
@@ -196,7 +205,11 @@ function renderValidError(lines){
                 //激活
                 //object.focus();
                 object.set("state","Error");
-                //object.displayMessage(errorMessage);
+                //object.displayMessage("gogo");
+                var nodes = $("#error_"+key,currentWso().domNode);
+                for(var y=0;y<nodes.length;y++){
+                    nodes[y].innerHTML = lines[i][key];
+                }
             }
         }
 

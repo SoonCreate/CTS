@@ -133,7 +133,7 @@ class Order_model extends MY_Model{
             if($need_reason){
                 redirect(_url('order','change_reason',array('change_hash'=>$change_hash)));
             }
-            return true;
+            return $order_id;
         }else{
             $this->db->trans_rollback();
             return false;
