@@ -10,7 +10,7 @@
                 <?= render_options('vl_severity')?>
             </select>
         </dd>
-        <dd><div id="error_severity"></div></dd>
+        <?php render_form_error('severity')?>
     </dl>
     <dl class="row dl-horizontal">
         <dt><label for="frequency">*发生频率</label></dt>
@@ -19,7 +19,7 @@
                 <?= render_options('vl_frequency')?>
             </select>
         </dd>
-        <dd><div id="error_frequency"></div></dd>
+        <?php render_form_error('frequency')?>
     </dl>
     <?php if(isset($categories)) :?>
     <dl class="row dl-horizontal">
@@ -31,13 +31,13 @@
                 <?php endforeach;?>
             </select>
         </dd>
-        <dd><div id="error_category"></div></dd>
+        <?php render_form_error('category')?>
     </dl>
      <?php endif; ?>
     <dl class="row dl-horizontal">
         <dt><label for="title">*标题</label></dt>
         <dd><input name="title" id="title" type="text" data-dojo-type="sckj/form/TextBox"/></dd>
-        <dd><div id="error_title"></div></dd>
+        <?php render_form_error('title')?>
     </dl>
     <dl class="row dl-horizontal">
         <dt><label for="content">*内容</label></dt>
@@ -45,7 +45,7 @@
             <textarea data-dojo-type="sckj/form/Textarea" id="content" name="content" cols="100" rows="10"></textarea>
 
         </dd>
-        <dd><div id="error_content"></div></dd>
+        <?php render_form_error('content')?>
     </dl>
 </div>
 <div class="row paneltitle">
@@ -55,29 +55,29 @@
     <dl class="row dl-horizontal">
         <dt><label for="contact">*本次投诉联系人</label></dt>
         <dd><input name="contact" id="contact" type="text" data-dojo-type="sckj/form/TextBox"/></dd>
-        <dd><div id="error_contact"></div></dd>
+        <?php render_form_error('contact')?>
     </dl>
     <dl class="row dl-horizontal">
         <dt><label for="mobile_telephone">*手机号码</label></dt>
         <dd><input name="mobile_telephone" id="mobile_telephone" type="text" data-dojo-type="sckj/form/TextBox"/>填写手机号码，如果“自己”之前有填写过，则自动带出相关信息</dd>
-        <dd><div id="error_mobile_telephone"></div></dd>
+        <?php render_form_error('mobile_telephone')?>
     </dl>
     <dl class="row dl-horizontal">
         <dt><label for="phone_number">公司电话</label></dt>
         <dd><input name="phone_number" id="phone_number" type="text" data-dojo-type="sckj/form/TextBox"/></dd>
-        <dd><div id="error_phone_number"></div></dd>
+        <?php render_form_error('phone_number')?>
     </dl>
     <dl class="row dl-horizontal">
         <dt><label for="full_name">公司名称</label></dt>
         <dd><input name="full_name" id="full_name" type="text" data-dojo-type="sckj/form/TextBox"/></dd>
-        <dd><div id="error_full_name"></div></dd>
+        <?php render_form_error('full_name')?>
     </dl>
     <dl class="row dl-horizontal">
         <dt><label for="address">公司地址</label></dt>
         <dd><input name="address" id="address" type="text" data-dojo-type="sckj/form/TextBox"/>
             <input name="order_type" id="order_type" type="hidden" value="<?= $order_type ?>"/>
         </dd>
-        <dd><div id="error_address"></div></dd>
+        <?php render_form_error('address')?>
     </dl>
 
 

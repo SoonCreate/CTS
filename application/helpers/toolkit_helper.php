@@ -70,6 +70,10 @@ function render_error($heading = '',$message = ''){
     $CI->load->view('error',$data);
 }
 
+function render_form_error($field){
+    echo '<dd><div id="error_'._sess('cm').'_'.$field.'"></div></dd>';
+}
+
 function _url($controller,$action,$params = null){
     $paramstr = '';
     if(!is_null($params)){

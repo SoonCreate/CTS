@@ -63,6 +63,7 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
 //清楚当前错误（dijitTextBoxError）class的dom并清除状态
 function clearCurrentStatus(){
     require(["dojo/dom-class"],function(domClass){
+        formAlertclose();
         var wso = currentWso();
         var nodes = $(".dijitTextBoxError",wso.domNode);
         for(var i = 0; i<nodes.length;i++){
@@ -205,9 +206,12 @@ function renderValidError(lines){
                 //激活
                 //object.focus();
                 object.set("state","Error");
+                var wso = currentWso();
                 //object.displayMessage("gogo");
-                var nodes = $("#error_"+key,currentWso().domNode);
+                console.info(wso.domNode);
+                var nodes = $("#error_"+fixDijitId(key),wso.domNode);
                 for(var y=0;y<nodes.length;y++){
+                    console.info(nodes[y]);
                     nodes[y].innerHTML = lines[i][key];
                 }
             }

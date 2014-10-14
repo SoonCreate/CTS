@@ -1,6 +1,7 @@
 <dl class="row dl-horizontal">
     <dt><label for="full_name">*公司名称/姓名</label></dt>
     <dd><input name="full_name" id="full_name" type="text" value="<?= _v('full_name')?>" data-dojo-type="sckj/form/TextBox"/></dd>
+    <?php render_form_error('full_name')?>
 </dl>
 <dl class="row dl-horizontal">
     <dt><label for="contact">联系人</label></dt>
@@ -13,10 +14,12 @@
 <dl class="row dl-horizontal">
     <dt><label for="email">EMAIL</label></dt>
     <dd><input name="email" id="email" type="text" value="<?= _v('email')?>" data-dojo-type="sckj/form/TextBox"/></dd>
+    <?php render_form_error('email')?>
 </dl>
 <dl class="row dl-horizontal">
     <dt><label for="mobile_telephone">手机号码</label></dt>
     <dd><input name="mobile_telephone" id="mobile_telephone" type="text" value="<?= _v('mobile_telephone')?>" data-dojo-type="sckj/form/TextBox"/></dd>
+    <?php render_form_error('mobile_telephone')?>
 </dl>
 <dl class="row dl-horizontal">
     <dt><label for="phone_number">固定电话</label></dt>

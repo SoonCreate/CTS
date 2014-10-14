@@ -114,16 +114,15 @@ class User extends CI_Controller {
     function user_edit(){
         $o = new User_model();
         if($_POST){
-            $_POST['id'] = _sess('uid');
             if($o->update(_sess('uid'),$_POST)){
-                echo 'done';
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
         }else{
             $data = $o->find(_sess('uid'));
             $data['to'] = 'user_edit';
-            $this->load->view('user/edit',$data);
+            render_view('user/edit',$data);
         }
     }
 

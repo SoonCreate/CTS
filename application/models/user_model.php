@@ -63,12 +63,12 @@ class User_model extends MY_Model{
         //服务端插入数据库之前验证
         $this->add_validate('username','required|min_length[5]|max_length[12]|is_unique[users.username]|alpha_dash');
         $this->add_validate('password','required');
-        $this->add_validate('full_name','required|max_length[255]');
         $this->_validate();
     }
 
     //公用验证
     function _validate(){
+        $this->add_validate('full_name','required|max_length[255]');
         $this->add_validate('email','valid_email');
         $this->add_validate('mobile_telephone','numeric');
         $this->add_validate_255('phone_number','address','contact');
