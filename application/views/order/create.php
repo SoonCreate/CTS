@@ -1,3 +1,5 @@
+
+<div class="fixtop"> this top</div>
 <?php render_form_open('order','create') ?>
 <div class="container-fluid userd">
     <?php render_select_with_options('severity','vl_severity');?>
@@ -26,6 +28,7 @@
     <?php render_form_input('full_name');?>
     <?php render_form_input('address');?>
     <input name="order_type" id="order_type" type="hidden" value="<?= $order_type ?>"/>
+    <br/><br/><br/><br/><br/><br/><br/>
 </div>
 <div class="fixbottom">
     <?php render_submit_button();?>

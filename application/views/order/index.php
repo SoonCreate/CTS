@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/dojo/gridx/resources/sc/Gridx.css" />
+<link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
 <div id="myOrdersList"></div>
 <script type="text/javascript">
     require(["dojo/ready",
@@ -20,15 +20,16 @@
 
                 var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data/'),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});
-                var pageSize = 10;
+                var pageSize = 13;
                 var grid = new Grid({
                     cacheClass : AsyncCache,
                     id : "myOrdersList",
                     store: store ,
                     structure: [
+                        {name : "",field : "",width : "50px"},
                         {name : "投诉单号",field : "id",width : "160px",dataType :"number"},
                         {name : "订单类型",field : "order_type",width : "160px",dataType :"string"},
-                        {name : "分类",field : "category",width : "120px",dataType :"string"},
+                        {name : "分类",field : "category",width : "160px",dataType :"string"},
                         {name : "状态",field : "status",width : "160px",dataType :"string"},
                         {name : "标题",field : "title",width : "160px",dataType :"string"},
                         {name : "内容概览",field : "content",width : "160px",dataType :"string"}
@@ -50,7 +51,7 @@
 //                },
                     autoWidth : true,
 //                autoHeight : true,
-                    style:"margin-left: 20px;height:468px"
+                    style:"margin-left: 20px;height:550px"
 
                 },"myOrdersList");
 

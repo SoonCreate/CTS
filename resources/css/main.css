@@ -315,7 +315,7 @@ p.footer{
 }
 .dijitTabContainerLeft-container{
     border: 1px solid #979C9F;
-    padding:0  10px 10px 0;
+    margin:0  10px 10px 0;
 }
 
 .dijitTabContainerLeft-tabs .tabLabel{
@@ -434,7 +434,11 @@ p.footer{
     background: #E9E9E9;
 }
 .paneltitle h3{
+    font-family:Microsoft Yahei;
     color:#666;
+    font-weight: bolder;
+    padding-top:9px !important;
+    margin:0 !important;
 }
 #pro{
     height: 10px;
@@ -481,7 +485,7 @@ p.footer{
 }
 .userd{
 
-    background:#fff;
+    background:#F9F9F9;
     padding :20px 0 5px 0;
     margin-bottom:20px;
 }
@@ -510,12 +514,12 @@ p.footer{
 .userd dl dt label{
 
 }
-.userd dl dd label{
+.userd dl dd label,
+.userd dl dd input{
     display:inline-block;
     float:left;
     margin-right:10px;
 }
-
 
 .panelbottom{
     border-radius: 3px;
@@ -606,26 +610,28 @@ p.footer{
 /* fix bottom or top*/
 .fixbottom{
     position: fixed;
-    bottom: 0;
     left: 221px;
     right: 13px;
     bottom: 13px;
     box-shadow: 0 -3px 3px #ddd;
     background-color: #f6f6f6;
-    zoom: 1;
     padding: 8px 30px;
 }
 .fixtop{
-    color: rgb(34, 34, 34);
-    display: block;
-    font-family: 'Microsoft Yahei', verdana;
-    font-size: 12px;
-    height: 48px;
-    line-height: 19px;
+    position: fixed;
+    left: 221px;
+    right: 13px;
+    top: 81px;
+    padding: 8px 30px;
+    background-color: #E9E9E9;
 }
 .dijitTabContainerLeft-dijitContentPane{
-    padding: 0px !important;
+    padding: 35px 0px 0px 15px !important;
 }
 .sc .dijitContentPane {
-    padding: 0px !important;
+
+}
+.dijitTabContainerLeftChildWrapper{
+    margin-bottom: 0px !important;
+
 }
