@@ -1,7 +1,8 @@
 //前端触发后端链接
 function goto(target,url){
     var wso = $dijit.byId(target+'_module');
-    if(!wso){
+    console.info(wso);
+    if(wso == undefined){
         wso = currentWso();
     }
     wso.set("href",url);

@@ -36,10 +36,13 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 function render_link($url,$label,$title = '',$class = ''){
     $module_id = _sess('mid');
     $link = '';
+    $params = array();
     if(is_array($url)){
         $controller = $url[0];
         $action = $url[1];
-        $params = $url[2];
+        if(isset($url[2])){
+            $params = $url[2];
+        }
         $CI =  &get_instance();
         $CI->load->model('module_line_model');
         $mlm = new Module_line_model();
