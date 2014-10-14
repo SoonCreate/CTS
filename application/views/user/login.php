@@ -58,20 +58,22 @@
                     <div class="bar" style="width: 5%"></div>
                 </div>
             </div-->
+            <div class="DialogPaneActionBar">
+                <div id="flashMessage"></div>
+                <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
+                    <label>登录</label>
+                </button>
+                <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
+                    <label>注册</label>
+                </button>
+            </div>
+        </form>
         </div>
-        <div class="DialogPaneActionBar">
-            <div id="flashMessage"></div>
-            <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
-                <label>登录</label>
-            </button>
-            <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
-                <label>注册</label>
-            </button>
-        </div>
+
     </div>
 
 
-    </form>
+
     <!--End Error Block-->
 
 
