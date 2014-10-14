@@ -58,6 +58,11 @@
             });
         });
 
+    function url(s){
+        var ciBaseUrl = "<?= site_url().'/'?>";
+        console.info(ciBaseUrl);
+        return ciBaseUrl + s;
+    }
 
 </script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>
