@@ -67,6 +67,7 @@ class Welcome extends CI_Controller {
     //当有多个功能时
     function my_functions(){
         $module_id = v('module_id');
+        set_sess('mid',$module_id);
         $am = new Auth_model();
         $data['functions'] = $am->can_choose_functions($module_id);
         $this->load->view('my_functions',$data);

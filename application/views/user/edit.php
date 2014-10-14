@@ -1,7 +1,7 @@
 <div class="row paneltitle">
     <h3>用户信息更新</h3>
 </div>
-<form id="user_edit" method="post" action="<?= _url('user',_v('to'))?>">
+<form id="user_edit" method="post" action="<?= _url('user',_v('to'))?>" onsubmit="return formSubmit(this)">
 <div class="container-fluid userd">
     <dl class="row dl-horizontal">
         <dt><label for="username">*用户名</label></dt>
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="row panelbottom">
-        <button type="submit" data-dojo-type="sckj/form/Button" class="success">提交</button>
+<div class="fixbottom"">
+        <button type="submit" data-dojo-type="sckj/form/Button" class="success"><i class=" icon-circle-arrow-right"></i><label>提交</label></button>
 </div>
 </form>

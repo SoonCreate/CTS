@@ -1,6 +1,6 @@
 
 <head>
-    <title>企业闭环系统</title>
+    <title><?= label('version')?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
 <link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />
@@ -58,6 +58,11 @@
             });
         });
 
+    function url(s){
+        var ciBaseUrl = "<?= site_url().'/'?>";
+        console.info(ciBaseUrl);
+        return ciBaseUrl + s;
+    }
 
 </script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>

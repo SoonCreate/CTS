@@ -11,18 +11,36 @@ class Order extends CI_Controller {
 
 	public function index()
 	{
+        render();
+	}
+
+    function order_data(){
         $this->load->model('status_model');
         $this->load->model('order_log_model');
         $om = new Order_model();
         $sm = new Status_model();
         $olm = new Order_log_model();
+
+        $start = 0;
+        $end = 0 ;
+        $totalCnt = $om->count_all();
+
+        if(isset($_SERVER['HTTP_RANGE'])){
+            $idx = stripos($_SERVER['HTTP_RANGE'],'-');
+            $start = intval(substr($_SERVER['HTTP_RANGE'],6,$idx-6));
+            $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
+        }
+
+        //获取数据
+        $om->limit($end+1,$start);
         $os = $om->find_all();
+
         for($i=0;$i<count($os);$i++){
             $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
             $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
             $os[$i]['status'] = $sm->get_label($os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
-            $os[$i]['content'] = $om->first_content($os[$i]['id']);
+            $os[$i]['content'] = word_truncate($om->first_content($os[$i]['id']));
             $os[$i]['managed_by'] = $os[$i]['manager_id'];
             $os[$i]['delay_flag'] = 0;
             if(!is_null($os[$i]['plan_complete_date']) && $os[$i]['plan_complete_date'] < time()){
@@ -30,9 +48,19 @@ class Order extends CI_Controller {
             }
             $os[$i]['plan_date_count'] = $olm->count_by_view(array('field_name'=>'plan_complete_date','dll_type'=>'update'));
         }
-        $data['objects'] = _format($os);
-		render($data);
-	}
+
+        $data["identifier"] = 'id';
+        $data["label"] = 'title';
+        $data['items'] = $os;
+        $output = $data;
+
+        if(isset($_SERVER['HTTP_RANGE'])){
+//                    header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.round($totalCnt/($end+1)));
+            header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.$totalCnt);
+            $output = $data['items'];
+        }
+        echo json_encode($output);
+    }
 
     //在创建之前做选择
     function choose_create(){
@@ -74,9 +102,10 @@ class Order extends CI_Controller {
                     'title','contact','phone_number','mobile_telephone','address','full_name','status');
                 $content = r(v('content'));
                 $addfiles = tpost('addfiles');
-
-                if($order->save($data,$content,$addfiles)){
+                $order_id = $order->save($data,$content,$addfiles);
+                if($order_id){
                     message_db_success();
+                    redirect_to('order','show',array('id'=>$order_id));
                 }else{
                     validation_error();
                 }

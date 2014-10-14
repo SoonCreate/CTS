@@ -15,8 +15,7 @@ function export_to_json($rs){
 }
 
 
-function rs_to_itemStore($rs,$identifier = null,$label = null){
-    $row = $rs->result_array();
+function to_itemStore($row,$identifier = null,$label = null){
     $data["identifier"] = $identifier;
     $data["label"] = $label;
     $data['items'] = $row;
@@ -25,8 +24,8 @@ function rs_to_itemStore($rs,$identifier = null,$label = null){
 }
 
 //直接输出json到itemStore
-function export_to_itemStore($rs,$identifier = null,$label = null){
-    $rows = _format($rs->result_array());
+function export_to_itemStore($rows,$identifier = null,$label = null){
+    $rows = _format($rows);
     $data["identifier"] = $identifier;
     $data["label"] = $label;
     $data['items'] = $rows;
@@ -108,7 +107,7 @@ function _f($key,$value){
             $value = ( $value == 1 ? "YES" : "NO" );
         }
         if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
-            $value = date('Y-m-d H:i:s',$value);
+            $value = related_time(date('Y-m-d H:i:s',$value));
         }
 
         if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {

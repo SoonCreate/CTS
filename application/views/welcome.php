@@ -2,7 +2,7 @@
 <html>
 <?php $this->load->view('_header') ?>
 <body class="sc">
-<div id="preloader">Loading Application...</div>
+<!--<div id="preloader">Loading Application...</div>-->
 
 <div data-dojo-type="dijit/layout/BorderContainer" id="mainContainer"
      data-dojo-props="gutters:false">
@@ -16,7 +16,7 @@
          data-dojo-props="liveSplitters: false, design: 'sidebar', region: 'center'">
 
         <div data-dojo-type="dijit/layout/TabContainer" id="mainTabContainer"
-             data-dojo-props="region: 'center',tabPosition:'left-h'" class=" ">
+             data-dojo-props="region: 'center',tabPosition:'left-h',persist:true,tabStrip:true" class=" ">
 
             <?php if(isset($modules)):?>
             <?php  foreach($modules as $m) :?>

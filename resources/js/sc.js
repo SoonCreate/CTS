@@ -1,11 +1,24 @@
 //前端触发后端链接
 function goto(target,url){
     var wso = $dijit.byId(target+'_module');
-    if(!wso){
+    if(wso == undefined){
         wso = currentWso();
     }
+    wso.history = wso.href;
     wso.set("href",url);
     $dijit.byId("mainTabContainer").selectChild(wso,true);
+}
+
+function goback(){
+    var wso = currentWso();
+    if("history" in wso){
+        wso.set('href',wso.history);
+    }
+}
+
+function currentGoto(){
+    var wso = currentWso();
+    wso.set("href",url);
 }
 
 function redirect(url){
@@ -58,6 +71,7 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
 //清楚当前错误（dijitTextBoxError）class的dom并清除状态
 function clearCurrentStatus(){
     require(["dojo/dom-class"],function(domClass){
+        formAlertclose();
         var wso = currentWso();
         var nodes = $(".dijitTextBoxError",wso.domNode);
         for(var i = 0; i<nodes.length;i++){
@@ -103,7 +117,7 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
 
             //处理跳转
             if("redirect" in response ){
-                goto(response["redirect"]);
+                goto(response["redirect"]['target'],response["redirect"]["url"]);
             }
         }else{
             if(remoteFail){
@@ -169,6 +183,10 @@ function clearFormAlertLine(){
                 ul = nodes[0];
                 domConstruct.empty(ul);
             }
+            var nodes = $('div[id^="error_"]',currentWso().domNode);
+            for(var y=0;y<nodes.length;y++){
+                nodes[y].innerHTML = "";
+            }
         });
     return ul;
 }
@@ -196,7 +214,12 @@ function renderValidError(lines){
                 //激活
                 //object.focus();
                 object.set("state","Error");
-                //object.displayMessage(errorMessage);
+                var wso = currentWso();
+                //object.displayMessage("gogo");
+                var nodes = $("#error_"+fixDijitId(key),wso.domNode);
+                for(var y=0;y<nodes.length;y++){
+                    nodes[y].innerHTML = lines[i][key];
+                }
             }
         }
 
@@ -209,15 +232,18 @@ function refresh_env(){
     if($env && $env.cm){
         //预加载，加载后动画
         require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
-            baseFx.fadeOut({  //Get rid of the loader once parsing is done
-                node: "preloader",
-                onEnd: function() {
-                    domStyle.set("preloader","display","none");
-                }
-            }).play();
+            if($dom.byId("preloader")){
+                baseFx.fadeOut({  //Get rid of the loader once parsing is done
+                    node: "preloader",
+                    onEnd: function() {
+                        domStyle.set("preloader","display","none");
+                    }
+                }).play();
+            }
         });
 
         //$(".preloader").style("display","none")
+        console.info($dijit.byId('mainTabContainer'));
         console.log("current module line id : "+$env.cm);
     }else{
         history.go(0);

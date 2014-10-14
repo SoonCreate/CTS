@@ -37,7 +37,7 @@ class MY_Model extends CI_Model
      * An array of validation rules. This needs to be the same format
      * as validation rules passed to the Form_validation library.
      */
-    protected $validate = array();
+    public  $validate = array();
 
     /**
      * Optionally skip the validation. Used in conjunction with

@@ -315,7 +315,7 @@ p.footer{
 }
 .dijitTabContainerLeft-container{
     border: 1px solid #979C9F;
-    padding:10px;
+    margin:0  10px 10px 0;
 }
 
 .dijitTabContainerLeft-tabs .tabLabel{
@@ -389,12 +389,10 @@ p.footer{
 }
 .DialogPaneContent {
 
-    padding: 20px 0px;
+    padding: 20px 0px !important;
     position: relative;
     width:398px;
-    height:148px;
-    border-bottom:1px solid #d3d3d3;
-
+    height:198px;
 }
 
 .DialogPaneContent dl dt{
@@ -413,12 +411,12 @@ p.footer{
     margin-left:120px !important;
 }
 .DialogPaneActionBar {
-
     background-color: #efefef;
     padding: 8px 5px 2px 7px;
     text-align: right;
     border-top: 1px solid #fff;
-    height:50px;
+    height:55px;
+
     /*  position: relative;
       padding: 3px 5px 2px 7px;
       border-top: 1px inset #E1E1E1;
@@ -436,10 +434,14 @@ p.footer{
     background: #E9E9E9;
 }
 .paneltitle h3{
+    font-family:Microsoft Yahei;
     color:#666;
+    font-weight: bolder;
+    padding-top:9px !important;
+    margin:0 !important;
 }
 #pro{
-    height: 5px;
+    height: 10px;
     border-bottom:1px solid #d3d3d3;
 }
 
@@ -483,7 +485,7 @@ p.footer{
 }
 .userd{
 
-    background:#fff;
+    background:#F9F9F9;
     padding :20px 0 5px 0;
     margin-bottom:20px;
 }
@@ -512,12 +514,12 @@ p.footer{
 .userd dl dt label{
 
 }
-.userd dl dd label{
+.userd dl dd label,
+.userd dl dd input{
     display:inline-block;
     float:left;
     margin-right:10px;
 }
-
 
 .panelbottom{
     border-radius: 3px;
@@ -603,4 +605,105 @@ p.footer{
     color:#fff;
     font-size: 15px;
     font-family:Microsoft Yahei;
+}
+
+/* fix bottom or top*/
+.fixbottom{
+    position: fixed;
+    left: 221px;
+    right: 13px;
+    bottom: 13px;
+    box-shadow: 0 -3px 3px #ddd;
+    background-color: #f6f6f6;
+    padding: 8px 30px;
+}
+.fixtop{
+    position: fixed;
+    left: 221px;
+    right: 13px;
+    top: 81px;
+    padding: 8px 30px;
+    background-color: #E9E9E9;
+}
+
+/*TAB内容框，边框bug相关*/
+.dijitTabContainerLeft-dijitContentPane{
+    padding: 35px 0px 0px 15px !important;
+}
+.sc .dijitContentPane {
+
+}
+.dijitTabContainerLeftChildWrapper{
+    margin-bottom: 0px !important;
+
+}
+
+/* app list*/
+.applist{
+    padding: 6px 41px 14px 4px;
+    display: block;
+}
+
+.applist li {
+    list-style: none;
+    position: relative;
+    float: left;
+    width: 139px;
+    height: 100px;
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.applist li .icon {
+    position: absolute;
+    margin: 0 32px;
+    padding: 19px;
+    width:75px;
+    height:75px;
+    cursor: pointer;
+    border: 1px solid #4B84C2;
+    color:#4B84C2;
+
+}
+.applist li .text{
+    margin: 75px 32px 0 32px;
+    padding:3px 0;
+    width:75px;
+    height: 25px;
+    background: #fff;
+    color:#4B84C2;
+    font-family:Microsoft Yahei;
+    text-align: center;
+    cursor: pointer;
+}
+
+.applist li:hover .icon {
+    background-color:#4B84C2;
+    color:#fff;
+}
+.applist li:hover .text{
+    color:#2C3E50;
+}
+.applist li:hover .text a{
+    color:#2C3E50;
+    text-decoration: none;
+}
+
+.headline{
+    display: block;
+    margin: 10px 0 15px 30px;
+    border-bottom: 1px dotted #e4e9f0;
+
+}
+.headline h2{
+    margin: 0 0 -2px 0;
+    padding-bottom: 5px;
+    display: inline-block;
+    color:#273F56;
+    font-size:17px;
+    font-family:Microsoft Yahei;
+    border-bottom: 2px solid #37AFE4;
+}
+.headline h2 i{
+    margin-right:10px;
 }

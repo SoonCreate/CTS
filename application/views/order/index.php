@@ -1,40 +1,35 @@
+<link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
 <div id="myOrdersList"></div>
 <script type="text/javascript">
     require(["dojo/ready",
-            "dijit/Gridx",
+            "sckj/Gridx",
             "gridx/core/model/cache/Async",
             "dojo/store/JsonRest",
-            "dojox/grid/DataGrid",
             "dojo/data/ObjectStore",
             "gridx/modules/Pagination",
             "gridx/modules/pagination/PaginationBar",
             "gridx/modules/ColumnResizer",
-            "gridx/modules/SingleSort",
-            "gridx/modules/Filter",
-            "gridx/modules/filter/FilterBar",
             "gridx/modules/VirtualVScroller"
         ],
-        function(ready,Grid,AsyncCache/*,modules*/,JsonRest,DataGrid,ObjectStore,
+        function(ready,Grid,AsyncCache,JsonRest,ObjectStore,
                  Pagination,
                  PaginationBar,
                  ColumnResizer,
-                 SingleSort,
-                 Filter,
-                 FilterBar,
                  VirtualVScroller){
             ready(function(){
 
-                var restStore = new JsonRest({idProperty: 'id', target:url('gridx/test_data/'),sortParam: "sortBy"});
+                var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data/'),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});
-                var pageSize = 20;
+                var pageSize = 13;
                 var grid = new Grid({
                     cacheClass : AsyncCache,
                     id : "myOrdersList",
                     store: store ,
                     structure: [
+                        {name : "",field : "",width : "50px"},
                         {name : "投诉单号",field : "id",width : "160px",dataType :"number"},
                         {name : "订单类型",field : "order_type",width : "160px",dataType :"string"},
-                        {name : "分类",field : "category",width : "120px",dataType :"string"},
+                        {name : "分类",field : "category",width : "160px",dataType :"string"},
                         {name : "状态",field : "status",width : "160px",dataType :"string"},
                         {name : "标题",field : "title",width : "160px",dataType :"string"},
                         {name : "内容概览",field : "content",width : "160px",dataType :"string"}
@@ -51,24 +46,12 @@
                             sizeSeparator: "|"  //分页size之间分割符
                         },
                         ColumnResizer,
-                        {
-                            moduleClass: SingleSort
-//                        ,
-//                        initialOrder: { colId: '4', descending: true } //初始化排序
-                        },
-//                    VirtualVScroller,
-                        Filter,
-                        FilterBar
+                    VirtualVScroller
                     ],
-                    //同步时可用已下方式进行服务端过滤 https://github.com/oria/gridx/wiki/How-to-filter-Gridx-with-any-condition%3F
-//                filterServerMode: true,
-//                filterSetupQuery: function(expr){
-//                    // return the filter query that your server can understand.
-//                    console.info(expr);
 //                },
                     autoWidth : true,
 //                autoHeight : true,
-                    style:"margin-left: 20px;height:400px"
+                    style:"margin-left: 20px;height:550px"
 
                 },"myOrdersList");
 

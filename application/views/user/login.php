@@ -52,26 +52,28 @@
                     <img src="<?= _url('user','get_code') ?>"  class="numcode" id="getcode_num" title="看不清，点击换一张" align="absmiddle" />
                 </dd>
             </dl>
-            <!--div id="pro" >
-                <div data-dojo-type="dijit/ProgressBar" style="width:400px;visibility:hidden" jsId="jsProgress" id="downloadProgress"></div>
+            <div id="pro" >
+                <!--div data-dojo-type="dijit/ProgressBar" style="width:400px;visibility:hidden" jsId="jsProgress" id="downloadProgress"></div>
                 <div class="progress progress-success progress-striped" style="visibility:hidden" id="progress">
                     <div class="bar" style="width: 5%"></div>
-                </div>
-            </div-->
+                </div-->
+            </div>
+            <div class="DialogPaneActionBar">
+                <div id="flashMessage"></div>
+                <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
+                    <label>登录</label>
+                </button>
+                <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
+                    <label>注册</label>
+                </button>
+            </div>
+        </form>
         </div>
-        <div class="DialogPaneActionBar">
-            <div id="flashMessage"></div>
-            <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
-                <label>登录</label>
-            </button>
-            <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
-                <label>注册</label>
-            </button>
-        </div>
+
     </div>
 
 
-    </form>
+
     <!--End Error Block-->
 
 
@@ -90,6 +92,10 @@
                         mes.innerHTML = "你输入的验证码有误";
                     if(response == "2")
                         mes.innerHTML = "用户名或密码有误";
+                    if(response == "3"){
+                        mes.innerHTML = "用户登录验证成功";
+                        redirect("<?= _url('welcome','index')?>");
+                    }
                 },function(){
                     console.log('remote request error!');
                 });
