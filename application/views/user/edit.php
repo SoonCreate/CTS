@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="row panelbottom">
-        <button type="submit" data-dojo-type="sckj/form/Button" class="success">提交</button>
+<div class="fixbottom"">
+        <button type="submit" data-dojo-type="sckj/form/Button" class="success"><i class=" icon-circle-arrow-right"></i><label>提交</label></button>
 </div>
 </form>

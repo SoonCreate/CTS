@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/dojo/gridx/resources/claro/Gridx.css" />
+<link rel="stylesheet" href="/dojo/gridx/resources/sc/Gridx.css" />
 <div id="myOrdersList"></div>
 <script type="text/javascript">
     require(["dojo/ready",
@@ -20,7 +20,7 @@
 
                 var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data/'),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});
-                var pageSize = 20;
+                var pageSize = 10;
                 var grid = new Grid({
                     cacheClass : AsyncCache,
                     id : "myOrdersList",
@@ -50,7 +50,7 @@
 //                },
                     autoWidth : true,
 //                autoHeight : true,
-                    style:"margin-left: 20px;height:400px"
+                    style:"margin-left: 20px;height:468px"
 
                 },"myOrdersList");
 

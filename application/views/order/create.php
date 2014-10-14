@@ -27,7 +27,7 @@
     <?php render_form_input('address');?>
     <input name="order_type" id="order_type" type="hidden" value="<?= $order_type ?>"/>
 </div>
-<div class="row panelbottom">
+<div class="fixbottom">
     <?php render_submit_button();?>
 </div>
 <?php render_form_close() ?>

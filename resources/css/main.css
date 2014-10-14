@@ -315,7 +315,7 @@ p.footer{
 }
 .dijitTabContainerLeft-container{
     border: 1px solid #979C9F;
-    padding:10px;
+    padding:0  10px 10px 0;
 }
 
 .dijitTabContainerLeft-tabs .tabLabel{
@@ -601,4 +601,31 @@ p.footer{
     color:#fff;
     font-size: 15px;
     font-family:Microsoft Yahei;
+}
+
+/* fix bottom or top*/
+.fixbottom{
+    position: fixed;
+    bottom: 0;
+    left: 221px;
+    right: 13px;
+    bottom: 13px;
+    box-shadow: 0 -3px 3px #ddd;
+    background-color: #f6f6f6;
+    zoom: 1;
+    padding: 8px 30px;
+}
+.fixtop{
+    color: rgb(34, 34, 34);
+    display: block;
+    font-family: 'Microsoft Yahei', verdana;
+    font-size: 12px;
+    height: 48px;
+    line-height: 19px;
+}
+.dijitTabContainerLeft-dijitContentPane{
+    padding: 0px !important;
+}
+.sc .dijitContentPane {
+    padding: 0px !important;
 }
