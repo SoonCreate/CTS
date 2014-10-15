@@ -1,5 +1,11 @@
 <link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
+
+<?php render_form_input('title');?>
+<?php render_select_with_options('status','vl_order_status')?>
+<?php render_button('refresh','refreshData()');?>
+
 <div id="myOrdersList"></div>
+
 <script type="text/javascript">
     require(["dojo/ready",
             "sckj/Gridx",
@@ -18,7 +24,7 @@
                  VirtualVScroller){
             ready(function(){
 
-                var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data/'),sortParam: "sortBy"});
+                var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data'),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});
                 var pageSize = 13;
                 var grid = new Grid({
@@ -42,8 +48,7 @@
                     pageSize: pageSize,//发送到服务端的条目HTTP header : items=0-19
                     modules : [
                         {
-                            moduleClass: Pagination,
-                            initialPage: 0//20 //初始化显示在第几页
+                            moduleClass: Pagination
                         },
                         {
                             moduleClass: PaginationBar,
@@ -64,5 +69,26 @@
                 grid.pagination.setPageSize(pageSize);
 
             });
+
         });
+    //刷新store的数据
+    function refreshData(options){
+        var params = new Object();
+        var title = dijitObject('title');
+        var status = dijitObject('status');
+        var grid = dijitObject('myOrdersList');
+        if(grid){
+            if(title != undefined && title.getValue() != ""){
+                params.title = title.getValue();
+            }
+
+            if(status != undefined && status.getValue() != ""){
+                params.status = status.getValue();
+            }
+            require(["dojo/store/JsonRest"],function(JsonRest){
+                var newStore = new JsonRest({idProperty: 'id', target:url('order/order_data',params),sortParam: "sortBy"});
+                grid.refresh(newStore);
+            });
+        }
+    }
 </script>

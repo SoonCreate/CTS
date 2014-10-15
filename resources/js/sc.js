@@ -247,7 +247,7 @@ function refresh_env(){
         });
 
         //$(".preloader").style("display","none")
-        console.info($dijit.byId('mainTabContainer'));
+        //console.info($dijit.byId('mainTabContainer'));
         console.log("current module line id : "+$env.cm);
     }else{
         history.go(0);

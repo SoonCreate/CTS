@@ -69,7 +69,7 @@ class Valuelist_model extends MY_Model{
                 if($header['condition'] != ""){
                     $this->db->where($header['condition']);
                 }
-                $this->db->order_by('value');
+//                $this->db->order_by('value');
                 $rs = $this->db->get();
             }else{
                 //由值列表创建

@@ -58,9 +58,21 @@
             });
         });
 
-    function url(s){
+    function url(s,parmas){
         var ciBaseUrl = "<?= site_url().'/'?>";
-        return ciBaseUrl + s;
+        var url =  ciBaseUrl + s;
+        if(parmas){
+            var i = 0;
+            for(var key in parmas){
+                if(i < 1){
+                    url = url + '?'+ key + '=' + parmas[key];
+                } else{
+                    url = url+ '&'+ key  +'=' + parmas[key];
+                }
+                i ++ ;
+            }
+        }
+        return url;
     }
 
 </script>

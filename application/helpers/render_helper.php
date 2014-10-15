@@ -180,6 +180,11 @@ function render_form_input($name,$required = FALSE,$attributes = array()){
     if($required){
         echo 'required';
     }
+
+    foreach($attributes as $key=>$value){
+        echo $key.' = '.'"'.$value.'"';
+    }
+
     echo '/></dd>';
     render_form_error($name);
     echo '</dl>';
@@ -212,6 +217,10 @@ function render_form_header($title){
 
 function render_submit_button(){
     echo '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.label('submit').'</button>';
+}
+
+function render_button($label,$onclick = ""){
+    echo '<button type="submit" data-dojo-type="sckj/form/Button" onclick="'.$onclick.'">'.label($label).'</button>';
 }
 
 function render_label($name,$required = FALSE){

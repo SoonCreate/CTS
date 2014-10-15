@@ -25,7 +25,7 @@ class Order extends CI_Controller {
         $start = 0;
         $end = 0 ;
 
-
+//        print_r($where);
         if(isset($_SERVER['HTTP_RANGE'])){
             $idx = stripos($_SERVER['HTTP_RANGE'],'-');
             $start = intval(substr($_SERVER['HTTP_RANGE'],6,$idx-6));
@@ -36,13 +36,33 @@ class Order extends CI_Controller {
         if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
             $om->limit($end+1,$start);
             $om->order_by('creation_date','DESC');
-            $os = $om->find_all_by(array('created_by'=>_sess('uid')));
-            $totalCnt = $om->count_by(array('created_by'=>_sess('uid')));
+            $title = $this->input->get('title');
+            $status = $this->input->get('status');
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $where['status'] = $status;
+            $where['created_by'] = _sess('uid');
+            $os = $om->find_all_by($where);
+            //fix ：Error in Body._buildRowContent: Row is not in cache
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $totalCnt = $om->count_by($where);
         }else{
             $om->limit($end+1,$start);
             $om->order_by('creation_date','DESC');
-            $os = $om->find_all();
-            $totalCnt = $om->count_all();
+            $title = $this->input->get('title');
+            $status = $this->input->get('status');
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $where['status'] = $status;
+            $os = $om->find_all_by($where);
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $totalCnt = $om->count_by($where);
         }
 //        print_r($os);
 
