@@ -1,5 +1,5 @@
 //前端触发后端链接
-function goto(target,url){
+function goto(url,target){
     var wso = $dijit.byId(target+'_module');
     if(wso == undefined){
         wso = currentWso();
@@ -14,6 +14,10 @@ function goback(){
     if("history" in wso){
         wso.set('href',wso.history);
     }
+}
+
+function refresh(){
+    currentWso().refresh();
 }
 
 function currentGoto(){
@@ -117,7 +121,7 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
 
             //处理跳转
             if("redirect" in response ){
-                goto(response["redirect"]['target'],response["redirect"]["url"]);
+                goto(response["redirect"]["url"],response["redirect"]['target']);
             }
         }else{
             if(remoteFail){

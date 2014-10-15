@@ -20,10 +20,11 @@ class Order extends CI_Controller {
         $om = new Order_model();
         $sm = new Status_model();
         $olm = new Order_log_model();
+        $am = new Auth_model();
 
         $start = 0;
         $end = 0 ;
-        $totalCnt = $om->count_all();
+
 
         if(isset($_SERVER['HTTP_RANGE'])){
             $idx = stripos($_SERVER['HTTP_RANGE'],'-');
@@ -32,15 +33,24 @@ class Order extends CI_Controller {
         }
 
         //获取数据
-        $om->limit($end+1,$start);
-        $os = $om->find_all();
-
+        if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
+            $om->limit($end+1,$start);
+            $om->order_by('creation_date','DESC');
+            $os = $om->find_all_by(array('created_by'=>_sess('uid')));
+        }else{
+            $om->limit($end+1,$start);
+            $om->order_by('creation_date','DESC');
+            $os = $om->find_all();
+        }
+//        print_r($os);
+        $totalCnt = count($os);
+        $os = _format($os);
         for($i=0;$i<count($os);$i++){
             $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
             $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
             $os[$i]['status'] = $sm->get_label($os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
-            $os[$i]['content'] = word_truncate($om->first_content($os[$i]['id']));
+            $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])));
             $os[$i]['managed_by'] = $os[$i]['manager_id'];
             $os[$i]['delay_flag'] = 0;
             if(!is_null($os[$i]['plan_complete_date']) && $os[$i]['plan_complete_date'] < time()){

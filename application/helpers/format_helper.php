@@ -107,7 +107,7 @@ function _f($key,$value){
             $value = ( $value == 1 ? "YES" : "NO" );
         }
         if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
-            $value = related_time(date('Y-m-d H:i:s',$value));
+            $value = date('Y-m-d H:i:s',$value);
         }
 
         if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {

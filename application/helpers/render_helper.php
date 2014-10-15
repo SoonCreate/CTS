@@ -62,7 +62,7 @@ function render_link($url,$label,$title = '',$class = ''){
     }else{
         $link = $url;
     }
-    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$module_id.'\',\''.$link.'\');">'.$label.'</a>';
+    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$link.'\',\''.$module_id.'\');">'.$label.'</a>';
 
 }
 

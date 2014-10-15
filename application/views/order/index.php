@@ -26,13 +26,18 @@
                     id : "myOrdersList",
                     store: store ,
                     structure: [
-                        {name : "",field : "",width : "50px"},
-                        {name : "投诉单号",field : "id",width : "160px",dataType :"number"},
-                        {name : "订单类型",field : "order_type",width : "160px",dataType :"string"},
+                        {name : "投诉单号",field : "id",width : "80px",dataType :"number",style:"text-align: center"},
+//                        {name : "订单类型",field : "order_type",width : "160px",dataType :"string"},
+                        <?php if(_config('category_control')){?>
                         {name : "分类",field : "category",width : "160px",dataType :"string"},
+                        <?php }?>
+                        {name : "标题",field : "title",width : "160px",dataType :"string",
+                            decorator: function(cellData, rowId, rowIndex){
+                                return '<a href="#" onclick="goto(\'' + url('order/show?id='+rowId) + '\')"><b>'+cellData+'</b></a>';
+                            } },
+                        {name : "内容概览",field : "content",width : "160px",dataType :"string"},
                         {name : "状态",field : "status",width : "160px",dataType :"string"},
-                        {name : "标题",field : "title",width : "160px",dataType :"string"},
-                        {name : "内容概览",field : "content",width : "160px",dataType :"string"}
+                        {name : "提交时间",field : "creation_date",width : "160px",dataType :"string"}
                     ],
                     pageSize: pageSize,//发送到服务端的条目HTTP header : items=0-19
                     modules : [

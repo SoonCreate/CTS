@@ -60,7 +60,6 @@
 
     function url(s){
         var ciBaseUrl = "<?= site_url().'/'?>";
-        console.info(ciBaseUrl);
         return ciBaseUrl + s;
     }
 
