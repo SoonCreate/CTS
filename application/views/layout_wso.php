@@ -3,10 +3,10 @@
     $env.mid = <?= _sess('mid')?>;
     $env.fid = <?= _sess('fid')?>;
 </script>
-<div class="row paneltitle">
-    <h3><?php render_link(_url('welcome','my_functions',array('module_id'=>_sess('mid'))),"菜单选择")?>
+<div class="fixtop">
+    <?php render_link(_url('welcome','my_functions',array('module_id'=>_sess('mid'))),"菜单选择")?>
         &nbsp;|&nbsp;<a href="#" onclick="goback()">返回</a>
-        &nbsp;|&nbsp;<a href="#" onclick="refresh()">刷新</a></h3>
+        &nbsp;|&nbsp;<a href="#" onclick="refresh()">刷新</a>
 </div>
 <div class="formalert row" id="<?= _sess('cm')?>_formalert" style="display: none">
     <button type="button" class="close" data-dismiss="alert" onclick="formAlertclose(<?= _sess('cm')?>)" id="closebtn">

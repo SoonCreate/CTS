@@ -1,3 +1,4 @@
+<link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
 <a href="<?= _url('user','notice_read_all')?>">全部标注为已读</a>
 <table>
     <thead>
