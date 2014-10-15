@@ -42,19 +42,22 @@
             "dojo/query",
             "dijit/registry",
             "dojo/ready",
+            "dojo/request",
             "dojo/_base/fx",
             "dojo/dom-style",
             "dijit/form/Select",
             "dijit/form/TextBox",
             "dijit/form/ValidationTextBox",
             "dijit/Editor"
+
         ],
-        function(parser,dom,query,registry,ready){
+        function(parser,dom,query,registry,ready,request){
             ready(function(){
                 $env = new Object;
                 $ = query;
                 $dom = dom;
                 $dijit = registry;
+                $ajax = request;
             });
         });
 

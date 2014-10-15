@@ -112,7 +112,7 @@ function _f($key,$value,$is_full_text = FALSE){
                 $value = full_name($value);
             }
             if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
-                $value = related_time($value);
+                $value = related_time(date('Y-m-d H:i:s',$value));
             }
         }else{
             if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {

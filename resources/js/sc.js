@@ -12,7 +12,9 @@ function goto(url,target){
 function goback(){
     var wso = currentWso();
     if("history" in wso){
-        wso.set('href',wso.history);
+        if(wso.href != wso.history){
+            wso.set('href',wso.history);
+        }
     }
 }
 
@@ -116,6 +118,10 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
             if("data" in response ){
                 if(remoteSuccess){
                     remoteSuccess(response["data"]);
+                }
+            }else{
+                if(remoteSuccess){
+                    remoteSuccess(response);
                 }
             }
 

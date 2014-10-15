@@ -2,7 +2,7 @@
 
 <?php render_form_input('title');?>
 <?php render_select_with_options('status','vl_order_status')?>
-<?php render_button('refresh','refreshData()');?>
+<?php render_button('refresh','_createIndexRefreshData()');?>
 
 <div id="myOrdersList"></div>
 
@@ -15,13 +15,15 @@
             "gridx/modules/Pagination",
             "gridx/modules/pagination/PaginationBar",
             "gridx/modules/ColumnResizer",
-            "gridx/modules/VirtualVScroller"
+            "gridx/modules/VirtualVScroller",
+            "gridx/modules/TouchVScroller"  //IPAD支持
         ],
         function(ready,Grid,AsyncCache,JsonRest,ObjectStore,
                  Pagination,
                  PaginationBar,
                  ColumnResizer,
-                 VirtualVScroller){
+                 VirtualVScroller,
+                 TouchVScroller){
             ready(function(){
 
                 var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data'),sortParam: "sortBy"});
@@ -56,7 +58,8 @@
                             sizeSeparator: "|"  //分页size之间分割符
                         },
                         ColumnResizer,
-                    VirtualVScroller
+                    VirtualVScroller,
+                        TouchVScroller
                     ],
 //                },
                     autoWidth : true,
@@ -72,7 +75,7 @@
 
         });
     //刷新store的数据
-    function refreshData(options){
+    function _createIndexRefreshData(options){
         var params = new Object();
         var title = dijitObject('title');
         var status = dijitObject('status');

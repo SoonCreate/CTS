@@ -20,8 +20,11 @@ define(["dojo/_base/declare", "gridx/Grid"],
             },
             //重新刷新gird，如果没有指定数据源则刷新本身
             refresh : function(store){
+                if(!store){
+                    store = this.store;
+                }
                 this.model.clearCache();
-                delete this.model.store;
+                //delete this.model.store;
                 this.model.setStore(store);
                 this.body.refresh();
             }

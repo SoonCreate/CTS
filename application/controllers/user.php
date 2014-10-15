@@ -235,12 +235,35 @@ class User extends CI_Controller {
 
     //用户消息
     function notices(){
+        render();
+    }
+
+    function notice_data(){
+        $start = 0;
+        $end = 0 ;
+        if(isset($_SERVER['HTTP_RANGE'])){
+            $idx = stripos($_SERVER['HTTP_RANGE'],'-');
+            $start = intval(substr($_SERVER['HTTP_RANGE'],6,$idx-6));
+            $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
+        }
+
         $this->load->model('notice_model');
         $nm =  new Notice_model();
         $nm->order_by('id','desc');
+        $nm->limit($end+1,$start);
         $notices = $nm->find_all_by(array('received_by' => _sess('uid')));
-        $data['notices'] = _format($notices);
-        render($data);
+        $totalCnt = $nm->count_by(array('received_by' => _sess('uid')));
+
+        $data["identifier"] = 'id';
+        $data["label"] = 'title';
+        $data['items'] = _format($notices);
+        $output = $data;
+
+        if(isset($_SERVER['HTTP_RANGE'])){
+            header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.$totalCnt);
+            $output = $data['items'];
+        }
+        echo json_encode($output);
     }
 
     function notice_show(){
@@ -268,9 +291,9 @@ class User extends CI_Controller {
         $this->load->model('notice_model');
         $nm = new Notice_model();
         if($nm->update_by(array('received_by'=>_sess('uid')),array('read_flag'=>1))){
-            echo 'done';
+            message_db_success();
         }else{
-            redirect(_url('user','notices'));
+            message_db_failure();
         }
     }
 
