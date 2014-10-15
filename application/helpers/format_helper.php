@@ -103,11 +103,11 @@ function _f($key,$value,$is_full_text = FALSE){
     if(is_null($value)){
         $value = "";
     }else{
-        if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
-            $value = ( $value == 1 ? label('yes') : label('no') );
-        }
-
         if($is_full_text){
+            if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
+                $value = ( $value == 1 ? label('yes') : label('no') );
+            }
+
             if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {
                 $value = full_name($value);
             }

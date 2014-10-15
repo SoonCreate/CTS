@@ -27,9 +27,21 @@
                     id : "userManageGrid",
                     store: store ,
                     structure: [
-                        {name : "用户名",field : "username",width : "160px",dataType :"string" },
-                        {name : "是否失效",field : "inactive_flag",width : "160px",dataType :"string" },
-                        {name : "操作",field : "inactive_flag",width : "300px",dataType :"string",
+                        {name : "<?= label('username')?>",field : "username",width : "100px",dataType :"string" },
+                        {name : "<?= label('full_name')?>",field : "full_name",width : "200px",dataType :"string" },
+                        {name : "<?= label('email')?>",field : "email",width : "160px",dataType :"string",
+                            decorator: function(cellData, rowId, rowIndex){
+                                if(cellData != null){
+                                    return '<a href="mailto:' + cellData + '">' + cellData + ' </a>'; //IE8奇葩bug，加入空格正常显示数据
+                                }else{
+                                    return "";
+                                }
+                            }
+                        },
+                        {name : "<?= label('contact')?>",field : "contact",width : "100px",dataType :"string" },
+                        {name : "<?= label('sex')?>",field : "sex",width : "60px",dataType :"string" },
+                        {name : "<?= label('phone_number')?>",field : "phone_number",width : "120px",dataType :"number" },
+                        {name : "<?= label('operation')?>",field : "inactive_flag",width : "200px",dataType :"string",
                             decorator: function(cellData, rowId, rowIndex){
                                 var value =  '<a href="#" onclick="goto(\'' + url('user/admin_edit?id='+rowId) + '\')"><?= label("edit")?></a>'+
                                 '|<a href="#" onclick="_userIndexRefreshData(\'' + url('user/initial_password?id='+rowId) + '\')"><?= label("initial_password")?></a>';
@@ -57,8 +69,8 @@
                     ],
 //                },
                     autoWidth : true,
-                    autoHeight : true,
-                    style:"margin-left: 20px"
+//                    autoHeight : true,
+                    style:"margin-left: 20px;"
 
                 },"userManageGrid");
 

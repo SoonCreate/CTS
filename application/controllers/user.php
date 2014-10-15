@@ -22,15 +22,18 @@ class User extends CI_Controller {
         }
 
         $um = new User_model();
-        $um->order_by('inactive_flag');
+//        $um->order_by('inactive_flag');
         $um->order_by('username');
         $um->limit($end+1,$start);
         $users = $um->find_all();
+        for($i=0;$i<count($users);$i++){
+            $users[$i]["sex"] = get_label('vl_sex',$users[$i]["sex"] );
+        }
         $totalCnt = $um->count_all();
 
         $data["identifier"] = 'id';
         $data["label"] = 'title';
-        $data['items'] = _format($users);
+        $data['items'] = $users;
         $output = $data;
 
         if(isset($_SERVER['HTTP_RANGE'])){
@@ -166,7 +169,7 @@ class User extends CI_Controller {
             }else{
                 $data = $user;
                 $data['to'] = 'admin_edit';
-                $this->load->view('user/edit',$data);
+                render_view('user/edit',$data);
             }
         }
 
