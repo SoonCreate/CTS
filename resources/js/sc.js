@@ -239,24 +239,21 @@ function renderValidError(lines){
 
 //没有定义好环境，则刷新
 function refresh_env(){
+    //预加载，加载后动画
+    require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
+        if($dom.byId("preloader")){
+            baseFx.fadeOut({  //Get rid of the loader once parsing is done
+                node: "preloader",
+                onEnd: function() {
+                    domStyle.set("preloader","display","none");
+                }
+            }).play();
+        }
+    });
     if($env && $env.cm){
-        //预加载，加载后动画
-        require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
-            if($dom.byId("preloader")){
-                baseFx.fadeOut({  //Get rid of the loader once parsing is done
-                    node: "preloader",
-                    onEnd: function() {
-                        domStyle.set("preloader","display","none");
-                    }
-                }).play();
-            }
-        });
-
         //$(".preloader").style("display","none")
         //console.info($dijit.byId('mainTabContainer'));
         console.log("current module line id : "+$env.cm);
-    }else{
-        history.go(0);
     }
 }
 

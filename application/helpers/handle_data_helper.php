@@ -37,6 +37,13 @@ function message($type,$class_code,$message_code,$args = []){
 
 }
 
+//临时使用的输出
+function custz_message($type,$content){
+    $message['type'] = $type;
+    $message['content'] = $content;
+    _refresh_output('message',$message);
+}
+
 //数据库操作返回消息
 function message_db_failure(){
     message('E','db','20');

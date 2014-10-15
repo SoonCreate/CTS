@@ -104,18 +104,18 @@ function _f($key,$value,$is_full_text = FALSE){
         $value = "";
     }else{
         if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
-            $value = ( $value == 1 ? "YES" : "NO" );
+            $value = ( $value == 1 ? label('yes') : label('no') );
         }
 
         if($is_full_text){
             if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {
                 $value = full_name($value);
             }
-            if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
+            if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
                 $value = related_time(date('Y-m-d H:i:s',$value));
             }
         }else{
-            if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
+            if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
                 $value = date('Y-m-d H:i:s',$value);
             }
         }

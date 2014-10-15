@@ -1,5 +1,3 @@
-<link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
-
 <?php render_button('notice_read_all','_userNoticesRefreshData()');?>
 
 <div id="myNoticeList"></div>

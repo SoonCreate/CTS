@@ -72,7 +72,7 @@ class Order extends CI_Controller {
             $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
             $os[$i]['status'] = $sm->get_label($os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
-            $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])));
+            $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])),10);
             $os[$i]['managed_by'] = $os[$i]['manager_id'];
             $os[$i]['delay_flag'] = 0;
             if(!is_null($os[$i]['plan_complete_date']) && $os[$i]['plan_complete_date'] < time()){

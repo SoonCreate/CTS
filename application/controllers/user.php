@@ -9,12 +9,36 @@ class User extends CI_Controller {
     }
 
 	public function index(){
-        $o = new User_model();
-        $o->order_by('inactive_flag');
-        $o->order_by('username');
-        $data['users'] = _format($o->find_all());
-        render($data);
+        render();
 	}
+
+    function user_data(){
+        $start = 0;
+        $end = 0 ;
+        if(isset($_SERVER['HTTP_RANGE'])){
+            $idx = stripos($_SERVER['HTTP_RANGE'],'-');
+            $start = intval(substr($_SERVER['HTTP_RANGE'],6,$idx-6));
+            $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
+        }
+
+        $um = new User_model();
+        $um->order_by('inactive_flag');
+        $um->order_by('username');
+        $um->limit($end+1,$start);
+        $users = $um->find_all();
+        $totalCnt = $um->count_all();
+
+        $data["identifier"] = 'id';
+        $data["label"] = 'title';
+        $data['items'] = _format($users);
+        $output = $data;
+
+        if(isset($_SERVER['HTTP_RANGE'])){
+            header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.$totalCnt);
+            $output = $data['items'];
+        }
+        echo json_encode($output);
+    }
 
     function login(){
         if($_POST){
@@ -128,18 +152,24 @@ class User extends CI_Controller {
 
     //管理员更新
     function admin_edit(){
-        $o = new User_model();
-        if($_POST){
-            if($o->update(v('id'),$_POST)){
-                echo 'done';
-            }else{
-                echo validation_errors('<div class="error">', '</div>');
-            }
+        $um = new User_model();
+        $user = $um->find(v('id'));
+        if(empty($user)){
+            show_404();
         }else{
-            $data = $o->find(p('user_id'));
-            $data['to'] = 'admin_edit';
-            $this->load->view('user/edit',$data);
+            if($_POST){
+                if($um->update($user['id'],$_POST)){
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                $data = $user;
+                $data['to'] = 'admin_edit';
+                $this->load->view('user/edit',$data);
+            }
         }
+
     }
 
     function change_password(){
@@ -147,13 +177,17 @@ class User extends CI_Controller {
             $data['password'] = sha1(v('new_password'));
             $data['initial_pass_flag'] = 0;
             $old_password = sha1(v('old_password'));
-            $o = new User_model();
-            $user = $o->find_by(array('id'=>_sess('uid'),'password'=>$old_password));
+            $um = new User_model();
+            $user = $um->find_by(array('id'=>_sess('uid'),'password'=>$old_password));
             //验证旧密码是否有效
             if(!empty($user)){
-                $this->_update(_sess('uid'),$data);
+                if($um->update($user['id'],$data)){
+                    message_db_success();
+                }else{
+                    message_db_failure();
+                }
             }else{
-                echo '旧密码输入有误';
+                custz_message('E', '旧密码输入有误');
             }
 
         }else{
@@ -162,16 +196,38 @@ class User extends CI_Controller {
     }
 
     function change_status(){
-        $user_id = p('user_id');
-        $data['inactive_flag']= p('inactive_flag');
-        $this->_update($user_id,$data);
+        $um = new User_model();
+        $user = $um->find(v('id'));
+        if(empty($user)){
+            show_404();
+        }else{
+            if($user['inactive_flag']){
+                $data['inactive_flag'] = 0;
+            }else{
+                $data['inactive_flag'] = 1;
+            }
+            if($um->update($user['id'],$data,true)){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
+        }
     }
 
     function initial_password(){
-        $data['password'] = sha1(_config('initial_password'));
-        $data['initial_pass_flag'] = 1;
-        $user_id = p('user_id');
-        $this->_update($user_id,$data);
+        $um = new User_model();
+        $user = $um->find(v('id'));
+        if(empty($user)){
+            show_404();
+        }else{
+            $data['password'] = sha1(_config('initial_password'));
+            $data['initial_pass_flag'] = 1;
+            if($um->update($user['id'],$data,true)){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
+        }
     }
 
     //选择角色
@@ -302,13 +358,6 @@ class User extends CI_Controller {
         echo check_auth($this->input->get('type'),$this->input->get('status'),$this->input->get('category'));
     }
 
-    private function  _update($id,$data){
-        if($this->user->update($id,$data)){
-            redirect(_url('user','index'));
-        }else{
-            echo validation_errors('<div class="error">', '</div>');
-        }
-    }
     //获取验证码
     function get_code(){
         $this->code(4,60,29);
