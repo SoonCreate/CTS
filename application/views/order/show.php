@@ -1,4 +1,8 @@
-<h1>投诉单号：<?= $id ?></h1>
+<div class="row paneltitle">
+    <h3>投诉单号：<?= $id ?></h3>
+</div>
+
+<div class="container-fluid userd">
 
 <?php
 //如果订单状态为锁定，则不显示工具栏
@@ -33,16 +37,16 @@ if(!is_order_locked($status)){?>
     <?php }?>
 <?php }?>
 
-状态：<?= $status_desc ?><br/>
-严重性：<?= get_label('vl_severity',$severity) ?><br/>
-发生频率：<?= get_label('vl_frequency',$frequency) ?><br/>
+<dl class="row dl-horizontal"><dt>状态：</dt><dd><?= $status_desc ?></dd></dl>
+<dl class="row dl-horizontal"><dt>严重性：</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
+<dl class="row dl-horizontal"><dt>发生频率：</dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>
 <?php if(_config('category_control')) :?>
-分类：<?= get_label('vl_order_category',$category,$order_type) ?><br/>
+<dl class="row dl-horizontal"><dt>分类：</dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
 <?php endif;?>
-提交时间：<?= $creation_date ?>
+<dl class="row dl-horizontal"><dt>提交时间：</dt><dd><?= $creation_date ?></dd></dl>
 <hr/>
-标题：<?= $title ?><br/>
-内容：<br/>
+<dl class="row dl-horizontal"><dt>标题：</dt><?= $title ?></dd></dl>
+<dl class="row dl-horizontal"><dt>内容：</dt>
 <?php foreach($contents as $c):?>
 <?php if($c['created_by'] == _sess('uid')) {
         echo '投诉人：' . $c['content'];
@@ -54,31 +58,41 @@ if(!is_order_locked($status)){?>
         }
     } ?><br/>
 <?php endforeach;?>
+</dl>
 <hr/>
 
+<dl class="row dl-horizontal"><dt>
 <?php if(!is_order_locked($status)){?>
 <a href="<?= _url('order','upload_file')?>">上传附件</a>
 <?php }?>
-附件：
+附件：</dt>
+<dd>
 <?php foreach($addfiles as $f):
     //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
     ?>
     <a href="<?= $f['full_path']?>"><?= $f['file_name']?></a>
     <?= $f['description']?>
 <?php endforeach;?>
+</dd></dl>
 <hr/>
+<dl class="row dl-horizontal"><dt>&nbsp</dt>
+<dd>
 <form id="order_reply" method="post" action="<?= _url('order','reply')?>">
     <textarea id="content" name="content" cols="40" rows="4"></textarea>
     <input name="id" id="id" type="hidden" value="<?= $id ?>"/>
     <button type="submit">提交</button>
 </form>
+</dd></dl>
+
 <hr/>
-本次投诉联系人：<?= $contact ?><br/>
-手机号码：<?= $mobile_telephone ?><br/>
-公司电话：<?= $phone_number ?><br/>
-公司名称：<?= $full_name?><br/>
-公司地址：<?= $address ?><br/>
+<dl class="row dl-horizontal"><dt>本次投诉联系人：</dt><dd><?= $contact ?></dd></dl>
+<dl class="row dl-horizontal"><dt>手机号码：</dt><dd><?= $mobile_telephone ?></dd></dl>
+<dl class="row dl-horizontal"><dt>公司电话：</dt><dd><?= $phone_number ?></dd></dl>
+<dl class="row dl-horizontal"><dt>公司名称：</dt><dd><?= $full_name?></dd></dl>
+<dl class="row dl-horizontal"><dt>公司地址：</dt><dd><?= $address ?></dd></dl>
 <hr/>
+</div>
+
 订单日志
 <table>
     <thead>
