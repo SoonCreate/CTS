@@ -164,8 +164,9 @@ function render_file_link($file){
     echo '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
 
-function render_form_open($controller,$action){
-    echo '<form id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'" onsubmit="return formSubmit(this);">';
+function render_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail= 'null',$remoteSuccess= 'null',$remoteNoBack= 'null'){
+    echo '<form id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'"
+    onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
 }
 
 function render_form_close(){

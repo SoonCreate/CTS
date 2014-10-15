@@ -1,8 +1,11 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 //输出数据
-function data($data){
-    _refresh_output('data',$data);
+function data($key,$data){
+    $output = _sess('output');
+    $d[$key] = $data;
+    $output['data'] = $d;
+    set_sess('output',$output);
 }
 
 //输出消息
