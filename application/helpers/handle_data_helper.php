@@ -1,8 +1,11 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 //输出数据
-function data($data){
-    _refresh_output('data',$data);
+function data($key,$data){
+    $output = _sess('output');
+    $d[$key] = $data;
+    $output['data'] = $d;
+    set_sess('output',$output);
 }
 
 //输出消息
@@ -32,6 +35,13 @@ function message($type,$class_code,$message_code,$args = []){
         message_unknow_error();
     }
 
+}
+
+//临时使用的输出
+function custz_message($type,$content){
+    $message['type'] = $type;
+    $message['content'] = $content;
+    _refresh_output('message',$message);
 }
 
 //数据库操作返回消息

@@ -62,7 +62,7 @@ function render_link($url,$label,$title = '',$class = ''){
     }else{
         $link = $url;
     }
-    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$module_id.'\',\''.$link.'\');">'.$label.'</a>';
+    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$link.'\',\''.$module_id.'\');">'.$label.'</a>';
 
 }
 
@@ -164,8 +164,9 @@ function render_file_link($file){
     echo '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
 
-function render_form_open($controller,$action){
-    echo '<form id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'" onsubmit="return formSubmit(this);">';
+function render_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail= 'null',$remoteSuccess= 'null',$remoteNoBack= 'null'){
+    echo '<form id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'"
+    onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
 }
 
 function render_form_close(){
@@ -179,6 +180,11 @@ function render_form_input($name,$required = FALSE,$attributes = array()){
     if($required){
         echo 'required';
     }
+
+    foreach($attributes as $key=>$value){
+        echo $key.' = '.'"'.$value.'"';
+    }
+
     echo '/></dd>';
     render_form_error($name);
     echo '</dl>';
@@ -211,6 +217,10 @@ function render_form_header($title){
 
 function render_submit_button(){
     echo '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.label('submit').'</button>';
+}
+
+function render_button($label,$onclick = ""){
+    echo '<button type="submit" data-dojo-type="sckj/form/Button" onclick="'.$onclick.'">'.label($label).'</button>';
 }
 
 function render_label($name,$required = FALSE){

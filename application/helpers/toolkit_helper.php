@@ -53,26 +53,34 @@ function set_creation_date($data){
 }
 
 //姓名或公司名
-function full_name($id){
+function full_name($id,$only_me = FALSE){
     if($id == -1){
         return label('administrator');
     }else{
         if(is_null($id)){
             return label('unknow');
         }else{
-            global $CI;
-            $CI->load->model('user_model');
-            $um = new User_model();
-            $user = $um->find($id);
-            if(empty($user)){
-                return label('unknow');
+            if($id == _sess('uid')){
+                return label('me');
             }else{
-                if(is_null($user['full_name'])){
-                    return $user['username'];
+                if($only_me){
+                    return "";
                 }else{
-                    return $user['full_name'];
-                }
+                    global $CI;
+                    $CI->load->model('user_model');
+                    $um = new User_model();
+                    $user = $um->find($id);
+                    if(empty($user)){
+                        return label('unknow');
+                    }else{
+                        if(is_null($user['full_name'])){
+                            return $user['username'];
+                        }else{
+                            return $user['full_name'];
+                        }
 
+                    }
+                }
             }
         }
 

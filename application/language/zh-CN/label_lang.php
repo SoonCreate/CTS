@@ -20,6 +20,7 @@ $lang['label_unknow'] = "未知";
 $lang['label_status'] = "状态";
 $lang['label_search'] = "查找";
 $lang['label_all'] = "所有";
+$lang['label_index'] = "首页";
 
 $lang['label_user'] = "账号管理";
 $lang['label_change_password'] = "修改密码";

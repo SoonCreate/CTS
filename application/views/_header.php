@@ -8,6 +8,7 @@
 <!-- Bootstrap-->
 <link href="<?= base_url() ?>resources/css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/dojo/dojox/widget/Toaster/Toaster.css" >
+<link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -42,26 +43,40 @@
             "dojo/query",
             "dijit/registry",
             "dojo/ready",
+            "dojo/request",
             "dojo/_base/fx",
             "dojo/dom-style",
             "dijit/form/Select",
             "dijit/form/TextBox",
             "dijit/form/ValidationTextBox",
             "dijit/Editor"
+
         ],
-        function(parser,dom,query,registry,ready){
+        function(parser,dom,query,registry,ready,request){
             ready(function(){
                 $env = new Object;
                 $ = query;
                 $dom = dom;
                 $dijit = registry;
+                $ajax = request;
             });
         });
 
-    function url(s){
+    function url(s,parmas){
         var ciBaseUrl = "<?= site_url().'/'?>";
-        console.info(ciBaseUrl);
-        return ciBaseUrl + s;
+        var url =  ciBaseUrl + s;
+        if(parmas){
+            var i = 0;
+            for(var key in parmas){
+                if(i < 1){
+                    url = url + '?'+ key + '=' + parmas[key];
+                } else{
+                    url = url+ '&'+ key  +'=' + parmas[key];
+                }
+                i ++ ;
+            }
+        }
+        return url;
     }
 
 </script>

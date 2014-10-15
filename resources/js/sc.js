@@ -1,5 +1,5 @@
 //前端触发后端链接
-function goto(target,url){
+function goto(url,target){
     var wso = $dijit.byId(target+'_module');
     if(wso == undefined){
         wso = currentWso();
@@ -12,8 +12,14 @@ function goto(target,url){
 function goback(){
     var wso = currentWso();
     if("history" in wso){
-        wso.set('href',wso.history);
+        if(wso.href != wso.history){
+            wso.set('href',wso.history);
+        }
     }
+}
+
+function refresh(){
+    currentWso().refresh();
 }
 
 function currentGoto(){
@@ -113,11 +119,15 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
                 if(remoteSuccess){
                     remoteSuccess(response["data"]);
                 }
+            }else{
+                if(remoteSuccess){
+                    remoteSuccess(response);
+                }
             }
 
             //处理跳转
             if("redirect" in response ){
-                goto(response["redirect"]['target'],response["redirect"]["url"]);
+                goto(response["redirect"]["url"],response["redirect"]['target']);
             }
         }else{
             if(remoteFail){
@@ -229,24 +239,21 @@ function renderValidError(lines){
 
 //没有定义好环境，则刷新
 function refresh_env(){
+    //预加载，加载后动画
+    require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
+        if($dom.byId("preloader")){
+            baseFx.fadeOut({  //Get rid of the loader once parsing is done
+                node: "preloader",
+                onEnd: function() {
+                    domStyle.set("preloader","display","none");
+                }
+            }).play();
+        }
+    });
     if($env && $env.cm){
-        //预加载，加载后动画
-        require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
-            if($dom.byId("preloader")){
-                baseFx.fadeOut({  //Get rid of the loader once parsing is done
-                    node: "preloader",
-                    onEnd: function() {
-                        domStyle.set("preloader","display","none");
-                    }
-                }).play();
-            }
-        });
-
         //$(".preloader").style("display","none")
-        console.info($dijit.byId('mainTabContainer'));
+        //console.info($dijit.byId('mainTabContainer'));
         console.log("current module line id : "+$env.cm);
-    }else{
-        history.go(0);
     }
 }
 

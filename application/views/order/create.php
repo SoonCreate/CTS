@@ -1,5 +1,4 @@
 
-<div class="fixtop"> this top</div>
 <?php render_form_open('order','create') ?>
 <div class="container-fluid userd">
     <?php render_select_with_options('severity','vl_severity');?>

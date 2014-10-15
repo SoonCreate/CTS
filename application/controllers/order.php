@@ -20,11 +20,12 @@ class Order extends CI_Controller {
         $om = new Order_model();
         $sm = new Status_model();
         $olm = new Order_log_model();
+        $am = new Auth_model();
 
         $start = 0;
         $end = 0 ;
-        $totalCnt = $om->count_all();
 
+//        print_r($where);
         if(isset($_SERVER['HTTP_RANGE'])){
             $idx = stripos($_SERVER['HTTP_RANGE'],'-');
             $start = intval(substr($_SERVER['HTTP_RANGE'],6,$idx-6));
@@ -32,15 +33,46 @@ class Order extends CI_Controller {
         }
 
         //获取数据
-        $om->limit($end+1,$start);
-        $os = $om->find_all();
+        if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
+            $om->limit($end+1,$start);
+            $om->order_by('creation_date','DESC');
+            $title = $this->input->get('title');
+            $status = $this->input->get('status');
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $where['status'] = $status;
+            $where['created_by'] = _sess('uid');
+            $os = $om->find_all_by($where);
+            //fix ：Error in Body._buildRowContent: Row is not in cache
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $totalCnt = $om->count_by($where);
+        }else{
+            $om->limit($end+1,$start);
+            $om->order_by('creation_date','DESC');
+            $title = $this->input->get('title');
+            $status = $this->input->get('status');
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $where['status'] = $status;
+            $os = $om->find_all_by($where);
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $totalCnt = $om->count_by($where);
+        }
+//        print_r($os);
 
+        $os = _format($os);
         for($i=0;$i<count($os);$i++){
             $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
             $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
             $os[$i]['status'] = $sm->get_label($os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
-            $os[$i]['content'] = word_truncate($om->first_content($os[$i]['id']));
+            $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])),10);
             $os[$i]['managed_by'] = $os[$i]['manager_id'];
             $os[$i]['delay_flag'] = 0;
             if(!is_null($os[$i]['plan_complete_date']) && $os[$i]['plan_complete_date'] < time()){
@@ -148,7 +180,7 @@ class Order extends CI_Controller {
                 $oam = new Order_addfile_model();
                 $sm = new Status_model();
                 $ocm->order_by('creation_date');
-                $order['contents'] = $ocm->find_all_by(array('order_id'=>$id));
+                $order['contents'] = _format($ocm->find_all_by(array('order_id'=>$id)));
                 $oam->order_by('creation_date');
                 $order['addfiles'] = $oam->find_all_by_view(array('order_id'=>$id));
                 $order['status_desc'] = $sm->get_label($order['status']);
@@ -254,10 +286,14 @@ class Order extends CI_Controller {
                 $ocm = new Order_content_model();
                 $data['content'] = tpost('content');
                 $data['order_id'] = $id;
-                if($ocm->insert($data)){
-                    redirect(_url('order','show',array('id'=>$id)));
+                $content_id = $ocm->insert($data);
+                if($content_id){
+                    message_db_success();
+                    $r = _format_row($ocm->find($content_id));
+                    $r['created_by'] = full_name($r['created_by']);
+                    data('content',$r);
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 shoe_404();

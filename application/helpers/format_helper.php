@@ -80,39 +80,46 @@ function xchecked($flag){
 
 }
 
-//转换数据库的时间和操作者为系统使用格式
-function _format($rows,$is_rs_array = true){
+//转换数据库的时间和操作者为系统使用格式 is full text为输出用户名和翻译时间
+function _format($rows,$is_full_text = FALSE,$is_rs_array = true){
     if($is_rs_array){
         for($i = 0; $i < count($rows);$i++){
-            $rows[$i] = _format_row($rows[$i]);
+            $rows[$i] = _format_row($rows[$i],$is_full_text);
         }
     }else{
-        $rows = _format_row($rows);
+        $rows = _format_row($rows,$is_full_text);
     }
     return $rows;
 }
 //格式化函数
-function _format_row($row){
+function _format_row($row,$is_full_text = FALSE){
     foreach ($row as $key => $value) {
-        $row[$key] = _f($key,$value);
+        $row[$key] = _f($key,$value,$is_full_text);
     }
     return $row;
 }
 
-function _f($key,$value){
+function _f($key,$value,$is_full_text = FALSE){
     if(is_null($value)){
         $value = "";
     }else{
-        if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
-            $value = ( $value == 1 ? "YES" : "NO" );
-        }
-        if(strpos($key,'_date') > 0 && !strpos($key,'_date_')) {
-            $value = related_time(date('Y-m-d H:i:s',$value));
+        if($is_full_text){
+            if(strpos($key,'_flag') > 0 && !strpos($key,'_flag_')) {
+                $value = ( $value == 1 ? label('yes') : label('no') );
+            }
+
+            if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {
+                $value = full_name($value);
+            }
+            if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
+                $value = related_time(date('Y-m-d H:i:s',$value));
+            }
+        }else{
+            if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
+                $value = date('Y-m-d H:i:s',$value);
+            }
         }
 
-        if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {
-            $value = full_name($value);
-        }
     }
     return $value;
 }
