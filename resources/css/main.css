@@ -1,22 +1,27 @@
 @CHARSET "UTF-8";
-
-/*@import "../../dojo/resources/dojo.css";*/
-/*@import "../../dijit/themes/claro/document.css";*/
-/*@import "../../dijit/themes/claro/claro.css";*/
-/*@import "../../dojox/grid/resources/claroGrid.css";*/
 *{
-	box-sizing:border-box;
-}
+    box-sizing:border-box;
+    -moz-box-sizing: border-box;
+    outline: none !important;
+ }
 .row{
 	margin-left:0 !important;
 	margin-right:0 !important;
 	margin-bottom:10px !important;
 }
+.inline *{
+    display: inline-block;
+    float: left;
+}
+.inline label {
+    padding:3px 0;
+
+}
 html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    padding: 0 0 0 0;
+    padding: 0 10px 10px 0;
     margin: 0 0 0 0;
     font-size: 12px;
     background-color: #ECF0F1 !important;
@@ -113,7 +118,9 @@ code,
 .tabPane{
     padding: 1em;
 }
-
+.rightpane{
+    padding : 5px 30px !important;
+}
 .instructionBox{
     text-align: left;
     margin: 2px auto 7px;
@@ -315,7 +322,7 @@ p.footer{
 }
 .dijitTabContainerLeft-container{
     border: 1px solid #979C9F;
-    margin:0  10px 10px 0;
+    /*margin:0  10px 10px 0;*/
 }
 
 .dijitTabContainerLeft-tabs .tabLabel{
@@ -611,30 +618,51 @@ p.footer{
 .fixbottom{
     position: fixed;
     left: 221px;
-    right: 13px;
-    bottom: 13px;
+    right: 23px;
+    bottom: 23px;
     box-shadow: 0 -3px 3px #ddd;
     background-color: #f6f6f6;
     padding: 8px 30px;
 }
 .fixtop{
     position: fixed;
-    left: 221px;
-    right: 13px;
+    left: 231px;
+    right: 23px;
     top: 81px;
-    padding: 8px 30px;
-    background-color: #E9E9E9;
-}
+    height: 41px;
+    padding: 10px 30px;
+    background-color: #2C3E50;
+    border-radius:0 0 0 6px ;
+    z-index: 999999;
+    font-family:Microsoft Yahei;
 
+}
+.fixtop a{
+    color:#fff;
+    text-decoration: none !important;
+    display: inline-block;
+    padding:3px 5px;
+    border-radius: 2px;
+}
+.fixtop a:hover{
+    background:#fff;
+    color:#26AF92;
+
+}
 /*TAB内容框，边框bug相关*/
 .dijitTabContainerLeft-dijitContentPane{
-    padding: 35px 0px 0px 15px !important;
+    /*右内容主框bug*/
+    box-sizing: content-box !important;
 }
 .sc .dijitContentPane {
 
 }
 .dijitTabContainerLeftChildWrapper{
-    margin-bottom: 0px !important;
+
+
+
+}
+.dijitTabContainerLeft-container{
 
 }
 
@@ -706,4 +734,25 @@ p.footer{
 }
 .headline h2 i{
     margin-right:10px;
+}
+
+
+/*各模块根据id名，上下留白*/
+#m_5_module {
+     margin-top :50px;
+    margin-bottom: 50px;
+ }
+#m_6_module {
+    margin-top :50px;
+}
+#m_4_module {
+    margin-top :50px;
+    margin-bottom: 50px;
+}
+#m_7_module {
+    margin-top :50px;
+}
+#m_3_module {
+    margin-top :0px;
+    padding-top:30px !important;
 }
