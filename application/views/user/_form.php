@@ -9,7 +9,7 @@
 </dl>
 <dl class="row dl-horizontal">
     <dt><label for="sex">性别</label></dt>
-    <dd><?php render_radio_with_value('sex','vl_sex',_v('sex'));?></dd>
+    <dd><?= render_radio_with_value('sex','vl_sex',_v('sex'));?></dd>
 </dl>
 <dl class="row dl-horizontal">
     <dt><label for="email">EMAIL</label></dt>

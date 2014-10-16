@@ -1,7 +1,7 @@
 
 <head>
     <title><?= label('version')?></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
 <link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />
 <link rel="stylesheet" href="<?= base_url() ?>resources/css/main.css" />
@@ -33,7 +33,9 @@
 <script type="text/javascript" src="/dojo/dojo/dojo.js"></script>
 
 <script type="text/javascript">
-    //全局变量
+//    history.forward();
+history.go(1);
+//全局变量
     var $env = new Object;
     var $ = new Object;
     var $dom = new Object;

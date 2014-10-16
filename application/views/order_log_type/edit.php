@@ -15,7 +15,7 @@
     <label for="field_valuelist_id">字段值集</label>
     <select id="field_valuelist_id" name="field_valuelist_id">
         <option></option>
-        <?php render_options_with_value('vl_valuelist',_v('field_valuelist_id'));?>
+        <?= render_options_with_value('vl_valuelist',_v('field_valuelist_id'));?>
     </select>
     <br/>
 

@@ -1,5 +1,5 @@
-<h1>功能选择</h1>
-<form id="choose_functions" method="post" action="<?= _url('role','choose_functions')?>">
+<?= render_form_open('role','choose_functions') ?>
+<?= render_form_header('choose_functions');?>
     <table>
         <thead>
         <th>选择</th>
@@ -19,6 +19,6 @@
         <?php endforeach;?>
     </table>
 
-    <input name="role_id" id="role_id" type="hidden" value="<?= _v('role_id')?>" />
-    <button type="submit">提交</button>
-</form>
+<?= render_form_hidden('role_id',v('role_id'));?>
+<?= render_button_group();?>
+<?= render_form_close() ?>

@@ -19,7 +19,7 @@
     <label for="field_valuelist_id">字段值集</label>
     <select id="field_valuelist_id" name="field_valuelist_id">
         <option></option>
-        <?php render_options('vl_valuelist');?>
+        <?= render_options('vl_valuelist');?>
     </select>
     <br/>
 

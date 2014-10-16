@@ -4,6 +4,6 @@
         <input type="checkbox" name="roles[]" id="role_<?= $role['id'] ?>" value="<?= $role['id']?>" <?= $role['checked']?>/>
         <label for="role_<?= $role['id'] ?>"><?= $role['description'] ?></label>
     <?php endforeach;?>
-    <input name="user_id" id="user_id" type="hidden" value="<?= _v('user_id')?>" />
+    <input name="id" id="id" type="hidden" value="<?= _v('id')?>" />
     <button type="submit">提交</button>
 </form>
