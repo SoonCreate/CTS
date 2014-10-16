@@ -108,6 +108,14 @@ function redirect_to($controller,$action,$params = null){
     set_sess('output',$output);
 }
 
+//前端页面返回
+function go_back(){
+    $output = _sess('output');
+    $goto['url'] = 'goBack';
+    $output['redirect'] = $goto;
+    set_sess('output',$output);
+}
+
 //刷新输出缓存
 function _refresh_output($type,$data){
     $output = _sess('output');

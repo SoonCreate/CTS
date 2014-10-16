@@ -27,16 +27,17 @@
         <td><?= $o['parent_desc'] ?></td>
         <td><?= $o['editable_flag'] ?></td>
         <td>
-            <a href="<?= _url('valuelist','edit',array('id'=>$o['id']))?>">编辑</a>
-            &nbsp;|&nbsp;<a href="<?= _url('valuelist','items',array('id'=>$o['id']))?>">
-            <?php if($o['object_flag'] == 'NO') { ?>
-                管理项目</a>
-                <?php }else{ ?>
-                查看项目</a>
-            <?php }?>
+            <?= render_link(array('valuelist','edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;
+            <?php
+            $s = label('item_manage');
+            if($o['object_flag']) {
+                $s = label('item_show');
+            }?>
+            <?= render_link(array('valuelist','items',array('id'=>$o['id'])),$s)?>
         </td>
 
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('valuelist','create')?>">新建值集</a>
+<?= render_link(array('valuelist','create'),label('valuelist_create'))?>

@@ -10,7 +10,7 @@ class Admin extends CI_Controller {
         $this->load->model('config_model');
     }
 
-    function create_order_category(){
+    function order_category_manage(){
         if($_POST){
 
         }else{

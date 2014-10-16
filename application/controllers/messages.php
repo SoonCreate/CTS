@@ -23,18 +23,23 @@ class Messages extends CI_Controller {
         }else{
             $mm = new Message_model();
             if($_POST){
-                $data = _data('message_code','content','class_id','language');
+                $data = _data('message_code','content','class_id','language','help');
                 if($this->_is_message_exists($data['message_code'],$data['class_id'],$data['language'])){
-                    echo '消息条目已存在!';
+                    custz_message('E','消息条目已存在!') ;
                 }else{
                     if($mm->insert($data)){
-                        echo 'done';
+                        go_back();
+                        message_db_success();
                     }else{
-                        echo validation_errors('<div class="error">', '</div>');
+                        validation_error();
                     }
                 }
             }else{
-                render();
+                $data['language'] = env_language();
+                $this->db->select_max('message_code');
+                $line = $mm->find_all_by(array('class_id'=>$class['id']));
+                $data['message_code'] = string_to_number($line[0]['message_code']) + 10;
+                render($data);
             }
         }
     }
@@ -46,15 +51,12 @@ class Messages extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $data = _data('content','language');
-                if($this->_is_message_exists($message['message_code'],$message['class_id'],$data['language'])){
-                    echo '消息条目已存在!';
+                $data = _data('content','language','help');
+                if($mm->update($message['id'],$data)){
+                    go_back();
+                    message_db_success();
                 }else{
-                    if($mm->update($message['id'],_data('content','language'))){
-                        echo 'done';
-                    }else{
-                        echo validation_errors('<div class="error">', '</div>');
-                    }
+                    validation_error();
                 }
 
             }else{
@@ -70,9 +72,9 @@ class Messages extends CI_Controller {
             show_404();
         }else{
             if($mm->delete($message['id'])){
-                echo 'done';
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                message_db_failure();
             }
         }
     }
@@ -81,9 +83,9 @@ class Messages extends CI_Controller {
         $mcm = new Message_class_model();
         if($_POST){
             if($mcm->insert(_data('class_code','description'))){
-                echo 'done';
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
         }else{
             render();
@@ -98,9 +100,10 @@ class Messages extends CI_Controller {
         }else{
             if($_POST){
                 if($mcm->update($class['id'],_data('description'))){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 render($class);
@@ -120,12 +123,12 @@ class Messages extends CI_Controller {
             $m = $mm->find_by(array('class_id'=>$class['id']));
             if(empty($m)){
                 if($mcm->delete($class['id'])){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    message_db_failure();
                 }
             }else{
-                echo '请先清空消息条目，再尝试删除消息类！';
+                custz_message('E','请先清空消息条目，再尝试删除消息类！') ;
             }
 
         }

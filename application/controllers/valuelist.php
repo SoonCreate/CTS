@@ -37,16 +37,16 @@ class Valuelist extends CI_Controller {
             if($object_flag){
                 $_POST['object_flag'] = 1;
                 if($vm->save_from_object(_data('valuelist_name','description','object_flag','label_fieldname','value_fieldname','source_view','condition'))){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 $_POST['object_flag'] = 0;
                 if($vm->save_normal(_data('valuelist_name','description','parent_id','object_flag'))){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }
         }else{
@@ -69,9 +69,9 @@ class Valuelist extends CI_Controller {
                         $data['object_flag'] = 1;
                         $data['parent_id'] = NULL;
                         if($vm->save_from_object($data)){
-                            echo 'done';
+                            message_db_success();
                         }else{
-                            echo validation_errors('<div class="error">', '</div>');
+                            validation_error();
                         }
                     }else{
                         $data['object_flag'] = 0;
@@ -80,9 +80,9 @@ class Valuelist extends CI_Controller {
                         $data['source_view'] = NULL;
                         $data['condition'] = NULL;
                         if($vm->save_normal($data)){
-                            echo 'done';
+                            message_db_success();
                         }else{
-                            echo validation_errors('<div class="error">', '</div>');
+                            validation_error();
                         }
                     }
                 }else{
@@ -90,7 +90,7 @@ class Valuelist extends CI_Controller {
                     render($v);
                 }
             }else{
-                echo '值集为系统配置不能被编辑！';
+                custz_message('E','值集为系统配置不能被编辑！');
             }
 
         }
@@ -108,13 +108,13 @@ class Valuelist extends CI_Controller {
             if($h['object_flag']){
                 $data['objects'] = get_options($h['valuelist_name']);
                 //来自表对象则不能进行项目编辑，只能显示
-                $this->load->view('valuelist/items_from_object',$data);
+                render_view('valuelist/items_from_object',$data);
             }else{
                 //如果存在父值集，没有指定父值集项目的时候，默认第一项
                 if($h['parent_id']){
                     $parent = $vm->find($h['parent_id']);
                     if(empty($parent)){
-                        echo '父值集不存在';
+                        custz_message('E','父值集不存在');
                     }else{
                         $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
                         if(count($lines) > 0){
@@ -141,12 +141,12 @@ class Valuelist extends CI_Controller {
                                     $data['objects'] = _format($data['objects']);
                                     render($data);
                                 }else{
-                                    echo '父值集无'.$parent_segment.'项目';
+                                    custz_message('E','父值集无'.$parent_segment.'项目');
                                 }
                             }
 
                         }else{
-                            echo '父值集无项目';
+                            custz_message('E', '父值集无项目');
                         }
                     }
                 }else{
@@ -171,7 +171,7 @@ class Valuelist extends CI_Controller {
             if($h['parent_id']){
                 $parent = $vm->find($h['parent_id']);
                 if(empty($parent)){
-                    echo '父值集不存在';
+                    custz_message('E','父值集不存在');
                 }else{
                     $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
                     if(count($lines) > 0){
@@ -189,12 +189,12 @@ class Valuelist extends CI_Controller {
 
                                 $this->_item_create();
                             }else{
-                                echo '父值集无'.$parent_segment.'项目';
+                                custz_message('E','父值集无'.$parent_segment.'项目');
                             }
                         }
 
                     }else{
-                        echo '父值集无项目';
+                        custz_message('E', '父值集无项目');
                     }
                 }
             }else{
@@ -211,9 +211,9 @@ class Valuelist extends CI_Controller {
         }else{
             $data['inactive_flag'] = v('inactive_flag');
             if($vlm->update($l['id'],$data,true)){
-                echo 'done';
+                message_db_success();
             }else{
-                echo 'fail';
+                validation_error();
             }
         }
     }
@@ -227,9 +227,9 @@ class Valuelist extends CI_Controller {
             if($_POST){
                 $_POST['inactive_flag'] = v('inactive_flag');
                 if($vlm->update($item['id'],_data('segment_value','segment_desc','sort','inactive_flag'))){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 render($item);
@@ -249,12 +249,12 @@ class Valuelist extends CI_Controller {
                 $_POST['parent_segment_value'] = $parent_segment;
                 $_POST['inactive_flag'] = v('inactive_flag');
                 if($vlm->insert(_data('valuelist_id','segment','segment_value','segment_desc','sort','inactive_flag','parent_segment_value'))){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
-                echo '值已存在，请检查输入';
+                custz_message('E','值已存在，请检查输入');
             }
         }else{
 
@@ -268,7 +268,7 @@ class Valuelist extends CI_Controller {
                 $line = $vlm->find_all_by(array('valuelist_id'=>$valulist_id));
             }
             $data['default_segment'] = string_to_number($line[0]['segment']) + 10;
-            $this->load->view('valuelist/item_create',$data);
+            render_view('valuelist/item_create',$data);
         }
     }
 

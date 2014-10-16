@@ -16,7 +16,7 @@
          data-dojo-props="liveSplitters: false, design: 'sidebar', region: 'center'">
 
         <div data-dojo-type="dijit/layout/TabContainer" id="mainTabContainer"
-             data-dojo-props="region: 'center',tabPosition:'left-h',persist:true,tabStrip:true" class=" ">
+             data-dojo-props="region: 'center',tabPosition:'left-h',persist:true,tabStrip:true" class=" "><!--,persist:true-->
 
             <?php if(isset($modules)):?>
             <?php  foreach($modules as $m) :?>

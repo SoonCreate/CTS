@@ -9,9 +9,11 @@ function goto(url,target,noRender){
         wso.set("href",url);
         $dijit.byId("mainTabContainer").selectChild(wso,true);
     }else{
-        $ajax.get(url,{handleAs : "json"}).then(function(response){
-            handleResponse(response,null,function(){
-                refresh();
+        dojoConfirm("是否确定执行此操作？",function(){
+            $ajax.get(url,{handleAs : "json"}).then(function(response){
+                handleResponse(response,null,function(){
+                    refresh();
+                });
             });
         });
     }
@@ -54,7 +56,7 @@ function goback(){
     var wso = currentWso();
 
     if("history" in wso){
-        if(wso.href != wso.history[0]){
+        if(wso.history.length > 0 && wso.href != wso.history[0]){
             wso.set('href',wso.history[0]);
             wso.history.shift();
         }
@@ -170,7 +172,12 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
 
             //处理跳转
             if("redirect" in response ){
-                goto(response["redirect"]["url"],response["redirect"]['target']);
+                if(response["redirect"]["url"] == "goBack"){
+                    goback();
+                }else{
+                    goto(response["redirect"]["url"],response["redirect"]['target']);
+                }
+
             }
         }else{
             if(remoteFail){
@@ -331,7 +338,7 @@ function dojoConfirm(content,callback,noback,type){
                     "<div class='messageContent'>" +content + "</div></div>";
                     break;
                 default :
-                    content = "<div class='messageContainer'><div class='messageContent'>" +content + "</div></div>";
+                    content = "<div class='messageContent'>" +content + "</div>";
                     break;
             }
             var confirmDialog = new Dialog({

@@ -73,7 +73,7 @@ function render_error($heading = '',$message = ''){
 }
 
 function render_form_error($field){
-    return '<dd><div id="error_'._sess('cm').'_'.$field.'"></div></dd>';
+    return '<dd><div id="error_'.$field.'_'._sess('cm').'"></div></dd>';
 }
 
 //输出到view里面的option
