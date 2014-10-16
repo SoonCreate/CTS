@@ -632,7 +632,7 @@ p.footer{
     top: 81px;
     height: 41px;
     padding: 10px 30px;
-    background-color: #FFF;
+    background-color: #F6F9FC;
     border-radius:0;
     border-bottom: 1px solid #ddd;
     z-index: 999999;
@@ -764,3 +764,30 @@ p.footer{
     /*margin-top :0px;*/
     /*padding-top:30px !important;*/
 /*}*/
+
+
+ .leftinput{
+    border-radius: 4px 0 0 4px !important;
+    margin-right: 0 !important;
+     height: 29px !important;
+}
+ .midinput{
+     border-radius: 0 !important;
+     margin-left:-1px !important;
+     margin-right:0 !important;
+     height: 29px !important;
+ }
+.sc .rightbtn .dijitButtonNode{
+    border-radius: 0 4px 4px 0 !important;
+    margin-left: -1px !important;
+    height: 29px !important;
+}
+.sc .midbtn .dijitButtonNode{
+    border-radius: 0 !important;
+    margin-left: -1px !important;
+    height: 29px !important;
+}
+.sc .left .dijitButtonNode{
+    border-radius: 4px 0 0 4px !important;
+    height: 29px !important;
+}

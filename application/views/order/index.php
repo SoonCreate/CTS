@@ -15,12 +15,12 @@
 </script>
 <div class="container-fluid">
     <div class="row inline">
-        <?= lang('title') ?>&nbsp;&nbsp;<input id="title" name="title" data-dojo-type="sckj/form/TextBox"/>
-        <?= lang('status') ?>&nbsp;&nbsp;
-        <select  id="status" name="status" data-dojo-type="sckj/form/Select"  trim="true">
+        <!--?= lang('title') ?--><input id="title" name="title" data-dojo-type="sckj/form/TextBox" class="leftinput" />
+        <!--?= lang('status') ?-->
+        <select  id="status" name="status" data-dojo-type="sckj/form/Select"  trim="true" class="midinput">
             <?= render_options('vl_order_status')?>
         </select>
-        <button data-dojo-type="sckj/form/Button" class="success" style="margin-left: 20px" onclick="_createIndexRefreshData()">
+        <button data-dojo-type="sckj/form/Button" class="rightbtn"  onclick="_createIndexRefreshData()">
             <?= label('search')?>
         </button>
         <!--?php render_form_input('title');?>
