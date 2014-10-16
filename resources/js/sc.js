@@ -5,7 +5,7 @@ function goto(url,target,noRender){
         wso = currentWso();
     }
     if(!noRender){
-        wso.history = wso.href;
+        recordWso(wso,wso.href);
         wso.set("href",url);
         $dijit.byId("mainTabContainer").selectChild(wso,true);
     }else{
@@ -18,6 +18,16 @@ function goto(url,target,noRender){
 
 }
 
+function recordWso(wso,url){
+    if(wso.history == undefined){
+        wso.history = new Array();
+    }else{
+        if(wso.history.length == 10){
+            wso.history.pop();
+        }
+    }
+    wso.history.unshift(url);
+}
 
 function isURL(str_url){
     var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
@@ -40,10 +50,13 @@ function isURL(str_url){
 }
 
 function goback(){
+
     var wso = currentWso();
+
     if("history" in wso){
-        if(wso.href != wso.history){
-            wso.set('href',wso.history);
+        if(wso.href != wso.history[0]){
+            wso.set('href',wso.history[0]);
+            wso.history.shift();
         }
     }
 }
