@@ -20,7 +20,7 @@
 
             <?php if(isset($modules)):?>
             <?php  foreach($modules as $m) :?>
-                    <div data-dojo-type="dojox/layout/ContentPane" id="<?= 'module_' + $m['module_id']?>"
+                    <div data-dojo-type="dojox/layout/ContentPane" id="<?= 'module_'. $m['module_id']?>"
                          title="<?= $m['module_desc']?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
                          data-dojo-props=" href:'<?= $m['url']?>'"

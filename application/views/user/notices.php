@@ -1,4 +1,10 @@
-<?= render_button('notice_read_all','_userNoticesRefreshData()');?>
+<div class="container-fluid">
+    <div class="row">
+        <?= render_button('notice_read_all','_userNoticesRefreshData()');?>
+    </div>
+    <div id="myNoticeList" class="gridlist"></div>
+</div>
+
 
 <div id="myNoticeList"></div>
 
@@ -29,11 +35,13 @@
                     id : "myNoticeList",
                     store: store ,
                     structure: [
+                        {name : "",field : "",width : "50px"},
                         {name : "标题",field : "title",width : "300px",dataType :"string",
                             decorator: function(cellData, rowId, rowIndex){
                                 return '<a href="#" onclick="goto(\'' + url('user/notice_show?id='+rowId) + '\')">'+cellData+'</a>';
                             } },
-                        {name : "时间",field : "creation_date",width : "160px",dataType :"string"}
+                        {name : "时间",field : "creation_date",width : "160px",dataType :"string"},
+                        {name : "操作",field : "",width : "300px"}
                     ],
                     pageSize: pageSize,//发送到服务端的条目HTTP header : items=0-19
                     modules : [
@@ -50,7 +58,7 @@
                         TouchVScroller
                     ],
 //                },
-                    autoWidth : true,
+                    autoWidth : false,
                 autoHeight : true,
                     style:"margin-left: 20px"
 

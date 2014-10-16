@@ -1,6 +1,34 @@
-<?= render_form_input('title');?>
-<?= render_select_with_options('status','vl_order_status')?>
-<?= render_button('refresh','_createIndexRefreshData()');?>
+<!--style type="text/css">
+    .orderindex{
+        margin: 0;
+    }
+</style-->
+<script type="text/javascript">
+    //alert("higs");
+    // require(["dojo/dom","dojo/domReady"],function(dom){
+    //   console.info("问题list");
+    //  var orderindex = dojo.query(".dijitTabContainerLeft-dijitContentPane");
+    //  orderindex.addClass("orderindex");
+    // dojo.query(".dijitTabContainerLeft-dijitContentPane").style({margin:"0"});
+    // });
+
+</script>
+<div class="container-fluid">
+    <div class="row inline">
+        <?= lang('title') ?>&nbsp;&nbsp;<input id="title" name="title" data-dojo-type="sckj/form/TextBox"/>
+        <?= lang('status') ?>&nbsp;&nbsp;
+        <select  id="status" name="status" data-dojo-type="sckj/form/Select"  trim="true">
+            <?= render_options('vl_order_status')?>
+        </select>
+        <button data-dojo-type="sckj/form/Button" class="success" style="margin-left: 20px" onclick="_createIndexRefreshData()">
+            <?= label('search')?>
+        </button>
+        <!--?php render_form_input('title');?>
+        <!--?php render_select_with_options('status','vl_order_status')?>
+        <!--?php render_button('refresh','_createIndexRefreshData()');?-->
+    </div>
+    <div id="myOrdersList" class="gridlist"></div>
+</div>
 
 <div id="myOrdersList"></div>
 
@@ -32,6 +60,7 @@
                     id : "myOrdersList",
                     store: store ,
                     structure: [
+
                         {name : "投诉单号",field : "id",width : "80px",dataType :"number",style:"text-align: center"},
 //                        {name : "订单类型",field : "order_type",width : "160px",dataType :"string"},
                         <?php if(_config('category_control')){?>
@@ -60,7 +89,7 @@
                         TouchVScroller
                     ],
 //                },
-                    autoWidth : true,
+                    autoWidth : false,
 //                autoHeight : true,
                     style:"margin-left: 20px;height:550px"
 

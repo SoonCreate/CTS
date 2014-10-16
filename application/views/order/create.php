@@ -32,7 +32,7 @@
     <?= render_form_input('full_name');?>
     <?= render_form_input('address');?>
     <input name="order_type" id="order_type" type="hidden" value="<?= $order_type ?>"/>
-    <br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/>
 </div>
 
 <?= render_button_group();?>

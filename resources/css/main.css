@@ -25,6 +25,7 @@ html, body {
     margin: 0 0 0 0;
     font-size: 12px;
     background-color: #ECF0F1 !important;
+
 }
 h1,h2,h4{
     font-family:Microsoft Yahei;
@@ -653,6 +654,7 @@ p.footer{
 .dijitTabContainerLeft-dijitContentPane{
     /*右内容主框bug*/
     box-sizing: content-box !important;
+    margin-top:50px;
 }
 .sc .dijitContentPane {
 
@@ -738,21 +740,25 @@ p.footer{
 
 
 /*各模块根据id名，上下留白*/
-#m_5_module {
-     margin-top :50px;
-    margin-bottom: 50px;
- }
-#m_6_module {
-    margin-top :50px;
-}
-#m_4_module {
-    margin-top :50px;
-    margin-bottom: 50px;
-}
-#m_7_module {
-    margin-top :50px;
-}
-#m_3_module {
-    margin-top :0px;
-    padding-top:30px !important;
-}
+/*#m_5_module {*/
+     /*margin-top :50px;*/
+    /*margin-bottom: 50px;*/
+ /*}*/
+/*#m_6_module {*/
+    /*margin-top :50px;*/
+/*}*/
+/*#m_4_module {*/
+    /*margin-top :50px;*/
+    /*margin-bottom: 50px;*/
+/*}*/
+/*#m_7_module {*/
+    /*margin-top :50px;*/
+/*}*/
+/*#module_3 {*/
+    /*margin-top :0px;*/
+    /*padding-top:30px !important;*/
+/*}*/
+/*.my_functions{*/
+    /*margin-top :0px;*/
+    /*padding-top:30px !important;*/
+/*}*/

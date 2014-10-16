@@ -70,7 +70,7 @@ class Welcome extends CI_Controller {
         set_sess('mid',$module_id);
         $am = new Auth_model();
         $data['functions'] = $am->can_choose_functions($module_id);
-        $this->load->view('my_functions',$data);
+        render_view('my_functions',$data);
     }
 
     //用户功能页跳转，并记录唯一性ID

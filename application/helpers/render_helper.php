@@ -195,7 +195,7 @@ function render_form_hidden($name,$value){
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" ';
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" trim="true"';
     if($required){
         $echo = $echo. 'required';
     }
