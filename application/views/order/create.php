@@ -21,7 +21,12 @@
 </div>
 <?php render_form_header('contact_information');?>
 <div class="container-fluid userd">
-    <?php render_form_input('contact',TRUE);?>
+    <?php if(isset($contact_data)){?>
+        <?php render_form_combobox('contact',$contact_data,TRUE,array('onchange'=>'_orderCreatesetValue(this)'));?>
+    <?php }else{?>
+        <?php render_form_input('contact',TRUE);?>
+    <?php }?>
+
     <?php render_form_input('mobile_telephone',TRUE);?>
     <?php render_form_input('phone_number');?>
     <?php render_form_input('full_name');?>
@@ -33,3 +38,14 @@
     <?php render_submit_button();?>
 </div>
 <?php render_form_close() ?>
+<script type="text/javascript">
+    function _orderCreatesetValue(object){
+        var item = object.item;
+        if(item){
+            dijitObject('mobile_telephone').setValue(item["mobile_telephone"]);
+            dijitObject('phone_number').setValue(item["phone_number"]);
+            dijitObject('full_name').setValue(item["full_name"]);
+            dijitObject('address').setValue(item["address"]);
+        }
+    }
+</script>

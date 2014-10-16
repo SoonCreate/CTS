@@ -190,6 +190,25 @@ function render_form_input($name,$required = FALSE,$attributes = array()){
     echo '</dl>';
 }
 
+function render_form_combobox($name,$data,$required = FALSE,$attributes = array()){
+    echo '<div data-dojo-type="dojo/store/Memory" data-dojo-id="stateStore_'._sess('cm').'" data-dojo-props=\''.
+        'data: '.$data.'\'></div>';
+    echo '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
+    <dd><input data-dojo-type="sckj/form/ComboBox" data-dojo-props="store:stateStore_'._sess('cm').', searchAttr:\'contact\'"'.
+           'name="'.$name.'" id="'.$name.'"';
+    if($required){
+        echo 'required';
+    }
+
+    foreach($attributes as $key=>$value){
+        echo ' '.$key.' = '.'"'.$value.'"';
+    }
+
+    echo '/></dd>';
+    render_form_error($name);
+    echo '</dl>';
+}
+
 function render_form_textarea($name,$required = FALSE,$attributes = array()){
     echo '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
         <dd><textarea name="'.$name.'" id="'.$name.'" type="text" data-dojo-type="sckj/form/Textarea"';
