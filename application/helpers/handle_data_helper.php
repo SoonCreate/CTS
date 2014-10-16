@@ -76,8 +76,13 @@ function validation_error(){
     }
 }
 
+function add_validation_error($key,$error_message){
+    $v[$key] = $error_message;
+    _refresh_output('validation',$v);
+}
+
 //前端跳转
-function redirect_to($controller,$action,$params){
+function redirect_to($controller,$action,$params = null){
     $CI =  &get_instance();
     $CI->load->model('module_line_model');
     $mlm = new Module_line_model();

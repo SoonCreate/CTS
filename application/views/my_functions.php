@@ -7,7 +7,7 @@
             $icon = $fn['function_display_class'] ? $fn['function_display_class'] : 'icon-tasks';
             ?>
             <li>
-                <?php render_link(_url($fn['controller'],$fn['action'],array('cm'=>$fn['id'])),'
+                <?= render_link(_url($fn['controller'],$fn['action'],array('cm'=>$fn['id'])),'
                  <div class="icon"><i class="'.$icon.' icon-3x"></i></div>
                     <div class="text">
                         '.$fn['function_desc'].'

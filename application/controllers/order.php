@@ -148,6 +148,13 @@ class Order extends CI_Controller {
             //获取订单类型，如果没有则跳转到chose_create
             $order_type = tget('type');
             $data['order_type'] = $order_type;
+            $this->db->distinct();
+            $this->db->select('contact,mobile_telephone,full_name,address,phone_number ');
+            $order->order_by('creation_date','DESC');
+            $os = $order->find_all_by(array('created_by'=>_sess('uid')));
+            if(!empty($os)){
+                $data['contact_data'] = json_encode($os);
+            }
             if(_config('category_control')){
                 $au = new Auth_model();
                 $data['categories'] = $au->can_choose_order_categories($order_type,$order->default_status());

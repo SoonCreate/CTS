@@ -177,21 +177,30 @@ class User extends CI_Controller {
 
     function change_password(){
         if($_POST){
-            $data['password'] = sha1(v('new_password'));
-            $data['initial_pass_flag'] = 0;
-            $old_password = sha1(v('old_password'));
-            $um = new User_model();
-            $user = $um->find_by(array('id'=>_sess('uid'),'password'=>$old_password));
-            //验证旧密码是否有效
-            if(!empty($user)){
-                if($um->update($user['id'],$data)){
-                    message_db_success();
+            if(v('new_password')){
+                if(v('new_password') != v('re_new_password')){
+                    add_validation_error('re_new_password', '两次输入密码不一致');
                 }else{
-                    message_db_failure();
+                    $data['password'] = sha1(v('new_password'));
+                    $data['initial_pass_flag'] = 0;
+                    $old_password = sha1(v('old_password'));
+                    $um = new User_model();
+                    $user = $um->find_by(array('id'=>_sess('uid'),'password'=>$old_password));
+                    //验证旧密码是否有效
+                    if(!empty($user)){
+                        if($um->update($user['id'],$data,true)){
+                            message_db_success();
+                        }else{
+                            message_db_failure();
+                        }
+                    }else{
+                        add_validation_error('old_password', '旧密码输入有误');
+                    }
                 }
             }else{
-                custz_message('E', '旧密码输入有误');
+                add_validation_error('new_password', '密码不能为空');
             }
+
 
         }else{
             render();
@@ -238,7 +247,7 @@ class User extends CI_Controller {
         $this->load->model('user_role_model');
         $ur = new User_role_model();
         $um = new User_model();
-        $user = $um->find(v('user_id'));
+        $user = $um->find(v('id'));
         if(empty($user)){
             show_404();
         }else{

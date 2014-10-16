@@ -18,7 +18,7 @@ class Role extends CI_Controller {
 	{
         $o = new Role_model();
         $data['roles'] = _format($o->find_all());
-        $this->load->view('role/index',$data);
+        render($data);
 	}
 
     function create(){
@@ -27,9 +27,9 @@ class Role extends CI_Controller {
             $data['role_name'] = tpost('role_name');
             $data['description'] = tpost('description');
             if($role->insert($data)){
-                echo 'done';
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
         }else{
             render();
@@ -46,9 +46,9 @@ class Role extends CI_Controller {
                 $data['id'] = v('id');
                 $data['description'] = tpost('description');
                 if($role->update($data['id'],$data,true)){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 render($r);
@@ -82,12 +82,12 @@ class Role extends CI_Controller {
             $r->delete($role_id);
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE) {
-                echo '数据库删除错误';
+                message_db_failure();
             }else{
-                echo 'done';
+                message_db_success();
             }
         }else{
-            echo '角色被应用到多个用户';
+            custz_message('E', '角色被应用到多个用户');
         }
     }
 
@@ -95,7 +95,7 @@ class Role extends CI_Controller {
     function copy_from(){
         if($_POST){
             $rm = new Role_model();
-            $from = $rm->find(v('from'));
+            $from = $rm->find(v('role_from'));
             if(empty($from)){
                 show_404();
             }else{
@@ -132,12 +132,12 @@ class Role extends CI_Controller {
                     }
                     $this->db->trans_complete();
                     if ($this->db->trans_status() === FALSE) {
-                        echo '数据库删除错误';
+                        message_db_failure();
                     }else{
-                        echo 'done';
+                        message_db_success();
                     }
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
 
             }
@@ -174,9 +174,10 @@ class Role extends CI_Controller {
                 }
                 $this->db->trans_complete();
                 if ($this->db->trans_status() === FALSE) {
-                    echo '数据库插入错误';
+                    message_db_failure();
                 }else{
-                    echo 'done';
+                    redirect_to('role','index');
+                    message_db_success();
                 }
             }else{
                 $this->load->model('user_model');
@@ -193,7 +194,7 @@ class Role extends CI_Controller {
                 }
                 $data['users'] = _format($users);
                 $data['role_id'] = $role_id;
-                $this->load->view('role/allocate_users',$data);
+                render($data);
             }
         }
     }
@@ -276,9 +277,9 @@ class Role extends CI_Controller {
                 }
                 $this->db->trans_complete();
                 if ($this->db->trans_status() === FALSE) {
-                    echo '数据库插入错误';
+                    message_db_failure();
                 }else{
-                    echo 'done';
+                    message_db_success();
                 }
             }else{
                 $role_id = $role['id'];
@@ -338,10 +339,11 @@ class Role extends CI_Controller {
                     $line['auth_value'] = $l['default_value'];
                     $rplm->insert($line);
                 }
+                $this->db->trans_complete();
                 if ($this->db->trans_status() === FALSE) {
-                    echo '数据库插入错误';
+                    message_db_failure();
                 }else{
-                    echo 'done';
+                    message_db_success();
                 }
             }else{
                 $aom = new Authority_object_model();
@@ -363,9 +365,9 @@ class Role extends CI_Controller {
             $rpm->delete($profile['id']);
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE) {
-                echo '数据库错误';
+                message_db_failure();
             }else{
-                echo 'done';
+                message_db_success();
             }
         }
     }
@@ -391,9 +393,9 @@ class Role extends CI_Controller {
         }else{
             if($_POST){
                 if($rpm->update($line['id'],_data('auth_value'))){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo 'fail';
+                    message_db_failure();
                 }
             }else{
                 render($line);

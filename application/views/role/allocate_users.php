@@ -1,5 +1,5 @@
-<h1>用户选择</h1>
-<form id="allocate_users" method="post" action="<?= _url('role','allocate_users')?>">
+<?= render_form_open('role','allocate_users') ?>
+<?= render_form_header('allocate_users');?>
     <table>
         <thead>
             <th>选择</th>
@@ -16,7 +16,6 @@
             </tr>
         <?php endforeach;?>
     </table>
-
-    <input name="role_id" id="role_id" type="hidden" value="<?= _v('role_id')?>" />
-    <button type="submit">提交</button>
-</form>
+<?= render_form_hidden('role_id',v('role_id'));?>
+<?= render_button_group();?>
+<?= render_form_close() ?>

@@ -11,15 +11,16 @@
         <td><?= $o['role_name']?></td>
         <td><?= $o['description']?></td>
 
-        <td><a href="<?= _url('role','edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-            <a href="<?= _url('role','destroy',array('id'=>$o['id']))?>">删除</a> &nbsp;|&nbsp;
-            <a href="<?= _url('role','allocate_users',array('role_id'=>$o['id']))?>">分配到用户</a>&nbsp;|&nbsp;
-            <a href="<?= _url('role','choose_functions',array('role_id'=>$o['id']))?>">功能模块管理</a>&nbsp;|&nbsp;
-            <a href="<?= _url('role','profile',array('role_id'=>$o['id']))?>">权限对象管理</a>
+        <td><?= render_link(array('role','edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;<?= render_link(array('role','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
+            &nbsp;|&nbsp;<?= render_link(array('role','allocate_users',array('role_id'=>$o['id'])),label('allocate_users'))?>
+            &nbsp;|&nbsp;<?= render_link(array('role','choose_functions',array('role_id'=>$o['id'])),label('choose_functions'))?>
+            &nbsp;|&nbsp;<?= render_link(array('role','profile',array('role_id'=>$o['id'])),label('auth_object'))?>
         </td>
 
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('role','create')?>">新建角色</a>&nbsp;|&nbsp;
-<a href="<?= _url('role','copy_from')?>" title="以拷贝的方式创建">拷贝</a>
+<?= render_link(array('role','create'),label('role_create'))?>
+&nbsp;|&nbsp;
+<?= render_link(array('role','copy_from'),label('role_copy'),label('create_role_as_copy'))?>

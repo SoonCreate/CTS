@@ -14,7 +14,7 @@
 
 <label for="source_view">源表/视图</label>
 <select id="source_view" name="source_view">
-<?php render_options_with_value('vl_tables',_v('source_view'))?>
+<?= render_options_with_value('vl_tables',_v('source_view'))?>
 </select>
 <br/>
 
@@ -24,6 +24,6 @@
 <label for="parent_id">父值集</label>
 <select id="parent_id" name="parent_id">
     <option></option>
-    <?php render_options_with_value('vl_valuelist',_v('parent_id'));?>
+    <?= render_options_with_value('vl_valuelist',_v('parent_id'));?>
 </select>
 <br/>

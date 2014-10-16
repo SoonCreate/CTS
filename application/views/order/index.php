@@ -1,6 +1,6 @@
-<?php render_form_input('title');?>
-<?php render_select_with_options('status','vl_order_status')?>
-<?php render_button('refresh','_createIndexRefreshData()');?>
+<?= render_form_input('title');?>
+<?= render_select_with_options('status','vl_order_status')?>
+<?= render_button('refresh','_createIndexRefreshData()');?>
 
 <div id="myOrdersList"></div>
 

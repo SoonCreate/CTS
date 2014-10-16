@@ -33,7 +33,7 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 //    redirect(_url($controller,$action,$params));
 //}
 
-function render_link($url,$label,$title = '',$class = ''){
+function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
     $module_id = _sess('mid');
     $link = '';
     $params = array();
@@ -62,8 +62,7 @@ function render_link($url,$label,$title = '',$class = ''){
     }else{
         $link = $url;
     }
-    echo '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$link.'\',\''.$module_id.'\');">'.$label.'</a>';
-
+    return '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$link.'\',\''.$module_id.'\','.$noRender.');">'.$label.'</a>';
 }
 
 function render_error($heading = '',$message = ''){
@@ -74,35 +73,40 @@ function render_error($heading = '',$message = ''){
 }
 
 function render_form_error($field){
-    echo '<dd><div id="error_'._sess('cm').'_'.$field.'"></div></dd>';
+    return '<dd><div id="error_'._sess('cm').'_'.$field.'"></div></dd>';
 }
 
 //输出到view里面的option
 function render_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE){
     $options = get_options($valuelist_name,$parent_segment_value ,$all_value);
+    $echo = "";
     foreach($options as $o){
-        echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
+        $echo = $echo . '<option value="'.$o['value'].'">'.$o['label'].'</option>';
     }
+    return $echo;
 }
 
 //输出到view里的radio
 function render_radio($name,$valuelist_name,$parent_segment_value = null){
     $options = get_options($valuelist_name,$parent_segment_value );
+    $echo = "";
     for($i=0;$i<count($options);$i++){
         if($i>0){
-            echo '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
+            $echo = $echo. '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
                 '"/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
         }else{
-            echo '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
+            $echo = $echo. '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
                 '" checked/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
         }
     }
+    return $echo;
 }
 
 //根据值输出options
 function render_options_with_value(){
     $args = func_get_args();
     $value = '';
+    $echo = '';
     if(count($args) == 2){
         $options = get_options($args[0]);
         $value = $args[1];
@@ -115,118 +119,180 @@ function render_options_with_value(){
     }
     foreach($options as $o){
         if($o['value'] ==  $value){
-            echo '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
+            $echo = $echo. '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
         }else{
-            echo '<option value="'.$o['value'].'">'.$o['label'].'</option>';
+            $echo =$echo. '<option value="'.$o['value'].'">'.$o['label'].'</option>';
         }
     }
     if(count($args) +  2 == 2){
-        echo '<option value=""></option>';
+        $echo = $echo.'<option value=""></option>';
     }
-
+    return $echo;
 }
 
 function render_radio_with_value(){
     $args = func_get_args();
+    $echo = '';
     if(count($args) === 3){
         $options = get_options($args[1] );
         if($args[2]){
             foreach($options as $o){
                 if($o['value'] === $args[2]){
-                    echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                    $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                         '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
                 }else{
-                    echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                    $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                         '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
                 }
             }
         }else{
-            render_radio($args[0],$args[1]);
+            $echo = $echo . render_radio($args[0],$args[1]);
         }
     }elseif(count($args) > 3){
         $options = get_options($args[1],$args[2] );
         foreach($options as $o){
             if($o['value'] === $args[3]){
-                echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                     '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
             }else{
-                echo '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                     '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
             }
         }
     }elseif(count($args) +  2 == 2){
-        echo '';
+        $echo = $echo. '';
     }
+    return $echo;
 }
 
 //输出文件链接
 function render_file_link($file){
-    echo '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
+    return '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
 
 function render_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail= 'null',$remoteSuccess= 'null',$remoteNoBack= 'null'){
-    echo '<form id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'"
+    return  '<form id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'"
     onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
 }
 
 function render_form_close(){
-    echo '</form>';
+    return '</form>';
 }
 
 //控件综合输出
-function render_form_input($name,$required = FALSE,$attributes = array()){
-    echo '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" type="text" data-dojo-type="sckj/form/TextBox" ';
+function render_form_input($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
+    return _render_input_by_type($name,$required,$attributes,'text',$disabled);
+}
+
+function render_form_password($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
+    return _render_input_by_type($name,$required,$attributes,'password',$disabled);
+}
+
+function render_form_hidden($name,$value){
+    return  '<input name="'.$name.'" type="hidden" value="'.$value.'" />';
+}
+
+function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE){
+    $echo = '';
+    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" ';
     if($required){
-        echo 'required';
+        $echo = $echo. 'required';
+    }
+
+    if($disabled){
+        $echo = $echo. 'disabled';
     }
 
     foreach($attributes as $key=>$value){
-        echo $key.' = '.'"'.$value.'"';
+        $echo = $echo. $key.' = '.'"'.$value.'"';
     }
 
-    echo '/></dd>';
-    render_form_error($name);
-    echo '</dl>';
+    $echo = $echo. '/></dd>';
+    $echo = $echo. render_form_error($name);
+    $echo = $echo . '</dl>';
+    return $echo;
+}
+
+function render_form_combobox($name,$data,$required = FALSE,$attributes = array()){
+    $echo = '';
+    $echo = $echo. '<div data-dojo-type="dojo/store/Memory" data-dojo-id="stateStore_'._sess('cm').'" data-dojo-props=\''.
+        'data: '.$data.'\'></div>';
+    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
+    <dd><input data-dojo-type="sckj/form/ComboBox" data-dojo-props="store:stateStore_'._sess('cm').', searchAttr:\'contact\'"'.
+           'name="'.$name.'" id="'.$name.'"';
+    if($required){
+        $echo = $echo. 'required';
+    }
+
+    foreach($attributes as $key=>$value){
+        $echo = $echo. ' '.$key.' = '.'"'.$value.'"';
+    }
+
+    $echo = $echo. '/></dd>';
+    $echo = $echo. render_form_error($name);
+    $echo = $echo. '</dl>';
+    return $echo;
 }
 
 function render_form_textarea($name,$required = FALSE,$attributes = array()){
-    echo '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
+    $echo = '';
+    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
         <dd><textarea name="'.$name.'" id="'.$name.'" type="text" data-dojo-type="sckj/form/Textarea"';
     if($required){
-        echo 'required';
+        $echo = $echo. 'required';
     }
-    echo '/></textarea></dd>';
-    render_form_error($name);
-    echo '</dl>';
+    $echo = $echo. '/></textarea></dd>';
+    $echo = $echo .render_form_error($name);
+    $echo = $echo. '</dl>';
+    return $echo;
 }
 
 //根据值集输出select
-function render_select_with_options($name,$valuelist_name,$attributes = array()){
-    echo '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
-    echo '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select">';
-    render_options($valuelist_name);
-    echo   '</select> </dd>';
-    render_form_error($name);
-    echo '</dl>';
+function render_select_with_options($name,$valuelist_name,$required = FALSE,$attributes = array()){
+    $echo = '';
+    $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
+    $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select"';
+    if($required){
+        $echo = $echo. 'required';
+    }
+    $echo = $echo. '>';
+    $echo = $echo. render_options($valuelist_name);
+    $echo = $echo.   '</select> </dd>';
+    $echo = $echo. render_form_error($name);
+    $echo = $echo. '</dl>';
+    return $echo;
 }
 
 function render_form_header($title){
-    echo '<div class="row paneltitle"><h3>'.label($title).'</h3></div>';
+    return '<div class="row paneltitle"><h3>'.label($title).'</h3></div>';
 }
 
 function render_submit_button(){
-    echo '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.label('submit').'</button>';
+    return '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.label('submit').'</button>';
 }
 
 function render_button($label,$onclick = ""){
-    echo '<button type="submit" data-dojo-type="sckj/form/Button" onclick="'.$onclick.'">'.label($label).'</button>';
+    return '<button type="submit" data-dojo-type="sckj/form/Button" onclick="'.$onclick.'">'.label($label).'</button>';
+}
+
+function render_button_group($buttons = array(),$has_submit = TRUE){
+    $echo = '';
+    $echo = $echo .'<div class="fixbottom">';
+    if($has_submit){
+        $echo = $echo. render_submit_button();
+    }
+    foreach($buttons as $b){
+        $echo = $echo . $b;
+    }
+    $echo = $echo . '</div>';
+    return $echo;
 }
 
 function render_label($name,$required = FALSE){
     if($required){
-        return '<label for="'._sess('cm').'_'.$name.'">'.'* '.label($name)."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'">'.'* '.label($name)."</label>";
     }else{
-        return '<label for="'._sess('cm').'_'.$name.'">'.label($name)."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'">'.label($name)."</label>";
     }
 }

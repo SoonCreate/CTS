@@ -41,7 +41,7 @@
                         {name : "<?= label('contact')?>",field : "contact",width : "100px",dataType :"string" },
                         {name : "<?= label('sex')?>",field : "sex",width : "60px",dataType :"string" },
                         {name : "<?= label('phone_number')?>",field : "phone_number",width : "120px",dataType :"number" },
-                        {name : "<?= label('operation')?>",field : "inactive_flag",width : "200px",dataType :"string",
+                        {name : "<?= label('operation')?>",field : "inactive_flag",width : "300px",dataType :"string",
                             decorator: function(cellData, rowId, rowIndex){
                                 var value =  '<a href="#" onclick="goto(\'' + url('user/admin_edit?id='+rowId) + '\')"><?= label("edit")?></a>'+
                                 '|<a href="#" onclick="_userIndexRefreshData(\'' + url('user/initial_password?id='+rowId) + '\')"><?= label("initial_password")?></a>';
@@ -50,6 +50,7 @@
                                 }else{
                                     value = value + '|<a href="#" onclick="_userIndexRefreshData(\'' + url('user/change_status?id='+rowId) + '\')"><?= label("inactive")?></a>';
                                 }
+                                value = value + '|<a href="#" onclick="goto(\'' + url('user/choose_roles?id='+rowId) + '\')"><?= label("choose_roles")?></a>'
                                 return value;
                             } }
                     ],

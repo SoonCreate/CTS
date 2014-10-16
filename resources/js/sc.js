@@ -1,12 +1,42 @@
 //前端触发后端链接
-function goto(url,target){
+function goto(url,target,noRender){
     var wso = $dijit.byId(target+'_module');
     if(wso == undefined){
         wso = currentWso();
     }
-    wso.history = wso.href;
-    wso.set("href",url);
-    $dijit.byId("mainTabContainer").selectChild(wso,true);
+    if(!noRender){
+        wso.history = wso.href;
+        wso.set("href",url);
+        $dijit.byId("mainTabContainer").selectChild(wso,true);
+    }else{
+        $ajax.get(url,{handleAs : "json"}).then(function(response){
+            handleResponse(response,null,function(){
+                refresh();
+            });
+        });
+    }
+
+}
+
+
+function isURL(str_url){
+    var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+        + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
+        + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+        + "|" // 允许IP和DOMAIN（域名）
+        + "([0-9a-z_!~*'()-]+\.)*" // 域名- www.
+        + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\." // 二级域名
+        + "[a-z]{2,6})" // first level domain- .com or .museum
+        + "(:[0-9]{1,4})?" // 端口- :80
+        + "((/?)|" // a slash isn't required if there is no file name
+        + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+    var re=new RegExp(strRegex);
+    //re.test()
+    if (re.test(str_url)){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 function goback(){
@@ -77,7 +107,7 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
 //清楚当前错误（dijitTextBoxError）class的dom并清除状态
 function clearCurrentStatus(){
     require(["dojo/dom-class"],function(domClass){
-        formAlertclose();
+        //formAlertclose();
         var wso = currentWso();
         var nodes = $(".dijitTextBoxError",wso.domNode);
         for(var i = 0; i<nodes.length;i++){
@@ -97,7 +127,7 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
         if("validation" in response ){
             errorStatus = true;
             //提示验证消息
-            addFormAlertLine(response["validation"]);
+            //addFormAlertLine(response["validation"]);
             renderValidError(response["validation"]);
         }
 
@@ -261,7 +291,7 @@ function refresh_env(){
 function fixDijitId(id){
     var rtId = "";
     if($env && $env.cm){
-        rtId = $env.cm + "_" + id ;
+        rtId =  id + "_" + $env.cm ;
     }
     return rtId;
 }

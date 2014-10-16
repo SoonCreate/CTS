@@ -1,7 +1,7 @@
-<h1>角色信息修改</h1>
-<form id="role_edit" method="post" action="<?= _url('role','edit')?>">
-    <label for="role_name">*角色名</label><input name="role_name" id="role_name" type="text" value="<?= _v('role_name')?>" disabled/><br/>
-    <label for="description">*描述</label><textarea id="description" name="description" rows="5" cols="40"><?= _v('description')?></textarea><br/>
-    <input name="id" id="id" type="hidden" value="<?= _v('id')?>" />
-    <button type="submit">提交</button>
-</form>
+<?= render_form_open('role','edit') ?>
+<?= render_form_header('role_edit');?>
+<?= render_form_input('role_name',null,array(),TRUE);?>
+<?= render_form_input('description',TRUE);?>
+<?= render_form_hidden('id',v('id'));?>
+<?= render_button_group();?>
+<?= render_form_close() ?>

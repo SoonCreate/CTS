@@ -1,5 +1,5 @@
-<h1>权限对象管理</h1>
-<a href="<?= _url('role','profile_add_object',array('role_id'=>_v('role_id')))?>">添加权限对象</a>
+<?= render_form_header('profile');?>
+<?= render_link(array('role','profile_add_object',array('role_id'=>v('role_id'))),label('add_object'))?>
 
 <table>
     <thead>
@@ -13,11 +13,11 @@
             <td><?= $o['id'] ?></td>
             <td><?= $o['object_name'] ?></td>
             <td><?= $o['object_desc'] ?></td>
-            <td><a href="<?= _url('role','profile_object_items',array('id'=>$o['id']))?>">项目管理</a>&nbsp;|&nbsp;
-                <a href="<?= _url('role','profile_destroy',array('id'=>$o['id']))?>">删除</a> </td>
+            <td>
+                <?= render_link(array('role','profile_object_items',array('id'=>$o['id'])),label('item_manage'))?>
+                &nbsp;|&nbsp;<?= render_link(array('role','profile_destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
+            </td>
         </tr>
     <?php endforeach;?>
 </table>
-
-<input name="role_id" id="role_id" type="hidden" value="<?= v('role_id')?>" />
 

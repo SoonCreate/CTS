@@ -37,16 +37,16 @@
         <?php }?>
     <?php }?>
 
-    <dl class="row dl-horizontal"><dt>状态：</dt><dd><?= $status_desc ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>严重性：</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>发生频率：</dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>严重性</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>发生频率</dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>
     <?php if(_config('category_control')) :?>
-        <dl class="row dl-horizontal"><dt>分类：</dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
+        <dl class="row dl-horizontal"><dt>分类</dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
     <?php endif;?>
-    <dl class="row dl-horizontal"><dt>提交时间：</dt><dd><?= $creation_date ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>提交时间</dt><dd><?= $creation_date ?></dd></dl>
     <hr/>
-    <dl class="row dl-horizontal"><dt>标题：</dt><?= $title ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>内容：</dt>
+    <dl class="row dl-horizontal"><dt>标题</dt><dd><?= $title ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>内容</dt>
         <dd class="contentContainer">
         <?php foreach($contents as $c):?>
             <div class=" " id="content_<?= $c['id']?>">
@@ -65,7 +65,7 @@
             <?php if(!is_order_locked($status)){?>
                 <a href="<?= _url('order','upload_file')?>">上传附件</a>
             <?php }?>
-            附件：</dt>
+            附件</dt>
         <dd>
             <?php foreach($addfiles as $f):
                 //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
@@ -78,20 +78,20 @@
     <hr/>
     <dl class="row dl-horizontal"><dt>&nbsp</dt>
         <dd>
-            <?php render_form_open('order','reply','null','null','addContent') ?>
-            <?php render_form_textarea('content',TRUE);?>
+            <?= render_form_open('order','reply','null','null','addContent') ?>
+            <?= render_form_textarea('content',TRUE);?>
             <input name="id" id="id" type="hidden" value="<?= v('id') ?>"/>
-            <?php render_submit_button();?>
-            <?php render_form_close() ?>
+            <?= render_submit_button();?>
+            <?= render_form_close() ?>
         </dd>
     </dl>
 
     <hr/>
-    <dl class="row dl-horizontal"><dt>本次投诉联系人：</dt><dd><?= $contact ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>手机号码：</dt><dd><?= $mobile_telephone ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>公司电话：</dt><dd><?= $phone_number ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>公司名称：</dt><dd><?= $full_name?></dd></dl>
-    <dl class="row dl-horizontal"><dt>公司地址：</dt><dd><?= $address ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>本次投诉联系人</dt><dd><?= $contact ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>手机号码</dt><dd><?= $mobile_telephone ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>公司电话</dt><dd><?= $phone_number ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>公司名称</dt><dd><?= $full_name?></dd></dl>
+    <dl class="row dl-horizontal"><dt>公司地址</dt><dd><?= $address ?></dd></dl>
     <hr/>
 </div>
 

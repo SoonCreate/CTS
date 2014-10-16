@@ -1,4 +1,4 @@
-<?php render_button('notice_read_all','_userNoticesRefreshData()');?>
+<?= render_button('notice_read_all','_userNoticesRefreshData()');?>
 
 <div id="myNoticeList"></div>
 
