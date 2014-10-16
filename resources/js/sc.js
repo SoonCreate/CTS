@@ -291,7 +291,7 @@ function refresh_env(){
 function fixDijitId(id){
     var rtId = "";
     if($env && $env.cm){
-        rtId = $env.cm + "_" + id ;
+        rtId =  id + "_" + $env.cm ;
     }
     return rtId;
 }

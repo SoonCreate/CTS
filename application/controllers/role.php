@@ -339,6 +339,7 @@ class Role extends CI_Controller {
                     $line['auth_value'] = $l['default_value'];
                     $rplm->insert($line);
                 }
+                $this->db->trans_complete();
                 if ($this->db->trans_status() === FALSE) {
                     message_db_failure();
                 }else{

@@ -291,8 +291,8 @@ function render_button_group($buttons = array(),$has_submit = TRUE){
 
 function render_label($name,$required = FALSE){
     if($required){
-        return '<label for="'._sess('cm').'_'.$name.'">'.'* '.label($name)."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'">'.'* '.label($name)."</label>";
     }else{
-        return '<label for="'._sess('cm').'_'.$name.'">'.label($name)."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'">'.label($name)."</label>";
     }
 }

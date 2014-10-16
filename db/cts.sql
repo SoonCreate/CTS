@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2014 at 07:23 AM
+-- Generation Time: Oct 16, 2014 at 08:27 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -1317,7 +1317,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
   `module_line_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`role_id`,`object_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=61 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=66 ;
 
 --
 -- Dumping data for table `ct_role_profiles`
@@ -1333,7 +1333,10 @@ INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `
 (49, 12, 2, 1413034064, 44, 1413034064, 44, NULL),
 (53, 1, 1, 1413427676, 44, 1413427676, 44, NULL),
 (56, 1, 3, 1413433089, 44, 1413433089, 44, NULL),
-(60, 1, 4, 1413433260, 44, 1413433260, 44, NULL);
+(60, 1, 4, 1413433260, 44, 1413433260, 44, NULL),
+(63, 11, 1, 1413440415, 44, 1413440415, 44, NULL),
+(64, 11, 1, 1413440523, 44, 1413440523, 44, NULL),
+(65, 11, 1, 1413440592, 44, 1413440592, 44, NULL);
 
 -- --------------------------------------------------------
 
@@ -1368,7 +1371,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`profile_id`,`object_line_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=91 ;
 
 --
 -- Dumping data for table `ct_role_profile_lines`
@@ -1390,7 +1393,16 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (63, 53, 5, 'all', 1413427676, 44, 1413427676, 44),
 (68, 56, 7, 'all', 1413433089, 44, 1413433089, 44),
 (74, 60, 8, 'TRUE', 1413433260, 44, 1413433260, 44),
-(75, 60, 11, 'all', 1413433260, 44, 1413433260, 44);
+(75, 60, 11, 'all', 1413433260, 44, 1413433260, 44),
+(82, 63, 3, 'customer', 1413440415, 44, 1413440415, 44),
+(83, 63, 4, 'all', 1413440415, 44, 1413440415, 44),
+(84, 63, 5, 'all', 1413440415, 44, 1413440415, 44),
+(85, 64, 3, 'customer', 1413440523, 44, 1413440523, 44),
+(86, 64, 4, 'all', 1413440523, 44, 1413440523, 44),
+(87, 64, 5, 'all', 1413440523, 44, 1413440523, 44),
+(88, 65, 3, 'customer', 1413440592, 44, 1413440592, 44),
+(89, 65, 4, 'all', 1413440592, 44, 1413440592, 44),
+(90, 65, 5, 'all', 1413440592, 44, 1413440592, 44);
 
 -- --------------------------------------------------------
 
