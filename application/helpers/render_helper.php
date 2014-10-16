@@ -92,10 +92,10 @@ function render_radio($name,$valuelist_name,$parent_segment_value = null){
     $echo = "";
     for($i=0;$i<count($options);$i++){
         if($i>0){
-            $echo = $echo. '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
+            $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
                 '"/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
         }else{
-            $echo = $echo. '<input name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
+            $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
                 '" checked/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
         }
     }
@@ -138,10 +138,10 @@ function render_radio_with_value(){
         if($args[2]){
             foreach($options as $o){
                 if($o['value'] === $args[2]){
-                    $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                    $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                         '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
                 }else{
-                    $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                    $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                         '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
                 }
             }
@@ -152,10 +152,10 @@ function render_radio_with_value(){
         $options = get_options($args[1],$args[2] );
         foreach($options as $o){
             if($o['value'] === $args[3]){
-                $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                     '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
             }else{
-                $echo = $echo. '<input name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
+                $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
                     '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
             }
         }
@@ -257,7 +257,7 @@ function render_select_with_options($name,$valuelist_name,$required = FALSE,$att
         $echo = $echo. 'required';
     }
     $echo = $echo. '>';
-    $echo = $echo. render_options($valuelist_name);
+    $echo = $echo. render_options_with_value($valuelist_name,_v($name));
     $echo = $echo.   '</select> </dd>';
     $echo = $echo. render_form_error($name);
     $echo = $echo. '</dl>';

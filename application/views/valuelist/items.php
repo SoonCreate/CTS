@@ -26,11 +26,12 @@
         <td><?= $o['sort'] ?></td>
         <?php if((_v('parent') && $parent['segment']['inactive_flag'] == 0) || !_v('parent')){?>
         <td>
-            <a href="<?= _url('valuelist','item_edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-            <?php if($o['inactive_flag'] == 'YES') { ?>
-            <a href="<?= _url('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>0))?>">生效</a>
+            <?= render_link(array('valuelist','item_edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;
+            <?php if($o['inactive_flag']) { ?>
+                <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>0)),label('active'),null,null,true)?>
             <?php } else{?>
-                <a href="<?= _url('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>1))?>">失效</a>
+                <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>0)),label('inactive'),null,null,true)?>
             <?php }?>
         </td>
         <?php }?>
@@ -40,8 +41,10 @@
 <?php if(_v('parent') ){
     if($parent['segment']['inactive_flag'] == 0){
     ?>
-    <a href="<?= _url('valuelist','item_create',array('id'=>v('id'),'parent_segment'=>$parent['segment']['value']))?>">新建项目</a>
-<?php }
+        <?= render_link(array('valuelist','item_create',array('id'=>v('id'),'parent_segment'=>$parent['segment']['value'])),
+            label('item_create'))?>
+    <?php }
     }else{?>
-<a href="<?= _url('valuelist','item_create',array('id'=>v('id')))?>">新建项目</a>
+    <?= render_link(array('valuelist','item_create',array('id'=>v('id'))),
+        label('item_create'))?>
 <?php }?>

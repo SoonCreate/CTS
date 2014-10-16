@@ -31,7 +31,7 @@
 </dl>
 <dl class="row dl-horizontal">
     <dt><label for="email_flag">通过邮件接收消息</label></dt>
-    <dd><input name="email_flag" id="email_flag" type="checkbox" value="<?= _v('email_flag') || 1?>" <?php
+    <dd><input name="email_flag" id="email_flag"  data-dojo-type="sckj/form/CheckBox" type="checkbox" value="<?= _v('email_flag') || 1?>" <?php
         if(_v('email_flag')) : echo 'checked' ;endif;
         ?>/></dd>
 </dl>

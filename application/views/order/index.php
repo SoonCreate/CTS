@@ -54,7 +54,7 @@
 
                 var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data'),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});
-                var pageSize = 13;
+                var pageSize = 10;
                 var grid = new Grid({
                     cacheClass : AsyncCache,
                     id : "myOrdersList",
@@ -90,8 +90,8 @@
                     ],
 //                },
                     autoWidth : false,
-//                autoHeight : true,
-                    style:"margin-left: 20px;height:550px"
+                autoHeight : true,
+                    style:"margin-left: 20px;"
 
                 },"myOrdersList");
 

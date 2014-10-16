@@ -192,12 +192,16 @@ class Order extends CI_Controller {
                 $oam->order_by('creation_date');
                 $order['addfiles'] = $oam->find_all_by_view(array('order_id'=>$id));
                 $order['status_desc'] = $sm->get_label($order['status']);
-                $order['logs'] = _format($om->logs($id));
                 render(_format_row($order));
             }
         }else{
             show_404();
         }
+    }
+
+    function log_data(){
+        $om = new Order_model();
+        export_to_itemStore($om->logs(v('id')),'id') ;
     }
 
     //如果日志类型需要原因，此页面用于补充
@@ -392,12 +396,12 @@ class Order extends CI_Controller {
             //先判断订单状态流是否允许更改,判断是否有权限更改次状态
             if(is_order_allow_next_status($order['status'],$data['status']) && check_order_auth($order['order_type'],$data['status'],$order['category'])){
                 if($om->do_update($order['id'],$data)){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
-                echo '不允许状态流向！';
+                custz_message('E','不允许状态流向！');
             }
         }else{
             show_404();

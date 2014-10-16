@@ -1,6 +1,4 @@
-<div class="row paneltitle">
-    <h3>投诉单号：<?= $id ?></h3>
-</div>
+<?= render_form_header(label('order_number').'  '.$id ) ?>
 
 <div class="container-fluid userd">
 
@@ -9,7 +7,7 @@
     if(!is_order_locked($status)){?>
 
         <?php if(is_order_allow_next_status($status,'confirmed') && check_order_auth($order_type,'confirmed',$category)){?>
-            <a href="<?= _url('order','confirm',array('id'=>$id))?>">投诉内容已确认</a>
+            <?= render_link(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'allocated') && check_order_auth($order_type,'allocated',$category)){?>
@@ -95,33 +93,67 @@
     <hr/>
 </div>
 
-订单日志
-<table>
-    <thead>
-    <th>日志类型</th>
-    <th>内容</th>
-    <th>操作时间</th>
-    <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))):?>
-        <th>操作人</th>
-        <th>原因</th>
-    <?php endif;?>
-
-    </thead>
-    <?php foreach($logs as $l):
-        ?>
-        <tr>
-            <td><?= $l['description']?></td>
-            <td><?= $l['content']?></td>
-            <td><?= related_time($l['creation_date'])?></td>
-            <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))):?>
-                <td><?= $l['created_by']?></td>
-                <td><?= $l['reason']?></td>
-            <?php endif;?>
-
-        </tr>
-    <?php endforeach;?>
-</table>
+<?= render_form_header(label('order_number')) ?>
+<div id="orderShowLogsGrid"></div>
 <script type="text/javascript">
+    require(["dojo/ready",
+            "sckj/Gridx",
+            "gridx/core/model/cache/Sync",
+            "dojo/data/ItemFileReadStore",
+            "dojo/request",
+            "gridx/modules/Pagination",
+            "gridx/modules/pagination/PaginationBar",
+            "gridx/modules/ColumnResizer",
+            "gridx/modules/VirtualVScroller",
+            "gridx/modules/TouchVScroller"  //IPAD支持
+        ],
+        function(ready,Grid,SyncCache,ItemFileReadStore,request,
+                 Pagination,
+                 PaginationBar,
+                 ColumnResizer,
+                 VirtualVScroller,
+                 TouchVScroller){
+            ready(function(){
+
+                request.get(url('order/log_data?id=<?=$id?>'),{handleAs : "json"}).then(function(data){
+                    var store = new ItemFileReadStore({
+                        data : data
+                    });
+                    var grid = new Grid({
+                        cacheClass : SyncCache,
+                        id : "orderShowLogsGrid",
+                        store: store ,
+                        structure: [
+                            {name : "日志类型",field : "description",width : "160px",dataType :"string"},
+                            {name : "内容",field : "content",width : "400px",dataType :"string"},
+                            <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
+                                {name : "原因",field : "reason",width : "200px",dataType :"string"},
+                                {name : "操作人",field : "created_by",width : "160px",dataType :"string"},
+                            <?php }?>
+                            {name : "操作时间",field : "creation_date",width : "160px",dataType :"string" }
+
+                        ],
+                        modules : [
+                            Pagination,
+                            PaginationBar,
+                            ColumnResizer,
+                            VirtualVScroller,
+                            TouchVScroller
+                        ],
+//                },
+                        autoWidth : false,
+                        autoHeight : true,
+                        style:"margin-left: 20px;"
+
+                    },"orderShowLogsGrid");
+
+                    grid.startup();
+//                    grid.pagination.setPageSize(pageSize);
+
+                });
+                });
+        });
+
     function addContent(data){
         var d = data['content'];
         require(['dojo/dom-construct',"dojo/_base/fx"],function(domConstruct,fx){
@@ -133,4 +165,6 @@
 //            }).play();
         });
     }
+
+
 </script>

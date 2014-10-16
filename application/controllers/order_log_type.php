@@ -41,7 +41,7 @@ class Order_log_type extends CI_Controller {
         }else{
             if($_POST){
                 $data = _data('description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
-                if($oltm->update($l['if'],$data)){
+                if($oltm->update($l['id'],$data)){
                     echo 'done';
                 }else{
                     echo validation_errors('<div class="error">', '</div>');

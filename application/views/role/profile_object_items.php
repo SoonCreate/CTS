@@ -16,7 +16,7 @@
             <td><?= $o['auth_item_name'] ?></td>
             <td><?= $o['auth_item_desc'] ?></td>
             <td><?= $o['auth_value'] ?></td>
-            <td><a href="<?= _url('role','profile_object_item_edit',array('id'=>$o['id']))?>">编辑</a></td>
+            <td><?= render_link(array('role','profile_object_item_edit',array('id'=>$o['id'])),label('edit'))?></td>
         </tr>
     <?php endforeach;?>
 </table>

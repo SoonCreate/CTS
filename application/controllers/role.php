@@ -393,6 +393,7 @@ class Role extends CI_Controller {
         }else{
             if($_POST){
                 if($rpm->update($line['id'],_data('auth_value'))){
+                    go_back();
                     message_db_success();
                 }else{
                     message_db_failure();

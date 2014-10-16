@@ -141,6 +141,9 @@ class User extends CI_Controller {
     function user_edit(){
         $o = new User_model();
         if($_POST){
+            if(!v('email_flag')){
+                $_POST['email_flag'] = 0;
+            }
             if($o->update(_sess('uid'),$_POST)){
                 message_db_success();
             }else{
