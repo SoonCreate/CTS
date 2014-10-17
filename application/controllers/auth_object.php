@@ -121,14 +121,21 @@ class Auth_object extends CI_Controller {
         }else{
             if($_POST){
                 $alm = new Authobj_line_model();
-                if($alm->insert(_data('valuelist_id','object_id','default_value'))){
-                    go_back();
-                    message_db_success();
+                $l = $alm->find_by(array('object_id'=>$o['id'],'valuelist_id'=>v('valuelist_id')));
+                if(empty($l)){
+                    if($alm->insert(_data('valuelist_id','object_id','default_value'))){
+                        go_back();
+                        message_db_success();
+                    }else{
+                        validation_error();
+                    }
                 }else{
-                    validation_error();
+                    custz_message('E','权限对象已存在该项目');
                 }
+
             }else{
-                render();
+                $data['default_value'] = _config('all_values');
+                render($data);
             }
 
         }

@@ -11,11 +11,13 @@
         <td><?= $o['auth_item_desc']?></td>
         <td><?= $o['default_value']?></td>
 
-        <td><a href="<?= _url('auth_object','item_edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-            <a href="<?= _url('auth_object','item_destroy',array('id'=>$o['id']))?>">删除</a>
+        <td>
+            <?= render_link(array('auth_object','item_edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('auth_object','item_destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
         </td>
 
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('auth_object','item_create',array('object_id'=>v('id')))?>">插入新项目</a>
+<?= render_link(array('auth_object','item_create',array('object_id'=>v('id'))),label('item_create'))?>
