@@ -137,7 +137,7 @@ class Order extends CI_Controller {
                 $order_id = $order->save($data,$content,$addfiles);
                 if($order_id){
                     message_db_success();
-                    redirect_to('order','show',array('id'=>$order_id));
+//                    redirect_to('order','show',array('id'=>$order_id));
                 }else{
                     validation_error();
                 }
@@ -214,11 +214,13 @@ class Order extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $reason = tpost('reason');
+                $reason = v('reason');
                 if($olm->update_by(array('change_hash'=>$change_hash),array('reason'=>$reason))){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    message_db_failure();
+                    validation_error();
                 }
             }else{
                 render();

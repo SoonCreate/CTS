@@ -61,6 +61,16 @@ function message_unknow_error(){
     message('E','system','10');
 }
 
+//前端弹出框
+function dialog($url,$title,$closable = FALSE){
+    $output = _sess('output');
+    $dialog['closable'] = $closable;
+    $dialog['url'] = $url;
+    $dialog['title'] = $title;
+    $output['dialog'] = $dialog;
+    set_sess('output',$output);
+}
+
 //输出验证form验证
 function validation_error(){
     if ( function_exists('form_error')) {;

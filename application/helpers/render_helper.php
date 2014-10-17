@@ -77,13 +77,25 @@ function render_form_error($field){
 }
 
 //输出到view里面的option
-function render_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE){
-    $options = get_options($valuelist_name,$parent_segment_value ,$all_value);
+function render_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE,$blank_row = FALSE){
+    $options = get_options($valuelist_name,$parent_segment_value ,$all_value,$blank_row);
     $echo = "";
     foreach($options as $o){
         $echo = $echo . '<option value="'.$o['value'].'">'.$o['label'].'</option>';
     }
     return $echo;
+}
+
+function render_options_by_array($options){
+    if(is_array($options)){
+        $echo = "";
+        foreach($options as $o){
+            $echo = $echo . '<option value="'.$o['value'].'">'.$o['label'].'</option>';
+        }
+        return $echo;
+    }else{
+        return '';
+    }
 }
 
 //输出到view里的radio
@@ -270,7 +282,7 @@ function render_form_textarea($name,$required = FALSE,$attributes = array()){
     if($required){
         $echo = $echo. 'required';
     }
-    $echo = $echo. '/></textarea></dd>';
+    $echo = $echo. '/>'._v($name).'</textarea></dd>';
     $echo = $echo .render_form_error($name);
     $echo = $echo. '</dl>';
     return $echo;

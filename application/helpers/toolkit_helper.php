@@ -148,7 +148,7 @@ function get_label($valuelist_name,$value,$parent_segment_value = null){
 }
 
 //获取值列表
-function get_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE){
+function get_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE,$blank_row = FALSE){
     global $CI;
     $CI->load->model('valuelist_model');
     $vlm = new Valuelist_model();
@@ -162,6 +162,12 @@ function get_options($valuelist_name,$parent_segment_value = null,$all_value = F
     if($all_value){
         $data['value'] = _config('all_values');
         $data['label'] = label('all_value');
+        array_unshift($rt,$data);
+    }
+
+    if($blank_row){
+        $data['value'] = '';
+        $data['label'] = label('none');
         array_unshift($rt,$data);
     }
     return $rt;
@@ -355,8 +361,6 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     }
 
     $config['newline'] = _config('mail_newline');
-
-    print_r($config);
 
     $CI->load->library('email',$config);
     $email = new CI_Email();

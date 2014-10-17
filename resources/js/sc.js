@@ -113,8 +113,9 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
         }).then(function(response){
             clearCurrentStatus();
             handleResponse(response,remoteFail,remoteSuccess,remoteNoBack);
-        },function(){
-            console.log('remote request error!');
+        },function(e){
+            showMessage({type : 'E',content : "请求出现未知出错，请联系管理员！"});
+            console.log(e);
         });
     });
     return false;
@@ -178,6 +179,27 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
                 }else{
                     goto(response["redirect"]["url"],response["redirect"]['target']);
                 }
+
+            }
+
+            if("dialog" in response){
+                require(["sckj/Dialog"],
+                    function(Dialog){
+                        //检查如果存在则销毁
+                        var di = dijit.byId("confirmDialog");
+                        if(di){
+                            di.hide();
+                            di.destroyRecursive();
+                        }
+                        var confirmDialog = new Dialog({
+                            href : response["dialog"]["url"],
+                            id : "confirmDialog",
+                            title : response["dialog"]["title"],
+                            closable : response["dialog"]["closable"]
+                        });
+
+                        confirmDialog.show();
+                    });
 
             }
         }else{

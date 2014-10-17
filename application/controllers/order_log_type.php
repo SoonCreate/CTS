@@ -19,11 +19,13 @@ class Order_log_type extends CI_Controller {
             $oltm = new Order_log_type_model();
             $_POST['need_reason_flag'] = v('need_reason_flag');
             $_POST['notice_flag'] = v('notice_flag');
-            $data = _data('log_type', 'description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
-            if($oltm->insert($data)){
-                echo 'done';
+            $_POST['notice_created_by'] = v('notice_created_by');
+            $_POST['notice_manager'] = v('notice_manager');
+            if($oltm->insert($_POST)){
+                go_back();
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
         }else{
             $this->load->model('order_model');
@@ -40,13 +42,20 @@ class Order_log_type extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $data = _data('description', 'title','content','field_name','dll_type','need_reason_flag','notice_flag','field_valuelist_id');
-                if($oltm->update($l['id'],$data)){
-                    echo 'done';
+                $_POST['need_reason_flag'] = v('need_reason_flag');
+                $_POST['notice_flag'] = v('notice_flag');
+                $_POST['notice_created_by'] = v('notice_created_by');
+                $_POST['notice_manager'] = v('notice_manager');
+                if($oltm->update($l['id'],$_POST)){
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
+                $this->load->model('order_model');
+                $om = new Order_model();
+                $l['fields'] = $om->field_list();
                 render($l);
             }
         }
@@ -62,12 +71,12 @@ class Order_log_type extends CI_Controller {
             $log = $olm->find_by(array('log_type'=>$o['log_type']));
             if(empty($log)){
                 if($oltm->delete($id)){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    message_db_failure();
                 }
             }else{
-                echo '日志类型被用于多个日志中！无法删除';
+                custz_message('E','日志类型被用于多个日志中！无法删除');
             }
         }else{
             show_404();

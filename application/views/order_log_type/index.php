@@ -21,11 +21,13 @@
             <td><?= $o['field_name']?></td>
             <td><?= $o['dll_type']?></td>
 
-            <td><a href="<?= _url('order_log_type','edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-                <a href="<?= _url('order_log_type','destroy',array('id'=>$o['id']))?>">删除</a>
+            <td>
+                <?= render_link(array('order_log_type','edit',array('id'=>$o['id'])),label('edit'))?>
+                &nbsp;|&nbsp;
+                <?= render_link(array('order_log_type','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
             </td>
 
         </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('order_log_type','create')?>">新建日志类型</a>
+<?= render_link(array('order_log_type','create'),label('order_log_type_create'))?>
