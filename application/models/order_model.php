@@ -204,14 +204,12 @@ class Order_model extends MY_Model{
                                             }
 
                                         }//if($t['default_role_id']){
-                                        //如果初始为空值，则第一次变更不记录原因
-                                        if($t['need_reason_flag'] && $log['old_value']){
-                                            $need_reason = $t['need_reason_flag'];
-                                        }
-
                                     }
-
                                 }
+                            }
+                            //如果初始为空值，则第一次变更不记录原因
+                            if($t['need_reason_flag'] && $log['old_value']){
+                                $need_reason = $t['need_reason_flag'];
                             }
                         }
 

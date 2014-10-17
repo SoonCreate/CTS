@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2014 at 05:39 PM
+-- Generation Time: Oct 17, 2014 at 06:42 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -694,7 +694,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=139 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=155 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -828,7 +828,23 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (135, 162, 0, '投诉单提交', 1, '投诉单 98 提交', 98, 44, NULL, 1, 44, 1413559928, 1413559928, 44),
 (136, 162, 1, '投诉单提交', 1, '投诉单 98 提交', 98, 44, NULL, 1, 44, 1413559928, 1413560142, 44),
 (137, 168, 0, '投诉单提交', 1, '投诉单 99 提交', 99, 44, NULL, 1, 44, 1413560227, 1413560227, 44),
-(138, 168, 0, '投诉单提交', 1, '投诉单 99 提交', 99, 44, NULL, 1, 44, 1413560227, 1413560227, 44);
+(138, 168, 0, '投诉单提交', 1, '投诉单 99 提交', 99, 44, NULL, 1, 44, 1413560227, 1413560227, 44),
+(139, 169, 0, '投诉单提交', 1, '投诉单 100 提交', 100, 44, NULL, 1, 44, 1413562846, 1413562846, 44),
+(140, 170, 1, '投诉单提交', 1, '投诉单 101 提交', 101, 44, NULL, 1, 44, 1413562875, 1413562890, 44),
+(141, 172, 0, '责任人从 未知 变成 高哨', 1, '订单 101 责任人变更', 101, 47, NULL, 1, 44, 1413562963, 1413562963, 44),
+(142, 174, 0, '已确认 => 已分配', 1, '投诉单 101状态更新', 101, 47, NULL, 1, 44, 1413562963, 1413562963, 44),
+(143, 175, 0, '责任人从 高哨 变成 速创科技工作室', 1, '订单 101 责任人变更', 101, 47, NULL, 1, 44, 1413563071, 1413563071, 44),
+(144, 175, 1, '责任人从 高哨 变成 速创科技工作室', 1, '订单 101 责任人变更', 101, 44, NULL, 1, 44, 1413563071, 1413563478, 44),
+(145, 179, 1, '已解决 => 已关闭', 1, '投诉单 101状态更新', 101, 44, NULL, 1, 44, 1413563623, 1413563632, 44),
+(146, NULL, 1, NULL, 0, '关于投诉单101的反馈', 101, 44, 'http://localhost/cts/index.php/order/feedback?id=101', 0, 44, 1413563623, 1413563636, 44),
+(147, 180, 1, '已关闭 => 重新打开', 1, '投诉单 101状态更新', 101, 44, NULL, 1, 44, 1413563650, 1413563659, 44),
+(148, 180, 1, '已关闭 => 重新打开', 1, '投诉单 101状态更新', 101, 44, NULL, 1, 44, 1413563650, 1413563723, 44),
+(149, 181, 0, '投诉单提交', 1, '投诉单 102 提交', 102, 44, NULL, 1, 44, 1413563758, 1413563758, 44),
+(150, 183, 0, '责任人从 未知 变成 速创科技工作室', 1, '投诉单 102 责任人变更', 102, 44, NULL, 1, 44, 1413563776, 1413563776, 44),
+(151, 185, 1, '已确认 => 已分配', 1, '投诉单 102状态更新', 102, 44, NULL, 1, 44, 1413563776, 1413563794, 44),
+(152, 186, 1, '已分配 => 已解决', 1, '投诉单 102状态更新', 102, 44, NULL, 1, 44, 1413563825, 1413563830, 44),
+(153, 188, 0, '责任人从 未知 变成 速创科技工作室', 1, '投诉单 99 责任人变更', 99, 44, NULL, 1, 44, 1413563855, 1413563855, 44),
+(154, 190, 0, '已确认 => 已分配', 1, '投诉单 99状态更新', 99, 44, NULL, 1, 44, 1413563855, 1413563855, 44);
 
 -- --------------------------------------------------------
 
@@ -852,14 +868,19 @@ CREATE TABLE IF NOT EXISTS `ct_notice_rules` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`log_type_id`,`inactive_flag`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='通知规则信息' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='通知规则信息' AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `ct_notice_rules`
 --
 
 INSERT INTO `ct_notice_rules` (`id`, `log_type_id`, `description`, `notice_created_by`, `notice_manager`, `when_new_value`, `when_old_value`, `default_role_id`, `inactive_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(8, 9, '投诉单提交', 0, 0, 'released', 'all', 2, 0, 44, 1413559614, 1413559614, 44);
+(8, 9, '投诉单提交', 0, 0, 'released', 'all', 2, 0, 44, 1413559614, 1413559614, 44),
+(9, 4, '责任人更新', 0, 1, 'all', 'all', 0, 0, 44, 1413562630, 1413562630, 44),
+(10, 8, '分配', 0, 1, 'allocated', 'confirmed', 0, 0, 44, 1413562672, 1413562747, 44),
+(11, 8, '已解决', 1, 0, 'done', 'allocated', 0, 0, 44, 1413562687, 1413563819, 44),
+(12, 8, '已关闭', 0, 1, 'closed', 'all', 0, 0, 44, 1413562732, 1413563704, 44),
+(13, 8, '重新打开', 0, 1, 'reopen', 'closed', 2, 0, 44, 1413562799, 1413562799, 44);
 
 -- --------------------------------------------------------
 
@@ -890,7 +911,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_type`,`status`,`manager_id`) USING BTREE,
   KEY `Index_3` (`created_by`,`creation_date`,`status`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=100 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=103 ;
 
 --
 -- Dumping data for table `ct_orders`
@@ -985,7 +1006,10 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (94, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, NULL, 'a', '', '1', '', '', 0, 1413559491, 44, 1413559491, 44),
 (97, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, NULL, 'a', '', '1', '', '', 0, 1413559897, 44, 1413559897, 44),
 (98, 'vendor', 'allocated', 'low', 'low', '10', 'a', 47, 1413475200, 'a', '', '1', '', '', 0, 1413559928, 44, 1413560089, 44),
-(99, 'employee', 'released', 'low', 'low', '30', 'a', NULL, NULL, 'a', '', '1', '', '', 0, 1413560227, 44, 1413560227, 44);
+(99, 'employee', 'allocated', 'low', 'low', '30', 'a', 44, 1413561600, 'a', '', '1', '', '', 0, 1413560227, 44, 1413563855, 44),
+(100, 'vendor', 'released', 'low', 'low', '10', '测试测试', NULL, NULL, '测试测试', '', '1', '', '', 0, 1413562846, 44, 1413562846, 44),
+(101, 'vendor', 'reopen', 'low', 'low', '10', '测试测试', 44, 1413561600, '测试测试', '', '1', '', '', 0, 1413562875, 44, 1413563650, 44),
+(102, 'vendor', 'done', 'low', 'low', '10', '按省份范德萨', 44, 1413561600, '按省份范德萨', '', '11', '', '', 0, 1413563758, 44, 1413563825, 44);
 
 -- --------------------------------------------------------
 
@@ -1048,7 +1072,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=130 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=133 ;
 
 --
 -- Dumping data for table `ct_order_contents`
@@ -1175,7 +1199,10 @@ INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `cre
 (124, 94, 'a', 44, 1413559491, 1413559491, 44),
 (127, 97, 'a', 44, 1413559897, 1413559897, 44),
 (128, 98, 'a', 44, 1413559928, 1413559928, 44),
-(129, 99, 'a', 44, 1413560227, 1413560227, 44);
+(129, 99, 'a', 44, 1413560227, 1413560227, 44),
+(130, 100, '测试测试测试测试测试测试测试测试测试测试测试测试测试测试', 44, 1413562846, 1413562846, 44),
+(131, 101, '测试测试测试测试测试测试测试测试测试测试测试测试测试测试', 44, 1413562875, 1413562875, 44),
+(132, 102, '按省份范德萨按省份范德萨按省份范德萨', 44, 1413563758, 1413563758, 44);
 
 -- --------------------------------------------------------
 
@@ -1198,7 +1225,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=169 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=191 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -1360,7 +1387,29 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (165, 98, 'pcd_update', '1413475200', NULL, NULL, 1413560049, 1413560049, 44, 1413560049, 44),
 (166, 98, 'order_status', 'allocated', 'confirmed', NULL, 1413560049, 1413560049, 44, 1413560049, 44),
 (167, 98, 'manager_change', '47', '44', NULL, 1413560089, 1413560089, 44, 1413560089, 44),
-(168, 99, 'order_status_new', 'released', '', NULL, 1413560227, 1413560227, 44, 1413560227, 44);
+(168, 99, 'order_status_new', 'released', '', NULL, 1413560227, 1413560227, 44, 1413560227, 44),
+(169, 100, 'order_status_new', 'released', '', NULL, 1413562846, 1413562846, 44, 1413562846, 44),
+(170, 101, 'order_status_new', 'released', '', NULL, 1413562875, 1413562875, 44, 1413562875, 44),
+(171, 101, 'order_status', 'confirmed', 'released', NULL, 1413562911, 1413562911, 44, 1413562911, 44),
+(172, 101, 'manager_change', '47', NULL, NULL, 1413562963, 1413562963, 44, 1413562963, 44),
+(173, 101, 'pcd_update', '1413561600', NULL, NULL, 1413562963, 1413562963, 44, 1413562963, 44),
+(174, 101, 'order_status', 'allocated', 'confirmed', NULL, 1413562963, 1413562963, 44, 1413562963, 44),
+(175, 101, 'manager_change', '44', '47', '责任人没空', 1413563071, 1413563071, 44, 1413563085, 44),
+(176, 101, 'pcd_update', '1413475200', '1413561600', NULL, 1413563132, 1413563132, 44, 1413563132, 44),
+(177, 101, 'pcd_update', '1413561600', '1413475200', '又调回来了', 1413563397, 1413563397, 44, 1413563410, 44),
+(178, 101, 'order_status', 'done', 'allocated', NULL, 1413563431, 1413563431, 44, 1413563431, 44),
+(179, 101, 'order_status', 'closed', 'done', NULL, 1413563623, 1413563623, 44, 1413563623, 44),
+(180, 101, 'order_status', 'reopen', 'closed', NULL, 1413563650, 1413563650, 44, 1413563650, 44),
+(181, 102, 'order_status_new', 'released', '', NULL, 1413563758, 1413563758, 44, 1413563758, 44),
+(182, 102, 'order_status', 'confirmed', 'released', NULL, 1413563771, 1413563771, 44, 1413563771, 44),
+(183, 102, 'manager_change', '44', NULL, NULL, 1413563776, 1413563776, 44, 1413563776, 44),
+(184, 102, 'pcd_update', '1413561600', NULL, NULL, 1413563776, 1413563776, 44, 1413563776, 44),
+(185, 102, 'order_status', 'allocated', 'confirmed', NULL, 1413563776, 1413563776, 44, 1413563776, 44),
+(186, 102, 'order_status', 'done', 'allocated', NULL, 1413563825, 1413563825, 44, 1413563825, 44),
+(187, 99, 'order_status', 'confirmed', 'released', NULL, 1413563851, 1413563851, 44, 1413563851, 44),
+(188, 99, 'manager_change', '44', NULL, NULL, 1413563855, 1413563855, 44, 1413563855, 44),
+(189, 99, 'pcd_update', '1413561600', NULL, NULL, 1413563855, 1413563855, 44, 1413563855, 44),
+(190, 99, 'order_status', 'allocated', 'confirmed', NULL, 1413563855, 1413563855, 44, 1413563855, 44);
 
 -- --------------------------------------------------------
 
@@ -1415,8 +1464,8 @@ CREATE TABLE IF NOT EXISTS `ct_order_log_types` (
 --
 
 INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `content`, `need_reason_flag`, `field_name`, `dll_type`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `field_valuelist_id`) VALUES
-(4, 'manager_change', '责任人更新', '订单 &order_id 责任人变更', '责任人从 &old_value 变成 &new_value', 1, 'manager_id', 'update', 44, 1412228612, 1413533254, 44, 17),
-(5, 'pcd_update', '计划完成时间更新', '订单&order_id 计划完成日期变更', '计划完成时间变更从&old_value 改为 &new_value ', 1, 'plan_complete_date', 'update', 44, 1412408774, 1413533439, 44, 0),
+(4, 'manager_change', '责任人更新', '投诉单 &order_id 责任人变更', '责任人从 &old_value 变成 &new_value', 1, 'manager_id', 'update', 44, 1412228612, 1413563507, 44, 17),
+(5, 'pcd_update', '计划完成时间更新', '投诉单 &order_id 计划完成日期变更', '计划完成时间变更从&old_value 改为 &new_value ', 1, 'plan_complete_date', 'update', 44, 1412408774, 1413563517, 44, 0),
 (8, 'order_status', '状态更新', '投诉单 &order_id状态更新', '&old_value => &new_value', 0, 'status', 'update', 44, 1413558149, 1413558149, 44, 16),
 (9, 'order_status_new', '投诉单提交', '投诉单 &order_id 提交', '投诉单提交', 0, 'status', 'insert', 44, 1413558239, 1413558239, 44, 16);
 
@@ -1935,8 +1984,8 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `Index_2` (`user_id`,`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=35 ;
+  UNIQUE KEY `Index_2` (`user_id`,`role_id`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `ct_user_roles`
@@ -1950,23 +1999,11 @@ INSERT INTO `ct_user_roles` (`id`, `user_id`, `role_id`, `creation_date`, `creat
 (14, 48, 3, 1412230229, 44, 1412230229, 44),
 (15, 66, 1, 1412231054, 44, 1412231054, 44),
 (16, 67, 4, 1412404281, 44, 1412404281, 44),
-(17, 66, 1, 1413426082, 44, 1413426082, 44),
 (18, 66, 8, 1413426082, 44, 1413426082, 44),
 (20, 44, 8, 1413426182, 44, 1413426182, 44),
-(21, 44, 5, 1413427756, 44, 1413427756, 44),
-(22, 44, 8, 1413427756, 44, 1413427756, 44),
-(23, 44, 11, 1413427756, 44, 1413427756, 44),
 (24, 47, 1, 1413433311, 44, 1413433311, 44),
-(25, 66, 1, 1413510323, 44, 1413510323, 44),
-(26, 66, 8, 1413510323, 44, 1413510323, 44),
-(27, 44, 2, 1413510336, 44, 1413510336, 44),
-(28, 44, 5, 1413510336, 44, 1413510336, 44),
-(29, 44, 8, 1413510336, 44, 1413510336, 44),
-(30, 44, 11, 1413510336, 44, 1413510336, 44),
-(31, 44, 2, 1413510374, 44, 1413510374, 44),
-(32, 44, 5, 1413510374, 44, 1413510374, 44),
-(33, 44, 8, 1413510374, 44, 1413510374, 44),
-(34, 44, 11, 1413510374, 44, 1413510374, 44);
+(54, 44, 2, 1413562478, 44, 1413562478, 44),
+(55, 44, 11, 1413562478, 44, 1413562478, 44);
 
 -- --------------------------------------------------------
 

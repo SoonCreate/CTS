@@ -266,7 +266,7 @@ class User extends CI_Controller {
                     $this->db->where_not_in('role_id',$ids);
                     $ur->delete_by(array('user_id' => $data['user_id']));
                     //新增的部分
-                    $ids = array_diff($ids,$ur->find_user_ids($data['user_id']));
+                    $ids = array_diff($ids,$ur->find_role_ids($data['user_id']));
                     foreach($ids as $id){
                         $data['role_id'] = $id;
                         $ur->insert($data);

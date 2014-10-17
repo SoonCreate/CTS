@@ -264,9 +264,14 @@ class Order extends CI_Controller {
         }else{
             if($_POST){
                 $_POST['plan_complete_date'] = strtotime($_POST['plan_complete_date']);
-                $data = _data('manager_id','plan_complete_date');
-                $data['status'] = 'allocated';
-                $this->_update(v('id'),$data);
+                if(strtotime($_POST['plan_complete_date']) < strtotime(date('Y-m-d'))){
+                    add_validation_error('plan_complete_date','日期不能选择在过去的时间（今天之前）');
+                }else{
+                    $data = _data('manager_id','plan_complete_date');
+                    $data['status'] = 'allocated';
+                    $this->_update(v('id'),$data);
+                }
+
             }else{
                 $am = new Auth_model();
                 $ids = $am->can_choose_managers($order);
