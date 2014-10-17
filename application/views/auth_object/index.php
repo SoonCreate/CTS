@@ -11,12 +11,15 @@
         <td><?= $o['object_name']?></td>
         <td><?= $o['description']?></td>
 
-        <td><a href="<?= _url('auth_object','edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-            <a href="<?= _url('auth_object','destroy',array('id'=>$o['id']))?>">删除</a>&nbsp;|&nbsp;
-            <a href="<?= _url('auth_object','items',array('id'=>$o['id']))?>">权限对象项目</a>
+        <td>
+            <?= render_link(array('auth_object','edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('auth_object','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('auth_object','items',array('id'=>$o['id'])),label('items'))?>
         </td>
 
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('auth_object','create')?>">新建权限对象</a>
+<?= render_link(array('auth_object','create'),label('auth_object_create'))?>

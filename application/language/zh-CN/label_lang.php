@@ -47,3 +47,5 @@ $lang['label_content'] = "内容";
 $lang['label_full_name'] = "公司名称/姓名";
 $lang['label_company_name'] = "公司名称";
 $lang['label_address'] = "联系地址";
+
+$lang['label_me'] = "我";

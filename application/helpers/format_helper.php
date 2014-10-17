@@ -24,8 +24,8 @@ function to_itemStore($row,$identifier = null,$label = null){
 }
 
 //直接输出json到itemStore
-function export_to_itemStore($rows,$identifier = null,$label = null){
-    $rows = _format($rows);
+function export_to_itemStore($rows,$identifier = null,$label = null,$is_full_text = FALSE,$is_related_time = FALSE){
+    $rows = _format($rows,$is_full_text,$is_related_time);
     $data["identifier"] = $identifier;
     $data["label"] = $label;
     $data['items'] = $rows;
@@ -81,7 +81,7 @@ function xchecked($flag){
 }
 
 //转换数据库的时间和操作者为系统使用格式 is full text为输出用户名和翻译时间
-function _format($rows,$is_full_text = FALSE,$is_rs_array = true){
+function _format($rows,$is_full_text = FALSE,$is_related_time = FALSE,$is_rs_array = true){
     if($is_rs_array){
         for($i = 0; $i < count($rows);$i++){
             $rows[$i] = _format_row($rows[$i],$is_full_text);
@@ -92,14 +92,14 @@ function _format($rows,$is_full_text = FALSE,$is_rs_array = true){
     return $rows;
 }
 //格式化函数
-function _format_row($row,$is_full_text = FALSE){
+function _format_row($row,$is_full_text = FALSE,$is_related_time = FALSE){
     foreach ($row as $key => $value) {
-        $row[$key] = _f($key,$value,$is_full_text);
+        $row[$key] = _f($key,$value,$is_full_text,$is_related_time);
     }
     return $row;
 }
 
-function _f($key,$value,$is_full_text = FALSE){
+function _f($key,$value,$is_full_text = FALSE,$is_related_time = FALSE){
     if(is_null($value)){
         $value = "";
     }else{
@@ -111,9 +111,16 @@ function _f($key,$value,$is_full_text = FALSE){
             if(strpos($key,'ed_by') > 0 && !strpos($key,'ed_by_')) {
                 $value = full_name($value);
             }
-            if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
-                $value = related_time(date('Y-m-d H:i:s',$value));
+            if($is_related_time){
+                if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
+                    $value = related_time(date('Y-m-d H:i:s',$value));
+                }
+            }else{
+                if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
+                    $value = date('Y-m-d H:i:s',$value);
+                }
             }
+
         }else{
             if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
                 $value = date('Y-m-d H:i:s',$value);

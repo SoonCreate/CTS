@@ -126,8 +126,8 @@
                         structure: [
                             {name : "日志类型",field : "description",width : "160px",dataType :"string"},
                             {name : "内容",field : "content",width : "400px",dataType :"string"},
+                            {name : "原因",field : "reason",width : "200px",dataType :"string"},
                             <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
-                                {name : "原因",field : "reason",width : "200px",dataType :"string"},
                                 {name : "操作人",field : "created_by",width : "160px",dataType :"string"},
                             <?php }?>
                             {name : "操作时间",field : "creation_date",width : "160px",dataType :"string" }

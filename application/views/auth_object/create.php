@@ -1,6 +1,6 @@
-<h1>权限对象创建</h1>
-<form id="auth_object_create" method="post" action="<?= _url('auth_object','create')?>">
-    <label for="object_name">*对象名称</label><input name="object_name" id="object_name" type="text"/><br/>
-    <label for="description">*描述</label><textarea id="description" name="description" rows="5" cols="40"></textarea><br/>
-    <button type="submit">提交</button>
-</form>
+<?= render_form_header('auth_object_create');?>
+<?= render_form_open('auth_object','create') ?>
+<?= render_form_input('object_name',true);?>
+<?= render_form_input('description',true);?>
+<?= render_button_group();?>
+<?= render_form_close() ?>

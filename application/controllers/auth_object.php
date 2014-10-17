@@ -21,9 +21,10 @@ class Auth_object extends CI_Controller {
             $data['description'] = tpost('description');
             $o= new Authority_object_model();
             if($o->insert($data)){
-                echo 'done';
+                go_back();
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
         }else{
             render();
@@ -39,9 +40,10 @@ class Auth_object extends CI_Controller {
             if($_POST){
                 $data['description'] = tpost('description');
                 if($aom->update($ao['id'],$data)){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
 
             }else{
@@ -70,12 +72,12 @@ class Auth_object extends CI_Controller {
             $ao->delete($object_id);
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE) {
-                echo '数据库删除错误';
+                message_db_failure();
             }else{
-                echo 'done';
+                message_db_success();
             }
         }else{
-            echo '无法删除!功能正在被模块或角色被使用.';
+            custz_message('E','无法删除!功能正在被模块或角色被使用');
         }
     }
 
@@ -99,9 +101,10 @@ class Auth_object extends CI_Controller {
         }else{
             if($_POST){
                 if($alm->update($line['id'],_data('default_value'))){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 render($line);
@@ -119,9 +122,10 @@ class Auth_object extends CI_Controller {
             if($_POST){
                 $alm = new Authobj_line_model();
                 if($alm->insert(_data('valuelist_id','object_id','default_value'))){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 render();
@@ -142,12 +146,12 @@ class Auth_object extends CI_Controller {
             $l = $rplm->find_by(array('object_line_id'=>$line['id']));
             if(empty($l)){
                 if($alm->delete($line['id'])){
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    message_db_failure();
                 }
             }else{
-                echo '权限对象被多个角色使用，无法删除！';
+                custz_message('E','权限对象被多个角色使用，无法删除！');
             }
         }
     }

@@ -201,7 +201,7 @@ class Order extends CI_Controller {
 
     function log_data(){
         $om = new Order_model();
-        export_to_itemStore($om->logs(v('id')),'id') ;
+        export_to_itemStore($om->logs(v('id')),'id','log_type',check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) ;
     }
 
     //如果日志类型需要原因，此页面用于补充
