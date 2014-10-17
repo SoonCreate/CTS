@@ -31,7 +31,7 @@
             <?php if($o['inactive_flag']) { ?>
                 <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>0)),label('active'),null,null,true)?>
             <?php } else{?>
-                <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>0)),label('inactive'),null,null,true)?>
+                <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>1)),label('inactive'),null,null,true)?>
             <?php }?>
         </td>
         <?php }?>

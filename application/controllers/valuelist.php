@@ -267,7 +267,8 @@ class Valuelist extends CI_Controller {
                 $this->db->select_max('segment');
                 $line = $vlm->find_all_by(array('valuelist_id'=>$valulist_id));
             }
-            $data['default_segment'] = string_to_number($line[0]['segment']) + 10;
+            $data['segment'] = string_to_number($line[0]['segment']) + 10;
+            $data['sort'] = 0;
             render_view('valuelist/item_create',$data);
         }
     }

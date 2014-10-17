@@ -102,6 +102,17 @@ function render_radio($name,$valuelist_name,$parent_segment_value = null){
     return $echo;
 }
 
+function render_single_checkbox($name,$value){
+    $echo = '';
+    $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
+    $echo = $echo .'<dd><input name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/CheckBox" type="checkbox" value="'.$value.'" ';
+    if(_v($name) == $value){
+        $echo = $echo . 'checked';
+    }
+    $echo = $echo .' /></dd></dl>';
+    return $echo;
+}
+
 //根据值输出options
 function render_options_with_value(){
     $args = func_get_args();
@@ -188,8 +199,13 @@ function render_form_password($name,$required = FALSE,$attributes = array(),$dis
     return _render_input_by_type($name,$required,$attributes,'password',$disabled);
 }
 
-function render_form_hidden($name,$value){
-    return  '<input name="'.$name.'" type="hidden" value="'.$value.'" />';
+function render_form_hidden($name,$value = null){
+    if(is_null($value)){
+        return  '<input name="'.$name.'" type="hidden" value="'._v($name).'" />';
+    }else{
+        return  '<input name="'.$name.'" type="hidden" value="'.$value.'" />';
+    }
+
 }
 
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE){
