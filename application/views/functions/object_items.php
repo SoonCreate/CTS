@@ -11,7 +11,8 @@
         <td><?= $o['auth_item_desc']?></td>
         <td><?= $o['default_value']?></td>
 
-        <td><a href="<?= _url('functions','object_item_edit',array('id'=>$o['id']))?>">编辑</a>
+        <td>
+            <?= render_link(array('functions','object_item_edit',array('id'=>$o['id'])),label('edit'))?>
         </td>
 
     </tr>

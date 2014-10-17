@@ -1,7 +1,6 @@
-<h1>值集创建</h1>
-<form id="valuelist_create" method="post" action="<?= _url('valuelist','create')?>">
-    <label for="valuelist_name">*值集名称</label>
-    <input name="valuelist_name" id="valuelist_name" type="text"/><br/>
+<?= render_form_open('valuelist','create') ?>
+<?= render_form_header('valuelist_create');?>
+<?= render_form_input('valuelist_name',true);?>
     <?php $this->load->view('valuelist/_form');?>
-    <button type="submit">提交</button>
-</form>
+<?= render_button_group();?>
+<?= render_form_close() ?>

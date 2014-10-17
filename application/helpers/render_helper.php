@@ -280,12 +280,28 @@ function render_form_textarea($name,$required = FALSE,$attributes = array()){
 function render_select_with_options($name,$valuelist_name,$required = FALSE,$attributes = array()){
     $echo = '';
     $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
-    $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select"';
+    $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
         $echo = $echo. 'required';
     }
     $echo = $echo. '>';
     $echo = $echo. render_options_with_value($valuelist_name,_v($name));
+    $echo = $echo.   '</select> </dd>';
+    $echo = $echo. render_form_error($name);
+    $echo = $echo. '</dl>';
+    return $echo;
+}
+
+//对于已有options的时候，无需再查valuelist
+function render_select_add_options($name,$options,$required = FALSE){
+    $echo = '';
+    $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
+    $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
+    if($required){
+        $echo = $echo. 'required';
+    }
+    $echo = $echo. '>';
+    $echo = $echo. $options;
     $echo = $echo.   '</select> </dd>';
     $echo = $echo. render_form_error($name);
     $echo = $echo. '</dl>';

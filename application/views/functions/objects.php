@@ -10,13 +10,13 @@
             <td><?= $o['id']?></td>
             <td><?= $o['object_name']?></td>
             <td><?= $o['description']?></td>
-
-
-            <td><a href="<?= _url('functions','object_items',array('id'=>$o['id']))?>">权限对象项目</a>&nbsp;|&nbsp;
-                <a href="<?= _url('functions','object_destroy',array('id'=>$o['id']))?>">删除</a>
+            <td>
+                <?= render_link(array('functions','object_items',array('id'=>$o['id'])),label('items'))?>
+                &nbsp;|&nbsp;
+                <?= render_link(array('functions','object_destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
             </td>
 
         </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('functions','object_create',array('function_id'=>v('id')))?>">新增权限对象</a>
+<?= render_link(array('functions','object_create',array('function_id'=>v('id'))),label('object_create'))?>

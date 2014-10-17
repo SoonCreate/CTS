@@ -103,7 +103,8 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
         beforeSubmit();
     }
     require(["dojo/dom-form","dojo/request"],function(domForm,request){
-        request.post(object.action, {
+        //fix form中有name为action组件时优先调用组件值的情况 20141017
+        request.post(object.attributes["action"]["value"], {
             // Send the username and password
             data: domForm.toObject(object),
             // Wait 2 seconds for a response

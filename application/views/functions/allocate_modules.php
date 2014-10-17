@@ -1,5 +1,5 @@
-<h1>分配到模块</h1>
-<form id="allocate_modules" method="post" action="<?= _url('functions','allocate_modules')?>">
+<?= render_form_header('allocate_modules');?>
+<?= render_form_open('functions','allocate_modules') ?>
     <table>
         <thead>
         <th>选择</th>
@@ -10,7 +10,7 @@
         </thead>
         <?php foreach($modules as $o) :?>
             <tr>
-                <td><input type="checkbox" name="modules[]" id="m_<?= $o['id'] ?>" value="<?= $o['id']?>" <?= $o['checked']?>/></td>
+                <td><input  type="checkbox" name="modules[]" id="m_<?= $o['id'] ?>" value="<?= $o['id']?>" <?= $o['checked']?>/></td>
                 <td><label for="m_<?= $o['id'] ?>"><?= $o['module_name'] ?></label></td>
                 <td><?= $o['description'] ?></td>
                 <td><?= $o['creation_date']?></td>
@@ -19,6 +19,6 @@
         <?php endforeach;?>
     </table>
 
-    <input name="id" id="id" type="hidden" value="<?= v('id')?>" />
-    <button type="submit">提交</button>
-</form>
+<?= render_form_hidden('id',v('id'));?>
+<?= render_button_group();?>
+<?= render_form_close() ?>

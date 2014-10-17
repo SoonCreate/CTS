@@ -23,9 +23,10 @@ class Functions extends CI_Controller {
             $_POST['help'] = tpost('help');
             $fn = new Function_model();
             if($fn->insert(_data('function_name','description','controller','action','display_flag','display_class','help'))){
-                echo 'done';
+                go_back();
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
 
         }else{
@@ -42,9 +43,10 @@ class Functions extends CI_Controller {
             if($_POST){
                 $_POST['help'] = tpost('help');
                 if($fn->update($f['id'],_data('description','controller','action','display_flag','display_class','help'))){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
 
             }else{
@@ -66,12 +68,12 @@ class Functions extends CI_Controller {
         $module_in_use = $ml->find_by(array('function_id'=>$function_id));
         if(!empty($fn) && empty($role_in_use) && empty($module_in_use)){
             if ($f->delete($function_id)) {
-                echo 'done';
+                message_db_success();
             }else{
-                echo '数据库删除错误';
+                message_db_failure();
             }
         }else{
-            echo '无法删除!功能正在模块或角色被使用.';
+            custz_message('E','无法删除!功能正在模块或角色被使用');
         }
     }
 
@@ -105,9 +107,10 @@ class Functions extends CI_Controller {
                 }
                 $this->db->trans_complete();
                 if ($this->db->trans_status() === FALSE) {
-                    echo '数据库插入错误';
+                    message_db_failure();
                 }else{
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }
             }else{
                 $this->load->model('module_model');
@@ -149,7 +152,7 @@ class Functions extends CI_Controller {
         }else{
             if($_POST){
                 $fom = new Function_object_model();
-                $l = $fom->find_by(array('object_id'=>$object_id));
+                $l = $fom->find_by(array('object_id'=>$object_id,'function_id'=>$f['id']));
                 //验证是否存在
                 if(empty($l)){
                     $this->load->model('authobj_line_model');
@@ -167,12 +170,13 @@ class Functions extends CI_Controller {
                     }
                     $this->db->trans_complete();
                     if ($this->db->trans_status() === FALSE) {
-                        echo '数据库操作错误';
+                        message_db_failure();
                     }else{
-                        echo 'done';
+                        go_back();
+                        message_db_success();
                     }
                 }else{
-                    echo '功能已包含该权限对象！';
+                    custz_message('E','功能已包含该权限对象');
                 }
             }else{
                 $this->load->model('authority_object_model');
@@ -195,9 +199,9 @@ class Functions extends CI_Controller {
             $folm->delete_by(array('fun_object_id'=>$fo['id']));
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE) {
-                echo '数据库操作错误';
+                message_db_failure();
             }else{
-                echo 'done';
+                message_db_success();
             }
         }
     }
@@ -222,9 +226,10 @@ class Functions extends CI_Controller {
         }else{
             if($_POST){
                 if($folm->update($line['id'],_data('default_value'))){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
             }else{
                 render($line);
