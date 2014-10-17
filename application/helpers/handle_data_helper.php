@@ -118,6 +118,13 @@ function redirect_to($controller,$action,$params = null){
     set_sess('output',$output);
 }
 
+function redirect_url($url){
+    $output = _sess('output');
+    $goto['url'] = $url;
+    $output['redirect'] = $goto;
+    set_sess('output',$output);
+}
+
 //前端页面返回
 function go_back(){
     $output = _sess('output');

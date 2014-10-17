@@ -232,6 +232,28 @@ function render_form_hidden($name,$value = null){
 
 }
 
+function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
+    $echo = '';
+    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTextBox" trim="true"';
+    if($required){
+        $echo = $echo. 'required';
+    }
+
+    if($disabled){
+        $echo = $echo. 'disabled';
+    }
+
+    foreach($attributes as $key=>$value){
+        $echo = $echo. $key.' = '.'"'.$value.'"';
+    }
+
+    $echo = $echo. '/></dd>';
+    $echo = $echo. render_form_error($name);
+    $echo = $echo . '</dl>';
+    return $echo;
+}
+
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>

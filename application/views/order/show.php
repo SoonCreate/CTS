@@ -11,15 +11,15 @@
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'allocated') && check_order_auth($order_type,'allocated',$category)){?>
-            <a href="<?= _url('order','dispatcher',array('id'=>$id))?>">分配责任人并确认计划完成日期</a>
+            <?= render_link(array('order','dispatcher',array('id'=>$id)),'分配责任人并确认计划完成日期')?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'done') && check_order_auth($order_type,'done',$category)){?>
-            <a href="<?= _url('order','done',array('id'=>$id))?>">标志已解决</a>
+            <?= render_link(array('order','done',array('id'=>$id)),'投诉已解决',null,null,true)?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'closed') && check_order_auth($order_type,'closed',$category)){?>
-            <a href="<?= _url('order','close',array('id'=>$id))?>">关闭订单</a>
+            <?= render_link(array('order','close',array('id'=>$id)),'投诉单关闭',null,null,true)?>
         <?php }?>
 
         <?php if(check_function_auth('order','meeting_create')){ ?>
@@ -31,8 +31,10 @@
 
     <?php }else{?>
         <?php if(is_order_allow_next_status($status,'reopen') && check_order_auth($order_type,'reopen',$category)){?>
-            <a href="<?= _url('order','reopen',array('id'=>$id))?>">重新开启</a>
+            <?= render_link(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
         <?php }?>
+
+        <?= render_link(array('order','feedback',array('id'=>$id)),'反馈建议以及评分')?>
     <?php }?>
 
     <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
@@ -124,13 +126,13 @@
                         id : "orderShowLogsGrid",
                         store: store ,
                         structure: [
-                            {name : "日志类型",field : "description",width : "160px",dataType :"string"},
-                            {name : "内容",field : "content",width : "400px",dataType :"string"},
-                            {name : "原因",field : "reason",width : "200px",dataType :"string"},
+                            {name : "日志类型",field : "description",width : "120px",dataType :"string"},
+                            {name : "内容",field : "content",width : "300px",dataType :"string"},
+                            {name : "原因",field : "reason",width : "240px",dataType :"string"},
                             <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
-                                {name : "操作人",field : "created_by",width : "160px",dataType :"string"},
+                                {name : "操作人",field : "created_by",width : "100px",dataType :"string"},
                             <?php }?>
-                            {name : "操作时间",field : "creation_date",width : "160px",dataType :"string" }
+                            {name : "操作时间",field : "creation_date",width : "140px",dataType :"string" }
 
                         ],
                         modules : [

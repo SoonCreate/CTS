@@ -216,10 +216,9 @@ class Order extends CI_Controller {
             if($_POST){
                 $reason = v('reason');
                 if($olm->update_by(array('change_hash'=>$change_hash),array('reason'=>$reason))){
-                    go_back();
                     message_db_success();
                 }else{
-                    message_db_failure();
+//                    message_db_failure();
                     validation_error();
                 }
             }else{
@@ -270,11 +269,24 @@ class Order extends CI_Controller {
                 $this->_update(v('id'),$data);
             }else{
                 $am = new Auth_model();
-                $order['ids'] = $am->can_choose_managers($order);
-                if(empty($order['ids'])){
-                    echo '无对应的责任人';
+                $ids = $am->can_choose_managers($order);
+                if(empty($ids)){
+                    custz_message('E','无对应的责任人');
                 }else{
-                    render(_format_row($order));
+                    $order['managers'] = array();
+                    foreach($ids as $id){
+                        $d['value'] = $id;
+                        //可以做进一步的优化，比如根据责任人的繁忙程度排序，显示现在空闲的责任人等
+
+                        $d['label'] = full_name($id);
+                        array_push($order['managers'],$d);
+                    }
+                    if(is_null($order['plan_complete_date']) || !$order['plan_complete_date']){
+                        $order['plan_complete_date'] = date('Y-m-d',time());
+                    }else{
+                        $order['plan_complete_date'] = date('Y-m-d',$order['plan_complete_date']);
+                    }
+                    render($order);
                 }
             }
 
@@ -306,6 +318,10 @@ class Order extends CI_Controller {
                     $r = _format_row($ocm->find($content_id));
                     $r['created_by'] = full_name($r['created_by']);
                     data('content',$r);
+                    //回复之后发送消息到相关人员
+
+
+
                 }else{
                     validation_error();
                 }
@@ -333,7 +349,13 @@ class Order extends CI_Controller {
             $data['received_by'] = $order['created_by'];
             $data['title'] = '关于投诉单'.$data['order_id'].'的反馈';
             $data['direct_url'] = _url('order','feedback',array('id'=>$data['order_id'] ));
-            $nm->insert($data);
+            $notice_id = $nm->insert($data);
+            if($notice_id){
+                $om->send_mail_by_notice($notice_id);
+            }else{
+                custz_message('E','反馈消息传送失败，请您'.
+                    render_link(array('order','feedback',array('id'=>$data['order_id'] )),'点击此链接').'进行本次投诉的反馈！');
+            }
 
         }
     }

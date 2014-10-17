@@ -84,10 +84,10 @@ function xchecked($flag){
 function _format($rows,$is_full_text = FALSE,$is_related_time = FALSE,$is_rs_array = true){
     if($is_rs_array){
         for($i = 0; $i < count($rows);$i++){
-            $rows[$i] = _format_row($rows[$i],$is_full_text);
+            $rows[$i] = _format_row($rows[$i],$is_full_text,$is_related_time);
         }
     }else{
-        $rows = _format_row($rows,$is_full_text);
+        $rows = _format_row($rows,$is_full_text,$is_related_time);
     }
     return $rows;
 }

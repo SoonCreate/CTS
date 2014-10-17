@@ -345,10 +345,9 @@ function dojoConfirm(content,callback,noback,type){
     require(["sckj/Dialog","dijit/form/Button"],
         function(Dialog,Button){
             //检查如果存在则销毁
-            var di = dijit.byId("confirmDialog");
+            var di = $dijit.byId("confirmDialog");
             if(di){
                 di.hide();
-                di.destroyRecursive();
             }
             switch(type){
                 case "E" :
@@ -408,6 +407,18 @@ function dojoConfirm(content,callback,noback,type){
             confirmDialog.show();
         });
 
+}
+
+function closeDialog(){
+    var di = $dijit.byId("confirmDialog");
+    if(di){
+        di.hide();
+    }
+}
+
+function closeDialogAndRefresh(){
+    closeDialog();
+    refresh();
 }
 
 //根据id fix之后返回控件对象

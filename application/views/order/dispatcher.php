@@ -1,19 +1,7 @@
-<h1>分配责任人</h1>
-<form id="order_dispatcher" method="post" action="<?= _url('order','dispatcher')?>">
-
-    <label for="manager_id">*负责人</label>
-    <select id="manager_id" name="manager_id">
-        <?php foreach($ids as $id):?>
-        <option value="<?= $id?>" <?php if($manager_id === $id) : echo 'selected' ; endif;?>><?= full_name($id)?></option>
-        <?php endforeach;?>
-    </select>
-    <br/>
-
-    <label for="plan_complete_date">*计划完成时间</label>
-    <input name="plan_complete_date" id="plan_complete_date" type="text" value="<?= $plan_complete_date ?>" />
-    <br/>
-
-    <input name="id" id="id" type="hidden" value="<?= p('id') ?>"/>
-    <button type="submit">提交</button>
-</form>
-
+<?= render_form_open('order','dispatcher','null','null','goback') ?>
+<?= render_form_header('order_dispatcher');?>
+<?= render_select_add_options('manager_id',render_options_by_array(_v('managers')),true)?>
+<?= render_form_datetextbox('plan_complete_date',TRUE);?>
+<?= render_form_hidden('id',v('id'))?>
+<?= render_button_group();?>
+<?= render_form_close() ?>

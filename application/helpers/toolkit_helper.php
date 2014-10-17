@@ -428,13 +428,34 @@ function refresh_env(){
     global $CI;
     $CI->load->model('module_line_model');
     $mlm = new Module_line_model();
-    $ml = $mlm->find_by_view(array('id'=>v('cm')));
-    if(!empty($ml)){
-        //当前的功能模块id，即module_line_id
-        set_sess('cm',$ml['id']);
-        set_sess('mid',$ml['module_id']);
-        set_sess('fid',$ml['function_id']);
+    if(v('cm')){
+        $ml = $mlm->find_by_view(array('id'=>v('cm')));
+        if(!empty($ml)){
+            //当前的功能模块id，即module_line_id
+            set_sess('cm',$ml['id']);
+            set_sess('mid',$ml['module_id']);
+            set_sess('fid',$ml['function_id']);
+        }
+    }else{
+        $controller = $CI->router->fetch_class();
+        $action = $CI->router->fetch_method();
+        $cml = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action,'module_id'=>_sess('mid')));
+        if(!empty($cml)){
+            set_sess('cm',$cml['id']);
+            set_sess('mid',$cml['module_id']);
+            set_sess('fid',$cml['function_id']);
+        }else{
+            //如果当前连接不属于当前模块，随意获取某一mid
+            $mls = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action));
+            if(!empty($mls)){
+                //当前的功能模块id，即module_line_id
+                set_sess('cm',$mls['id']);
+                set_sess('mid',$mls['module_id']);
+                set_sess('fid',$mls['function_id']);
+            }
+        }
     }
+
 }
 
 function run_validation($data,$validate)

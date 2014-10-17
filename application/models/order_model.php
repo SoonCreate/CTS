@@ -111,20 +111,17 @@ class Order_model extends MY_Model{
         if(!empty($ltypes)){
             foreach($ltypes as $t){
                 if(isset($new_data[$t['field_name']])){
-                    $log['order_id'] = $new_data['id'];
-                    $log['new_value'] = $new_data[$t['field_name']];
-                    if(is_null($old_data)) {
-                        $log['old_value'] = '';
-                    }else{
-                        $log['old_value'] = $old_data[$t['field_name']];
-                    }
-                    $log['log_type'] = $t['log_type'];
-                    $id = $olm->insert($log);
+                    //如果数据无变更则无需记录
+                    if(is_null($old_data) || $new_data[$t['field_name']] != $old_data[$t['field_name']]){
+                        $log['order_id'] = $new_data['id'];
+                        $log['new_value'] = $new_data[$t['field_name']];
+                        if(is_null($old_data)) {
+                            $log['old_value'] = '';
+                        }else{
+                            $log['old_value'] = $old_data[$t['field_name']];
+                        }
+                        $log['log_type'] = $t['log_type'];
 
-                    if(!$id){
-                        $this->db->trans_rollback();
-                        return false;
-                    }else{
                         if($t['when_new_value'] == _config('all_values')){
                             $t['when_new_value'] = $log['new_value'];
                         }
@@ -132,77 +129,88 @@ class Order_model extends MY_Model{
                         if($t['when_old_value'] == _config('all_values')){
                             $t['when_old_value'] = $log['old_value'];
                         }
-                        //是否同时创建通知,符合条件
-                        if($t['notice_flag'] && $t['when_new_value'] == $log['new_value'] && $t['when_old_value'] == $log['old_value']){
 
-                            $log_v = $olm->find_by_view(array('id'=>$id));
-                            $n['log_id'] = $id;
-                            $n['from_log'] = 1;
+                        if($t['when_new_value'] == $log['new_value'] && $t['when_old_value'] == $log['old_value']){
+                            $id = $olm->insert($log);
+                            if(!$id){
+                                $this->db->trans_rollback();
+                                return false;
+                            }else{
+                                //是否同时创建通知,符合条件
+                                if($t['notice_flag']){
+                                    $log_v = $olm->find_by_view(array('id'=>$id));
+                                    $n['log_id'] = $id;
+                                    $n['from_log'] = 1;
 //                            $n['received_by'] = _sess('uid');
 //                            $n['with_manager'] = 1;
-                            $n['title'] = $this->_format_log($log_v,$t['title'],true);
-                            $n['content'] = $this->_format_log($log_v,$t['content'],true);
-                            $n['order_id'] = $new_data['id'];
+                                    $n['title'] = $this->_format_log($log_v,$t['title'],true);
+                                    $n['content'] = $this->_format_log($log_v,$t['content'],true);
+                                    $n['order_id'] = $new_data['id'];
 
-                            //发给创建者
-                            if($t['notice_created_by']){
-                                if(is_null($old_data)){
-                                    $n['received_by'] = $new_data['created_by'];
-                                }else{
-                                    $n['received_by'] = $old_data['created_by'];
-                                }
-                                $notice_id = $nm->insert($n);
-                                if(!$notice_id){
-                                    $this->db->trans_rollback();
-                                    return false;
-                                }
-                            }//if($t['notice_created_by']){
-
-                            //发给责任人
-                            if($t['notice_manager']){
-                                //判断老责任人
-                                if(!is_null($old_data)){
-                                    if($old_data['manager_id']){
-                                        $n['received_by'] = $old_data['manager_id'];
-                                        if(!$nm->insert($n)){
+                                    //发给创建者
+                                    if($t['notice_created_by']){
+                                        if(is_null($old_data)){
+                                            $n['received_by'] = $new_data['created_by'];
+                                        }else{
+                                            $n['received_by'] = $old_data['created_by'];
+                                        }
+                                        $notice_id = $nm->insert($n);
+                                        if(!$notice_id){
                                             $this->db->trans_rollback();
                                             return false;
                                         }
-                                    }
+                                    }//if($t['notice_created_by']){
+
+                                    //发给责任人
+                                    if($t['notice_manager']){
+                                        //判断老责任人
+                                        if(!is_null($old_data)){
+                                            if(isset($old_data['manager_id'])){
+                                                $n['received_by'] = $old_data['manager_id'];
+                                                if(!$nm->insert($n)){
+                                                    $this->db->trans_rollback();
+                                                    return false;
+                                                }
+                                            }
+                                        }
+                                        //判断新责任人
+                                        if(isset($new_data['manager_id'])){
+                                            $n['received_by'] = $new_data['manager_id'];
+                                            if(!$nm->insert($n)){
+                                                $this->db->trans_rollback();
+                                                return false;
+                                            }
+                                        }
+
+                                    }//if($t['notice_manager']){
+
+                                    //默认发送的角色
+                                    if($t['default_role_id']){
+                                        $this->load->model('user_role_model');
+                                        $urm = new User_role_model();
+                                        $users = $urm->find_all_by_view(array('role_id'=>$t['default_role_id'],'inactive_flag'=>0));
+                                        foreach($users as $u){
+                                            $n['received_by'] = $u['user_id'];
+                                            if(!$nm->insert($n)){
+                                                $this->db->trans_rollback();
+                                                return false;
+                                            }
+                                        }
+
+                                    }//if($t['default_role_id']){
+
+                                }// if($t['notice_flag'] && $t['when_new_value']
+
+                                //是否需要原因
+                                if($t['need_reason_flag']){
+                                    $need_reason = $t['need_reason_flag'];
                                 }
-                                //判断新责任人
-                                if($new_data['manager_id']){
-                                    $n['received_by'] = $new_data['manager_id'];
-                                    if(!$nm->insert($n)){
-                                        $this->db->trans_rollback();
-                                        return false;
-                                    }
-                                }
 
-                            }//if($t['notice_manager']){
+                            }//if(!$id){
 
-                            //默认发送的角色
-                            if($t['default_role_id']){
-                                $this->load->model('user_role_model');
-                                $urm = new User_role_model();
-                                $users = $urm->find_all_by_view(array('role_id'=>$t['default_role_id'],'inactive_flag'=>0));
-                                foreach($users as $u){
-                                    $n['received_by'] = $u['user_id'];
-                                    if(!$nm->insert($n)){
-                                        $this->db->trans_rollback();
-                                        return false;
-                                    }
-                                }
+                        }
 
-                            }//if($t['default_role_id']){
-
-                            //是否需要原因
-                            if($t['need_reason_flag']){
-                                $need_reason = $t['need_reason_flag'];
-                            }
-
-                        }// if($t['notice_flag'] && $t['when_new_value']
-                    }//if(!$id){
+                    } //判断有无变化
                 }
             }
         }
@@ -228,8 +236,8 @@ class Order_model extends MY_Model{
                 $notices = $nm->find_all_by(array('log_id' =>$log['id'],'from_log'=>1));
                 if(!empty($notices)){
                     foreach($notices as $n){
-                        $user = $um->find_by(array('id'=>$n['received_by'],'inactive'=>0,'email_flag'=>1,'email'=>'is not null'));
-                        if(!empty($user)){
+                        $user = $um->find_by(array('id'=>$n['received_by'],'inactive_flag'=>0,'email_flag'=>1));
+                        if(!empty($user) && !is_null($user['email']) && $user['email'] != ''){
                             $content = $this->load->view('notice_mail',$n,true);
                             send_mail($user['email'],$n['title'],$content);
                         }
@@ -239,11 +247,34 @@ class Order_model extends MY_Model{
         }
     }
 
+    function send_mail_by_notice($notice_id){
+        $this->load->model('user_model');
+        $um = new User_model();
+        $nm = new Notice_model();
+        $notice = $nm->find($notice_id);
+        if(!empty($notice)){
+            $user = $um->find_by(array('id'=>$notice['received_by'],'inactive_flag'=>0,'email_flag'=>1));
+            if(!empty($user) && !is_null($user['email']) && $user['email'] != ''){
+                $content = $this->load->view('notice_mail',$notice,true);
+                send_mail($user['email'],$notice['title'],$content);
+            }
+        }
+
+    }
+
     function do_update($order_id,$data){
         $order = $this->find($order_id);
         $this->db->trans_begin();
         if($this->update($order_id,$data,true)){
-            return $this->add_logs('update',$data,$order);
+            $data['id'] = $order_id;
+            $rs = $this->add_logs('update',$data,$order);
+            if($rs){
+                $this->db->trans_commit();
+                return true;
+            }else{
+                $this->db->trans_rollback();
+                return false;
+            }
         }else{
             $this->db->trans_rollback();
             return false;

@@ -1,10 +1,6 @@
-<h1>需要填写本次内容修改的原因</h1>
-<form id="change_reason" method="post" action="<?= _url('order','change_reason')?>">
-    <label for="reason">*原因</label>
-    <textarea id="reason" name="reason" cols="40" rows="4"></textarea>
-    <br/>
-
-    <input name="change_hash" id="change_hash" type="hidden" value="<?= v('change_hash')?>" />
-    <button type="submit">提交</button>
-</form>
+<?= render_form_open('order','change_reason','null','null','closeDialogAndRefresh') ?>
+<?= render_form_input('reason',TRUE);?>
+<?= render_form_hidden('change_hash',v('change_hash'));?>
+<?= render_submit_button();?>
+<?= render_form_close() ?>
 
