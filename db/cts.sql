@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2014 at 03:06 PM
+-- Generation Time: Oct 17, 2014 at 06:21 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -94,10 +94,10 @@ CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
 --
 
 INSERT INTO `ct_authority_objects` (`id`, `object_name`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'category_control', '订单控制权限对象1', NULL, NULL, 1411958674, -1),
+(1, 'category_control', '订单控制权限对象', NULL, NULL, 1413516417, 44),
 (2, 'only_mine_control', '只能自己的订单', 1412066866, -1, 1412066866, -1),
 (3, 'log_display_control', '订单日志类型显示控制', 1412928745, 44, 1412928745, 44),
-(4, 'log_display_fullname', '投诉单日志是否显示操作人姓名', 1412937910, 44, 1412937910, 44);
+(4, 'log_display_fullname', '日志显示操作人', 1412937910, 44, 1413516478, 44);
 
 -- --------------------------------------------------------
 
@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `description` varchar(255) NOT NULL COMMENT '描述',
   `config_value` varchar(255) NOT NULL COMMENT '配置值',
   `editable_flag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否可被前台编辑',
+  `data_type` varchar(20) NOT NULL DEFAULT 'string' COMMENT '数据类型',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -123,43 +124,43 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
 -- Dumping data for table `ct_configs`
 --
 
-INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'company_name', '公司名称', '浙江天正集团1', 1, NULL, NULL, 1412919552, 44),
-(2, 'logo_file', 'Logo文件路径', '1', 1, NULL, NULL, NULL, NULL),
-(3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, NULL, NULL, NULL, NULL),
-(4, 'category_control', '投诉订单分类功能开关', '1', 1, NULL, NULL, 1413338754, 44),
-(5, 'all_values', '包含所有值', 'all', 0, NULL, NULL, NULL, NULL),
-(6, 'alarm_period', '报警周期，每次报警的时间间隔，单位为小时', '24', 1, NULL, NULL, NULL, NULL),
-(7, 'mail_protocol', 'mail, sendmail, or smtp 邮件发送协议', 'smtp', 1, NULL, NULL, NULL, NULL),
-(8, 'sendmail_path', '服务器上 Sendmail 的实际路径。protocol 为 sendmail 时使用', '/usr/sbin/sendmail', 1, NULL, NULL, NULL, NULL),
-(9, 'smtp_host', 'SMTP 服务器地址', 'smtp.ym.163.com', 1, NULL, NULL, NULL, NULL),
-(10, 'smtp_user', 'SMTP 用户账号', 'yacole@sooncreate.com', 1, NULL, NULL, NULL, NULL),
-(11, 'smtp_pass', 'SMTP 密码', '325604', 1, NULL, NULL, NULL, NULL),
-(12, 'smtp_port', 'SMTP 端口', '25', 1, NULL, NULL, NULL, NULL),
-(13, 'smtp_timeout', 'SMTP 超时设置(单位：秒)', '5', 1, NULL, NULL, NULL, NULL),
-(14, 'mail_wordwrap', 'TRUE 或 FALSE (布尔值)	MAIL开启自动换行', 'TRUE', 1, NULL, NULL, NULL, NULL),
-(15, 'mail_wrapchars', '自动换行时每行的最大字符数', '76', 1, NULL, NULL, NULL, NULL),
-(16, 'mail_content_type', 'text 或 html	邮件类型。发送 HTML 邮件比如是完整的网页。请确认网页中是否有相对路径的链接和图片地址，它们在邮件中不能正确显示。', 'html', 1, NULL, NULL, NULL, NULL),
-(17, 'mail_charset', '字符集(utf-8, iso-8859-1 等)', 'utf-8', 1, NULL, NULL, NULL, NULL),
-(18, 'mail_validate', 'TRUE 或 FALSE (布尔值)	是否验证邮件地址', 'FALSE', 1, NULL, NULL, NULL, NULL),
-(19, 'mail_newline', '"\\r\\n" or "\\n" or "\\r"	换行符. (使用 "\\r\\n" to 以遵守RFC 822).', '\\n', 1, NULL, NULL, NULL, NULL),
-(20, 'bcc_batch_mode', 'TRUE or FALSE (boolean)	启用批量暗送模式', 'FALSE', 1, NULL, NULL, NULL, NULL),
-(21, 'bcc_batch_size', '批量暗送的邮件数', '200', 1, NULL, NULL, NULL, NULL),
-(22, 'mail_from', '邮件默认来自于，如果是smtp方式，必须同smtp_user', 'yacole@sooncreate.com', 1, NULL, NULL, NULL, NULL),
-(23, 'mail_from_name', '邮件来自，名称用于显示自动邮件的发件人姓名', '系统管理员', 1, NULL, NULL, NULL, NULL),
-(24, 'site_url', '网站地址', 'localhost', 1, NULL, NULL, NULL, NULL),
-(25, 'initial_password', '系统用户初始密码', '123456', 1, NULL, NULL, NULL, NULL),
-(26, 'upload_allowed_types', '允许上传文件的MIME类型；通常文件扩展名可以做为MIME类型. 允许多个类型用竖线‘|’分开', 'gif|jpg|png|pdf|doc|docx|xls|xlsx', 1, NULL, NULL, NULL, NULL),
-(27, 'upload_overwrite', '是否覆盖。该参数为TRUE时，如果上传文件时碰到重名文件，将会把原文件覆盖；如果该参数为FALSE，上传文件重名时，CI将会在新文件的文件名后面加一个数字。', 'FALSE', 1, NULL, NULL, NULL, NULL),
-(28, 'upload_max_size', '允许上传文件大小的最大值（以K为单位）。该参数为0则不限制。注意：通常PHP也有这项限制，可以在php.ini文件中指定。通常默认为2MB。', '200', 1, NULL, NULL, NULL, NULL),
-(29, 'upload_max_width', '上传文件的宽度最大值（像素为单位）。0为不限制。', '1024', 1, NULL, NULL, NULL, NULL),
-(30, 'upload_max_height', '上传文件的高度最大值（像素为单位）。0为不限制。', '768', 1, NULL, NULL, NULL, NULL),
-(31, 'upload_max_filename', '文件名的最大长度。0为不限制。', '0', 1, NULL, NULL, NULL, NULL),
-(32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'TRUE', 1, NULL, NULL, NULL, NULL),
-(33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, NULL, NULL, NULL, NULL),
-(34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, NULL, NULL, NULL, NULL),
-(35, 'word_truncate', '文字截断默认长度', '100', 1, NULL, NULL, NULL, NULL),
-(36, 'allow_register', '是否允许用户注册', 'TRUE', 1, NULL, NULL, NULL, NULL);
+INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `data_type`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(1, 'company_name', '公司名称', '浙江天正集团1', 1, 'string', NULL, NULL, 1412919552, 44),
+(2, 'logo_file', 'Logo文件路径', '1', 1, 'string', NULL, NULL, NULL, NULL),
+(3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, 'string', NULL, NULL, NULL, NULL),
+(4, 'category_control', '投诉订单分类功能开关', 'TRUE', 1, 'boolean', NULL, NULL, 1413338754, 44),
+(5, 'all_values', '包含所有值', 'all', 0, 'string', NULL, NULL, NULL, NULL),
+(6, 'alarm_period', '报警周期，每次报警的时间间隔，单位为小时', '24', 1, 'number', NULL, NULL, NULL, NULL),
+(7, 'mail_protocol', 'mail, sendmail, or smtp 邮件发送协议', 'smtp', 1, 'string', NULL, NULL, NULL, NULL),
+(8, 'sendmail_path', '服务器上 Sendmail 的实际路径。protocol 为 sendmail 时使用', '/usr/sbin/sendmail', 1, 'string', NULL, NULL, NULL, NULL),
+(9, 'smtp_host', 'SMTP 服务器地址', 'smtp.ym.163.com', 1, 'string', NULL, NULL, NULL, NULL),
+(10, 'smtp_user', 'SMTP 用户账号', 'yacole@sooncreate.com', 1, 'string', NULL, NULL, NULL, NULL),
+(11, 'smtp_pass', 'SMTP 密码', '325604', 1, 'string', NULL, NULL, NULL, NULL),
+(12, 'smtp_port', 'SMTP 端口', '25', 1, 'number', NULL, NULL, NULL, NULL),
+(13, 'smtp_timeout', 'SMTP 超时设置(单位：秒)', '5', 1, 'number', NULL, NULL, NULL, NULL),
+(14, 'mail_wordwrap', 'TRUE 或 FALSE (布尔值)	MAIL开启自动换行', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
+(15, 'mail_wrapchars', '自动换行时每行的最大字符数', '76', 1, 'number', NULL, NULL, NULL, NULL),
+(16, 'mail_content_type', 'text 或 html	邮件类型。发送 HTML 邮件比如是完整的网页。请确认网页中是否有相对路径的链接和图片地址，它们在邮件中不能正确显示。', 'html', 1, 'string', NULL, NULL, NULL, NULL),
+(17, 'mail_charset', '字符集(utf-8, iso-8859-1 等)', 'utf-8', 1, 'string', NULL, NULL, NULL, NULL),
+(18, 'mail_validate', 'TRUE 或 FALSE (布尔值)	是否验证邮件地址', 'FALSE', 1, 'boolean', NULL, NULL, NULL, NULL),
+(19, 'mail_newline', '"\\r\\n" or "\\n" or "\\r"	换行符. (使用 "\\r\\n" to 以遵守RFC 822).', '\\n', 1, 'string', NULL, NULL, NULL, NULL),
+(20, 'bcc_batch_mode', 'TRUE or FALSE (boolean)	启用批量暗送模式', 'FALSE', 1, 'boolean', NULL, NULL, NULL, NULL),
+(21, 'bcc_batch_size', '批量暗送的邮件数', '200', 1, 'number', NULL, NULL, NULL, NULL),
+(22, 'mail_from', '邮件默认来自于，如果是smtp方式，必须同smtp_user', 'yacole@sooncreate.com', 1, 'string', NULL, NULL, NULL, NULL),
+(23, 'mail_from_name', '邮件来自，名称用于显示自动邮件的发件人姓名', '系统管理员', 1, 'string', NULL, NULL, NULL, NULL),
+(24, 'site_url', '网站地址', 'localhost', 1, 'string', NULL, NULL, NULL, NULL),
+(25, 'initial_password', '系统用户初始密码', '123456', 1, 'string', NULL, NULL, NULL, NULL),
+(26, 'upload_allowed_types', '允许上传文件的MIME类型；通常文件扩展名可以做为MIME类型. 允许多个类型用竖线‘|’分开', 'gif|jpg|png|pdf|doc|docx|xls|xlsx', 1, 'string', NULL, NULL, NULL, NULL),
+(27, 'upload_overwrite', '是否覆盖。该参数为TRUE时，如果上传文件时碰到重名文件，将会把原文件覆盖；如果该参数为FALSE，上传文件重名时，CI将会在新文件的文件名后面加一个数字。', 'FALSE', 1, 'boolean', NULL, NULL, NULL, NULL),
+(28, 'upload_max_size', '允许上传文件大小的最大值（以K为单位）。该参数为0则不限制。注意：通常PHP也有这项限制，可以在php.ini文件中指定。通常默认为2MB。', '200', 1, 'number', NULL, NULL, NULL, NULL),
+(29, 'upload_max_width', '上传文件的宽度最大值（像素为单位）。0为不限制。', '1024', 1, 'number', NULL, NULL, NULL, NULL),
+(30, 'upload_max_height', '上传文件的高度最大值（像素为单位）。0为不限制。', '768', 1, 'number', NULL, NULL, NULL, NULL),
+(31, 'upload_max_filename', '文件名的最大长度。0为不限制。', '0', 1, 'number', NULL, NULL, NULL, NULL),
+(32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
+(33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
+(34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, 'string', NULL, NULL, NULL, NULL),
+(35, 'word_truncate', '文字截断默认长度', '100', 1, 'number', NULL, NULL, NULL, NULL),
+(36, 'allow_register', '是否允许用户注册', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -256,16 +257,15 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `ct_functions`
 --
 
 INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, `action`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_flag`, `display_class`) VALUES
-(1, 'order_create', '投诉订单创建', 'order', 'create', '1', 1412060589, -1, 1413333986, 44, 1, 'icon-globe'),
+(1, 'order_create', '投诉订单创建', 'order', 'choose_create', NULL, 1412060589, -1, 1413512538, 44, 1, 'icon-globe'),
 (3, 'user_index', '用户管理', 'user', 'index', NULL, 1412147486, 44, 1413334018, 44, 1, ''),
-(4, 'order_meeting_create', '会议创建', 'order_meeting', 'create', NULL, 1412400036, 44, 1413424230, 44, 1, ''),
 (5, 'my_orders', '投诉管理', 'order', 'index', NULL, 1413115571, 44, 1413115571, 44, 1, ''),
 (6, 'user_edit', '用户信息', 'user', 'user_edit', NULL, 1413115703, 44, 1413115703, 44, 1, ''),
 (7, 'my_notices', '我的消息', 'user', 'notices', NULL, 1413115821, 44, 1413115821, 44, 1, ''),
@@ -277,7 +277,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (13, 'ao_manage', '权限对象管理', 'auth_object', 'index', NULL, 1413425444, 44, 1413425444, 44, 1, ''),
 (14, 'olt_manage', '订单日志类型管理', 'order_log_type', 'index', NULL, 1413425500, 44, 1413425500, 44, 1, ''),
 (15, 'message_manage', '系统消息管理', 'messages', 'index', NULL, 1413425531, 44, 1413425531, 44, 1, ''),
-(16, 'config_manage', '系统配置', 'configs', 'index', NULL, 1413425561, 44, 1413425561, 44, 1, '');
+(16, 'config_manage', '系统配置', 'configs', 'index', NULL, 1413425561, 44, 1413425561, 44, 1, ''),
+(17, 'test', 'test', 'test', 'test', NULL, 1413512764, 44, 1413512764, 44, 1, '');
 
 -- --------------------------------------------------------
 
@@ -294,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `ct_function_objects` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='功能权限对象表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='功能权限对象表' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_function_objects`
@@ -302,7 +303,8 @@ CREATE TABLE IF NOT EXISTS `ct_function_objects` (
 
 INSERT INTO `ct_function_objects` (`id`, `function_id`, `object_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
 (2, 1, 1, 44, 1413012134, 1413012134, 44),
-(3, 1, 3, 44, 1413012476, 1413012476, 44);
+(3, 1, 3, 44, 1413012476, 1413012476, 44),
+(5, 17, 1, 44, 1413513944, 1413513944, 44);
 
 -- --------------------------------------------------------
 
@@ -337,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `ct_function_obj_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`fun_object_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='功能权限对象明细表' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='功能权限对象明细表' AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `ct_function_obj_lines`
@@ -347,7 +349,10 @@ INSERT INTO `ct_function_obj_lines` (`id`, `object_line_id`, `fun_object_id`, `d
 (4, 3, 2, 'vendor', 44, 1413012134, 1413012451, 44),
 (5, 4, 2, 'all', 44, 1413012134, 1413012499, 44),
 (6, 5, 2, 'all', 44, 1413012134, 1413012134, 44),
-(7, 7, 3, 'manager_change', 44, 1413012476, 1413012489, 44);
+(7, 7, 3, 'manager_change', 44, 1413012476, 1413012489, 44),
+(11, 3, 5, 'employee', 44, 1413513944, 1413514880, 44),
+(12, 4, 5, 'all', 44, 1413513944, 1413513944, 44),
+(13, 5, 5, 'all', 44, 1413513944, 1413513944, 44);
 
 -- --------------------------------------------------------
 
@@ -552,7 +557,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   `display_class` varchar(100) DEFAULT NULL COMMENT '抬头图标样式码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `ct_module_header`
@@ -561,10 +566,11 @@ CREATE TABLE IF NOT EXISTS `ct_module_header` (
 INSERT INTO `ct_module_header` (`id`, `module_name`, `description`, `sort`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_class`) VALUES
 (3, 'system_manage', '系统管理', 98, 1412060859, -1, 1413429712, 44, 'icon-cogs'),
 (4, 'user_center', '用户中心', 2, 1413076355, 44, 1413077216, 44, 'icon-user'),
-(5, 'order_create', '发布问题', 0, 1413076497, 44, 1413077197, 44, 'icon-edit'),
+(5, 'order_create', '发布问题', 0, 1413076497, 44, 1413508328, 44, 'icon-edit'),
 (6, 'order_manage', '我的投诉', 1, 1413076525, 44, 1413077210, 44, 'icon-comments'),
 (7, 'message_manage', '我的提醒', 3, 1413076578, 44, 1413077203, 44, 'icon-envelope'),
-(9, 'supper_manage', '系统高级配置', 99, 1413425681, 44, 1413425681, 44, '');
+(9, 'supper_manage', '高级配置', 99, 1413425681, 44, 1413511545, 44, ''),
+(10, 'test', 'test', 0, 1413510852, 44, 1413510852, 44, '');
 
 -- --------------------------------------------------------
 
@@ -582,7 +588,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -604,8 +610,8 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (30, 9, 13, 0, 1413425722, 44, 1413425722, 44),
 (31, 9, 14, 0, 1413425722, 44, 1413425722, 44),
 (32, 9, 15, 0, 1413425722, 44, 1413425722, 44),
-(33, 3, 9, 0, 1413425762, 44, 1413425762, 44),
-(34, 3, 16, 0, 1413425762, 44, 1413425762, 44);
+(34, 3, 16, 0, 1413425762, 44, 1413425762, 44),
+(35, 10, 17, 0, 1413512768, 44, 1413512768, 44);
 
 -- --------------------------------------------------------
 
@@ -1397,7 +1403,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (82, 63, 3, 'all', 1413440415, 44, 1413462773, 44),
 (83, 63, 4, 'all', 1413440415, 44, 1413440415, 44),
 (84, 63, 5, 'all', 1413440415, 44, 1413440415, 44),
-(91, 66, 3, 'all', 1413460414, 44, 1413460424, 44),
+(91, 66, 3, 'all', 1413460414, 44, 1413510888, 44),
 (92, 66, 4, 'all', 1413460414, 44, 1413460414, 44),
 (93, 66, 5, 'all', 1413460414, 44, 1413460414, 44),
 (94, 67, 7, 'all', 1413462790, 44, 1413462790, 44);
@@ -1555,7 +1561,7 @@ INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`,
 (46, 'yacole2', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', NULL, NULL, NULL, NULL, NULL, '陈杨阳', 0, 0, 0, 1, 44, 1412230134, 1412230134, 44),
 (47, 'hellogs', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '高哨', 0, 0, 0, 1, 44, 1412230196, 1412230196, 44),
 (48, 'yacole111', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', '', 'gs1357@qq.com', '', '', '', 'asdfasdf', 0, 1, 0, 1, 44, 1412230229, 1412415433, 44),
-(66, 'asdfasdf', '92429d82a41e930486c6de5ebda9602d55c39986', 'male', '', 'gs1357@qq.com', '', '', '', '恭喜发财1', 0, 1, 0, 0, 44, 1412231054, 1413436503, 44),
+(66, 'asdfasdf', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '', 'gs1357@qq.com', '', '', '', '恭喜发财1', 0, 1, 0, 1, 44, 1412231054, 1413508965, 44),
 (67, 'yyyyyy', '3421ecde2a5de6543b48460b867cf323b018bc22', 'female', '', '', '', '', '', 'yyyyyy', 0, 0, 0, 0, 44, 1412404281, 1412404332, 44),
 (68, 'ddddd', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'female', 'ddd', NULL, NULL, '111', NULL, 'ddd', 0, 0, 0, 1, 44, 1412404348, 1412404348, 44);
 
@@ -1632,7 +1638,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`user_id`,`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `ct_user_roles`
@@ -1652,7 +1658,17 @@ INSERT INTO `ct_user_roles` (`id`, `user_id`, `role_id`, `creation_date`, `creat
 (21, 44, 5, 1413427756, 44, 1413427756, 44),
 (22, 44, 8, 1413427756, 44, 1413427756, 44),
 (23, 44, 11, 1413427756, 44, 1413427756, 44),
-(24, 47, 1, 1413433311, 44, 1413433311, 44);
+(24, 47, 1, 1413433311, 44, 1413433311, 44),
+(25, 66, 1, 1413510323, 44, 1413510323, 44),
+(26, 66, 8, 1413510323, 44, 1413510323, 44),
+(27, 44, 2, 1413510336, 44, 1413510336, 44),
+(28, 44, 5, 1413510336, 44, 1413510336, 44),
+(29, 44, 8, 1413510336, 44, 1413510336, 44),
+(30, 44, 11, 1413510336, 44, 1413510336, 44),
+(31, 44, 2, 1413510374, 44, 1413510374, 44),
+(32, 44, 5, 1413510374, 44, 1413510374, 44),
+(33, 44, 8, 1413510374, 44, 1413510374, 44),
+(34, 44, 11, 1413510374, 44, 1413510374, 44);
 
 -- --------------------------------------------------------
 
@@ -1677,7 +1693,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -1705,7 +1721,8 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (22, 'vl_authobject', '供权限对象使用的值集', 1, 'description', 'id', 'ct_valuelist_header', 'valuelist_name like ''ao_%''', NULL, 1, 1412754189, 44, 1412991840, 44),
 (23, 'vl_tables', '系统表/视图值集', 1, 'label', 'value', 'ct_tables_vl', '', NULL, 0, 1412907002, 44, 1412907002, 44),
 (24, 'vl_roles', '系统角色列表', 1, 'description', 'id', 'ct_roles', '', NULL, 1, 1412927876, 44, 1412928109, 44),
-(25, 'ao_log_type', '投诉单日志类型', 1, 'description', 'log_type', 'ct_order_log_types', NULL, NULL, 1, NULL, NULL, NULL, NULL);
+(25, 'ao_log_type', '投诉单日志类型', 1, 'description', 'log_type', 'ct_order_log_types', NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(26, 'vl_auth_object', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1413513361, 44, 1413513361, 44);
 
 -- --------------------------------------------------------
 
@@ -1738,14 +1755,14 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=50 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
 --
 
 INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_value`, `segment_desc`, `inactive_flag`, `sort`, `parent_segment_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 1, '10', 'vendor', '供应商投诉单', 0, 1, '0', NULL, NULL, NULL, NULL),
+(1, 1, '10', 'vendor', '供应商投诉单', 0, 1, '0', NULL, NULL, 1413506503, 44),
 (2, 1, '20', 'employee', '内部员工投诉单', 0, 2, '0', NULL, NULL, NULL, NULL),
 (3, 1, '30', 'customer', '客户投诉单', 0, 1, '0', NULL, NULL, 1412902860, 44),
 (4, 2, '30', 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
@@ -1783,7 +1800,8 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (45, 7, '40', '40', '4', 0, 1, 'customer', 1412825288, -1, 1412825288, -1),
 (46, 10, '20', '201', 'asdf', 0, 1, 'vendor', 1412903034, 44, 1412903055, 44),
 (47, 7, '30', '30', '设计图纸', 0, 2, 'vendor', 1413419139, 44, 1413419167, 44),
-(48, 7, '40', '40', '采购部门服务', 0, 3, 'vendor', 1413419234, 44, 1413419234, 44);
+(48, 7, '40', '40', '采购部门服务', 0, 3, 'vendor', 1413419234, 44, 1413419234, 44),
+(49, 1, '40', 'test', 'set', 1, 0, '', 1413507444, 44, 1413507587, 44);
 
 -- --------------------------------------------------------
 
