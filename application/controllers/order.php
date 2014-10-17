@@ -137,7 +137,7 @@ class Order extends CI_Controller {
                 $order_id = $order->save($data,$content,$addfiles);
                 if($order_id){
                     message_db_success();
-//                    redirect_to('order','show',array('id'=>$order_id));
+                    redirect_to('order','show',array('id'=>$order_id));
                 }else{
                     validation_error();
                 }

@@ -18,9 +18,6 @@ class Order_log_type extends CI_Controller {
         if($_POST){
             $oltm = new Order_log_type_model();
             $_POST['need_reason_flag'] = v('need_reason_flag');
-            $_POST['notice_flag'] = v('notice_flag');
-            $_POST['notice_created_by'] = v('notice_created_by');
-            $_POST['notice_manager'] = v('notice_manager');
             if($oltm->insert($_POST)){
                 go_back();
                 message_db_success();
@@ -43,9 +40,6 @@ class Order_log_type extends CI_Controller {
         }else{
             if($_POST){
                 $_POST['need_reason_flag'] = v('need_reason_flag');
-                $_POST['notice_flag'] = v('notice_flag');
-                $_POST['notice_created_by'] = v('notice_created_by');
-                $_POST['notice_manager'] = v('notice_manager');
                 if($oltm->update($l['id'],$_POST)){
                     go_back();
                     message_db_success();
@@ -77,6 +71,82 @@ class Order_log_type extends CI_Controller {
                 }
             }else{
                 custz_message('E','日志类型被用于多个日志中！无法删除');
+            }
+        }else{
+            show_404();
+        }
+    }
+
+    function notice_rules(){
+        $oltm = new Order_log_type_model();
+        $o = $oltm->find(v('id'));
+        if(!empty($o)){
+            $this->load->model('notice_rule_model');
+            $nrm = new Notice_rule_model();
+            $data['objects'] = $nrm->find_all_by(array('log_type_id'=>$o['id']));
+            render($data);
+        }else{
+            show_404();
+        }
+    }
+
+    function notice_rule_create(){
+        $oltm = new Order_log_type_model();
+        $id = v('log_type_id');
+        $o = $oltm->find($id);
+        if(!empty($o)){
+            if($_POST){
+                $_POST['inactive_flag'] = v('inactive_flag');
+                $_POST['notice_created_by'] = v('notice_created_by');
+                $_POST['notice_manager'] = v('notice_manager');
+                $this->load->model('notice_rule_model');
+                $nrm = new Notice_rule_model();
+                if($nrm->insert($_POST)){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render($o);
+            }
+        }else{
+            show_404();
+        }
+    }
+
+    function notice_rule_edit(){
+        $this->load->model('notice_rule_model');
+        $nrm = new Notice_rule_model();
+        $o = $nrm->find(v('id'));
+        if(!empty($o)){
+            if($_POST){
+                $_POST['inactive_flag'] = v('inactive_flag');
+                $_POST['notice_created_by'] = v('notice_created_by');
+                $_POST['notice_manager'] = v('notice_manager');
+                if($nrm->update($o['id'],$_POST)){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render($o);
+            }
+        }else{
+            show_404();
+        }
+    }
+
+    function notice_rule_destroy(){
+        $this->load->model('notice_rule_model');
+        $nrm = new Notice_rule_model();
+        $o = $nrm->find(v('id'));
+        if(!empty($o)){
+            if($nrm->delete($o['id'])){
+                message_db_success();
+            }else{
+                message_db_failure();
             }
         }else{
             show_404();

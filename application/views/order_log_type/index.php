@@ -5,7 +5,6 @@
     <th>标题格式</th>
     <th>内容格式</th>
     <th>是否需要填写原因</th>
-    <th>是否需要同时创建通知</th>
     <th>对应字段</th>
     <th>数据库操作</th>
     <th>操作</th>
@@ -17,7 +16,6 @@
             <td><?= word_truncate($o['title'])?></td>
             <td><?= word_truncate($o['content'])?></td>
             <td><?= $o['need_reason_flag']?></td>
-            <td><?= $o['notice_flag']?></td>
             <td><?= $o['field_name']?></td>
             <td><?= $o['dll_type']?></td>
 
@@ -25,6 +23,8 @@
                 <?= render_link(array('order_log_type','edit',array('id'=>$o['id'])),label('edit'))?>
                 &nbsp;|&nbsp;
                 <?= render_link(array('order_log_type','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
+                &nbsp;|&nbsp;
+                <?= render_link(array('order_log_type','notice_rules',array('id'=>$o['id'])),label('notice_rules'))?>
             </td>
 
         </tr>

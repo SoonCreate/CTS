@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2014 at 04:21 PM
+-- Generation Time: Oct 17, 2014 at 05:39 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -694,7 +694,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=133 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=139 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -822,16 +822,24 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (129, 154, 0, '投诉单状态： 已关闭 => 重新打开 ', 1, '投诉单86被重新打开', 86, 44, NULL, 1, 44, 1413554428, 1413554428, 44),
 (130, 154, 0, '投诉单状态： 已关闭 => 重新打开 ', 1, '投诉单86被重新打开', 86, 44, NULL, 1, 44, 1413554428, 1413554428, 44),
 (131, NULL, 0, NULL, 0, '关于投诉单86的反馈', 86, 44, 'http://localhost/cts/index.php/order/feedback?id=86', 0, 44, 1413554629, 1413554629, 44),
-(132, NULL, 0, NULL, 0, '关于投诉单89的反馈', 89, 44, 'http://localhost/cts/index.php/order/feedback?id=89', 0, 44, 1413555683, 1413555683, 44);
+(132, NULL, 0, NULL, 0, '关于投诉单89的反馈', 89, 44, 'http://localhost/cts/index.php/order/feedback?id=89', 0, 44, 1413555683, 1413555683, 44),
+(133, 161, 0, '投诉单提交', 1, '投诉单 97 提交', 97, 44, NULL, 1, 44, 1413559897, 1413559897, 44),
+(134, 161, 0, '投诉单提交', 1, '投诉单 97 提交', 97, 44, NULL, 1, 44, 1413559897, 1413559897, 44),
+(135, 162, 0, '投诉单提交', 1, '投诉单 98 提交', 98, 44, NULL, 1, 44, 1413559928, 1413559928, 44),
+(136, 162, 1, '投诉单提交', 1, '投诉单 98 提交', 98, 44, NULL, 1, 44, 1413559928, 1413560142, 44),
+(137, 168, 0, '投诉单提交', 1, '投诉单 99 提交', 99, 44, NULL, 1, 44, 1413560227, 1413560227, 44),
+(138, 168, 0, '投诉单提交', 1, '投诉单 99 提交', 99, 44, NULL, 1, 44, 1413560227, 1413560227, 44);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_notice_configs`
+-- Table structure for table `ct_notice_rules`
 --
 
-CREATE TABLE IF NOT EXISTS `ct_notice_configs` (
+CREATE TABLE IF NOT EXISTS `ct_notice_rules` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `log_type_id` int(11) NOT NULL COMMENT '订单日志类型',
+  `description` varchar(255) NOT NULL,
   `notice_created_by` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '创建者',
   `notice_manager` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '责任人',
   `when_new_value` varchar(255) NOT NULL COMMENT '当新值为',
@@ -842,8 +850,16 @@ CREATE TABLE IF NOT EXISTS `ct_notice_configs` (
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通知配置信息' AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  KEY `Index_2` (`log_type_id`,`inactive_flag`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='通知规则信息' AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `ct_notice_rules`
+--
+
+INSERT INTO `ct_notice_rules` (`id`, `log_type_id`, `description`, `notice_created_by`, `notice_manager`, `when_new_value`, `when_old_value`, `default_role_id`, `inactive_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(8, 9, '投诉单提交', 0, 0, 'released', 'all', 2, 0, 44, 1413559614, 1413559614, 44);
 
 -- --------------------------------------------------------
 
@@ -874,7 +890,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_type`,`status`,`manager_id`) USING BTREE,
   KEY `Index_3` (`created_by`,`creation_date`,`status`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=91 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=100 ;
 
 --
 -- Dumping data for table `ct_orders`
@@ -963,7 +979,13 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (87, 'employee', 'released', 'low', 'low', '30', 'asfd', NULL, NULL, 'afds', '', '111', '', '', 0, 1413546465, 44, 1413546465, 44),
 (88, 'employee', 'released', 'low', 'low', '30', 'asdf', NULL, NULL, 'asdf', '', '1', '', '', 0, 1413547082, 44, 1413547082, 44),
 (89, 'employee', 'closed', 'low', 'low', '30', 'asdf', NULL, NULL, 'asdf', '', '1', '', '', 0, 1413547106, 44, 1413555683, 44),
-(90, 'employee', 'closed', 'low', 'low', '30', 'asfd', 44, 1413475200, 'adsf', '', '1', '', '', 0, 1413547147, 44, 1413552345, 44);
+(90, 'employee', 'closed', 'low', 'low', '30', 'asfd', 44, 1413475200, 'adsf', '', '1', '', '', 0, 1413547147, 44, 1413552345, 44),
+(92, 'employee', 'released', 'low', 'low', '30', 'asfd', NULL, NULL, 'asfd', '', '111', '', '', 0, 1413559395, 44, 1413559395, 44),
+(93, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, NULL, 'a', '', '1', '', '', 0, 1413559460, 44, 1413559460, 44),
+(94, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, NULL, 'a', '', '1', '', '', 0, 1413559491, 44, 1413559491, 44),
+(97, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, NULL, 'a', '', '1', '', '', 0, 1413559897, 44, 1413559897, 44),
+(98, 'vendor', 'allocated', 'low', 'low', '10', 'a', 47, 1413475200, 'a', '', '1', '', '', 0, 1413559928, 44, 1413560089, 44),
+(99, 'employee', 'released', 'low', 'low', '30', 'a', NULL, NULL, 'a', '', '1', '', '', 0, 1413560227, 44, 1413560227, 44);
 
 -- --------------------------------------------------------
 
@@ -1026,7 +1048,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=121 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=130 ;
 
 --
 -- Dumping data for table `ct_order_contents`
@@ -1147,7 +1169,13 @@ INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `cre
 (117, 88, 'asfd', 44, 1413547082, 1413547082, 44),
 (118, 89, 'asfd', 44, 1413547106, 1413547106, 44),
 (119, 90, 'asfd', 44, 1413547147, 1413547147, 44),
-(120, 90, 'asfd', 44, 1413547572, 1413547572, 44);
+(120, 90, 'asfd', 44, 1413547572, 1413547572, 44),
+(122, 92, 'asfd', 44, 1413559395, 1413559395, 44),
+(123, 93, 'a', 44, 1413559460, 1413559460, 44),
+(124, 94, 'a', 44, 1413559491, 1413559491, 44),
+(127, 97, 'a', 44, 1413559897, 1413559897, 44),
+(128, 98, 'a', 44, 1413559928, 1413559928, 44),
+(129, 99, 'a', 44, 1413560227, 1413560227, 44);
 
 -- --------------------------------------------------------
 
@@ -1170,7 +1198,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=155 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=169 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -1321,7 +1349,18 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (151, 86, 'manager_change', '44', NULL, 'a', 1413554326, 1413554326, 44, 1413554376, 44),
 (152, 86, 'pcd_update', '1413475200', NULL, 'a', 1413554326, 1413554326, 44, 1413554376, 44),
 (153, 86, 'order_done', 'done', 'allocated', NULL, 1413554385, 1413554385, 44, 1413554385, 44),
-(154, 86, 'order_reopen', 'reopen', 'closed', NULL, 1413554428, 1413554428, 44, 1413554428, 44);
+(154, 86, 'order_reopen', 'reopen', 'closed', NULL, 1413554428, 1413554428, 44, 1413554428, 44),
+(156, 92, 'order_status_new', 'released', '', NULL, 1413559395, 1413559395, 44, 1413559395, 44),
+(157, 93, 'order_status_new', 'released', '', NULL, 1413559460, 1413559460, 44, 1413559460, 44),
+(158, 94, 'order_status_new', 'released', '', NULL, 1413559491, 1413559491, 44, 1413559491, 44),
+(161, 97, 'order_status_new', 'released', '', NULL, 1413559897, 1413559897, 44, 1413559897, 44),
+(162, 98, 'order_status_new', 'released', '', NULL, 1413559928, 1413559928, 44, 1413559928, 44),
+(163, 98, 'order_status', 'confirmed', 'released', NULL, 1413559940, 1413559940, 44, 1413559940, 44),
+(164, 98, 'manager_change', '44', NULL, NULL, 1413560049, 1413560049, 44, 1413560049, 44),
+(165, 98, 'pcd_update', '1413475200', NULL, NULL, 1413560049, 1413560049, 44, 1413560049, 44),
+(166, 98, 'order_status', 'allocated', 'confirmed', NULL, 1413560049, 1413560049, 44, 1413560049, 44),
+(167, 98, 'manager_change', '47', '44', NULL, 1413560089, 1413560089, 44, 1413560089, 44),
+(168, 99, 'order_status_new', 'released', '', NULL, 1413560227, 1413560227, 44, 1413560227, 44);
 
 -- --------------------------------------------------------
 
@@ -1346,7 +1385,6 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs_v` (
 ,`need_reason_flag` tinyint(4)
 ,`field_name` varchar(100)
 ,`dll_type` varchar(20)
-,`notice_flag` int(11)
 ,`field_valuelist_id` int(10) unsigned
 );
 -- --------------------------------------------------------
@@ -1364,31 +1402,23 @@ CREATE TABLE IF NOT EXISTS `ct_order_log_types` (
   `need_reason_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否需要填写原因',
   `field_name` varchar(100) NOT NULL COMMENT '字段',
   `dll_type` varchar(20) NOT NULL COMMENT '操作类型',
-  `notice_flag` int(11) NOT NULL DEFAULT '0' COMMENT '是否通知到相关人员',
-  `notice_created_by` tinyint(4) NOT NULL DEFAULT '0' COMMENT '通知到创建者',
-  `notice_manager` tinyint(4) NOT NULL DEFAULT '0' COMMENT '通知到责任人',
-  `when_new_value` varchar(255) NOT NULL COMMENT '当新值为',
-  `when_old_value` varchar(255) NOT NULL COMMENT '当老值为',
-  `default_role_id` int(11) DEFAULT NULL COMMENT '默认通知到的角色',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   `field_valuelist_id` int(10) unsigned DEFAULT NULL COMMENT '字段值集',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志类型表' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志类型表' AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `ct_order_log_types`
 --
 
-INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `content`, `need_reason_flag`, `field_name`, `dll_type`, `notice_flag`, `notice_created_by`, `notice_manager`, `when_new_value`, `when_old_value`, `default_role_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `field_valuelist_id`) VALUES
-(2, 'order_release', '投诉单新建', '投诉单&order_id 状态有新的变化', '投诉单提交', 1, 'status', 'insert', 1, 0, 0, 'released', 'all', 2, 44, 1412131199, 1413533411, 44, 16),
-(3, 'order_done', '状态更新', '投诉单&order_id 已解决', '&old_value => &new_value ', 0, 'status', 'update', 1, 1, 0, 'done', 'allocated', 0, 44, 1412149621, 1413555097, 44, 16),
-(4, 'manager_change', '责任人更新', '订单 &order_id 责任人变更', '责任人从 &old_value 变成 &new_value', 1, 'manager_id', 'update', 1, 0, 1, 'all', 'all', 0, 44, 1412228612, 1413533254, 44, 17),
-(5, 'pcd_update', '计划完成时间更新', '订单&order_id 计划完成日期变更', '计划完成时间变更从&old_value 改为 &new_value ', 1, 'plan_complete_date', 'update', 1, 0, 1, 'all', 'all', 0, 44, 1412408774, 1413533439, 44, 0),
-(6, 'order_reopen', '状态更新', '投诉单&order_id被重新打开', '&old_value => &new_value ', 0, 'status', 'update', 1, 0, 1, 'reopen', 'closed', 2, 44, 1413532741, 1413555088, 44, 16),
-(7, 'order_confirm', '状态更新', '投诉单 &order_id 更新状态', '&old_value => &new_value', 0, 'status', 'update', 0, 0, 0, 'confirmed', 'released', 0, 44, 1413554912, 1413555081, 44, 16);
+INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `content`, `need_reason_flag`, `field_name`, `dll_type`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `field_valuelist_id`) VALUES
+(4, 'manager_change', '责任人更新', '订单 &order_id 责任人变更', '责任人从 &old_value 变成 &new_value', 1, 'manager_id', 'update', 44, 1412228612, 1413533254, 44, 17),
+(5, 'pcd_update', '计划完成时间更新', '订单&order_id 计划完成日期变更', '计划完成时间变更从&old_value 改为 &new_value ', 1, 'plan_complete_date', 'update', 44, 1412408774, 1413533439, 44, 0),
+(8, 'order_status', '状态更新', '投诉单 &order_id状态更新', '&old_value => &new_value', 0, 'status', 'update', 44, 1413558149, 1413558149, 44, 16),
+(9, 'order_status_new', '投诉单提交', '投诉单 &order_id 提交', '投诉单提交', 0, 'status', 'insert', 44, 1413558239, 1413558239, 44, 16);
 
 -- --------------------------------------------------------
 
@@ -2227,7 +2257,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_order_logs_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_logs_v` AS select `ol`.`id` AS `id`,`ol`.`order_id` AS `order_id`,`ol`.`log_type` AS `log_type`,`ol`.`new_value` AS `new_value`,`ol`.`old_value` AS `old_value`,`ol`.`reason` AS `reason`,`ol`.`change_hash` AS `change_hash`,`ol`.`creation_date` AS `creation_date`,`ol`.`created_by` AS `created_by`,`ol`.`last_update_date` AS `last_update_date`,`ol`.`last_updated_by` AS `last_updated_by`,`olt`.`description` AS `description`,`olt`.`title` AS `title`,`olt`.`content` AS `content`,`olt`.`need_reason_flag` AS `need_reason_flag`,`olt`.`field_name` AS `field_name`,`olt`.`dll_type` AS `dll_type`,`olt`.`notice_flag` AS `notice_flag`,`olt`.`field_valuelist_id` AS `field_valuelist_id` from (`ct_order_logs` `ol` join `ct_order_log_types` `olt`) where (`olt`.`log_type` = `ol`.`log_type`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_logs_v` AS select `ol`.`id` AS `id`,`ol`.`order_id` AS `order_id`,`ol`.`log_type` AS `log_type`,`ol`.`new_value` AS `new_value`,`ol`.`old_value` AS `old_value`,`ol`.`reason` AS `reason`,`ol`.`change_hash` AS `change_hash`,`ol`.`creation_date` AS `creation_date`,`ol`.`created_by` AS `created_by`,`ol`.`last_update_date` AS `last_update_date`,`ol`.`last_updated_by` AS `last_updated_by`,`olt`.`description` AS `description`,`olt`.`title` AS `title`,`olt`.`content` AS `content`,`olt`.`need_reason_flag` AS `need_reason_flag`,`olt`.`field_name` AS `field_name`,`olt`.`dll_type` AS `dll_type`,`olt`.`field_valuelist_id` AS `field_valuelist_id` from (`ct_order_logs` `ol` join `ct_order_log_types` `olt`) where (`olt`.`log_type` = `ol`.`log_type`);
 
 -- --------------------------------------------------------
 
