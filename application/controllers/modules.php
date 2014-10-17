@@ -20,12 +20,14 @@ class Modules extends CI_Controller {
         if($_POST){
             $m= new Module_model();
             if($m->insert(_data('module_name','description','display_class','sort'))){
-                echo 'done';
+                go_back();
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
         }else{
-            render();
+            $data['sort'] = 0;
+            render($data);
         }
     }
 
@@ -37,9 +39,10 @@ class Modules extends CI_Controller {
         }else{
             if($_POST){
                 if($m->update($module['id'],_data('description','display_class','sort'))){
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
 
             }else{
@@ -64,12 +67,12 @@ class Modules extends CI_Controller {
             $m->delete($module_id);
             $this->db->trans_complete();
             if ($this->db->trans_status() === FALSE) {
-                echo '数据库删除错误';
+                message_db_failure();
             }else{
-                echo 'done';
+                message_db_success();
             }
         }else{
-            echo '无法删除!模块正在角色被使用.';
+            custz_message('E','无法删除!模块正在角色被使用');
         }
     }
 
@@ -101,9 +104,9 @@ class Modules extends CI_Controller {
                 }
                 $this->db->trans_complete();
                 if ($this->db->trans_status() === FALSE) {
-                    echo '数据库插入错误';
+                    message_db_failure();
                 }else{
-                    echo 'done';
+                    message_db_success();
                 }
             }else{
                 $this->load->model('function_model');
@@ -122,6 +125,14 @@ class Modules extends CI_Controller {
                 render($data);
             }
         }
+    }
+
+    function has_roles(){
+
+    }
+
+    function has_user(){
+
     }
 
 

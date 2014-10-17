@@ -275,9 +275,10 @@ class User extends CI_Controller {
                 $this->db->trans_complete();
 
                 if ($this->db->trans_status() === FALSE) {
-                    echo '数据库插入错误';
+                    message_db_failure();
                 }else{
-                    echo 'done';
+                    go_back();
+                    message_db_success();
                 }
             }else{
                 $user_id = $user['id'];
@@ -287,9 +288,9 @@ class User extends CI_Controller {
                 for($i=0;$i<count($roles) ;$i++){
                     $user_role = $ur->find_by(array('user_id'=>$user_id,'role_id'=>$roles[$i]['id']));
                     if(!empty($user_role)){
-                        $roles[$i]['checked'] = 'checked';
+                        $roles[$i]['checked'] = 1;
                     }else{
-                        $roles[$i]['checked'] = '';
+                        $roles[$i]['checked'] = 0;
                     }
                 }
                 $data['roles'] = $roles;

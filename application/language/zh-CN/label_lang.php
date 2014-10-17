@@ -44,5 +44,6 @@ $lang['label_mobile_telephone'] = "手机号码";
 $lang['label_email'] = "邮件地址";
 $lang['label_phone_number'] = "办公室电话";
 $lang['label_content'] = "内容";
-$lang['label_full_name'] = "公司名称";
+$lang['label_full_name'] = "公司名称/姓名";
+$lang['label_company_name'] = "公司名称";
 $lang['label_address'] = "联系地址";

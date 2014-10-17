@@ -13,14 +13,15 @@
         <td><?= $o['description']?></td>
         <td><?= $o['sort']?></td>
 
-        <td><a href="<?= _url('modules','edit',array('id'=>$o['id']))?>">编辑</a>&nbsp;|&nbsp;
-            <a href="<?= _url('modules','destroy',array('id'=>$o['id']))?>">删除</a>&nbsp;|&nbsp;
-            <a href="<?= _url('modules','choose_functions',array('module_id'=>$o['id']))?>">选择功能</a>&nbsp;|&nbsp;
-            <a href="<?= _url('modules','has_roles',array('module_id'=>$o['id']))?>">被用于哪些角色</a>&nbsp;|&nbsp;
-            <a href="<?= _url('modules','has_users',array('module_id'=>$o['id']))?>">被用于哪些用户</a>
+        <td>
+            <?= render_link(array('modules','edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('modules','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('modules','choose_functions',array('module_id'=>$o['id'])),label('choose_functions'))?>
         </td>
 
     </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('modules','create')?>">模块创建</a>
+<?= render_link(array('modules','create'),label('module_create'))?>

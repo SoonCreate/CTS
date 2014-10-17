@@ -15,7 +15,7 @@
 </script>
 <div class="container-fluid">
     <div class="row inline">
-        <!--?= lang('title') ?--><input id="title" name="title" data-dojo-type="sckj/form/TextBox" class="leftinput" />
+        <!--?= lang('title') ?--><input id="title" name="title" data-dojo-type="sckj/form/TextBox" class="leftinput"  /><!- style="width:400px" ->
         <!--?= lang('status') ?-->
         <select  id="status" name="status" data-dojo-type="sckj/form/Select"  trim="true" class="midinput">
             <?= render_options('vl_order_status')?>

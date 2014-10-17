@@ -1,9 +1,8 @@
-<h1>角色选择</h1>
-<form id="choose_roles" method="post" action="<?= _url('user','choose_roles')?>">
+<?= render_form_header('choose_roles');?>
+<?= render_form_open('user','choose_roles') ?>
     <?php foreach($roles as $role) :?>
-        <input type="checkbox" name="roles[]" id="role_<?= $role['id'] ?>" value="<?= $role['id']?>" <?= $role['checked']?>/>
-        <label for="role_<?= $role['id'] ?>"><?= $role['description'] ?></label>
+        <?= render_single_checkbox('roles[]',$role['id'], $role['description'] ,$role['checked'],'role_'.$role['id'])?>
     <?php endforeach;?>
-    <input name="id" id="id" type="hidden" value="<?= _v('id')?>" />
-    <button type="submit">提交</button>
-</form>
+<?= render_form_hidden('id',v('id'));?>
+<?= render_button_group();?>
+<?= render_form_close() ?>

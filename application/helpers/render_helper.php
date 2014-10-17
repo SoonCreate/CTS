@@ -102,14 +102,26 @@ function render_radio($name,$valuelist_name,$parent_segment_value = null){
     return $echo;
 }
 
-function render_single_checkbox($name,$value){
+function render_single_checkbox($name,$value,$label = null,$checked = FALSE,$id = null){
     $echo = '';
-    $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
-    $echo = $echo .'<dd><input name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/CheckBox" type="checkbox" value="'.$value.'" ';
-    if(_v($name) == $value){
-        $echo = $echo . 'checked';
+    $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name,false,$label).'</dt>';
+    $echo = $echo .'<dd><input name="'.$name.'" ';
+    if(is_null($id)){
+       $id = $name;
     }
-    $echo = $echo .' /></dd></dl>';
+    $echo = $echo . 'id="'.$id.'"';
+    $echo = $echo .' data-dojo-type="sckj/form/CheckBox" type="checkbox" value="'.$value.'" ';
+    if($checked){
+        $echo = $echo . 'checked';
+    }else{
+        if(_v($name) == $value){
+            $echo = $echo . 'checked';
+        }
+    }
+
+    $echo = $echo .' />';
+
+    $echo = $echo .'</dd></dl>';
     return $echo;
 }
 
@@ -305,10 +317,13 @@ function render_button_group($buttons = array(),$has_submit = TRUE){
     return $echo;
 }
 
-function render_label($name,$required = FALSE){
+function render_label($name,$required = FALSE,$label = null){
+    if(is_null($label)){
+        $label = label($name);
+    }
     if($required){
-        return '<label for="'.$name.'_'._sess('cm').'">'.'* '.label($name)."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'">'.'* '.$label."</label>";
     }else{
-        return '<label for="'.$name.'_'._sess('cm').'">'.label($name)."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'">'.$label."</label>";
     }
 }
