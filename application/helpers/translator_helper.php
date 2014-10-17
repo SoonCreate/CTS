@@ -3,11 +3,14 @@
 //输出label语言文件下的注释
 function label($name){
     $line = _text('label_'.$name);
-    if($line){
-        return $line;
-    }else{
-        return $name;
+    if(!$line){
+        $words = explode('_',$name);
+        for($i =0;$i<count($words);$i++){
+            $words[$i] = ucfirst($words[$i]);
+        }
+        $line = join(' ',$words);
     }
+    return $line;
 }
 
 //根据浏览器语言支持多语言环境
