@@ -92,7 +92,7 @@ class User extends CI_Controller {
     }
 
     function register(){
-        if(string_to_boolean(_config('allow_register'))){
+        if(_config('allow_register')){
             if($_POST){
                 $data['username'] = tpost('username');
                 $data['password']  = sha1(v('password'));

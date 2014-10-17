@@ -170,7 +170,27 @@ function get_options($valuelist_name,$parent_segment_value = null,$all_value = F
 function _config($config_name){
     global $CI;
     $CI->load->model('config_model');
-    return $CI->config_model->find_value_by_name($config_name);
+    $cm = new Config_model();
+    $value = "";
+    $row = $cm->find_by(array('config_name'=>$config_name));
+    if(!empty($row)){
+        switch($row['data_type']){
+            case 'string';
+                $value = $row['config_value'];
+                break;
+            case 'boolean':
+                $value = string_to_boolean($row['config_value']);
+                break;
+            case 'number' :
+                $value = string_to_number($row['config_value']);
+                break;
+            default :
+                $value = $row['config_value'];
+                break;
+        }
+
+    }
+    return $value;
 }
 
 //判断结果集是否大于0条数据
@@ -320,7 +340,7 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     $mail_wordwrap = _config('mail_wordwrap');
     if(strcasecmp($mail_wordwrap, 'true') == 0){
         $config['wordwrap'] = TRUE;
-        $config['wrapchars'] = string_to_number(_config('mail_wrapchars'));
+        $config['wrapchars'] = _config('mail_wrapchars');
     }else{
         $config['wordwrap'] = FALSE;
     }
@@ -329,7 +349,7 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     $bcc_batch_mode = _config('bcc_batch_mode');
     if(strcasecmp($bcc_batch_mode, 'true') == 0){
         $config['bcc_batch_mode'] = TRUE;
-        $config['bcc_batch_size'] = string_to_number(_config('bcc_batch_size'));
+        $config['bcc_batch_size'] = _config('bcc_batch_size');
     }else{
         $config['bcc_batch_mode'] = FALSE;
     }
@@ -366,14 +386,14 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
 function load_upload_config(){
     $config['upload_path'] = FCPATH._config('upload_path');
     $config['allowed_types'] = _config('upload_allowed_types');
-    $config['overwrite'] =  string_to_boolean(_config('upload_overwrite'));
-    $config['encrypt_name'] =  string_to_boolean(_config('upload_encrypt_name'));
-    $config['remove_spaces'] =  string_to_boolean(_config('upload_remove_spaces'));
+    $config['overwrite'] =  _config('upload_overwrite');
+    $config['encrypt_name'] =  _config('upload_encrypt_name');
+    $config['remove_spaces'] =  _config('upload_remove_spaces');
 
-    $config['max_size'] = string_to_number(_config('upload_max_size'));
-    $config['max_width'] = string_to_number(_config('upload_max_width'));
-    $config['max_height'] = string_to_number(_config('upload_max_height'));
-    $config['max_filename'] = string_to_number(_config('upload_max_filename'));
+    $config['max_size'] = _config('upload_max_size');
+    $config['max_width'] = _config('upload_max_width');
+    $config['max_height'] = _config('upload_max_height');
+    $config['max_filename'] = _config('upload_max_filename');
     return $config;
 }
 

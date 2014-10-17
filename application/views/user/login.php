@@ -63,7 +63,7 @@
                 <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
                     <label>登录</label>
                 </button>
-                <?php if(string_to_boolean(_config('allow_register'))){?>
+                <?php if(_config('allow_register')){?>
                 <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
                     <label>注册</label>
                 </button>
