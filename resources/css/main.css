@@ -447,6 +447,7 @@ html, body {
     border-radius: 5px;
     color:#777;
     min-width: 100px;
+    cursor: pointer;
 }
 .fixnavbar ul li:hover{
     background: #26AF92;
@@ -456,7 +457,7 @@ html, body {
     padding-top:5px !imporant;
     margin-right: 6px;
 }
-.fixnavbar ul li label{
+.fixnavbar ul li .text{
     display: inline-block;
     font-size:12px;
     font-weight: bolder;
