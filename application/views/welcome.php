@@ -33,5 +33,11 @@
 <div data-dojo-type="dojox/widget/Toaster" data-dojo-props="positionDirection:'tr-left'"
      id="toaster">
 </div>
+<div class="fixnavbar">
+    <ul>
+            <li><i class="icon-envelope icon-1x"></i><label>未读消息</label><span class="scbadge">4</span></li>
+            <li><i class=" icon-off icon-1x"></i><label>退出登录</label></li>
+        </ul>
+</div>
 </body>
 </html>
