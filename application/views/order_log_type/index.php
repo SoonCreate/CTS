@@ -26,10 +26,9 @@
                 &nbsp;|&nbsp;
                 <?= render_link(array('order_log_type','notice_rules',array('id'=>$o['id'])),label('notice_rules'))?>
             </td>
-
         </tr>
     <?php endforeach;?>
 </table>
 <div class="row">
-    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('order_log_type','create'),label('order_log_type_create'))?></button>
+    <?= render_link_button(array('order_log_type','create'),label('order_log_type_create'))?>
 </div>

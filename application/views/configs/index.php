@@ -12,7 +12,7 @@
         <td><?= $o['config_value']?></td>
         <td>
             <?php if($o['editable_flag']):?>
-            <a href="<?= _url('configs','edit',array('id'=>$o['id']))?>">编辑</a>
+            <?= render_link(array('configs','edit',array('id'=>$o['id'])),label('edit'))?>
             <?php endif;?>
         </td>
 

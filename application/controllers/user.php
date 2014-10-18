@@ -128,9 +128,10 @@ class User extends CI_Controller {
             $data['sex'] = tpost('sex');
             $user = new User_model();
             if($user->insert($data)){
-                echo 'done';
+                go_back();
+                message_db_success();
             }else{
-                echo validation_errors('<div class="error">', '</div>');
+                validation_error();
             }
         }else{
             render();
@@ -165,6 +166,7 @@ class User extends CI_Controller {
         }else{
             if($_POST){
                 if($um->update($user['id'],$_POST)){
+                    go_back();
                     message_db_success();
                 }else{
                     validation_error();

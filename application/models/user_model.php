@@ -61,7 +61,7 @@ class User_model extends MY_Model{
     private  function _validate_for_insert(){
         $this->clear_validate();
         //服务端插入数据库之前验证
-        $this->add_validate('username','required|min_length[5]|max_length[12]|is_unique[users.username]|alpha_dash');
+        $this->add_validate('username','required|min_length[5]|max_length[200]|is_unique[users.username]|alpha_dash');
         $this->add_validate('password','required');
         $this->_validate();
     }

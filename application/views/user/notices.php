@@ -38,7 +38,7 @@
                         {name : "",field : "",width : "50px"},
                         {name : "标题",field : "title",width : "300px",dataType :"string",
                             decorator: function(cellData, rowId, rowIndex){
-                                return '<a href="#" onclick="goto(\'' + url('user/notice_show?id='+rowId) + '\')">'+cellData+'</a>';
+                                return '<a href="#" onclick="_userNoticesRefreshSingleData(\'' + url('user/notice_show?id='+rowId) + '\')">'+cellData+'</a>';
                             } },
                         {name : "时间",field : "creation_date",width : "160px",dataType :"string"},
                         {name : "操作",field : "",width : "300px"}
@@ -92,5 +92,10 @@
 //            var newStore = new JsonRest({idProperty: 'id', target:url('user/notice_data'),sortParam: "sortBy"});
 //            grid.refresh(newStore);
         });
+    }
+
+    function _userNoticesRefreshSingleData(url){
+        refresh_notice_count();
+        goto(url);
     }
 </script>
