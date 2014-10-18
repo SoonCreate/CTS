@@ -617,28 +617,28 @@ html, body {
 .leftinput{
     border-radius: 4px 0 0 4px !important;
     margin-right: 0 !important;
-    height: 29px !important;
+    height: 30px !important;
 }
 .midinput{
     border-radius: 0 !important;
     margin-left:-1px !important;
     margin-right:0 !important;
-    height: 29px !important;
+    height: 30px !important;
 }
 .sc .rightbtn .dijitButtonNode{
     border-radius: 0 4px 4px 0 !important;
     margin-left: -1px !important;
-    height: 29px !important;
+    height: 30px !important;
 }
 .sc .midbtn .dijitButtonNode{
     border-radius: 0 !important;
     margin-left: -1px !important;
-    height: 29px !important;
+    height:30px !important;
 }
 .sc .left .dijitButtonNode{
     border-radius: 4px 0 0 4px !important;
     margin-left: -1px !important;
-    height: 29px !important;
+    height: 30px !important;
 }
 
 /**/
@@ -680,7 +680,7 @@ html, body {
 
 .triangle {
     position:absolute;
-    top:50%;
+    top:15px;
     margin-top:-8px;
     left:42px;
     display:block;
@@ -697,7 +697,7 @@ html, body {
     min-width: 400px;
     padding: 3px 8px;
     color: #2C3E50;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
     background-color: #ECF0F1;
     border-radius: 4px;
