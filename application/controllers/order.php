@@ -394,29 +394,37 @@ class Order extends CI_Controller {
         if(empty($order)){
             show_404();
         }else{
-            if($_POST){
+            $this->load->model('feedback_model');
+            $this->load->model('feedback_star_model');
+            $ofm = new Feedback_model();
+            $fsm = new Feedback_star_model();
+            if($order['created_by'] == _sess('uid')){
+                if(is_order_locked($order['status'])){
+                    if($_POST){
 
+                    }else{
+                        $o = $ofm->find_by(array('order_id'=>$order['id']));
+                        if(empty($o)){
+                            $data['stars'] = get_options('vl_feedback');
+                            render_view('order/feedback_create',$data);
+                        }else{
+                            $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
+                            render_view('order/feedback_edit',$o);
+                        }
+                    }
+                }else{
+                    show_404();
+                }
             }else{
-                $data['stars'] = get_options('vl_feedback');
-                render($data);
+                $o = $ofm->find_by(array('order_id'=>$order['id']));
+                if(!empty($o)){
+                    $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
+                    render_view('order/feedback_show',$o);
+                }
+
             }
         }
     }
-
-    function feedback_show(){
-        $this->load->model('feedback_model');
-        $fm = new Feedback_model();
-        $f = $fm->find(v('id'));
-        if(empty($f)){
-            show_404();
-        }else{
-            $this->load->model('feedback_star_model');
-            $fsm = new Feedback_star_model();
-            $f['stars'] = $fsm->find_all_by(array('feedback_id'=>$f['id']));
-            render($f);
-        }
-    }
-
     private function _update($id,$data = null){
         $om = new Order_model();
         $order = $om->find($id);

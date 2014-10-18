@@ -237,7 +237,7 @@ function render_form_hidden($name,$value = null){
 
 }
 
-function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
+function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$disabled = FALSE,$datetime = null){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
     <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTextBox" trim="true"';
@@ -253,10 +253,18 @@ function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$
         $echo = $echo. $key.' = '.'"'.$value.'"';
     }
 
-    $echo = $echo. '/></dd>';
+    $echo = $echo. '/>';
+    if(!is_null($datetime)){
+        $echo = $echo . $datetime;
+    }
+    $echo = $echo .'</dd>';
     $echo = $echo. render_form_error($name);
     $echo = $echo . '</dl>';
     return $echo;
+}
+
+function render_form_timebox($name){
+    return '<input data-dojo-type="sckj/form/TimeTextBox" name="'.$name.'" id="'.$name.'" value="'._v($name).'" />';
 }
 
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE){

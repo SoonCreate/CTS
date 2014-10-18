@@ -1,8 +1,6 @@
 <?= render_form_input('title',TRUE);?>
-<?= render_form_datetextbox('start_date',TRUE);?>
-<input data-dojo-type="sckj/form/TimeTextBox" name="start_time" id="start_time" value="<?= _v('start_time')?>" />
-<?= render_form_datetextbox('end_date',TRUE);?>
-<input data-dojo-type="sckj/form/TimeTextBox" name="end_time" id="end_time" value="<?= _v('end_time')?>" />
+<?= render_form_datetextbox('start_date',TRUE,array(),false,render_form_timebox('start_time'));?>
+<?= render_form_datetextbox('end_date',TRUE,array(),false,render_form_timebox('end_time'));?>
 <?= render_form_input('site',TRUE);?>
 <?= render_form_input('anchor',TRUE);?>
 <?= render_form_input('recorder');?>

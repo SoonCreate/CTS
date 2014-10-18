@@ -22,11 +22,6 @@
             <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','close',array('id'=>$id)),'投诉单关闭',null,null,true)?></button>
         <?php }?>
 
-        <?php if(check_function_auth('order','meeting_create')){ ?>
-            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?></button>
-        <?php } ?>
-
-
         <hr/>
 
     <?php }else{?>
@@ -35,9 +30,14 @@
                 <?= render_link(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
             </button>
         <?php }?>
-    <button data-dojo-type="sckj/form/Button">
-        <?= render_link(array('order','feedback',array('id'=>$id)),'反馈建议以及评分')?>
-    </button>
+        <?php if(check_function_auth('order','meeting_create') && check_order_auth($order_type,'allocated',$category)){ ?>
+            <button data-dojo-type="sckj/form/Button">
+                <?= render_link(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?>
+            </button>
+        <?php } ?>
+        <button data-dojo-type="sckj/form/Button">
+            <?= render_link(array('order','feedback',array('id'=>$id)),'反馈建议以及评分')?>
+        </button>
     <?php }?>
 
     <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
