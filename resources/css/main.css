@@ -432,7 +432,7 @@ html, body {
 .fixnavbar{
     position: fixed;
     z-index:993;
-    top:35px;
+    top:30px;
     right: 35px;
     height:41px;
 
@@ -446,6 +446,7 @@ html, body {
     padding :5px 10px;
     border-radius: 5px;
     color:#777;
+    min-width: 100px;
 }
 .fixnavbar ul li:hover{
     background: #26AF92;
