@@ -770,3 +770,8 @@ html, body {
     z-index:2;
     background: ;
 }
+
+.sc .dijitDialog {
+    min-width: 275px !important;
+    min-height: 140px !important;
+}
