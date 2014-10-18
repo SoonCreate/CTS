@@ -52,7 +52,7 @@
     <dl class="row dl-horizontal"><dt>内容</dt>
         <dd class="contentContainer">
         <?php foreach($contents as $c):?>
-            <div class="" id="content_<?= $c['id']?>">
+            <div class="row" id="content_<?= $c['id']?>">
                 <?php
                 echo '<span class="ddname"><i class="icon-user"></i>&nbsp;&nbsp;'.full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .':</span><div class="righttip"><div class="triangle "></div><div class="tooltipinner">'.$c['content'];
                 echo '<span class="ddtime"> 时间：'.$c['creation_date'].'</span></div></div>';
