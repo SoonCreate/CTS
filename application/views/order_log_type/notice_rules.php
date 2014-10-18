@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
     <th>描述</th>
     <th>是否失效</th>

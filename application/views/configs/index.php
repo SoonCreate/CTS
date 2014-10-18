@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>配置名称</th>
         <th>描述</th>

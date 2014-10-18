@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
     <th>会议主题</th>
     <th>开始时间</th>

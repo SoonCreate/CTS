@@ -1,6 +1,6 @@
 <?= render_form_header('allocate_modules');?>
 <?= render_form_open('functions','allocate_modules') ?>
-    <table>
+    <table class="table">
         <thead>
         <th>选择</th>
         <th>模块名</th>

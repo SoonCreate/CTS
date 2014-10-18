@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>object_id</th>
         <th>权限对象名</th>

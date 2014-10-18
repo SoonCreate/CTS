@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>User_id</th>
         <th>用户名</th>

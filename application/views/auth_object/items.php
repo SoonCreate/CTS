@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>项目名</th>
         <th>项目描述</th>

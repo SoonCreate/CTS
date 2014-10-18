@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>消息类ID</th>
         <th>消息类</th>

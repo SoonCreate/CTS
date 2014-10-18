@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
     <th>类型</th>
     <th>描述</th>

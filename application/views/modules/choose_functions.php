@@ -1,6 +1,6 @@
 <?= render_form_header('choose_functions');?>
 <?= render_form_open('modules','choose_functions') ?>
-    <table>
+    <table class="table">
         <thead>
         <th>选择</th>
         <th>功能名</th>

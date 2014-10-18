@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>function_id</th>
         <th>功能名</th>

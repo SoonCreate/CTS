@@ -1,6 +1,6 @@
 <h2><?= $description ?></h2>
 <h3>Class_code：<?= $class_code ?></h3>
-<table>
+<table class="table">
     <thead>
         <th>消息码</th>
         <th>内容</th>

@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>module_id</th>
         <th>模块名</th>
