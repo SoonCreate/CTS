@@ -7,23 +7,23 @@
     if(!is_order_locked($status)){?>
 
         <?php if(is_order_allow_next_status($status,'confirmed') && check_order_auth($order_type,'confirmed',$category)){?>
-            <?= render_link(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?>
+            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?></button>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'allocated') && check_order_auth($order_type,'allocated',$category)){?>
-            <?= render_link(array('order','dispatcher',array('id'=>$id)),'分配责任人并确认计划完成日期')?>
+            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','dispatcher',array('id'=>$id)),'分配责任人并确认计划完成日期')?></button>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'done') && check_order_auth($order_type,'done',$category)){?>
-            <?= render_link(array('order','done',array('id'=>$id)),'投诉已解决',null,null,true)?>
+            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','done',array('id'=>$id)),'投诉已解决',null,null,true)?></button>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'closed') && check_order_auth($order_type,'closed',$category)){?>
-            <?= render_link(array('order','close',array('id'=>$id)),'投诉单关闭',null,null,true)?>
+            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','close',array('id'=>$id)),'投诉单关闭',null,null,true)?></button>
         <?php }?>
 
         <?php if(check_function_auth('order','meeting_create')){ ?>
-            <a href="<?= _url('order_meeting','index',array('order_id'=>$id)) ?>">会议记录</a>
+            <button data-dojo-type="sckj/form/Button"><a href="<?= _url('order_meeting','index',array('order_id'=>$id)) ?>">会议记录</a></button>
         <?php } ?>
 
 
@@ -49,10 +49,10 @@
     <dl class="row dl-horizontal"><dt>内容</dt>
         <dd class="contentContainer">
         <?php foreach($contents as $c):?>
-            <div class=" " id="content_<?= $c['id']?>">
+            <div class="" id="content_<?= $c['id']?>">
                 <?php
-                echo full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .' '.$c['content'];
-                echo ' 时间：'.$c['creation_date'];
+                echo '<kbd>'.full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .'</kbd>'.$c['content'];
+                echo '<a class="ddtime"> 时间：'.$c['creation_date'].'</a>';
                 ?>
             </div>
             <br/>

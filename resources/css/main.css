@@ -3,6 +3,7 @@
     box-sizing:border-box;
     -moz-box-sizing: border-box;
     outline: none !important;
+    text-decoration: none !important;
  }
 .row{
 	margin-left:0 !important;
@@ -21,10 +22,10 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    padding: 0 0px 0px 0;
+    padding: 0 10px 10px 0;
     margin: 0 0 0 0;
     font-size: 12px;
-    background-color: #fff !important;
+    background-color: #ECF0F1 !important;
 
 }
 h1,h2,h4{
@@ -56,7 +57,7 @@ h1,h2,h4{
 #mainContainer {
     height: 100%;
     width: 100%;
-    background-color: #fff;
+    background-color: #ECF0F1;
     /*background-color: #BDC3C7;*/
 }
 
@@ -68,7 +69,7 @@ h1,h2,h4{
 	position:relative;
 	z-index:2;
 	font-family:Microsoft Yahei;
-    background-color: #273F56;
+    background-color: #ECF0F1;
 	margin-bottom:20px;
 }
 .dijitTabPaneWrapper{
@@ -302,12 +303,12 @@ p.footer{
     margin-bottom: 10px !important;
     margin-right: 10px;
     padding:15px 0 10px 15px !important;
-    border: 1px solid #DDD;
+    border: 1px solid #29BB9C;
     background-color: #FFF;
     font-family:"Microsoft Yahei";
     font-weight: bolder;
     font-size:14px;
-    color:#428BCA;
+    color:#29BB9C;
     border-radius: 4px !important;
 }
 
@@ -315,14 +316,14 @@ p.footer{
     margin:0 0 10px 0 !important;
     border: 1px solid #B5BCC7;
     border-radius: 4px 0 0 4px !important;
-    background-color:#3CACE7 !important ;
-    color:#fff;
+    background-color:#fff !important ;
+    color:#3CACE7;
     border-right: 0px solid #3CACE7 #29BB9C #2C3E50 ;
     top:0px;
 
 }
 .dijitTabContainerLeft-container{
-    border: 1px solid #3CACE7;
+    border: 1px solid #979C9F;
     /*margin:0  10px 10px 0;*/
 }
 
@@ -619,37 +620,36 @@ p.footer{
 .fixbottom{
     position: fixed;
     left: 221px;
-    right: 3px;
-    bottom: 3px;
+    right: 23px;
+    bottom: 23px;
     box-shadow: 0 -3px 3px #ddd;
     background-color: #f6f6f6;
     padding: 8px 30px;
+    z-index: 991;
 }
 .fixtop{
     position: fixed;
-    left: 221px;
-    right: 3px;
+    left: 231px;
+    right: 23px;
     top: 81px;
     height: 41px;
     padding: 10px 30px;
-    background-color: #F6F9FC;
-    border-radius:0;
-    border-bottom: 1px solid #ddd;
-    z-index: 999999;
+    background-color: #2C3E50;
+    border-radius:0 0 0 6px ;
+    z-index: 990;/*dijitDialog is 999*/
     font-family:Microsoft Yahei;
-    color:#26AF92;
 
 }
 .fixtop a{
-    color:#26AF92;
+    color:#fff;
     text-decoration: none !important;
     display: inline-block;
     padding:3px 5px;
     border-radius: 2px;
 }
 .fixtop a:hover{
-    background:#26AF92;
-    color:#fff;
+    background:#fff;
+    color:#26AF92;
 
 }
 /*TAB内容框，边框bug相关*/
@@ -657,6 +657,7 @@ p.footer{
     /*右内容主框bug*/
     box-sizing: content-box !important;
     margin-top:50px;
+    padding:20px 30px !important;
 }
 .sc .dijitContentPane {
 
@@ -764,19 +765,17 @@ p.footer{
     /*margin-top :0px;*/
     /*padding-top:30px !important;*/
 /*}*/
-
-
- .leftinput{
+.leftinput{
     border-radius: 4px 0 0 4px !important;
     margin-right: 0 !important;
-     height: 29px !important;
+    height: 29px !important;
 }
- .midinput{
-     border-radius: 0 !important;
-     margin-left:-1px !important;
-     margin-right:0 !important;
-     height: 29px !important;
- }
+.midinput{
+    border-radius: 0 !important;
+    margin-left:-1px !important;
+    margin-right:0 !important;
+    height: 29px !important;
+}
 .sc .rightbtn .dijitButtonNode{
     border-radius: 0 4px 4px 0 !important;
     margin-left: -1px !important;
@@ -789,5 +788,19 @@ p.footer{
 }
 .sc .left .dijitButtonNode{
     border-radius: 4px 0 0 4px !important;
+    margin-left: -1px !important;
     height: 29px !important;
+}
+
+/**/
+.userd dl dd.contentContainer{
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 5px 10px;
+
+}
+.ddtime{
+    color: #ddd;
+    float: right;
 }
