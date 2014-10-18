@@ -21,8 +21,12 @@ class Order_meeting extends CI_Controller {
             $objects = $omm->find_all_by_view(array('order_id'=>$order['id']));
             if(empty($objects)){
                 //没有记录时新建
-                redirect(_url('order_meeting','create',array('order_id'=>$order['id'])));
+                $_GET['order_id'] = $order['id'];
+                $this->create();
             }else{
+                for($i=0;$i<count($objects);$i++){
+                    $objects[$i] = $this->_meeting_status($objects[$i]);
+                }
                 $data['objects'] = _format($objects);
                 render($data);
             }
@@ -40,6 +44,7 @@ class Order_meeting extends CI_Controller {
             $omfm = new Meeting_file_model();
             $meeting['orders'] = $omm->find_all_by_view(array('id'=>$meeting['id']));
             $meeting['files'] = $omfm->find_all_by_view(array('meeting_id'=>$meeting['id']));
+            $meeting = $this->_meeting_status($meeting);
             render(_format_row($meeting));
         }
     }
@@ -53,7 +58,9 @@ class Order_meeting extends CI_Controller {
             if(v('order_id') && empty($order)){
                 show_404();
             }else{
-                render();
+                $data['start_date'] = date('Y-m-d');
+                $data['end_date'] = date('Y-m-d');
+                render_view('order_meeting/create',$data);
             }
         }
     }
@@ -70,7 +77,14 @@ class Order_meeting extends CI_Controller {
                 $omm = new Order_meeting_model();
                 $ids = $omm->find_order_ids($meeting['id']);
                 $meeting['order_id'] = join(',',$ids);
-                render(_format_row($meeting));
+                $meeting['start_date'] = date('Y-m-d H:m:s',$meeting['start_date']);
+                $meeting['end_date'] = date('Y-m-d H:m:s',$meeting['end_date']);
+                $meeting['start_time'] = 'T'.substr($meeting['start_date'],11,9);
+                $meeting['start_date'] = substr($meeting['start_date'],0,10);
+                $meeting['end_time'] = 'T'.substr($meeting['end_date'],11,9);
+                $meeting['end_date'] = substr($meeting['end_date'],0,10);
+
+                render($meeting);
             }
         }
     }
@@ -87,15 +101,15 @@ class Order_meeting extends CI_Controller {
                     $_POST['inactive_flag'] = 1;
                     $data = _data('inactive_flag','cancel_reason','cancel_remark');
                     if($mm->update($m['id'],$data,true)){
-                        echo 'done';
+                        message_db_success();
                     }else{
-                        echo '更新失败';
+                        message_db_failure();
                     }
                 }else{
                     render();
                 }
             }else{
-                echo '会议已有决议，不能再取消！';
+                custz_message('E','会议已有决议，不能再取消！');
             }
         }
     }
@@ -111,7 +125,7 @@ class Order_meeting extends CI_Controller {
                 $this->load->library('upload', load_upload_config());
                 if ( ! $this->upload->do_upload())
                 {
-                    echo $this->upload->display_errors();
+                    custz_message('E',$this->upload->display_errors()) ;
                 }
                 else
                 {
@@ -126,14 +140,15 @@ class Order_meeting extends CI_Controller {
                         $data['description'] = v('description');
                         if($omf->insert($data)){
                             $this->db->trans_commit();
-                            echo 'done';
+                            go_back();
+                            message_db_success();
                         }else{
                             $this->db->trans_rollback();
-                            echo validation_errors('<div class="error">', '</div>');
+                            validation_error();
                         }
                     }else{
                         $this->db->trans_rollback();
-                        echo validation_errors('<div class="error">', '</div>');
+                        validation_error();
                     }
                 }
             }else{
@@ -146,36 +161,82 @@ class Order_meeting extends CI_Controller {
         $om = new Order_model();
         $mm = new Meeting_model();
         $_POST['discuss'] = tpost('discuss');
+
+        //格式化提交的日期
+        $_POST['start_date'] = str_replace('T',' ',$_POST['start_date'] . $_POST['start_time']);
+        $_POST['end_date'] = str_replace('T',' ',$_POST['end_date'] . $_POST['end_time']);
+
         $_POST['start_date'] = strtotime(v('start_date'));
         $_POST['end_date'] = strtotime(v('end_date'));
         $ids = array_unique(explode(',',v('order_id')));
-        print_r($ids);
+        $p = true;
         if(empty($ids)){
-            echo '请至少填写一个投诉单号';
-        }else{
-            $error = '';
-            foreach($ids as $id){
-                $o = $om->find($id);
-                if(empty($o)){
-                    $error = $error.' '.$id.' ';
-                    break;
-                }
+            $p = false;
+            add_validation_error('order_id','请至少填写一个投诉单号') ;
+        }
+
+        if($_POST['start_date'] >= $_POST['end_date'] ){
+            add_validation_error('start_date','开始日期大于结束日期！') ;
+        }
+
+        if($_POST['start_date'] < strtotime(date('Y-m-d'))){
+            $p = false;
+            add_validation_error('start_date','日期不能为过去！') ;
+        }
+
+        if($_POST['end_date'] < strtotime(date('Y-m-d'))){
+            $p = false;
+            add_validation_error('end_date','日期不能为过去！') ;
+        }
+        $error = '';
+        foreach($ids as $id){
+            $o = $om->find($id);
+            if(empty($o)){
+                $error = $error.' '.$id.' ';
+                break;
             }
-            if($error == ''){
+        }
+        if($error == ''){
+            if($p){
                 $data = _data('title','start_date','end_date','site','anchor','recorder','actor','discuss');
                 if(v('id')){
                     $data['id'] = v('id');
                 }
                 if($mm->save($data,$ids)){
-
-                    echo 'done';
+                    message_db_success();
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    validation_error();
                 }
-            }else{
-                echo '订单号输入有误，其中单号'.$error.'不存在';
+            }
+
+        }else{
+            add_validation_error('order_id','订单号输入有误，其中单号'.$error.'不存在');
+        }
+
+    }
+
+    private function _meeting_status($object){
+        if($object['inactive_flag']){
+            $object['status'] = label('canceled');
+        }else{
+
+            if($object['start_date'] > time()){
+                $object['status'] = label('ready');
+            }
+
+            if($object['start_date'] <= time() && $object['end_date'] >= time()){
+                $object['status'] = label('running');
+            }
+
+            if($object['end_date'] < time()){
+                $object['status'] = label('done');
+            }
+
+            if($object['end_date'] < time() && $object['discuss']){
+                $object['status'] = label('closed');
             }
         }
+        return $object;
     }
 
 }

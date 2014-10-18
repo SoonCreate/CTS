@@ -5,10 +5,7 @@
     <th>结束时间</th>
     <th>会议地点</th>
     <th>主持人</th>
-    <th>记录人</th>
-    <th>参与者</th>
-    <th>会议决议</th>
-    <th>是否已取消</th>
+    <th>状态</th>
     <th>操作</th>
     </thead>
     <?php foreach($objects as $o):?>
@@ -18,18 +15,17 @@
             <td><?= $o['end_date']?></td>
             <td><?= $o['site']?></td>
             <td><?= $o['anchor']?></td>
-            <td><?= $o['recorder']?></td>
-            <td><?= $o['actor']?></td>
-            <td><?= word_truncate($o['discuss'])?></td>
-            <td><?= $o['inactive_flag']?></td>
+            <td><?= $o['status']?></td>
             <td>
-                <a href="<?= _url('order_meeting','show',array('id'=>$o['id']))?>">查看</a>
-                <?php if($o['inactive_flag'] === 'NO') : ?>
-                    &nbsp;|&nbsp;<a href="<?= _url('order_meeting','edit',array('id'=>$o['id']))?>">编辑</a>
-
-                    &nbsp;|&nbsp;<a href="<?= _url('order_meeting','upload_file',array('id'=>$o['id']))?>">上传会议相关文件</a>
-                <?php if( $o['discuss'] === ''):?>
-                        &nbsp;|&nbsp;<a href="<?= _url('order_meeting','cancel',array('id'=>$o['id']))?>">取消会议</a>
+                <?= render_link(array('order_meeting','show',array('id'=>$o['id'])),label('show'))?>
+                <?php if($o['inactive_flag'] == 0) : ?>
+                    &nbsp;|&nbsp;
+                    <?= render_link(array('order_meeting','edit',array('id'=>$o['id'])),label('edit'))?>
+<!--                    &nbsp;|&nbsp;-->
+<!--                    --><?php //render_link(array('order_meeting','upload_file',array('id'=>$o['id'])),label('upload_file'))?>
+                <?php if( $o['discuss'] == ''|| is_null($o['discuss'])):?>
+                        &nbsp;|&nbsp;
+                        <?= render_link(array('order_meeting','cancel',array('id'=>$o['id'])),label('cancel'))?>
                 <?php endif;
                 endif;?>
             </td>
@@ -37,4 +33,4 @@
         </tr>
     <?php endforeach;?>
 </table>
-<a href="<?= _url('order_meeting','create',array('order_id'=>_v('order_id')))?>">召开新会议</a>
+<?= render_link(array('order_meeting','create',array('order_id'=>_v('order_id'))),label('meeting_create'))?>

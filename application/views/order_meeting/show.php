@@ -1,4 +1,4 @@
-<?php if($inactive_flag === 'YES'): echo '状态：已取消';endif;?><br/>
+状态 : <?= _v('status')?><br/>
 会议主题 : <?= _v('title')?><br/>
 开始时间 : <?= _v('start_date')?><br/>
 结束时间 : <?= _v('end_date')?><br/>
@@ -8,9 +8,14 @@
 参与者 : <?= _v('actor')?><br/>
 会议决议 : <?= _v('discuss')?><br/>
 处理投诉单 :
-<?php foreach($orders as $o){
-    echo '<a href="'._url('order','show',array('id'=>$o['order_id'])).'" title="'.$o['order_title'].'">'.$o['order_id'].'</a>';
-}?>
+<?php
+$links = array();
+foreach($orders as $o){
+    $link =   render_link(array('order','show',array('id'=>$o['order_id'])),$o['order_id'],$o['order_title']) ;
+    array_unshift($links,$link);
+}
+echo join(',',$links);
+?>
 <br/>
 会议相关文件：
 <?php foreach($files as $f){

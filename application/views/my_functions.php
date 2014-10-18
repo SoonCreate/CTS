@@ -1,6 +1,3 @@
-<div class="headline">
-    <h2><?= label('index')?></h2>
-</div>
 <?php if(isset($functions)):?>
     <ul class="applist row">
         <?php  foreach($functions as $fn) :

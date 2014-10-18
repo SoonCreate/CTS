@@ -210,6 +210,11 @@ function render_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail
     onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
 }
 
+function render_file_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail= 'null',$remoteSuccess= 'null',$remoteNoBack= 'null'){
+    return  '<form encType="multipart/form-data" id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'"
+    onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
+}
+
 function render_form_close(){
     return '</form>';
 }
@@ -300,7 +305,7 @@ function render_form_combobox($name,$data,$required = FALSE,$attributes = array(
 function render_form_textarea($name,$required = FALSE,$attributes = array()){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-        <dd><textarea name="'.$name.'" id="'.$name.'" type="text" data-dojo-type="sckj/form/Textarea"';
+        <dd><textarea name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Textarea"';
     if($required){
         $echo = $echo. 'required';
     }
