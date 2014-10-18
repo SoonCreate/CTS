@@ -429,6 +429,61 @@ html, body {
     color:#26AF92;
 
 }
+.fixnavbar{
+    position: fixed;
+    z-index:993;
+    top:35px;
+    right: 35px;
+    height:41px;
+
+    font-size:15px;
+}
+.fixnavbar ul li{
+    font-size:20px;
+    display:block;
+    float: left;
+    margin-right: 10px;
+    padding :5px 10px;
+    border-radius: 5px;
+    color:#777;
+}
+.fixnavbar ul li:hover{
+    background: #26AF92;
+    color:#fff;
+}
+.fixnavbar ul li i{
+    padding-top:5px !imporant;
+    margin-right: 6px;
+}
+.fixnavbar ul li label{
+    display: inline-block;
+    font-size:12px;
+    font-weight: bolder;
+    font-family:Microsoft Yahei;
+    margin:0;
+    padding:0;
+}
+.messageno{
+    z-index: 992;
+    position: fixed;
+    left: 85px;
+    top: 330px;
+}
+.scbadge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #cc0000 !important;
+    border-radius: 12px;
+    border: 2px solid #fff;
+}
 /*TAB内容框，边框bug相关*/
 .dijitTabContainerLeft-dijitContentPane{
     /*右内容主框bug*/
