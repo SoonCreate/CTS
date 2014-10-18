@@ -12,8 +12,8 @@
                     <option value="<?= $c?>"><?= get_label('vl_order_category',$c,$order_type)?></option>
                 <?php endforeach;?>
             </select>
+            <?= render_form_error('category')?>
         </dd>
-        <?= render_form_error('category')?>
     </dl>
      <?php endif; ?>
     <?= render_form_input('title',TRUE);?>

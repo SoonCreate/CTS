@@ -1,11 +1,13 @@
 //前端触发后端链接
-function goto(url,target,noRender){
-    var wso = $dijit.byId(target+'_module');
+function goto(url,target,noRender,noRecord){
+    var wso = $dijit.byId('module_'+target);
     if(wso == undefined){
         wso = currentWso();
     }
     if(!noRender){
-        recordWso(wso,wso.href);
+        if(!noRecord){
+            recordWso();
+        }
         wso.set("href",url);
         $dijit.byId("mainTabContainer").selectChild(wso,true);
     }else{
@@ -20,15 +22,15 @@ function goto(url,target,noRender){
 
 }
 
-function recordWso(wso,url){
-    if(wso.history == undefined){
-        wso.history = new Array();
+function recordWso(url){
+    if($env.history == undefined){
+        $env.history = new Array();
     }else{
-        if(wso.history.length == 10){
-            wso.history.pop();
+        if($env.history.length == 10){
+            $env.history.pop();
         }
     }
-    wso.history.unshift(url);
+    $env.history.unshift({url:currentWso().href,target:$env.mid});
 }
 
 function isURL(str_url){
@@ -52,19 +54,19 @@ function isURL(str_url){
 }
 
 function goback(){
-
-    var wso = currentWso();
-
-    if("history" in wso){
-        if(wso.history.length > 0 && wso.href != wso.history[0]){
-            wso.set('href',wso.history[0]);
-            wso.history.shift();
+    if("history" in $env){
+        if($env.history.length > 0 ){
+            goto($env.history[0]['url'],$env.history[0]['target'],false,true);
+            $env.history.shift();
         }
     }
 }
 
-function refresh(){
+function refresh(then){
     currentWso().refresh();
+    if(then){
+        then();
+    }
 }
 
 function currentGoto(){
@@ -297,6 +299,7 @@ function renderValidError(lines){
                 //激活
                 //object.focus();
                 object.set("state","Error");
+                //object.displayMessage(lines[i][key]);
                 var wso = currentWso();
                 //object.displayMessage("gogo");
                 var nodes = $("#error_"+fixDijitId(key),wso.domNode);
@@ -426,7 +429,7 @@ function dijitObject(id){
     return $dijit.byId(fixDijitId(id));
 }
 
-//刷新未读消息数量
+//刷新未读消息数量:后续等待优化，采用ajax长轮询
 function refresh_notice_count(n){
     if(n){
         $dom.byId("scbadge").innerHTML = n;

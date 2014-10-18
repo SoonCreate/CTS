@@ -65,6 +65,11 @@ function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
     return '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$link.'\',\''.$module_id.'\','.$noRender.');">'.$label.'</a>';
 }
 
+function render_link_button($url,$label,$title = '',$class = '',$noRender = 'false'){
+    $label =  '<button data-dojo-type="sckj/form/Button">'.$label.'</button>';
+    return render_link($url,$label,$title,$class,$noRender);
+}
+
 function render_error($heading = '',$message = ''){
     $CI =  &get_instance();
     $data['heading'] = $heading;
@@ -73,7 +78,7 @@ function render_error($heading = '',$message = ''){
 }
 
 function render_form_error($field){
-    return '<dd><div id="error_'.$field.'_'._sess('cm').'"></div></dd>';
+    return '<div id="error_'.$field.'_'._sess('cm').'"></div>';
 }
 
 //输出到view里面的option
@@ -124,10 +129,10 @@ function render_single_checkbox($name,$value,$label = null,$checked = FALSE,$id 
     $echo = $echo . 'id="'.$id.'"';
     $echo = $echo .' data-dojo-type="sckj/form/CheckBox" type="checkbox" value="'.$value.'" ';
     if($checked){
-        $echo = $echo . 'checked';
+        $echo = $echo . ' checked ';
     }else{
         if(_v($name) == $value){
-            $echo = $echo . 'checked';
+            $echo = $echo . ' checked ';
         }
     }
 
@@ -242,11 +247,11 @@ function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
     <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTextBox" trim="true"';
     if($required){
-        $echo = $echo. 'required';
+        $echo = $echo. ' required ';
     }
 
     if($disabled){
-        $echo = $echo. 'disabled';
+        $echo = $echo. ' disabled ';
     }
 
     foreach($attributes as $key=>$value){
@@ -257,9 +262,7 @@ function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$
     if(!is_null($datetime)){
         $echo = $echo . $datetime;
     }
-    $echo = $echo .'</dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo . '</dl>';
+    $echo = $echo.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -270,26 +273,24 @@ function render_form_timebox($name){
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" trim="true"';
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" trim="true" ';
     if($required){
-        $echo = $echo. 'required';
+        $echo = $echo. ' required ';
     }
 
     if($disabled){
-        $echo = $echo. 'disabled';
+        $echo = $echo. ' disabled ';
     }
 
     foreach($attributes as $key=>$value){
-        $echo = $echo. $key.' = '.'"'.$value.'"';
+        $echo = $echo. $key.'= '.'"'.$value.'"';
     }
 
-    $echo = $echo. '/></dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo . '</dl>';
+    $echo = $echo. '/>'. render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
-function render_form_combobox($name,$data,$required = FALSE,$attributes = array()){
+function render_form_combobox($name,$data,$required = FALSE,$attributes = array(),$disabled = FALSE){
     $echo = '';
     $echo = $echo. '<div data-dojo-type="dojo/store/Memory" data-dojo-id="stateStore_'._sess('cm').'" data-dojo-props=\''.
         'data: '.$data.'\'></div>';
@@ -297,29 +298,34 @@ function render_form_combobox($name,$data,$required = FALSE,$attributes = array(
     <dd><input data-dojo-type="sckj/form/ComboBox" data-dojo-props="store:stateStore_'._sess('cm').', searchAttr:\'contact\'"'.
            'name="'.$name.'" id="'.$name.'"';
     if($required){
-        $echo = $echo. 'required';
+        $echo = $echo. ' required ';
+    }
+
+    if($disabled){
+        $echo = $echo. ' disabled ';
     }
 
     foreach($attributes as $key=>$value){
         $echo = $echo. ' '.$key.' = '.'"'.$value.'"';
     }
 
-    $echo = $echo. '/></dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo. '</dl>';
+    $echo = $echo. '/>'.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
-function render_form_textarea($name,$required = FALSE,$attributes = array()){
+function render_form_textarea($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-        <dd><textarea name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Textarea"';
+        <dd><textarea name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Textarea" style="height:60px!important"';
     if($required){
-        $echo = $echo. 'required';
+        $echo = $echo. ' required ';
     }
-    $echo = $echo. '/>'._v($name).'</textarea></dd>';
-    $echo = $echo .render_form_error($name);
-    $echo = $echo. '</dl>';
+
+    if($disabled){
+        $echo = $echo. ' disabled ';
+    }
+
+    $echo = $echo. '/>'._v($name).'</textarea>'.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -329,13 +335,11 @@ function render_select_with_options($name,$valuelist_name,$required = FALSE,$att
     $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
     $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
-        $echo = $echo. 'required';
+        $echo = $echo. ' required ';
     }
     $echo = $echo. '>';
     $echo = $echo. render_options_with_value($valuelist_name,_v($name));
-    $echo = $echo.   '</select> </dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo. '</dl>';
+    $echo = $echo.   '</select> '.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -345,13 +349,11 @@ function render_select_add_options($name,$options,$required = FALSE){
     $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
     $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
-        $echo = $echo. 'required';
+        $echo = $echo. ' required ';
     }
     $echo = $echo. '>';
     $echo = $echo. $options;
-    $echo = $echo.   '</select> </dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo. '</dl>';
+    $echo = $echo.   '</select> '.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 

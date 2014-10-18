@@ -1,4 +1,9 @@
-<div id="userManageGrid"></div>
+<div class="container-fluid">
+    <div class="row">
+        <?= render_link_button(array('user','create'),label('user_create'))?>
+    </div>
+    <div id="userManageGrid" class="gridlist"></div>
+</div>
 
 <script type="text/javascript">
     require(["dojo/ready",

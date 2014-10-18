@@ -23,9 +23,10 @@ class Configs extends CI_Controller {
             if($config['editable_flag']){
                 if($_POST){
                     if($cm->update($config['id'],_data('config_value'))){
-                        echo 'done';
+                        go_back();
+                        message_db_success();
                     }else{
-                        echo validation_errors('<div class="error">', '</div>');
+                        message_db_failure();
                     }
                 }else{
                     render($config);

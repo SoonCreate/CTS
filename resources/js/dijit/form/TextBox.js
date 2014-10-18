@@ -17,5 +17,6 @@ define(["dojo/_base/declare", "dijit/form/ValidationTextBox"],
             this.inherited(arguments);
 
         }
+
     });
 });

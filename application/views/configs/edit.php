@@ -1,19 +1,14 @@
-<div class="row paneltitle">
-    <h3>配置修改</h3>
-</div>
+<?= render_form_header('config_edit')?>
 <div class="container-fluid userd">
-    <form id="config_edit" method="post" action="<?= _url('configs','edit')?>">
-    <dl class="row dl-horizontal">
-    <dt><label for="config_name">*配置名称</label></dt>
-    <dd><input name="config_name" id="config_name" type="text" value="<?= _v('config_name')?>" disabled /></dd></dl>
-    <dl class="row dl-horizontal">
-    <dt><label for="description">*描述</label></dt>
-    <dd><input name="description" id="description" type="text" value="<?= _v('description')?>" disabled/></dd></dl>
-    <dl class="row dl-horizontal">
-    <dt><label for="config_value">*值</label></dt>
-    <dd><input name="config_value" id="config_value" type="text" value="<?= _v('config_value')?>"/></dd></dl>
-    <dl class="row dl-horizontal">
-    <dt>&nbsp;<input name="id" id="id" type="hidden" value="<?= v('id')?>"  /></dt>
-    <dd><button type="submit">提交</button></dd></dl>
-    </form>
+    <?= render_form_open('configs','edit') ?>
+    <?= render_form_input('config_name',null,array(),TRUE);?>
+    <?= render_form_textarea('description',null,array(),TRUE);?>
+    <?php if(_v('data_type') == 'boolean'){
+        echo render_select_with_options('config_value','ao_true_or_false');
+    }else{
+        echo render_form_input('config_value',true);
+    }?>
+    <?= render_form_hidden('id',v('id'));?>
+    <?= render_button_group();?>
+    <?= render_form_close() ?>
 </div>

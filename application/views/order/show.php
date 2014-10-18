@@ -1,44 +1,39 @@
 <?= render_form_header(label('order_number').'  '.$id ) ?>
 
 <div class="container-fluid userd">
-
+    <div class="row">
     <?php
     //如果订单状态为锁定，则不显示工具栏
     if(!is_order_locked($status)){?>
 
         <?php if(is_order_allow_next_status($status,'confirmed') && check_order_auth($order_type,'confirmed',$category)){?>
-            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?></button>
+            <?= render_link_button(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'allocated') && check_order_auth($order_type,'allocated',$category)){?>
-            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','dispatcher',array('id'=>$id)),'分配责任人并确认计划完成日期')?></button>
+            <?= render_link_button(array('order','dispatcher',array('id'=>$id)),'分配责任人并确认计划完成日期')?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'done') && check_order_auth($order_type,'done',$category)){?>
-            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','done',array('id'=>$id)),'投诉已解决',null,null,true)?></button>
+            <?= render_link_button(array('order','done',array('id'=>$id)),'投诉已解决',null,null,true)?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($status,'closed') && check_order_auth($order_type,'closed',$category)){?>
-            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order','close',array('id'=>$id)),'投诉单关闭',null,null,true)?></button>
+            <?= render_link_button(array('order','close',array('id'=>$id)),'投诉单关闭',null,null,true)?>
         <?php }?>
 
         <hr/>
 
     <?php }else{?>
         <?php if(is_order_allow_next_status($status,'reopen') && check_order_auth($order_type,'reopen',$category)){?>
-            <button data-dojo-type="sckj/form/Button">
-                <?= render_link(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
-            </button>
+            <?= render_link_button(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
         <?php }?>
         <?php if(check_function_auth('order','meeting_create') && check_order_auth($order_type,'allocated',$category)){ ?>
-            <button data-dojo-type="sckj/form/Button">
-                <?= render_link(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?>
-            </button>
+            <?= render_link_button(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?>
         <?php } ?>
-        <button data-dojo-type="sckj/form/Button">
-            <?= render_link(array('order','feedback',array('id'=>$id)),'反馈建议以及评分')?>
-        </button>
+            <?= render_link_button(array('order','feedback',array('id'=>$id)),'反馈建议以及评分')?>
     <?php }?>
+    </div>
 
     <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
     <dl class="row dl-horizontal"><dt>严重性</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
@@ -54,7 +49,10 @@
         <?php foreach($contents as $c):?>
             <div class="row" id="content_<?= $c['id']?>">
                 <?php
-                echo '<span class="ddname"><i class="icon-user"></i>&nbsp;&nbsp;'.full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .':</span><div class="righttip"><div class="triangle "></div><div class="tooltipinner">'.$c['content'];
+                echo '<span class="ddname"><i class="icon-user"></i>
+&nbsp;&nbsp;'.full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .':
+</span><div class="righttip">
+<div class="triangle "></div><div class="tooltipinner">'.$c['content'];
                 echo '<span class="ddtime"> 时间：'.$c['creation_date'].'</span></div></div>';
                 ?>
             </div>
@@ -79,18 +77,21 @@
         </dd>
     </dl>
     <hr/>
+    <?= render_form_open('order','reply','null','null','addContent') ?>
     <dl class="row dl-horizontal"><dt>&nbsp;</dt>
         <dd >
-            <?= render_form_open('order','reply','null','null','addContent') ?>
+
             <?= render_form_textarea('content',TRUE);?>
             <input name="id" id="id" type="hidden" value="<?= v('id') ?>"/>
         </dd>
      </dl>
     <dl class="row dl-horizontal"><dt>&nbsp;</dt>
-        <dd style="margin-left:40px !important"><?= render_submit_button();?>
-            <?= render_form_close() ?>
+        <dd style="margin-left:40px !important">
+            <?= render_submit_button();?>
+
         </dd>
     </dl>
+    <?= render_form_close() ?>
     <hr/>
     <dl class="row dl-horizontal"><dt>本次投诉联系人</dt><dd><?= $contact ?></dd></dl>
     <dl class="row dl-horizontal"><dt>手机号码</dt><dd><?= $mobile_telephone ?></dd></dl>
@@ -163,12 +164,15 @@
 
 
     function addContent(data){
-        var d = data['content'];
-        require(['dojo/dom-construct'],function(domConstruct){
-            var content = "<kbd>"+d["created_by"]+"</kbd>"+d["content"]+"<a class='ddtime'>时间："+d["creation_date"]+"</a>";
-            var node = $(".contentContainer",currentWso().domNode)[0];
-            //直接定义class时 IE8不支持，只能事后set
-            domConstruct.create("div",{innerHTML : content,id: "content_"+d["id"]},node);
-        });
+        refresh_notice_count();
+        refresh();
+//        var d = data['content'];
+//        require(['dojo/dom-construct'],function(domConstruct){
+//            var content = "<kbd>"+d["created_by"]+"</kbd>"+d["content"]+"<a class='ddtime'>时间："+d["creation_date"]+"</a>";
+//            var node = $(".contentContainer",currentWso().domNode)[0];
+//            console.info(node);
+//            //直接定义class时 IE8不支持，只能事后set
+//            domConstruct.create("div",{innerHTML : content,id: "content_"+d["id"]},node);
+//        });
     }
 </script>
