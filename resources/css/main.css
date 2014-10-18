@@ -468,7 +468,7 @@ html, body {
     color:#fff;
 }
 .fixnavbar ul li i{
-    padding-top:5px !imporant;
+    padding-top:5px !important;
     margin-right: 6px;
 }
 .fixnavbar ul li .text{
@@ -702,4 +702,20 @@ html, body {
     background-color: #ECF0F1;
     border-radius: 4px;
     line-height: 28px;
+}
+
+/*table*/
+.table{
+    border-top:1px solid #CECECE !important;
+    border-bottom:1px solid #CECECE !important;
+
+}
+.table th{
+    background: #EEEEEE !important;
+    color:#999999;
+    font-family:Microsoft Yahei;
+}
+.table tr:hover{
+    background: #F5F5F5;
+    cursor: pointer;
 }
