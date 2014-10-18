@@ -31,7 +31,6 @@ function recordWso(url){
         }
     }
     $env.history.unshift({url:currentWso().href,target:$env.mid});
-    console.info($env.history);
 }
 
 function isURL(str_url){
@@ -300,6 +299,7 @@ function renderValidError(lines){
                 //激活
                 //object.focus();
                 object.set("state","Error");
+                //object.displayMessage(lines[i][key]);
                 var wso = currentWso();
                 //object.displayMessage("gogo");
                 var nodes = $("#error_"+fixDijitId(key),wso.domNode);
@@ -429,7 +429,7 @@ function dijitObject(id){
     return $dijit.byId(fixDijitId(id));
 }
 
-//刷新未读消息数量
+//刷新未读消息数量:后续等待优化，采用ajax长轮询
 function refresh_notice_count(n){
     if(n){
         $dom.byId("scbadge").innerHTML = n;

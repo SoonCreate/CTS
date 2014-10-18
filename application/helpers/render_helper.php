@@ -78,7 +78,7 @@ function render_error($heading = '',$message = ''){
 }
 
 function render_form_error($field){
-    return '<dd><div id="error_'.$field.'_'._sess('cm').'"></div></dd>';
+    return '<div id="error_'.$field.'_'._sess('cm').'"></div>';
 }
 
 //输出到view里面的option
@@ -262,9 +262,7 @@ function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$
     if(!is_null($datetime)){
         $echo = $echo . $datetime;
     }
-    $echo = $echo .'</dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo . '</dl>';
+    $echo = $echo.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -275,7 +273,7 @@ function render_form_timebox($name){
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" trim="true"';
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" trim="true" ';
     if($required){
         $echo = $echo. ' required ';
     }
@@ -288,9 +286,7 @@ function _render_input_by_type($name,$required = FALSE,$attributes = array(),$ty
         $echo = $echo. $key.'= '.'"'.$value.'"';
     }
 
-    $echo = $echo. '/></dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo . '</dl>';
+    $echo = $echo. '/>'. render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -313,9 +309,7 @@ function render_form_combobox($name,$data,$required = FALSE,$attributes = array(
         $echo = $echo. ' '.$key.' = '.'"'.$value.'"';
     }
 
-    $echo = $echo. '/></dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo. '</dl>';
+    $echo = $echo. '/>'.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -331,9 +325,7 @@ function render_form_textarea($name,$required = FALSE,$attributes = array(),$dis
         $echo = $echo. ' disabled ';
     }
 
-    $echo = $echo. '/>'._v($name).'</textarea></dd>';
-    $echo = $echo .render_form_error($name);
-    $echo = $echo. '</dl>';
+    $echo = $echo. '/>'._v($name).'</textarea>'.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -347,9 +339,7 @@ function render_select_with_options($name,$valuelist_name,$required = FALSE,$att
     }
     $echo = $echo. '>';
     $echo = $echo. render_options_with_value($valuelist_name,_v($name));
-    $echo = $echo.   '</select> </dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo. '</dl>';
+    $echo = $echo.   '</select> '.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -363,9 +353,7 @@ function render_select_add_options($name,$options,$required = FALSE){
     }
     $echo = $echo. '>';
     $echo = $echo. $options;
-    $echo = $echo.   '</select> </dd>';
-    $echo = $echo. render_form_error($name);
-    $echo = $echo. '</dl>';
+    $echo = $echo.   '</select> '.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
