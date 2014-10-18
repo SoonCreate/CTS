@@ -804,3 +804,6 @@ p.footer{
     color: #ddd;
     float: right;
 }
+.sc .dijitButtonNode a{
+    color:#555;
+}
