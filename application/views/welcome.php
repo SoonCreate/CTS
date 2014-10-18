@@ -40,7 +40,7 @@
                 <i class="icon-envelope icon-1x"></i><span class="text">未读消息</span>
                 <span class="scbadge" id="scbadge">'._v('notice_need_to_read').'</span>')?>
             </li>
-            <li><i class=" icon-off icon-1x"></i><label>退出登录</label></li>
+            <li><i class=" icon-off icon-1x"></i><span class="text">退出登录</span></li>
         </ul>
 </div>
 </body>

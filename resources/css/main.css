@@ -435,8 +435,7 @@ html, body {
     top:30px;
     right: 35px;
     height:41px;
-
-    font-size:15px;
+    font-size:11px;
 }
 .fixnavbar ul li{
     font-size:20px;
@@ -528,7 +527,8 @@ html, body {
     height:75px;
     cursor: pointer;
     border: 1px solid #4B84C2;
-    color:#4B84C2;
+    color:#FFF;
+    background: #4B84C2;
 
 }
 .applist li .text{
@@ -544,8 +544,8 @@ html, body {
 }
 
 .applist li:hover .icon {
-    background-color:#4B84C2;
-    color:#fff;
+    background-color:#fff;
+    color:#4B84C2;
 }
 .applist li:hover .text{
     color:#2C3E50;
