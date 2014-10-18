@@ -1,10 +1,27 @@
 @CHARSET "UTF-8";
+/*Global css*/
+
+h1,h2,h3,h4{
+    font-family:Microsoft Yahei;
+    margin:0 !important;
+    padding:0;
+    display:inline-block;
+}
+/*Global Detail*/
 *{
     box-sizing:border-box;
     -moz-box-sizing: border-box;
     outline: none !important;
-    text-decoration: none !important;
  }
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0 5px 5px 0;
+    margin: 0 0 0 0;
+    background-color: #BDC3C7 !important;
+    font-size: 12px;
+    overflow: hidden;
+}
 .row{
 	margin-left:0 !important;
 	margin-right:0 !important;
@@ -18,46 +35,13 @@
     padding:3px 0;
 
 }
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    padding: 0 10px 10px 0;
-    margin: 0 0 0 0;
-    font-size: 12px;
-    background-color: #ECF0F1 !important;
 
-}
-h1,h2,h4{
-    font-family:Microsoft Yahei;
-    margin:0 !important;
-    padding:0;
-    display:inline-block;
-}
-#preloader {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 1em;
-    background: #fff url('../images/loadingAnimation.gif') no-repeat center center;
-    position: absolute;
-    z-index: 999;
-    font-size: 24px;
-    font-weight: bold;
-}
 
-.loading {
-    padding: 1em;
-    background: url('../images/loadingAnimation.gif') no-repeat;
-    z-index: 999;
-    font-size: 24px;
-    font-weight: bold;
-}
-
+/*Layout CSS*/
 #mainContainer {
     height: 100%;
     width: 100%;
-    background-color: #ECF0F1;
+    background-color: #BDC3C7;
     /*background-color: #BDC3C7;*/
 }
 
@@ -68,259 +52,51 @@ h1,h2,h4{
 	/*background:#273F56;*/
 	position:relative;
 	z-index:2;
-	font-family:Microsoft Yahei;
-    background-color: #ECF0F1;
+    background-color: #BDC3C7;
 	margin-bottom:20px;
 }
-.dijitTabPaneWrapper{
-    background-color: #fff;
+#mainSplitter{
+    margin-left:20px;
+    background: #2C3E50;
+    border: 1px solid #969B9E;
+    border-radius: 8px 0 0  8px;
 }
 .comlogo{
 	margin-top:5px;
 	padding:0 30px;
 	height: 35px;
 }
-.headerline{
-	height: 0px;
-	background:#4A9BD5;
-	border-bottom:1px solid #2A73A8;
-	border-top:1px solid #2A73A8;
-}
-#leftAccordion{
-	width:200px;
-	border-right:1px solid #9CADBA;
-	background:#EAF0F5;
-}
 
-
-.paneAccordion {
-    margin: 0 auto 0 auto !important;
-    text-align: center;
-	height:auto !important;
-}
-
-.dbootstrap #leftAccordion .dijitButton {
-    width: 100%;
-}
-
-.claro #leftAccordion .dijitButton .dijitButtonNode {
-    width: 140px;
-    margin-bottom: 7px;
-}
-
-code,
-.code {
-    border: 1px solid black;
-    font-size: 11px;
-    font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;
-    background-color: #EEEEEE;
-    padding: 2px;
-}
-
-.tabPane{
-    padding: 1em;
-}
-.rightpane{
-    padding : 5px 30px !important;
-}
-.instructionBox{
-    text-align: left;
-    margin: 2px auto 7px;
-    padding: 8px;
-    max-width: 300px;
-    background-color: #E9F4FE;
-    border: 1px solid #759DC0;
-    -webkit-border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px 4px 4px 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-}
-
-.info {
-    /*text-align: left;
-    margin: 1em;
-    padding: 1em;
-    background-color: #E9F4FE;
-    border: 1px solid #759DC0;
-    -webkit-border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px 4px 4px 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);*/
-}
-
-.info li{
-    margin-left: 20px;
-}
-
-.ormInfo {
-    text-align: left;
-    margin: 1em;
-    padding: 1em;
-    background-color: #E9F4FE;
-    border: 1px solid #759DC0;
-    -webkit-border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px 4px 4px 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-}
-
-.demoJSFile{
-    background-image: url("../resources/silk/icons/page_white_code.png");
-    background-repeat: no-repeat;
-    height: 18px;
-    text-align: center;
-    width: 18px;
-    margin: 0 auto;
-}
-
-.demoFolder{
-    background-image: url("../resources/silk/icons/folder.png");
-    background-repeat: no-repeat;
-    height: 18px;
-    text-align: center;
-    width: 18px;
-    margin: 0 auto;
-}
-
-#fileGridTreePane {
-    width: 240px;
-}
-
-#fileGridGridPane {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-#confirmDialog {
-    width: 400px;
-}
-
-.messageContainer{
-    height: 60px;
-    /*line-height: 30px;*/
-    padding: 5px 5px 0 5px;
-
-}
-
-.messageContainer .messageContent{
-    margin-left: 70px;
-    margin-top: -40px;
-    table-layout:fixed;
-    word-break: break-all;
-    overflow:hidden;
-    font-size: 20px;
-}
-
-pre,code {
-    font-family: Consolas, Monaco, Courier New, Courier, monospace;
-    font-size: 12px;
-    background-color: #f9f9f9;
-    border: 1px solid #D0D0D0;
-    color: #002166;
-    display: block;
-    margin: 14px 0 14px 0;
-    padding: 12px 10px 12px 10px;
-}
-
-#body{
-    margin: 0 15px 0 15px !important;
-    padding:10px !important;
-}
-
-p.footer{
-    text-align: right;
-    font-size: 11px;
-    border-top: 1px solid #D0D0D0;
-    line-height: 32px;
-    padding: 0 10px 0 10px;
-    margin: 20px 0 0 0;
-}
-
-#container{
-    margin: 10px;
-    border: 1px solid #D0D0D0;
-}
-
-#container h1 {
-    color: #444;
-    background-color: transparent;
-    border-bottom: 1px solid #D0D0D0;
-    font-size: 19px;
-    font-weight: normal;
-    margin: 0 0 14px 0;
-    padding: 14px 15px 10px 15px;
-}
-
-.summaryRow .gridxRowTable {
-    background-color: #FFFF99;
-}
-.leftsubmenu{
-	padding:0 ;
-	margin:0;
-}
-.leftsubmenu li{
-
-	list-style:none;
-
-}
-
-.leftsubmenu li a{
-	color:#205484;
-	display: block;
-	line-height: 28px;
-	text-align: left;
-	padding: 2px 0px 2px 30px;
-	cursor: pointer;
-	font-family:"Microsoft Yahei";
-	background:#EAF0F5;
-}
-
-.leftsubmenu li a:hover{
-    color:#666;
-    text-decoration: none;
-	background:#D4E2EE;
-
-}
-
-/*user-center*/
+/*Left TabMenu*/
 
 .dijitTabContainerLeft-tabs{
-    margin-left:20px;
+    padding: 50px 0 0 20px;
     width:200px;
     border:0 solid #fff !important;
+
 
 }
 
 .dijitTabContainerLeft-tabs .dijitTab {
-    height: 75px;
-    margin-bottom: 10px !important;
+    height: 60px;
+    margin-bottom: 5px !important;
     margin-right: 10px;
-    padding:15px 0 10px 15px !important;
-    border: 1px solid #29BB9C;
-    background-color: #FFF;
+    padding:8px 0 10px 8px !important;
+    border: 0px solid #29BB9C;
+    background-color:#2C3E50;
     font-family:"Microsoft Yahei";
     font-weight: bolder;
     font-size:14px;
-    color:#29BB9C;
-    border-radius: 4px !important;
+    color:#ECF0F1;
+    border-radius: 0px !important;
 }
 
 .dijitTabContainerLeft-tabs .dijitTabChecked {
-    margin:0 0 10px 0 !important;
-    border: 1px solid #B5BCC7;
-    border-radius: 4px 0 0 4px !important;
+    margin:0 0px 10px 0 !important;
+    border: 0px solid #B5BCC7;
     background-color:#fff !important ;
-    color:#3CACE7;
+    color:#1ABC9C;
     border-right: 0px solid #3CACE7 #29BB9C #2C3E50 ;
-    top:0px;
-
 }
 .dijitTabContainerLeft-container{
     border: 1px solid #979C9F;
@@ -330,9 +106,9 @@ p.footer{
 .dijitTabContainerLeft-tabs .tabLabel{
     display:block;
     float:left;
-    height: 50px;
-    width:110px;
-    padding: 10px 0px 20px 10px !important;
+    height: 40px;
+    width:90px;
+    padding: 10px 0px 11px 10px !important;
 
 }
 .dijitTabContainerLeft-tabs .dijitTabChecked .tabLabel{
@@ -352,7 +128,7 @@ p.footer{
 
 
 
-/*login form*/
+/*LoginPage form*/
 .login{
 
     /*border: 1px solid #759dc0;
@@ -453,7 +229,7 @@ p.footer{
     height: 10px;
     border-bottom:1px solid #d3d3d3;
 }
-
+/*ScrollBar Style*/
 ::-webkit-scrollbar {
     width: 14px;
     height: 14px;
@@ -478,7 +254,7 @@ p.footer{
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
-/*create*/
+/*DetailPage CSS*/
 .paneltitle{
     border-radius: 3px 3px 0 0;
     padding: 0 10px;
@@ -580,7 +356,7 @@ p.footer{
     line-height: 20px;
 }
 
-/*reg page*/
+/*RegPageg CSS*/
 .regcontent {
     width: 960px;
     margin: 0 auto;
@@ -616,12 +392,12 @@ p.footer{
     font-family:Microsoft Yahei;
 }
 
-/* fix bottom or top*/
+/* FixDiv CSS*/
 .fixbottom{
     position: fixed;
     left: 221px;
-    right: 23px;
-    bottom: 23px;
+    right: 13px;
+    bottom: 13px;
     box-shadow: 0 -3px 3px #ddd;
     background-color: #f6f6f6;
     padding: 8px 30px;
@@ -629,20 +405,21 @@ p.footer{
 }
 .fixtop{
     position: fixed;
-    left: 231px;
-    right: 23px;
+    left: 222px;
+    right: 13px;
     top: 81px;
     height: 41px;
     padding: 10px 30px;
-    background-color: #2C3E50;
-    border-radius:0 0 0 6px ;
+    background-color: #ECF0F1;
+    border-bottom: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
     z-index: 990;/*dijitDialog is 999*/
     font-family:Microsoft Yahei;
+    color:#869198;
 
 }
 .fixtop a{
-    color:#fff;
-    text-decoration: none !important;
+    color:#869198;
     display: inline-block;
     padding:3px 5px;
     border-radius: 2px;
@@ -665,13 +442,12 @@ p.footer{
 .dijitTabContainerLeftChildWrapper{
 
 
-
 }
 .dijitTabContainerLeft-container{
 
 }
 
-/* app list*/
+/* APP list*/
 .applist{
     padding: 6px 41px 14px 4px;
     display: block;
