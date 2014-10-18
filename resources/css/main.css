@@ -559,7 +559,8 @@ html, body {
 }
 
 .applist li:hover .icon {
-    background-color:#fff;
+    background-color:#2C3E50;
+    border: 1px solid #2C3E50;
     color:#4B84C2;
 }
 .applist li:hover .text{
