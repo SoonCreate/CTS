@@ -19,4 +19,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('messages','class_create'),label('class_create'))?>
+<div class="row">
+    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('messages','class_create'),label('class_create'))?></button>
+</div>

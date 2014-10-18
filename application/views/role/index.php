@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>Role_id</th>
         <th>角色名</th>
@@ -21,6 +21,7 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('role','create'),label('role_create'))?>
-&nbsp;|&nbsp;
-<?= render_link(array('role','copy_from'),label('role_copy'),label('create_role_as_copy'))?>
+<div class="row">
+<button data-dojo-type="sckj/form/Button" ><?= render_link(array('role','create'),label('role_create'))?></button>
+<button data-dojo-type="sckj/form/Button" ><?= render_link(array('role','copy_from'),label('role_copy'),label('create_role_as_copy'))?></button>
+</div>

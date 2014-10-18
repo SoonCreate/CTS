@@ -31,4 +31,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('functions','create'),label('function_create'))?>
+<div class="row">
+    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('functions','create'),label('function_create'))?></button>
+</div>

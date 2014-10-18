@@ -24,4 +24,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('modules','create'),label('module_create'))?>
+<div class="row">
+    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('modules','create'),label('module_create'))?></button>
+</div>

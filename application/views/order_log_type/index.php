@@ -30,4 +30,6 @@
         </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('order_log_type','create'),label('order_log_type_create'))?>
+<div class="row">
+    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('order_log_type','create'),label('order_log_type_create'))?></button>
+</div>

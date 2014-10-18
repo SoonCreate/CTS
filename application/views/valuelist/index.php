@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>值集ID</th>
         <th>值集名称</th>
@@ -40,4 +40,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('valuelist','create'),label('valuelist_create'))?>
+<div class="row">
+    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('valuelist','create'),label('valuelist_create'))?></button>
+</div>
