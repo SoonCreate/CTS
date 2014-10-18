@@ -305,7 +305,7 @@ function render_form_combobox($name,$data,$required = FALSE,$attributes = array(
 function render_form_textarea($name,$required = FALSE,$attributes = array()){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-        <dd><textarea name="'.$name.'" id="'.$name.'" type="text" data-dojo-type="sckj/form/Textarea"';
+        <dd><textarea name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Textarea"';
     if($required){
         $echo = $echo. 'required';
     }

@@ -315,7 +315,7 @@ class Order extends CI_Controller {
             if($_POST){
                 $this->load->model('order_content_model');
                 $ocm = new Order_content_model();
-                $data['content'] = tpost('content');
+                $data['content'] = r(v('content'));
                 $data['order_id'] = $id;
                 $content_id = $ocm->insert($data);
                 if($content_id){

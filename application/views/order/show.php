@@ -31,10 +31,13 @@
 
     <?php }else{?>
         <?php if(is_order_allow_next_status($status,'reopen') && check_order_auth($order_type,'reopen',$category)){?>
-            <?= render_link(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
+            <button data-dojo-type="sckj/form/Button">
+                <?= render_link(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
+            </button>
         <?php }?>
-
+    <button data-dojo-type="sckj/form/Button">
         <?= render_link(array('order','feedback',array('id'=>$id)),'反馈建议以及评分')?>
+    </button>
     <?php }?>
 
     <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
@@ -156,17 +159,14 @@
                 });
         });
 
+
     function addContent(data){
         var d = data['content'];
-        require(['dojo/dom-construct',"dojo/_base/fx"],function(domConstruct,fx){
-            var content = d["created_by"]+"："+d["content"]+"  时间："+d["creation_date"]+"<br/>";
+        require(['dojo/dom-construct'],function(domConstruct){
+            var content = "<kbd>"+d["created_by"]+"</kbd>"+d["content"]+"<a class='ddtime'>时间："+d["creation_date"]+"</a>";
             var node = $(".contentContainer",currentWso().domNode)[0];
-            domConstruct.create("div",{class : " ",innerHTML : content,id: "content_"+d["id"]},node);
-//            fx.fadeIn({
-//                node: "content_"+d["id"]
-//            }).play();
+            //直接定义class时 IE8不支持，只能事后set
+            domConstruct.create("div",{innerHTML : content,id: "content_"+d["id"]},node);
         });
     }
-
-
 </script>
