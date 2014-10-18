@@ -85,6 +85,7 @@
         require(["dojo/store/JsonRest"],function(JsonRest){
             $ajax.get(url('user/notice_read_all'),{handleAs : "json"}).then(function(responce){
                 handleResponse(responce,null,function(){
+                    refresh_notice_count(0);
                     refresh();
                 });
             });

@@ -35,7 +35,11 @@
 </div>
 <div class="fixnavbar">
     <ul>
-            <li><i class="icon-envelope icon-1x"></i><label>未读消息</label><span class="scbadge">4</span></li>
+            <li>
+                <?= render_link(array('user','notices'),'
+                <i class="icon-envelope icon-1x"></i><span class="text">未读消息</span>
+                <span class="scbadge" id="scbadge">'._v('notice_need_to_read').'</span>')?>
+            </li>
             <li><i class=" icon-off icon-1x"></i><label>退出登录</label></li>
         </ul>
 </div>

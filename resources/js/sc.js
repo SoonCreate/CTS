@@ -425,3 +425,15 @@ function closeDialogAndRefresh(){
 function dijitObject(id){
     return $dijit.byId(fixDijitId(id));
 }
+
+//刷新未读消息数量
+function refresh_notice_count(n){
+    if(n){
+        $dom.byId("scbadge").innerHTML = n;
+    }else{
+        $ajax.get(url('welcome/notice_need_to_read'),{handleAs : "text"}).then(function(data){
+            $dom.byId("scbadge").innerHTML = data;
+        });
+    }
+
+}

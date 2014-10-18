@@ -42,10 +42,18 @@ class Welcome extends CI_Controller {
             }
             $modules[$i]['url'] = $url;
         }
-
+        $this->load->model('notice_model');
+        $nm = new Notice_model();
+        $data['notice_need_to_read'] = $nm->count_by(array('received_by'=>_sess('uid'),'read_flag'=>0));
         $data['modules'] = $modules;
 		$this->load->view('welcome',$data);
 	}
+
+    function notice_need_to_read(){
+        $this->load->model('notice_model');
+        $nm = new Notice_model();
+        echo $nm->count_by(array('received_by'=>_sess('uid'),'read_flag'=>0));
+    }
 
     function show_404(){
         show_404();

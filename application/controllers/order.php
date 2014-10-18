@@ -396,19 +396,79 @@ class Order extends CI_Controller {
         }else{
             $this->load->model('feedback_model');
             $this->load->model('feedback_star_model');
+            $this->load->model('valuelist_line_model');
             $ofm = new Feedback_model();
             $fsm = new Feedback_star_model();
+            $vlm = new Valuelist_line_model();
             if($order['created_by'] == _sess('uid')){
                 if(is_order_locked($order['status'])){
                     if($_POST){
+                        if(v('feedback_id')){
+                            //修改
+                            $line = $ofm->find(v('feedback_id'));
+                            if(empty($line)){
+                                message_db_failure();
+                            }else{
+                                $this->db->trans_start();
+                                $feedback['content'] = v('content_plus');
+                                $stars = $fsm->find_all_by(array('feedback_id'=>$line['id']));
+                                $ofm->update($line['id'],$feedback);
+                                foreach($stars as $star){
+                                    $s['stars'] = v('star_'.$star['feedback_type']);
+                                    $fsm->update($star['id'],$s);
+                                }
+                                $this->db->trans_complete();
+                                if($this->db->trans_status() === TRUE){
+                                    go_back();
+                                    message_db_success();
+                                }else{
+                                    message_db_failure();
+                                }
+                            }
 
+                        }else{
+                            //判断是否存在
+                            $line = $ofm->find_by(array('order_id'=>v('id')));
+                            if(empty($line)){
+                                //创建
+                                $vlm->order_by('sort');
+                                $stars = $vlm->find_all_by_view(array('valuelist_name'=>'vl_feedback','inactive_flag'=>0));
+                                $this->db->trans_start();
+                                $feedback['order_id'] = v('id');
+                                $feedback['content'] = v('content_plus');
+                                $feedback_id = $ofm->insert($feedback);
+                                foreach($stars as $star){
+                                    $s['feedback_id'] = $feedback_id;
+                                    $s['feedback_type'] = $star['segment_value'];
+                                    $s['feedback_desc'] = $star['segment_desc'];
+                                    $s['stars'] = v('star_'.$star['segment_value']);
+                                    $fsm->insert($s);
+                                }
+                                $this->db->trans_complete();
+                                if($this->db->trans_status() === TRUE){
+                                    go_back();
+                                    message_db_success();
+                                }else{
+                                    message_db_failure();
+                                }
+                            }else{
+                                custz_message('E','订单已反馈请勿重复提交！');
+                            }
+
+
+                        }
                     }else{
                         $o = $ofm->find_by(array('order_id'=>$order['id']));
                         if(empty($o)){
-                            $data['stars'] = get_options('vl_feedback');
+                            $vlm->order_by('sort');
+                            $data['stars'] = $vlm->find_all_by_view(array('valuelist_name'=>'vl_feedback','inactive_flag'=>0));
+                            for($i=0;$i<count($data['stars']);$i++){
+                                $data['stars'][$i]['value'] = _config('feedback_star');
+                            }
                             render_view('order/feedback_create',$data);
                         }else{
                             $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
+                            $o['content_plus'] = $o['content'];
                             render_view('order/feedback_edit',$o);
                         }
                     }

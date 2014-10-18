@@ -80,6 +80,7 @@ class Valuelist_model extends MY_Model{
                     $this->db->where('inactive_flag',$inactive_flag);
                 }
                 $this->db->order_by('sort');
+                $this->db->order_by('segment');
                 $rs = $this->db->get();
             }
         }
