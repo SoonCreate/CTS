@@ -448,19 +448,19 @@ html, body {
     position: fixed;
     z-index:993;
     top:30px;
-    right: 35px;
+    right: 15px;
     height:41px;
     font-size:11px;
 }
 .fixnavbar ul li{
-    font-size:20px;
+    font-size:17px;
     display:block;
     float: left;
-    margin-right: 10px;
+    margin-right: 1px;
     padding :5px 10px;
     border-radius: 5px;
     color:#777;
-    min-width: 100px;
+    min-width: 50px;
     cursor: pointer;
 }
 .fixnavbar ul li:hover{
