@@ -54,8 +54,8 @@
         <?php foreach($contents as $c):?>
             <div class="" id="content_<?= $c['id']?>">
                 <?php
-                echo '<kbd>'.full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .'</kbd>'.$c['content'];
-                echo '<a class="ddtime"> 时间：'.$c['creation_date'].'</a>';
+                echo '<span class="ddname"><i class="icon-user"></i>&nbsp;&nbsp;'.full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .':</span><div class="righttip"><div class="triangle "></div><div class="tooltipinner">'.$c['content'];
+                echo '<span class="ddtime"> 时间：'.$c['creation_date'].'</span></div></div>';
                 ?>
             </div>
             <br/>
@@ -79,16 +79,18 @@
         </dd>
     </dl>
     <hr/>
-    <dl class="row dl-horizontal"><dt>&nbsp</dt>
-        <dd>
+    <dl class="row dl-horizontal"><dt>&nbsp;</dt>
+        <dd >
             <?= render_form_open('order','reply','null','null','addContent') ?>
             <?= render_form_textarea('content',TRUE);?>
             <input name="id" id="id" type="hidden" value="<?= v('id') ?>"/>
-            <?= render_submit_button();?>
+        </dd>
+     </dl>
+    <dl class="row dl-horizontal"><dt>&nbsp;</dt>
+        <dd style="margin-left:40px !important"><?= render_submit_button();?>
             <?= render_form_close() ?>
         </dd>
     </dl>
-
     <hr/>
     <dl class="row dl-horizontal"><dt>本次投诉联系人</dt><dd><?= $contact ?></dd></dl>
     <dl class="row dl-horizontal"><dt>手机号码</dt><dd><?= $mobile_telephone ?></dd></dl>
