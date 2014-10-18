@@ -26,14 +26,12 @@ class Meeting_model extends MY_Model{
         if(!isset($data['id'])){
             $l['meeting_id'] = $this->insert($data);
             if(!$l['meeting_id']){
-                echo 'meeting_insert_fail';
                 $this->db->trans_rollback();
                 return false;
             }
         }else{
             $l['meeting_id'] = $data['id'];
             if(!$this->update($data['id'],$data)){
-                echo 'meeting_insert_fail';
                 $this->db->trans_rollback();
                 return false;
             }

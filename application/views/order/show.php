@@ -23,7 +23,7 @@
         <?php }?>
 
         <?php if(check_function_auth('order','meeting_create')){ ?>
-            <button data-dojo-type="sckj/form/Button"><a href="<?= _url('order_meeting','index',array('order_id'=>$id)) ?>">会议记录</a></button>
+            <button data-dojo-type="sckj/form/Button"><?= render_link(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?></button>
         <?php } ?>
 
 
@@ -95,7 +95,7 @@
     <hr/>
 </div>
 
-<?= render_form_header(label('order_number')) ?>
+<?= render_form_header(label('order_logs')) ?>
 <div id="orderShowLogsGrid"></div>
 <script type="text/javascript">
     require(["dojo/ready",
