@@ -719,3 +719,23 @@ html, body {
     background: #F5F5F5;
     cursor: pointer;
 }
+
+/*index loading*/
+#preloader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    display:inline-block;
+    background: #29BB9C;
+    width:178px;
+    height:33px;
+    padding: 7px 10px;
+    color:#fff;
+    font-family:"Microsoft Yahei";
+    font-weight: bold;
+    z-index: 999999;
+    margin-right: 10px;
+
+    margin:0 !important;
+
+}
