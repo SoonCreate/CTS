@@ -22,9 +22,16 @@ $lang['label_search'] = "查找";
 $lang['label_all'] = "所有";
 $lang['label_index'] = "首页";
 
+$lang['label_notice_read_all'] = "全部标记成已读";
+$lang['label_notice'] = "提醒";
+$lang['label_email_flag'] = "接收邮件";
+$lang['label_go_to_order'] = "打开投诉单";
+$lang['label_order_number'] = "投诉单号";
+$lang['label_order_logs'] = "日志记录";
+
 $lang['label_user'] = "账号管理";
 $lang['label_change_password'] = "修改密码";
-//$lang['label_logout'] = "退出";
+$lang['label_logout'] = "退出";
 $lang['label_username'] = "用户名";
 $lang['label_password'] = "密码";
 $lang['label_change_password'] = "修改密码";
@@ -44,7 +51,7 @@ $lang['label_mobile_telephone'] = "手机号码";
 $lang['label_email'] = "邮件地址";
 $lang['label_phone_number'] = "办公室电话";
 $lang['label_content'] = "内容";
-$lang['label_full_name'] = "公司名称/姓名";
+$lang['label_full_name'] = "公司名称";
 $lang['label_company_name'] = "公司名称";
 $lang['label_address'] = "联系地址";
 

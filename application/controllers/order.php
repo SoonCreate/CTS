@@ -56,6 +56,20 @@ class Order extends CI_Controller {
             }
             $om->order_by('id','DESC');
             $os = $om->find_all_by($where);
+
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $where['status'] = $status;
+            $where['created_by'] = _sess('uid');
+
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+
+            //fix ：Error in Body._buildRowContent: Row is not in cache
+            if($title){
+                $this->db->like('title',$title);
+            }
             $totalCnt = $om->count_by($where);
         }else{
             $om->limit($end+1,$start);
@@ -72,6 +86,16 @@ class Order extends CI_Controller {
             }
             $om->order_by('id','DESC');
             $os = $om->find_all_by($where);
+
+            if($title){
+                $this->db->like('title',$title);
+            }
+            $where['status'] = $status;
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+            if($title){
+                $this->db->like('title',$title);
+            }
             $totalCnt = $om->count_by($where);
         }
 //        print_r($os);
@@ -490,6 +514,8 @@ class Order extends CI_Controller {
                 if(!empty($o)){
                     $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
                     render_view('order/feedback_show',$o);
+                }else{
+                    render_view('order/feedback_show');
                 }
 
             }

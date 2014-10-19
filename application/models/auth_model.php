@@ -16,14 +16,16 @@ class Auth_model extends MY_Model{
     function check_auth($auth_object_name,$auth_items,$user_id = null){
         $profile_objects = $this->find_profiles_by_object_name($auth_object_name,$user_id)->result_array();
         if(count($profile_objects)>0){
-            $pass = true;
+            $pass = false;
             //循环拥有多少种相同权限对象的组合
             foreach($profile_objects as $o){
                 //单个权限对象验证
-                $pass = $pass && $this->check_auth_item($o,$auth_items);
+                if($this->check_auth_item($o,$auth_items) && !$pass){
+                    $pass = true;
+                    break;
+                }
             }
             return $pass;
-
         }else{
             //用户没有当前权限对象
             return false;

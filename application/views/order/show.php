@@ -35,12 +35,13 @@
     <?php }?>
     </div>
 
-    <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>严重性</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>发生频率</dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>投诉单类型</dt><dd><?= get_label('vl_order_type',$order_type); ?></dd></dl>
     <?php if(_config('category_control')) :?>
         <dl class="row dl-horizontal"><dt>分类</dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
     <?php endif;?>
+    <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>严重性</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
+    <dl class="row dl-horizontal"><dt>发生频率</dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>
     <dl class="row dl-horizontal"><dt>提交时间</dt><dd><?= $creation_date ?></dd></dl>
     <hr/>
     <dl class="row dl-horizontal"><dt>标题</dt><dd><?= $title ?></dd></dl>

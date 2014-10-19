@@ -18,6 +18,8 @@
     <!--[if IE 7]>
     <link rel="stylesheet" href="<?= base_url() ?>/resources/css/font-awesome-ie7.min.css">
     <![endif]-->
+
+    <?php $this->load->view('_ie6_fix')?>
     <script type="text/javascript">
         var dojoConfig = {
             parseOnLoad: true,

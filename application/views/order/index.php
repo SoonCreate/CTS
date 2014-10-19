@@ -62,11 +62,11 @@
                     structure: [
 
                         {name : "投诉单号",field : "id",width : "80px",dataType :"number",style:"text-align: center"},
-//                        {name : "订单类型",field : "order_type",width : "160px",dataType :"string"},
+                        {name : "投诉单类型",field : "order_type",width : "120px",dataType :"string"},
                         <?php if(_config('category_control')){?>
-                        {name : "分类",field : "category",width : "140px",dataType :"string"},
+                        {name : "分类",field : "category",width : "120px",dataType :"string"},
                         <?php }?>
-                        {name : "标题",field : "title",width : "360px",dataType :"string",
+                        {name : "标题",field : "title",width : "300px",dataType :"string",
                             decorator: function(cellData, rowId, rowIndex){
                                 return '<a href="#" onclick="goto(\'' + url('order/show?id='+rowId) + '\')"><b>'+cellData+'</b></a>';
                             } },

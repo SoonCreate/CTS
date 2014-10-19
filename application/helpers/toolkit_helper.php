@@ -279,7 +279,7 @@ function check_order_auth($order_type,$order_status,$order_category = null,$user
         if(is_null($order_category)){
             $data['ao_order_category'] = _config('all_values');
         }else{
-            $data['ao_order_category'] = $order_status;
+            $data['ao_order_category'] = $order_category;
         }
     }else{
         $data['ao_order_category'] = _config('all_values');
