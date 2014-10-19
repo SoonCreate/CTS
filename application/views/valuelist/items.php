@@ -1,12 +1,14 @@
 <?php if(_v('parent')){?>
-    <h2>父值集：<?= $parent['description']?></h2>
-    <h3>父值集项目：
-        <select name="segment" id="segment">
+    <dl class="row dl-horizontal"> <dt>父值集项目</dt><dd>
+        <select name="segment" id="segment" data-dojo-type="sckj/form/Select" value="<?= _v('parent_segment')?>"
+                onchange="_valuelistItemData(this)">
             <?php foreach($lines as $l){?>
                 <option value="<?= $l['value']?>"><?= $l['label']?></option>
             <?php }?>
         </select>
-        <?php if($parent['segment']['inactive_flag']) : echo '(已失效)' ; endif;?></h3>
+            </dd>
+        </dl>
+<!--        --><?php //if($parent['segment']['inactive_flag']) : echo '(已失效)' ; endif;?>
 <?php }?>
 <table>
     <thead>
@@ -24,7 +26,6 @@
         <td><?= $o['segment_desc']?></td>
         <td><?= $o['inactive_flag'] ?></td>
         <td><?= $o['sort'] ?></td>
-        <?php if((_v('parent') && $parent['segment']['inactive_flag'] == 0) || !_v('parent')){?>
         <td>
             <?= render_link(array('valuelist','item_edit',array('id'=>$o['id'])),label('edit'))?>
             &nbsp;|&nbsp;
@@ -34,17 +35,20 @@
                 <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>1)),label('inactive'),null,null,true)?>
             <?php }?>
         </td>
-        <?php }?>
     </tr>
     <?php endforeach;?>
 </table>
-<?php if(_v('parent') ){
-    if($parent['segment']['inactive_flag'] == 0){
-    ?>
-        <?= render_link(array('valuelist','item_create',array('id'=>v('id'),'parent_segment'=>$parent['segment']['value'])),
+<?php if(_v('parent') ){?>
+        <?= render_link(array('valuelist','item_create',array('id'=>v('id'),'parent_segment'=>_v('parent_segment'))),
             label('item_create'))?>
-    <?php }
-    }else{?>
+    <?php }else{?>
     <?= render_link(array('valuelist','item_create',array('id'=>v('id'))),
         label('item_create'))?>
 <?php }?>
+
+<script type="text/javascript">
+    function _valuelistItemData(object){
+        console.info(url('valuelist/items?id=<?= v('id')?>&parent_segment='+object.getValue()));
+        goto(url('valuelist/items?id=<?= v('id')?>&parent_segment='+object.getValue()),null,null,true);
+    }
+</script>
