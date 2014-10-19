@@ -14,13 +14,13 @@ h1,h2,h3,h4{
     outline: none !important;
  }
 a {
-    color: #555 !important;
-    /*text-decoration: none !important;*/
+    color: #4B84C2 !important;
+   /*text-decoration: none !important;*/
 }
 a:hover,
 a:focus {
     color: #2a6496 ;
-   /* text-decoration: none;*/
+   /*text-decoration: none !important;*/
 }
 a:focus {
     outline:none; ;
@@ -145,7 +145,6 @@ html, body {
 
 /*LoginPage form*/
 .login{
-
     /*border: 1px solid #759dc0;
     -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
     -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
@@ -482,7 +481,10 @@ html, body {
 }
 .fixnavbar ul li a,
 .fixnavbar ul li .text a,
-.fixtop a{
+.fixtop a,
+.applist a,
+.gridx a,
+.dijit a{
     text-decoration: none;
 }
 .messageno{
