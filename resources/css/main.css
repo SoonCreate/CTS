@@ -776,7 +776,10 @@ html, body {
     margin:0 auto;
     position:relative;
     z-index:2;
-    background: ;
+    background:#BDC3C7 ;
+}
+.sc .dijitDialogPaneContent {
+
 }
 
 /*.sc .dijitDialog {
