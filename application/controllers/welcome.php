@@ -33,7 +33,7 @@ class Welcome extends CI_Controller {
 	}
 
     function demo_env(){
-//        clear_all_sess();
+        unset_sess('uid');
         set_sess('uid',string_to_number(v('id')));
         redirect('welcome/app_index');
     }

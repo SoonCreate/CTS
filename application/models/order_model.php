@@ -109,6 +109,8 @@ class Order_model extends MY_Model{
         $need_reason = 0;
         $change_hash = time();
         $log['change_hash'] = $change_hash;
+        //调优：先记录状态信息
+        $this->db->order_by('id','DESC');
         $ltypes = $oltm->find_all_by(array('dll_type'=>$dll_type));
         if(!empty($ltypes)){
             foreach($ltypes as $t){

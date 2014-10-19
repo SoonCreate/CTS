@@ -50,7 +50,7 @@
             <div class="row" id="content_<?= $c['id']?>">
                 <?php
                 echo '<span class="ddname"><i class="icon-user"></i>
-&nbsp;&nbsp;'.full_name($c['created_by'],check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .':
+&nbsp;&nbsp;'.full_name($c['created_by'],!check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .':
 </span><div class="righttip">
 <div class="triangle "></div><div class="tooltipinner">'.$c['content'];
                 echo '<span class="ddtime"> 时间：'.$c['creation_date'].'</span></div></div>';
@@ -62,21 +62,21 @@
     </dl>
     <hr/>
 
-    <dl class="row dl-horizontal"><dt>
-            <?php if(!is_order_locked($status)){?>
-                <a href="<?= _url('order','upload_file')?>">上传附件</a>
-            <?php }?>
-            附件</dt>
-        <dd>
-            <?php foreach($addfiles as $f):
-                //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
-                ?>
-                <a href="<?= $f['full_path']?>"><?= $f['file_name']?></a>
-                <?= $f['description']?>
-            <?php endforeach;?>
-        </dd>
-    </dl>
-    <hr/>
+<!--    <dl class="row dl-horizontal"><dt>-->
+<!--            --><?php //if(!is_order_locked($status)){?>
+<!--                <a href="--><?php //_url('order','upload_file')?><!--">上传附件</a>-->
+<!--            --><?php //}?>
+<!--            附件</dt>-->
+<!--        <dd>-->
+<!--            --><?php //foreach($addfiles as $f):
+//                //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
+//                ?>
+<!--                <a href="--><?//= $f['full_path']?><!--">--><?//= $f['file_name']?><!--</a>-->
+<!--                --><?//= $f['description']?>
+<!--            --><?php //endforeach;?>
+<!--        </dd>-->
+<!--    </dl>-->
+<!--    <hr/>-->
     <?= render_form_open('order','reply','null','null','addContent') ?>
     <dl class="row dl-horizontal"><dt>&nbsp;</dt>
         <dd >

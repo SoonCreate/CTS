@@ -64,7 +64,7 @@ function full_name($id,$only_me = FALSE,$render_me = TRUE){
                 return label('me');
             }else{
                 if($only_me){
-                    return "";
+                    return "对方";
                 }else{
                     global $CI;
                     $CI->load->model('user_model');

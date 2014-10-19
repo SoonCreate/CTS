@@ -118,6 +118,31 @@ class Auth_model extends MY_Model{
         return array_unique($return);
     }
 
+    function can_show_order_types(){
+        $return = array();
+        $profile_objects = $this->find_profiles_by_object_name('only_mine_control')->result_array();
+        if(count($profile_objects)>0){
+            //循环拥有多少种相同权限对象的组合
+            foreach($profile_objects as $o){
+                $l_order_type = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_type'));
+                    if($l_order_type['auth_value'] == _config('all_values')){
+                        //所有
+                        $opts = get_options('ao_order_type');
+                        foreach($opts as $op){
+                            array_push($return,$op['value']);
+                        }
+                    }else{
+                        //少数
+                        $return = array_merge($return,explode(',',$l_order_type['auth_value'])) ;
+                    }
+
+            }
+
+        }
+        //返回消除重复项的最终值
+        return array_unique($return);
+    }
+
     //能选择的分类
     function can_choose_order_categories($order_type,$status){
         $return = array();
@@ -180,7 +205,7 @@ class Auth_model extends MY_Model{
             array('object_name' => 'category_control'))->result_array();
         if(count($profiles) > 0){
             foreach($profiles as $p){
-                if(check_order_auth($order['order_type'],'allocated',$order['category'],$p['user_id'])){
+                if(check_order_auth($order['order_type'],'done',$order['category'],$p['user_id'])){
                     array_push($return,$p['user_id']);
                 }
             }
