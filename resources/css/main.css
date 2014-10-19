@@ -743,12 +743,12 @@ html, body {
 /*demo page*/
 #demo{
     height:110px;
-    width:800px;
+    width:900px;
     margin:0 auto;
     background: #BDC3C7;
 }
 #demowarp{
-    width:800px;
+    width:900px;
     height:445px;
     border-radius: 5px 5px 0 0;
     outline: 0;
@@ -758,13 +758,21 @@ html, body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.32);
     background: #fafafa;
     background-color: #ECF0F1;
-    padding-top:100px;
-    padding-left:50px;
+    padding-top:90px;
+    padding-left:19px;
+}
+#demowarp ul li{
+    margin-bottom: 30px !important;
+}
+#demowarp ul li .text{
+    height:45px;
+    background: #ECF0F1;
+
 }
 #header {
     margin-top:50px;
     height:70px;
-    width:800px;
+    width:900px;
     margin:0 auto;
     position:relative;
     z-index:2;
