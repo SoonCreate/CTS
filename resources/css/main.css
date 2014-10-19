@@ -19,11 +19,11 @@ a {
 }
 a:hover,
 a:focus {
-    color: #2a6496 !important;
+    color: #2a6496 ;
    /* text-decoration: none;*/
 }
 a:focus {
-    outline:none; !important;
+    outline:none; ;
     /*outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;*/
@@ -451,6 +451,7 @@ html, body {
     right: 15px;
     height:41px;
     font-size:11px;
+
 }
 .fixnavbar ul li{
     font-size:17px;
@@ -478,6 +479,11 @@ html, body {
     font-family:Microsoft Yahei;
     margin:0;
     padding:0;
+}
+.fixnavbar ul li a,
+.fixnavbar ul li .text a,
+.fixtop a{
+    text-decoration: none;
 }
 .messageno{
     z-index: 992;
