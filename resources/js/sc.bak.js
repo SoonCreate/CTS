@@ -22,11 +22,7 @@ function goto(url,target,noRender,noRecord){
 
 }
 
-function menu(){
-    goto(url('welcome/my_functions?module_id='+$env.mid));
-}
-
-function recordWso(url){
+function recordWso(onShow){
     if($env.history == undefined){
         $env.history = new Array();
     }else{
@@ -34,8 +30,16 @@ function recordWso(url){
             $env.history.pop();
         }
     }
-    $env.history.unshift({url:currentWso().href,target:$env.mid});
-    console.info($env.history);
+
+    if(onShow){
+        //初始化不记录
+        if($env.mid != undefined){
+            $env.history.unshift({url:currentWso().href,target:$env.mid});
+        }
+    }else{
+        $env.history.unshift({url:currentWso().href,target:$env.mid});
+    }
+console.info($env.history);
 }
 
 function isURL(str_url){
@@ -61,8 +65,13 @@ function isURL(str_url){
 function goback(){
     if("history" in $env){
         if($env.history.length > 0 ){
-            goto($env.history[0]['url'],$env.history[0]['target'],false,true);
-            $env.history.shift();
+            if($env.history[0]['url'] == currentWso().href && $env.history[0]['target'] == $env.mid){
+                $env.history.shift();
+                goback();
+            }else{
+                goto($env.history[0]['url'],$env.history[0]['target'],false,true);
+                $env.history.shift();
+            }
             console.info($env.history);
         }
     }
@@ -320,7 +329,7 @@ function renderValidError(lines){
 }
 
 //没有定义好环境，则刷新
-function refresh_env(mid){
+function refresh_env(){
     //预加载，加载后动画
     require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
         if($dom.byId("preloader")){
@@ -335,13 +344,8 @@ function refresh_env(mid){
     if($env && $env.cm){
         //$(".preloader").style("display","none")
         //console.info($dijit.byId('mainTabContainer'));
-        $env.mid = mid;
-        console.log("current module line id : "+$env.cm+" mid : "+$env.mid);
+        console.log("current module line id : "+$env.cm);
     }
-}
-
-function onModuleShow(mid){
-    $env.mid = mid;
 }
 
 //用于控件的唯一性标识

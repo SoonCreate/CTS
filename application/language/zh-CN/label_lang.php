@@ -24,7 +24,7 @@ $lang['label_index'] = "首页";
 
 $lang['label_user'] = "账号管理";
 $lang['label_change_password'] = "修改密码";
-$lang['label_logout'] = "注销";
+//$lang['label_logout'] = "退出";
 $lang['label_username'] = "用户名";
 $lang['label_password'] = "密码";
 $lang['label_change_password'] = "修改密码";

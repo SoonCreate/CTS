@@ -26,28 +26,50 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-        set_sess('uid',44);
+        $this->load->model('user_model');
+        $um = new User_model();
+        $data['users'] = $um->find_all_by(array('inactive_flag'=>0));
+        $this->load->view('demo',$data);
+	}
+
+    function demo_env(){
+//        clear_all_sess();
+        set_sess('uid',string_to_number(v('id')));
+        redirect('welcome/app_index');
+    }
+
+    function app_index(){
         $am = new Auth_model();
         $modules = $am->can_choose_modules();
-        //初始打开的URL运算
-        for($i = 0;$i < count($modules);$i++){
-            $fns = $am->can_choose_functions($modules[$i]['module_id']);
-            $url = "";
-            if(count($fns) > 1){
-                $url = _url('welcome','my_functions',array('module_id'=>$modules[$i]['module_id']));
-            }elseif(count($fns) == 1){
-                $url = _url($fns[0]['controller'],$fns[0]['action'],array('cm'=>$fns[0]['id']));
-            }else{
-                $url = _url('welcome','show_404');
+        if(empty($modules)){
+            show_404();
+        }else{
+            //初始打开的URL运算
+            for($i = 0;$i < count($modules);$i++){
+                $fns = $am->can_choose_functions($modules[$i]['module_id']);
+                $url = "";
+                if(count($fns) > 1){
+                    $url = _url('welcome','my_functions',array('module_id'=>$modules[$i]['module_id']));
+                }elseif(count($fns) == 1){
+                    $url = _url($fns[0]['controller'],$fns[0]['action'],array('cm'=>$fns[0]['id']));
+                }else{
+                    $url = _url('welcome','show_404');
+                }
+                $modules[$i]['url'] = $url;
             }
-            $modules[$i]['url'] = $url;
+            $this->load->model('notice_model');
+            $nm = new Notice_model();
+            $data['notice_need_to_read'] = $nm->count_by(array('received_by'=>_sess('uid'),'read_flag'=>0));
+            $data['modules'] = $modules;
+            $this->load->view('welcome',$data);
         }
-        $this->load->model('notice_model');
-        $nm = new Notice_model();
-        $data['notice_need_to_read'] = $nm->count_by(array('received_by'=>_sess('uid'),'read_flag'=>0));
-        $data['modules'] = $modules;
-		$this->load->view('welcome',$data);
-	}
+
+    }
+
+    function on_module(){
+        set_sess('mid',v('mid'));
+        echo 1;
+    }
 
     function notice_need_to_read(){
         $this->load->model('notice_model');
@@ -75,9 +97,11 @@ class Welcome extends CI_Controller {
     //当有多个功能时
     function my_functions(){
         $module_id = v('module_id');
-        set_sess('mid',$module_id);
+        if($module_id){
+            set_sess('mid',$module_id);
+        }
         $am = new Auth_model();
-        $data['functions'] = $am->can_choose_functions($module_id);
+        $data['functions'] = $am->can_choose_functions(_sess('mid'));
         render_view('my_functions',$data);
     }
 

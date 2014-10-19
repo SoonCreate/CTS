@@ -1,6 +1,6 @@
 
 <head>
-    <title><?= label('version')?></title>
+    <title><?= full_name(_sess('uid'),false,false)?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
 <link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />

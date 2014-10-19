@@ -1,10 +1,9 @@
 <script type="text/javascript">
     $env.cm = <?= _sess('cm')?>;
-    $env.mid = <?= _sess('mid')?>;
     $env.fid = <?= _sess('fid')?>;
 </script>
 <div class="fixtop">
-    <?= render_link(_url('welcome','my_functions',array('module_id'=>_sess('mid'))),"菜单选择")?>
+        <a href="#" onclick="menu()">菜单选择</a>
         &nbsp;|&nbsp;<a href="#" onclick="goback()">返回</a>
         &nbsp;|&nbsp;<a href="#" onclick="refresh()">刷新</a>
 </div>

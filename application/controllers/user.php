@@ -106,7 +106,7 @@ class User extends CI_Controller {
                     echo validation_errors('<div class="error">', '</div>');
                 }
             }else{
-                render();
+                $this->load->view('user/register');;
             }
         }else{
             show_404();

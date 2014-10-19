@@ -164,7 +164,7 @@ class Order extends CI_Controller {
                     $data['categories'] = $au->can_choose_order_categories($order_type,$order->default_status());
                 }
                 $data['order_type'] = $order_type;
-                render($data);
+                render_view('order/create',$data);
             }
         }
 

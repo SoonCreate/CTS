@@ -16,7 +16,7 @@
          data-dojo-props="liveSplitters: false, design: 'sidebar', region: 'center'">
 
         <div data-dojo-type="dijit/layout/TabContainer" id="mainTabContainer"
-             data-dojo-props="region: 'center',tabPosition:'left-h',persist:true,tabStrip:true" class=" "><!--,persist:true-->
+             data-dojo-props="region: 'center',tabPosition:'left-h',tabStrip:true" class=" "><!--,persist:true-->
 
             <?php if(isset($modules)):?>
             <?php  foreach($modules as $m) :?>
@@ -24,7 +24,8 @@
                          title="<?= $m['module_desc']?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
                          data-dojo-props=" href:'<?= $m['url']?>'"
-                         onDownloadEnd = "refresh_env();"></div>
+                         onDownloadEnd = "refresh_env(<?= $m['module_id']?>);"
+                         onShow = "onModuleShow(<?= $m['module_id']?>);"></div>
              <?php  endforeach;?>
             <?php endif;?>
         </div>
@@ -35,13 +36,17 @@
 </div>
 <div class="fixnavbar">
     <ul>
-            <li><span class="text">Welcome,HelloGS!</span></li>
+            <li><span class="text"><?= render_link(array('user','user_edit'),full_name(_sess('uid'),false,false))?></span></li>
             <li>
                 <?= render_link(array('user','notices'),'
-                <i class="icon-envelope icon-1x"></i><span class="text">消息</span>
+                <i class="icon-envelope icon-1x"></i><span class="text">'.label('notice').'</span>
                 <span class="scbadge" id="scbadge">'._v('notice_need_to_read').'</span>')?>
             </li>
-            <li><i class=" icon-off icon-1x"></i><span class="text">退出</span></li>
+            <li>
+                <a href="<?= _url('user','logout')?>">
+                <i class=" icon-off icon-1x"></i><span class="text"><?= label('logout')?></span>
+                </a>
+            </li>
         </ul>
 </div>
 </body>

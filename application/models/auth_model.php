@@ -99,7 +99,7 @@ class Auth_model extends MY_Model{
                 $l_order_status = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_status'));
                 //拥有初始化状态权限
                 if($l_order_status['auth_value'] == _config('all_values') ||
-                    in_array($this->order->default_status(),explod(',',$l_order_status['auth_value']))){
+                    in_array($this->order->default_status(),explode(',',$l_order_status['auth_value']))){
                     if($l_order_type['auth_value'] == _config('all_values')){
                         //所有
                         $opts = get_options('ao_order_type');
