@@ -736,7 +736,6 @@ html, body {
     z-index: 999999;
     margin-right: 10px;
     margin:0 !important;
-
 }
 
 /*demo page*/
@@ -757,6 +756,7 @@ html, body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.32);
     background: #fafafa;
     background-color: #ECF0F1;
+    margin-top:10px;
     padding-top:90px;
     padding-left:19px;
 }
@@ -769,7 +769,7 @@ html, body {
 
 }
 #header {
-    margin-top:50px;
+    margin-top:30px !important;
     height:70px;
     width:900px;
     margin:0 auto;
