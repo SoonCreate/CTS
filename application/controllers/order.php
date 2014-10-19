@@ -32,10 +32,13 @@ class Order extends CI_Controller {
             $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
         }
 
+        $types = $am->can_show_order_types();
+
         //获取数据
         if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
+
             $om->limit($end+1,$start);
-            $om->order_by('creation_date','DESC');
+
             $title = $this->input->get('title');
             $status = $this->input->get('status');
             if($title){
@@ -43,25 +46,32 @@ class Order extends CI_Controller {
             }
             $where['status'] = $status;
             $where['created_by'] = _sess('uid');
-            $os = $om->find_all_by($where);
+
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+
             //fix ：Error in Body._buildRowContent: Row is not in cache
             if($title){
                 $this->db->like('title',$title);
             }
+            $om->order_by('id','DESC');
+            $os = $om->find_all_by($where);
             $totalCnt = $om->count_by($where);
         }else{
             $om->limit($end+1,$start);
-            $om->order_by('creation_date','DESC');
             $title = $this->input->get('title');
             $status = $this->input->get('status');
             if($title){
                 $this->db->like('title',$title);
             }
             $where['status'] = $status;
-            $os = $om->find_all_by($where);
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
             if($title){
                 $this->db->like('title',$title);
             }
+            $om->order_by('id','DESC');
+            $os = $om->find_all_by($where);
             $totalCnt = $om->count_by($where);
         }
 //        print_r($os);
@@ -164,7 +174,7 @@ class Order extends CI_Controller {
                     $data['categories'] = $au->can_choose_order_categories($order_type,$order->default_status());
                 }
                 $data['order_type'] = $order_type;
-                render($data);
+                render_view('order/create',$data);
             }
         }
 
@@ -264,7 +274,7 @@ class Order extends CI_Controller {
         }else{
             if($_POST){
                 $_POST['plan_complete_date'] = strtotime($_POST['plan_complete_date']);
-                if(strtotime($_POST['plan_complete_date']) < strtotime(date('Y-m-d'))){
+                if($_POST['plan_complete_date'] < strtotime(date('Y-m-d'))){
                     add_validation_error('plan_complete_date','日期不能选择在过去的时间（今天之前）');
                 }else{
                     $data = _data('manager_id','plan_complete_date');

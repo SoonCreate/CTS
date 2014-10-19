@@ -53,18 +53,18 @@ function set_creation_date($data){
 }
 
 //姓名或公司名
-function full_name($id,$only_me = FALSE){
+function full_name($id,$only_me = FALSE,$render_me = TRUE){
     if($id == -1){
         return label('administrator');
     }else{
         if(is_null($id)){
             return label('unknow');
         }else{
-            if($id == _sess('uid')){
+            if($id == _sess('uid') && $render_me){
                 return label('me');
             }else{
                 if($only_me){
-                    return "";
+                    return "对方";
                 }else{
                     global $CI;
                     $CI->load->model('user_model');

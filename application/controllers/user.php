@@ -88,7 +88,9 @@ class User extends CI_Controller {
 
     function logout(){
         clear_all_sess();
-        redirect(_url('user','login'));
+//        redirect(_url('user','login'));
+        //演示用
+        redirect(site_url());
     }
 
     function register(){
@@ -106,7 +108,7 @@ class User extends CI_Controller {
                     echo validation_errors('<div class="error">', '</div>');
                 }
             }else{
-                render();
+                $this->load->view('user/register');;
             }
         }else{
             show_404();
