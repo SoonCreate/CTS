@@ -1,8 +1,9 @@
-
 <head>
     <title><?= full_name(_sess('uid'),false,false)?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
+    <link rel="shortcut icon" href="" type="image/x-icon" />
+    <link rel="icon" href="" type=" image/png">
+    <link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
 <link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />
 <link rel="stylesheet" href="<?= base_url() ?>resources/css/main.css" />
 <!-- Bootstrap-->
@@ -95,17 +96,5 @@
 
 </script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>
-<style type="text/css">
-    #preloader {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 1em;
-        background: #fff url('/cts/resources/images/loadingAnimation.gif') no-repeat center center;
-        position: absolute;
-        z-index: 999;
-        font-size: 24px;
-        font-weight: bold;
-    }
-</style>
+
 </head>
