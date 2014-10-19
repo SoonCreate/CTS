@@ -9,7 +9,7 @@ function data($key,$data){
 }
 
 //输出消息
-function message($type,$class_code,$message_code,$args = []){
+function message($type,$class_code,$message_code,$args = array()){
     global $CI;
     $CI->load->model('message_model','message');
     $mm = new Message_model();

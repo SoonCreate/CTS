@@ -28,6 +28,8 @@ $lang['label_email_flag'] = "接收邮件";
 $lang['label_go_to_order'] = "打开投诉单";
 $lang['label_order_number'] = "投诉单号";
 $lang['label_order_logs'] = "日志记录";
+$lang['label_need_reason'] = "需要填写原因";
+$lang['label_reason'] = "原因";
 
 $lang['label_user'] = "账号管理";
 $lang['label_change_password'] = "修改密码";
