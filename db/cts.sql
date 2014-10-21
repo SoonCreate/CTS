@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2014 at 03:41 AM
+-- Generation Time: Oct 21, 2014 at 04:52 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=39 ;
 
 --
 -- Dumping data for table `ct_configs`
@@ -162,7 +162,8 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, 'string', NULL, NULL, NULL, NULL),
 (35, 'word_truncate', '文字截断默认长度', '100', 1, 'number', NULL, NULL, NULL, NULL),
 (36, 'allow_register', '是否允许用户注册', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(37, 'feedback_star', '用户反馈的打分星数', '5', 1, 'number', NULL, NULL, 1413693616, 44);
+(37, 'feedback_star', '用户反馈的打分星数', '5', 1, 'number', NULL, NULL, 1413693616, 44),
+(38, 'feedback_control', '反馈功能开关', 'FALSE', 1, 'boolean', NULL, NULL, 1413856201, 44);
 
 -- --------------------------------------------------------
 
@@ -288,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -313,7 +314,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (18, 'order_show', '投诉单显示', 'order', 'show', NULL, 1413543719, 44, 1413543719, 44, 0, ''),
 (19, 'order_create', '投诉单创建', 'order', 'create', NULL, 1413543810, 44, 1413543810, 44, 0, ''),
 (20, 'notice_show', '显示消息', 'user', 'notice_show', NULL, 1413544917, 44, 1413544917, 44, 0, ''),
-(21, 'user_admin_edit', '用户信息管理', 'user', 'admin_edit', NULL, 1413683565, 44, 1413683573, 44, 0, '');
+(21, 'user_admin_edit', '用户信息管理', 'user', 'admin_edit', NULL, 1413683565, 44, 1413683573, 44, 0, ''),
+(22, 'order_meeting', '会议记录', 'order_meeting', 'index', NULL, 1413858257, 44, 1413858349, 44, 0, '');
 
 -- --------------------------------------------------------
 
@@ -625,7 +627,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=47 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=48 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -650,7 +652,8 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (43, 3, 13, 0, 1413628063, 44, 1413628063, 44),
 (44, 3, 14, 0, 1413628063, 44, 1413628063, 44),
 (45, 3, 21, 0, 1413683578, 44, 1413683578, 44),
-(46, 3, 15, 0, 1413699819, 44, 1413699819, 44);
+(46, 3, 15, 0, 1413699819, 44, 1413699819, 44),
+(47, 6, 22, 0, 1413858270, 44, 1413858270, 44);
 
 -- --------------------------------------------------------
 
@@ -789,14 +792,14 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (53, 237, 0, '投诉单提交', 1, '投诉单 120 提交', 120, 48, NULL, 1, 46, 1413704181, 1413704181, 46),
 (54, 237, 0, '投诉单提交', 1, '投诉单 120 提交', 120, 72, NULL, 1, 46, 1413704181, 1413704181, 46),
 (55, 239, 0, '已确认 => 已分配', 1, '投诉单 120状态更新', 120, 66, NULL, 1, 48, 1413704210, 1413704210, 48),
-(56, 241, 0, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 120 责任人变更', 120, 66, NULL, 1, 48, 1413704210, 1413704210, 48),
+(56, 241, 1, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 120 责任人变更', 120, 66, NULL, 1, 48, 1413704210, 1413859816, 66),
 (57, 244, 1, '投诉单提交', 1, '投诉单 121 提交', 121, 48, NULL, 1, 45, 1413705930, 1413706058, 48),
 (58, 244, 0, '投诉单提交', 1, '投诉单 121 提交', 121, 72, NULL, 1, 45, 1413705930, 1413705930, 45),
 (59, 246, 0, '已确认 => 已分配', 1, '投诉单 121状态更新', 121, 67, NULL, 1, 48, 1413706335, 1413706335, 48),
 (60, 248, 1, '责任人从 未知 变成 质量经理测试账号', 1, '投诉单 121 责任人变更', 121, 67, NULL, 1, 48, 1413706335, 1413706410, 67),
 (61, 250, 1, '已分配 => 已解决', 1, '投诉单 121状态更新', 121, 45, NULL, 1, 67, 1413706843, 1413706863, 45),
 (62, 251, 0, '已解决 => 已关闭', 1, '投诉单 121状态更新', 121, 67, NULL, 1, 45, 1413707410, 1413707410, 45),
-(63, NULL, 0, NULL, 0, '关于投诉单121的反馈', 121, 45, 'http://localhost/cts/index.php/order/feedback?id=121', 0, 45, 1413707410, 1413707410, 45);
+(63, NULL, 1, NULL, 0, '关于投诉单121的反馈', 121, 45, 'http://localhost/cts/index.php/order/feedback?id=121', 0, 45, 1413707410, 1413858044, 45);
 
 -- --------------------------------------------------------
 
@@ -1662,7 +1665,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=136 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=143 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -1766,7 +1769,14 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (132, 4, 24, 1413678853, 47, 1413678853, 47),
 (133, 4, 38, 1413678853, 47, 1413678853, 47),
 (134, 8, 45, 1413699836, 44, 1413699836, 44),
-(135, 8, 46, 1413699836, 44, 1413699836, 44);
+(135, 8, 46, 1413699836, 44, 1413699836, 44),
+(136, 5, 47, 1413858372, 44, 1413858372, 44),
+(137, 6, 47, 1413859537, 44, 1413859537, 44),
+(138, 7, 47, 1413859544, 44, 1413859544, 44),
+(139, 14, 47, 1413859737, 44, 1413859737, 44),
+(140, 13, 47, 1413859756, 44, 1413859756, 44),
+(141, 12, 47, 1413859763, 44, 1413859763, 44),
+(142, 11, 47, 1413859769, 44, 1413859769, 44);
 
 -- --------------------------------------------------------
 
@@ -1917,7 +1927,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (43, 43, 5, 'all', 1413033700, 44, 1413033700, 44),
 (47, 45, 6, 'TRUE', 1413033700, 44, 1413033700, 44),
 (49, 47, 3, 'customer', 1413034064, 44, 1413034064, 44),
-(50, 47, 4, 'released,closed,reopen', 1413034064, 44, 1413687748, 44),
+(50, 47, 4, 'released,confirmed', 1413034064, 44, 1413859684, 44),
 (51, 47, 5, 'all', 1413034064, 44, 1413034064, 44),
 (61, 53, 3, 'vendor', 1413427676, 44, 1413427696, 44),
 (62, 53, 4, 'released', 1413427676, 44, 1413677725, 44),
@@ -1926,7 +1936,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (74, 60, 8, 'FALSE', 1413433260, 44, 1413677499, 44),
 (75, 60, 11, 'all', 1413433260, 44, 1413677522, 44),
 (82, 63, 3, 'vendor', 1413440415, 44, 1413687624, 44),
-(83, 63, 4, 'released', 1413440415, 44, 1413687616, 44),
+(83, 63, 4, 'released,confirmed', 1413440415, 44, 1413859643, 44),
 (84, 63, 5, 'all', 1413440415, 44, 1413440415, 44),
 (116, 79, 3, 'employee', 1413678052, 46, 1413678072, 46),
 (117, 79, 4, 'released', 1413678052, 46, 1413678083, 46),
@@ -1965,19 +1975,19 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (164, 108, 8, 'TRUE', 1413687544, 44, 1413687544, 44),
 (165, 108, 11, 'all', 1413687544, 44, 1413687544, 44),
 (166, 109, 3, 'customer', 1413687630, 44, 1413687630, 44),
-(167, 109, 4, 'released,closed,reopen', 1413687630, 44, 1413687655, 44),
+(167, 109, 4, 'released,confirmed', 1413687630, 44, 1413859659, 44),
 (168, 109, 5, 'all', 1413687630, 44, 1413687630, 44),
 (169, 110, 3, 'employee', 1413687707, 44, 1413687717, 44),
-(170, 110, 4, 'released', 1413687707, 44, 1413687724, 44),
+(170, 110, 4, 'released,confirmed', 1413687707, 44, 1413859669, 44),
 (171, 110, 5, 'all', 1413687707, 44, 1413687707, 44),
 (172, 111, 3, 'vendor', 1413687787, 44, 1413687803, 44),
-(173, 111, 4, 'released', 1413687787, 44, 1413687810, 44),
+(173, 111, 4, 'released,confirmed', 1413687787, 44, 1413859702, 44),
 (174, 111, 5, 'all', 1413687787, 44, 1413687787, 44),
 (176, 113, 7, 'all', 1413687792, 44, 1413687792, 44),
 (177, 114, 8, 'TRUE', 1413687795, 44, 1413687795, 44),
 (178, 114, 11, 'all', 1413687795, 44, 1413687795, 44),
 (179, 115, 3, 'employee', 1413687840, 44, 1413687857, 44),
-(180, 115, 4, 'released', 1413687840, 44, 1413687865, 44),
+(180, 115, 4, 'released,confirmed', 1413687840, 44, 1413859723, 44),
 (181, 115, 5, 'all', 1413687840, 44, 1413687840, 44),
 (183, 117, 7, 'all', 1413687845, 44, 1413687845, 44),
 (184, 118, 8, 'TRUE', 1413687847, 44, 1413687847, 44),

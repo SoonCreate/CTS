@@ -135,7 +135,7 @@ class Order extends CI_Controller {
         $rows = $a->can_create_order_types();
         if(empty($rows)){
             //不能创建任何投诉订单，提示账号未被授权
-            echo '不能创建任何投诉订单，账号未被授权';
+            render_error('不能创建任何投诉订单，账号未被授权') ;
         }elseif(count($rows) > 1){
             $data['objects'] = $rows;
             //同时拥有几种订单的创建权限，显示选择页
@@ -381,18 +381,20 @@ class Order extends CI_Controller {
         }else{
             $this->_update($order['id'],array('status'=>'closed'));
             //关闭之后发送反馈信息给创建人填写
-            $nm = new Notice_model();
-            $data['order_id'] = $order['id'];
-            $data['with_manager'] = 0;
-            $data['received_by'] = $order['created_by'];
-            $data['title'] = '关于投诉单'.$data['order_id'].'的反馈';
-            $data['direct_url'] = _url('order','feedback',array('id'=>$data['order_id'] ));
-            $notice_id = $nm->insert($data);
-            if($notice_id){
-                $om->send_mail_by_notice($notice_id);
-            }else{
-                custz_message('E','反馈消息传送失败，请您'.
-                    render_link(array('order','feedback',array('id'=>$data['order_id'] )),'点击此链接').'进行本次投诉的反馈！');
+            if(_config('feedback_control')){
+                $nm = new Notice_model();
+                $data['order_id'] = $order['id'];
+                $data['with_manager'] = 0;
+                $data['received_by'] = $order['created_by'];
+                $data['title'] = '关于投诉单'.$data['order_id'].'的反馈';
+                $data['direct_url'] = _url('order','feedback',array('id'=>$data['order_id'] ));
+                $notice_id = $nm->insert($data);
+                if($notice_id){
+                    $om->send_mail_by_notice($notice_id);
+                }else{
+                    custz_message('E','反馈消息传送失败，请您'.
+                        render_link(array('order','feedback',array('id'=>$data['order_id'] )),'点击此链接').'进行本次投诉的反馈！');
+                }
             }
 
         }
@@ -422,103 +424,108 @@ class Order extends CI_Controller {
 
     //用户反馈
     function feedback(){
-        $om = new Order_model();
-        $order = $om->find(v('id'));
-        if(empty($order)){
-            show_404();
-        }else{
-            $this->load->model('feedback_model');
-            $this->load->model('feedback_star_model');
-            $this->load->model('valuelist_line_model');
-            $ofm = new Feedback_model();
-            $fsm = new Feedback_star_model();
-            $vlm = new Valuelist_line_model();
-            if($order['created_by'] == _sess('uid')){
-                if(is_order_locked($order['status'])){
-                    if($_POST){
-                        if(v('feedback_id')){
-                            //修改
-                            $line = $ofm->find(v('feedback_id'));
-                            if(empty($line)){
-                                message_db_failure();
-                            }else{
-                                $this->db->trans_start();
-                                $feedback['content'] = v('content_plus');
-                                $stars = $fsm->find_all_by(array('feedback_id'=>$line['id']));
-                                $ofm->update($line['id'],$feedback);
-                                foreach($stars as $star){
-                                    $s['stars'] = v('star_'.$star['feedback_type']);
-                                    $fsm->update($star['id'],$s);
-                                }
-                                $this->db->trans_complete();
-                                if($this->db->trans_status() === TRUE){
-                                    go_back();
-                                    message_db_success();
-                                }else{
+        if(_config('feedback')){
+            $om = new Order_model();
+            $order = $om->find(v('id'));
+            if(empty($order)){
+                show_404();
+            }else{
+                $this->load->model('feedback_model');
+                $this->load->model('feedback_star_model');
+                $this->load->model('valuelist_line_model');
+                $ofm = new Feedback_model();
+                $fsm = new Feedback_star_model();
+                $vlm = new Valuelist_line_model();
+                if($order['created_by'] == _sess('uid')){
+                    if(is_order_locked($order['status'])){
+                        if($_POST){
+                            if(v('feedback_id')){
+                                //修改
+                                $line = $ofm->find(v('feedback_id'));
+                                if(empty($line)){
                                     message_db_failure();
+                                }else{
+                                    $this->db->trans_start();
+                                    $feedback['content'] = v('content_plus');
+                                    $stars = $fsm->find_all_by(array('feedback_id'=>$line['id']));
+                                    $ofm->update($line['id'],$feedback);
+                                    foreach($stars as $star){
+                                        $s['stars'] = v('star_'.$star['feedback_type']);
+                                        $fsm->update($star['id'],$s);
+                                    }
+                                    $this->db->trans_complete();
+                                    if($this->db->trans_status() === TRUE){
+                                        go_back();
+                                        message_db_success();
+                                    }else{
+                                        message_db_failure();
+                                    }
                                 }
-                            }
 
+                            }else{
+                                //判断是否存在
+                                $line = $ofm->find_by(array('order_id'=>v('id')));
+                                if(empty($line)){
+                                    //创建
+                                    $vlm->order_by('sort');
+                                    $stars = $vlm->find_all_by_view(array('valuelist_name'=>'vl_feedback','inactive_flag'=>0));
+                                    $this->db->trans_start();
+                                    $feedback['order_id'] = v('id');
+                                    $feedback['content'] = v('content_plus');
+                                    $feedback_id = $ofm->insert($feedback);
+                                    foreach($stars as $star){
+                                        $s['feedback_id'] = $feedback_id;
+                                        $s['feedback_type'] = $star['segment_value'];
+                                        $s['feedback_desc'] = $star['segment_desc'];
+                                        $s['stars'] = v('star_'.$star['segment_value']);
+                                        $fsm->insert($s);
+                                    }
+                                    $this->db->trans_complete();
+                                    if($this->db->trans_status() === TRUE){
+                                        go_back();
+                                        message_db_success();
+                                    }else{
+                                        message_db_failure();
+                                    }
+                                }else{
+                                    custz_message('E','订单已反馈请勿重复提交！');
+                                }
+
+
+                            }
                         }else{
-                            //判断是否存在
-                            $line = $ofm->find_by(array('order_id'=>v('id')));
-                            if(empty($line)){
-                                //创建
+                            $o = $ofm->find_by(array('order_id'=>$order['id']));
+                            if(empty($o)){
                                 $vlm->order_by('sort');
-                                $stars = $vlm->find_all_by_view(array('valuelist_name'=>'vl_feedback','inactive_flag'=>0));
-                                $this->db->trans_start();
-                                $feedback['order_id'] = v('id');
-                                $feedback['content'] = v('content_plus');
-                                $feedback_id = $ofm->insert($feedback);
-                                foreach($stars as $star){
-                                    $s['feedback_id'] = $feedback_id;
-                                    $s['feedback_type'] = $star['segment_value'];
-                                    $s['feedback_desc'] = $star['segment_desc'];
-                                    $s['stars'] = v('star_'.$star['segment_value']);
-                                    $fsm->insert($s);
+                                $data['stars'] = $vlm->find_all_by_view(array('valuelist_name'=>'vl_feedback','inactive_flag'=>0));
+                                for($i=0;$i<count($data['stars']);$i++){
+                                    $data['stars'][$i]['value'] = _config('feedback_star');
                                 }
-                                $this->db->trans_complete();
-                                if($this->db->trans_status() === TRUE){
-                                    go_back();
-                                    message_db_success();
-                                }else{
-                                    message_db_failure();
-                                }
+                                render_view('order/feedback_create',$data);
                             }else{
-                                custz_message('E','订单已反馈请勿重复提交！');
+                                $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
+                                $o['content_plus'] = $o['content'];
+                                render_view('order/feedback_edit',$o);
                             }
-
-
                         }
                     }else{
-                        $o = $ofm->find_by(array('order_id'=>$order['id']));
-                        if(empty($o)){
-                            $vlm->order_by('sort');
-                            $data['stars'] = $vlm->find_all_by_view(array('valuelist_name'=>'vl_feedback','inactive_flag'=>0));
-                            for($i=0;$i<count($data['stars']);$i++){
-                                $data['stars'][$i]['value'] = _config('feedback_star');
-                            }
-                            render_view('order/feedback_create',$data);
-                        }else{
-                            $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
-                            $o['content_plus'] = $o['content'];
-                            render_view('order/feedback_edit',$o);
-                        }
+                        show_404();
                     }
                 }else{
-                    show_404();
-                }
-            }else{
-                $o = $ofm->find_by(array('order_id'=>$order['id']));
-                if(!empty($o)){
-                    $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
-                    render_view('order/feedback_show',$o);
-                }else{
-                    render_view('order/feedback_show');
-                }
+                    $o = $ofm->find_by(array('order_id'=>$order['id']));
+                    if(!empty($o)){
+                        $o['stars'] = $fsm->find_all_by(array('feedback_id'=>$o['id']));
+                        render_view('order/feedback_show',$o);
+                    }else{
+                        render_view('order/feedback_show');
+                    }
 
+                }
             }
+        }else{
+            render_error('必须先开启反馈功能！请联系系统管理员！') ;
         }
+
     }
     private function _update($id,$data = null){
         $om = new Order_model();

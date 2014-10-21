@@ -70,11 +70,13 @@ function render_link_button($url,$label,$title = '',$class = '',$noRender = 'fal
     return render_link($url,$label,$title,$class,$noRender);
 }
 
-function render_error($heading = '',$message = ''){
-    $CI =  &get_instance();
+function render_error($message = '',$heading = ''){
+    if($heading == ''){
+        $heading = label('error');
+    }
     $data['heading'] = $heading;
     $data['message'] = $message;
-    $CI->load->view('error',$data);
+    render_view('error',$data);
 }
 
 function render_form_error($field){

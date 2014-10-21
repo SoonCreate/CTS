@@ -9,6 +9,7 @@ class Auth_model extends MY_Model{
         $this->load->model('valuelist_model');
         $this->load->model('role_module_line_model');
         $this->load->model('function_model');
+        $this->load->model('user_role_model');
         $this->_table = 'role_profile_lines_v';
     }
 
@@ -57,9 +58,8 @@ class Auth_model extends MY_Model{
     }
 
     function _check_function_auth($function_id){
-        $rmlm = new Role_module_line_model();
-        $r = $rmlm->find_all_by_view(array('function_id' => $function_id));
-        if (empty($r)) {
+        $line = $this->db->get_where('user_functions_v',array('function_id' => $function_id,'user_id' => _sess('uid')))->result_array();
+        if (empty($line)) {
             return false;
         } else {
             return true;
@@ -92,6 +92,7 @@ class Auth_model extends MY_Model{
 
     //return array()
     function can_create_order_types(){
+        $om = new Order_model();
         $return = array();
         $profile_objects = $this->find_profiles_by_object_name('category_control')->result_array();
         if(count($profile_objects)>0){
@@ -100,19 +101,25 @@ class Auth_model extends MY_Model{
                 $l_order_type = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_type'));
                 $l_order_status = $this->find_by(array('profile_id'=>$o['profile_id'],'auth_item_name'=>'ao_order_status'));
                 //拥有初始化状态权限
-                if($l_order_status['auth_value'] == _config('all_values') ||
-                    in_array($this->order->default_status(),explode(',',$l_order_status['auth_value']))){
-                    if($l_order_type['auth_value'] == _config('all_values')){
-                        //所有
-                        $opts = get_options('ao_order_type');
-                        foreach($opts as $op){
+                if($l_order_type['auth_value'] == _config('all_values')){
+                    //所有
+                    $opts = get_options('ao_order_type');
+                    foreach($opts as $op){
+                        if($l_order_status['auth_value'] == _config('all_values') ||
+                            in_array($om->default_status($op['value']),explode(',',$l_order_status['auth_value']))){
                             array_push($return,$op['value']);
                         }
-                    }else{
-                        //少数
-                        $return = array_merge($return,explode(',',$l_order_type['auth_value'])) ;
+                    }
+                }else{
+                    $order_types = explode(',',$l_order_type['auth_value']);
+                    foreach($order_types as $o){
+                        if($l_order_status['auth_value'] == _config('all_values') ||
+                            in_array($om->default_status($o),explode(',',$l_order_status['auth_value']))){
+                            array_push($return,$o);
+                        }
                     }
                 }
+
             }
 
         }

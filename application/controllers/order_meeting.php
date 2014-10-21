@@ -19,18 +19,11 @@ class Order_meeting extends CI_Controller {
         }else{
             $omm = new Order_meeting_model();
             $objects = $omm->find_all_by_view(array('order_id'=>$order['id']));
-            if(empty($objects)){
-                //没有记录时新建
-                $_GET['order_id'] = $order['id'];
-                $this->create();
-            }else{
-                for($i=0;$i<count($objects);$i++){
-                    $objects[$i] = $this->_meeting_status($objects[$i]);
-                }
-                $data['objects'] = _format($objects);
-                render($data);
+            for($i=0;$i<count($objects);$i++){
+                $objects[$i] = $this->_meeting_status($objects[$i]);
             }
-
+            $data['objects'] = _format($objects);
+            render($data);
         }
     }
 
