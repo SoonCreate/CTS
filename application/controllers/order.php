@@ -104,7 +104,7 @@ class Order extends CI_Controller {
         for($i=0;$i<count($os);$i++){
             $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
             $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
-            $os[$i]['status'] = $sm->get_label($os[$i]['status']);
+            $os[$i]['status'] = $sm->get_label(default_value('status',$os[$i]['order_type']),$os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
             $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])),10);
             $os[$i]['managed_by'] = $os[$i]['manager_id'];
@@ -224,7 +224,7 @@ class Order extends CI_Controller {
                 $order['contents'] = _format($ocm->find_all_by(array('order_id'=>$id)));
                 $oam->order_by('creation_date');
                 $order['addfiles'] = $oam->find_all_by_view(array('order_id'=>$id));
-                $order['status_desc'] = $sm->get_label($order['status']);
+                $order['status_desc'] = $sm->get_label(default_value('status',$order['order_type']),$order['status']);
                 render(_format_row($order));
             }
         }else{
@@ -285,6 +285,42 @@ class Order extends CI_Controller {
             }
         }else{
             render();
+        }
+    }
+
+    //选择责任人（部门经理）
+    function choose_leader(){
+        $om = new Order_model();
+        $order = $om->find(v('id'));
+        if(empty($order)){
+            show_404();
+        }else{
+            if($_POST){
+                $data = v('leader_id');
+                if($om->update($order['id'],$data)){
+                    go_back();
+                    message_db_success();
+                }else{
+                    message_db_failure();
+                }
+            }else{
+                $am = new Auth_model();
+                $ids = $am->can_choose_leaders($order);
+                if(empty($ids)){
+                    render_error('无对应的负责人');
+                }else{
+                    $order['leader_id'] = array();
+                    foreach($ids as $id){
+                        $d['value'] = $id;
+                        //可以做进一步的优化，比如根据责任人的繁忙程度排序，显示现在空闲的责任人等
+
+                        $d['label'] = full_name($id);
+                        array_push($order['managers'],$d);
+                    }
+                    render($order);
+                }
+            }
+
         }
     }
 

@@ -39,8 +39,8 @@ class Status_model extends MY_Model{
         }
     }
 
-    function get_label($value){
-        $line = first_row($this->db->get_where('status_lines_v',array('status_code'=>'order_status','segment_value'=>$value)));
+    function get_label($status_code,$value){
+        $line = first_row($this->db->get_where('status_lines_v',array('status_code'=>$status_code,'segment_value'=>$value)));
         if(is_null($line)){
             return null;
         }else{

@@ -327,7 +327,11 @@ function render_form_textarea($name,$required = FALSE,$attributes = array(),$dis
         $echo = $echo. ' disabled ';
     }
 
-    $echo = $echo. '/>'._v($name).'</textarea>'.render_form_error($name).'</dd></dl>';
+    foreach($attributes as $key=>$value){
+        $echo = $echo. $key.'= '.'"'.$value.'"';
+    }
+
+    $echo = $echo. ' />'._v($name).'</textarea>'.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -339,21 +343,31 @@ function render_select_with_options($name,$valuelist_name,$required = FALSE,$att
     if($required){
         $echo = $echo. ' required ';
     }
-    $echo = $echo. '>';
+
+    foreach($attributes as $key=>$value){
+        $echo = $echo. $key.'= '.'"'.$value.'"';
+    }
+
+    $echo = $echo. ' >';
     $echo = $echo. render_options_with_value($valuelist_name,_v($name));
     $echo = $echo.   '</select> '.render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
 //对于已有options的时候，无需再查valuelist
-function render_select_add_options($name,$options,$required = FALSE){
+function render_select_add_options($name,$options,$required = FALSE,$attributes = array()){
     $echo = '';
     $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name).'</dt>';
     $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
         $echo = $echo. ' required ';
     }
-    $echo = $echo. '>';
+
+    foreach($attributes as $key=>$value){
+        $echo = $echo. $key.'= '.'"'.$value.'"';
+    }
+
+    $echo = $echo. ' >';
     $echo = $echo. $options;
     $echo = $echo.   '</select> '.render_form_error($name).'</dd></dl>';
     return $echo;

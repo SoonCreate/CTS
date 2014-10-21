@@ -135,77 +135,80 @@ class Order_model extends MY_Model{
                             $rules = $nrm->find_all_by(array('log_type_id'=>$t['id'],'inactive_flag'=>0));
                             if(!empty($rules)){
                                 foreach($rules as $rule){
+                                    $order = $this->find($new_data['id']);
+                                    //是否存在投诉单类型控制
+                                    if($rule['order_type'] == _config('all_values') || $rule['order_type'] == $order['order_type']){
+                                        if($rule['when_new_value'] == _config('all_values')){
+                                            $rule['when_new_value'] = $log['new_value'];
+                                        }
 
-                                    if($rule['when_new_value'] == _config('all_values')){
-                                        $rule['when_new_value'] = $log['new_value'];
-                                    }
+                                        if($rule['when_old_value'] == _config('all_values')){
+                                            $rule['when_old_value'] = $log['old_value'];
+                                        }
 
-                                    if($rule['when_old_value'] == _config('all_values')){
-                                        $rule['when_old_value'] = $log['old_value'];
-                                    }
+                                        if($rule['when_new_value'] == $log['new_value'] && $rule['when_old_value'] == $log['old_value']){
 
-                                    if($rule['when_new_value'] == $log['new_value'] && $rule['when_old_value'] == $log['old_value']){
-
-                                        $log_v = $olm->find_by_view(array('id'=>$id));
-                                        $n['log_id'] = $id;
-                                        $n['from_log'] = 1;
+                                            $log_v = $olm->find_by_view(array('id'=>$id));
+                                            $n['log_id'] = $id;
+                                            $n['from_log'] = 1;
 //                            $n['received_by'] = _sess('uid');
 //                            $n['with_manager'] = 1;
-                                        $n['title'] = $this->_format_log($log_v,$t['title'],true);
-                                        $n['content'] = $this->_format_log($log_v,$t['content'],true);
-                                        $n['order_id'] = $new_data['id'];
+                                            $n['title'] = $this->_format_log($log_v,$order['order_type'],$t['title'],true);
+                                            $n['content'] = $this->_format_log($log_v,$order['order_type'],$t['content'],true);
+                                            $n['order_id'] = $new_data['id'];
 
-                                        //发给创建者
-                                        if($rule['notice_created_by']){
-                                            if(is_null($old_data)){
-                                                $n['received_by'] = $new_data['created_by'];
-                                            }else{
-                                                $n['received_by'] = $old_data['created_by'];
-                                            }
-                                            $notice_id = $nm->insert($n);
-                                            if(!$notice_id){
-                                                $this->db->trans_rollback();
-                                                return false;
-                                            }
-                                        }//if($t['notice_created_by']){
+                                            //发给创建者
+                                            if($rule['notice_created_by']){
+                                                if(is_null($old_data)){
+                                                    $n['received_by'] = $new_data['created_by'];
+                                                }else{
+                                                    $n['received_by'] = $old_data['created_by'];
+                                                }
+                                                $notice_id = $nm->insert($n);
+                                                if(!$notice_id){
+                                                    $this->db->trans_rollback();
+                                                    return false;
+                                                }
+                                            }//if($t['notice_created_by']){
 
-                                        //发给责任人
-                                        if($rule['notice_manager']){
-                                            //判断老责任人
-                                            if(!is_null($old_data)){
-                                                if(isset($old_data['manager_id'])){
-                                                    $n['received_by'] = $old_data['manager_id'];
+                                            //发给责任人
+                                            if($rule['notice_manager']){
+                                                //判断老责任人
+                                                if(!is_null($old_data)){
+                                                    if(isset($old_data['manager_id'])){
+                                                        $n['received_by'] = $old_data['manager_id'];
+                                                        if(!$nm->insert($n)){
+                                                            $this->db->trans_rollback();
+                                                            return false;
+                                                        }
+                                                    }
+                                                }
+                                                //判断新责任人
+                                                if(isset($new_data['manager_id'])){
+                                                    $n['received_by'] = $new_data['manager_id'];
                                                     if(!$nm->insert($n)){
                                                         $this->db->trans_rollback();
                                                         return false;
                                                     }
                                                 }
-                                            }
-                                            //判断新责任人
-                                            if(isset($new_data['manager_id'])){
-                                                $n['received_by'] = $new_data['manager_id'];
-                                                if(!$nm->insert($n)){
-                                                    $this->db->trans_rollback();
-                                                    return false;
+
+                                            }//if($t['notice_manager']){
+
+                                            //默认发送的角色
+                                            if($rule['default_role_id']){
+                                                $this->load->model('user_role_model');
+                                                $urm = new User_role_model();
+                                                $users = $urm->find_all_by_view(array('role_id'=>$rule['default_role_id'],'inactive_flag'=>0));
+                                                foreach($users as $u){
+                                                    $n['received_by'] = $u['user_id'];
+                                                    if(!$nm->insert($n)){
+                                                        $this->db->trans_rollback();
+                                                        return false;
+                                                    }
                                                 }
-                                            }
 
-                                        }//if($t['notice_manager']){
-
-                                        //默认发送的角色
-                                        if($rule['default_role_id']){
-                                            $this->load->model('user_role_model');
-                                            $urm = new User_role_model();
-                                            $users = $urm->find_all_by_view(array('role_id'=>$rule['default_role_id'],'inactive_flag'=>0));
-                                            foreach($users as $u){
-                                                $n['received_by'] = $u['user_id'];
-                                                if(!$nm->insert($n)){
-                                                    $this->db->trans_rollback();
-                                                    return false;
-                                                }
-                                            }
-
-                                        }//if($t['default_role_id']){
+                                            }//if($t['default_role_id']){
+                                        }
                                     }
                                 }
                             }
@@ -288,6 +291,7 @@ class Order_model extends MY_Model{
     }
 
     function logs($order_id){
+        $order = $this->find($order_id);
         $olm = new Order_log_model();
         $this->db->order_by('creation_date','desc');
         $logs = $olm->find_all_by_view(array('order_id'=>$order_id));
@@ -298,7 +302,7 @@ class Order_model extends MY_Model{
             for($i=0;$i<count($logs);$i++){
                 //检查是否拥有日志类型的查看权限
                 if(check_auth('log_display_control',array('ao_log_type'=>$logs[$i]['log_type']))){
-                    $logs[$i]['content'] = $this->_format_log($logs[$i],$logs[$i]['content']);
+                    $logs[$i]['content'] = $this->_format_log($logs[$i],$order['order_type'],$logs[$i]['content']);
                     array_push($return,$logs[$i]);
                 }
 //                $logs[$i]['content'] = $this->_format_log($logs[$i],$logs[$i]['content']);
@@ -307,22 +311,30 @@ class Order_model extends MY_Model{
         }
     }
 
-    function _format_log($log,$field,$full_text = FALSE){
+    function _format_log($log,$order_type,$field,$full_text = FALSE){
         $vm = new Valuelist_model();
+        $sm = new Status_model();
         $content =  str_replace('&order_id',$log['order_id'],$field);
-        if(!is_null($log['field_valuelist_id'])){
-            $vl = $vm->find($log['field_valuelist_id']);
-            if(!empty($vl)){
-                $content =  str_replace('&new_value',get_label($vl['valuelist_name'],$log['new_value']),$content);
-                $content =  str_replace('&old_value',get_label($vl['valuelist_name'],$log['old_value']),$content);
+        //投诉单状态根据类型不同解释不同
+        if($log['field_name'] == 'status'){
+            $content =  str_replace('&new_value',$sm->get_label(default_value('status',$order_type),$log['new_value']),$content);
+            $content =  str_replace('&old_value',$sm->get_label(default_value('status',$order_type),$log['new_value']),$content);
+        }else{
+            if(!is_null($log['field_valuelist_id'])){
+                $vl = $vm->find($log['field_valuelist_id']);
+                if(!empty($vl)){
+                    $content =  str_replace('&new_value',get_label($vl['valuelist_name'],$log['new_value']),$content);
+                    $content =  str_replace('&old_value',get_label($vl['valuelist_name'],$log['old_value']),$content);
+                }else{
+                    $content =  str_replace('&new_value',_f($log['field_name'],$log['new_value'],$full_text),$content);
+                    $content =  str_replace('&old_value',_f($log['field_name'],$log['old_value'],$full_text),$content);
+                }
             }else{
                 $content =  str_replace('&new_value',_f($log['field_name'],$log['new_value'],$full_text),$content);
                 $content =  str_replace('&old_value',_f($log['field_name'],$log['old_value'],$full_text),$content);
             }
-        }else{
-            $content =  str_replace('&new_value',_f($log['field_name'],$log['new_value'],$full_text),$content);
-            $content =  str_replace('&old_value',_f($log['field_name'],$log['old_value'],$full_text),$content);
         }
+
         return $content;
     }
 

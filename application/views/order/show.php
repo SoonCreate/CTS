@@ -6,12 +6,17 @@
     //如果订单状态为锁定，则不显示工具栏
     if(!is_order_locked($status)){?>
 
-        <?php if(is_order_allow_next_status($order_type,$status,'confirmed') && check_order_auth($order_type,'confirmed',$category)){?>
-            <?= render_link_button(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?>
-        <?php }?>
+        <?php if(check_order_auth($order_type,'confirmed',$category)){?>
 
-        <?php if(is_order_allow_next_status($order_type,$status,'allocated') && check_order_auth($order_type,'allocated',$category)){?>
-            <?= render_link_button(array('order','dispatcher',array('id'=>$id)),'分配责任人并确认计划完成日期')?>
+            <?php if(is_order_allow_next_status($order_type,$status,'confirmed')){?>
+            <?= render_link_button(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?>
+            <?php }?>
+
+            <?php
+            //投诉单未分配处理人，可修改负责人
+            if($status == 'confirmed'){?>
+                <?= render_link_button(array('order','choose_leader',array('id'=>$id)),'选择处理此投诉的负责人（部门经理）')?>
+            <?php }?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($order_type,$status,'done') && check_order_auth($order_type,'done',$category)){?>
@@ -43,6 +48,10 @@
     <?php if(_config('category_control')) :?>
         <dl class="row dl-horizontal"><dt>分类</dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
     <?php endif;?>
+    <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
+        <dl class="row dl-horizontal"><dt>责任人</dt><dd><?= full_name($leader_id) ?></dd></dl>
+        <dl class="row dl-horizontal"><dt>处理人</dt><dd><?= full_name($manager_id) ?></dd></dl>
+    <?php }?>
     <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
     <dl class="row dl-horizontal"><dt>严重性</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
     <dl class="row dl-horizontal"><dt>发生频率</dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>

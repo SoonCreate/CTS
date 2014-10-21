@@ -222,4 +222,18 @@ class Auth_model extends MY_Model{
         return array_unique($return);
     }
 
+    function can_choose_leaders($order){
+        $return = array();
+        $profiles = $this->db->get_where('user_auth_v',
+            array('object_name' => 'category_control'))->result_array();
+        if(count($profiles) > 0){
+            foreach($profiles as $p){
+                if(check_order_auth($order['order_type'],'allocated',$order['category'],$p['user_id'])){
+                    array_push($return,$p['user_id']);
+                }
+            }
+        }
+        return array_unique($return);
+    }
+
 }
