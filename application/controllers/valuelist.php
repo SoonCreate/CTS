@@ -37,6 +37,7 @@ class Valuelist extends CI_Controller {
             if($object_flag){
                 $_POST['object_flag'] = 1;
                 if($vm->save_from_object(_data('valuelist_name','description','object_flag','label_fieldname','value_fieldname','source_view','condition'))){
+                    go_back();
                     message_db_success();
                 }else{
                     validation_error();
@@ -44,6 +45,7 @@ class Valuelist extends CI_Controller {
             }else{
                 $_POST['object_flag'] = 0;
                 if($vm->save_normal(_data('valuelist_name','description','parent_id','object_flag'))){
+                    go_back();
                     message_db_success();
                 }else{
                     validation_error();
@@ -116,7 +118,7 @@ class Valuelist extends CI_Controller {
                     if(empty($parent)){
                         custz_message('E','父值集不存在');
                     }else{
-                        $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
+                        $lines = $vm->find_active_options($parent['valuelist_name'])->result_array();
                         if(count($lines) > 0){
                             if(!$parent_segment){
                                 $parent['segment'] = $lines[0];
@@ -227,6 +229,7 @@ class Valuelist extends CI_Controller {
             if($_POST){
                 $_POST['inactive_flag'] = v('inactive_flag');
                 if($vlm->update($item['id'],_data('segment_value','segment_desc','sort','inactive_flag'))){
+                    go_back();
                     message_db_success();
                 }else{
                     validation_error();
@@ -249,6 +252,7 @@ class Valuelist extends CI_Controller {
                 $_POST['parent_segment_value'] = $parent_segment;
                 $_POST['inactive_flag'] = v('inactive_flag');
                 if($vlm->insert(_data('valuelist_id','segment','segment_value','segment_desc','sort','inactive_flag','parent_segment_value'))){
+                    go_back();
                     message_db_success();
                 }else{
                     validation_error();

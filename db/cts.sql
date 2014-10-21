@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2014 at 12:46 PM
+-- Generation Time: Oct 21, 2014 at 03:41 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
 
 INSERT INTO `ct_authority_objects` (`id`, `object_name`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'category_control', '订单控制权限对象', NULL, NULL, 1413516417, 44),
-(2, 'only_mine_control', '只能自己的订单', 1412066866, -1, 1412066866, -1),
+(2, 'only_mine_control', '只能查看自己的订单', 1412066866, -1, 1413853229, 44),
 (3, 'log_display_control', '订单日志类型显示控制', 1412928745, 44, 1412928745, 44),
 (4, 'log_display_fullname', '日志显示操作人', 1412937910, 44, 1413516478, 44);
 
@@ -1608,18 +1608,8 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings_v` (
 -- Stand-in structure for view `ct_order_status_vl`
 --
 CREATE TABLE IF NOT EXISTS `ct_order_status_vl` (
-`id` int(11)
-,`status_id` int(11)
-,`segment` varchar(20)
-,`segment_value` varchar(255)
-,`segment_desc` varchar(255)
-,`next_status` varchar(255)
-,`back_status` varchar(20)
-,`default_flag` tinyint(1)
-,`creation_date` int(11)
-,`created_by` int(11)
-,`last_update_date` int(11)
-,`last_updated_by` int(11)
+`label` text
+,`value` varchar(255)
 );
 -- --------------------------------------------------------
 
@@ -2080,11 +2070,13 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines` (
   `next_status` varchar(255) DEFAULT NULL COMMENT '下一步状态列表',
   `back_status` varchar(20) DEFAULT NULL COMMENT '冲销后状态',
   `default_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '默认标识',
+  `auto_ending_flag` tinyint(4) NOT NULL COMMENT '自动结束',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   `default_next_status` varchar(20) DEFAULT NULL COMMENT '默认下一步',
+  `last_status_flag` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '流程结尾',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`status_id`,`segment`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态步骤表' AUTO_INCREMENT=7 ;
@@ -2093,13 +2085,13 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines` (
 -- Dumping data for table `ct_status_lines`
 --
 
-INSERT INTO `ct_status_lines` (`id`, `status_id`, `segment`, `segment_value`, `segment_desc`, `next_status`, `back_status`, `default_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `default_next_status`) VALUES
-(1, 1, '10', 'released', '已提交', '20,50', NULL, 1, NULL, NULL, NULL, NULL, '20'),
-(2, 1, '20', 'confirmed', '已确认', '30,50', NULL, 0, NULL, NULL, NULL, NULL, '30'),
-(3, 1, '30', 'allocated', '已分配', '30,40,50', NULL, 0, NULL, NULL, NULL, NULL, '40'),
-(4, 1, '40', 'done', '已解决', '50', NULL, 0, NULL, NULL, NULL, NULL, '50'),
-(5, 1, '50', 'closed', '已关闭', '60', NULL, 0, NULL, NULL, NULL, NULL, '60'),
-(6, 1, '60', 'reopen', '重新打开', '30,50', NULL, 0, NULL, NULL, NULL, NULL, '30');
+INSERT INTO `ct_status_lines` (`id`, `status_id`, `segment`, `segment_value`, `segment_desc`, `next_status`, `back_status`, `default_flag`, `auto_ending_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `default_next_status`, `last_status_flag`) VALUES
+(1, 1, '10', 'released', '已提交', '20,50', NULL, 1, 0, NULL, NULL, NULL, NULL, '20', 0),
+(2, 1, '20', 'confirmed', '已确认', '30,50', NULL, 0, 0, NULL, NULL, NULL, NULL, '30', 0),
+(3, 1, '30', 'allocated', '已分配', '30,40,50', NULL, 0, 0, NULL, NULL, NULL, NULL, '40', 0),
+(4, 1, '40', 'done', '已解决', '50', NULL, 0, 0, NULL, NULL, NULL, NULL, '50', 0),
+(5, 1, '50', 'closed', '已关闭', '60', NULL, 0, 0, NULL, NULL, NULL, NULL, '60', 0),
+(6, 1, '60', 'reopen', '重新打开', '30,50', NULL, 0, 0, NULL, NULL, NULL, NULL, '30', 0);
 
 -- --------------------------------------------------------
 
@@ -2107,9 +2099,7 @@ INSERT INTO `ct_status_lines` (`id`, `status_id`, `segment`, `segment_value`, `s
 -- Stand-in structure for view `ct_status_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
-`status_code` varchar(20)
-,`description` varchar(255)
-,`id` int(11)
+`id` int(11)
 ,`status_id` int(11)
 ,`segment` varchar(20)
 ,`segment_value` varchar(255)
@@ -2117,11 +2107,15 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 ,`next_status` varchar(255)
 ,`back_status` varchar(20)
 ,`default_flag` tinyint(1)
+,`auto_ending_flag` tinyint(4)
 ,`creation_date` int(11)
 ,`created_by` int(11)
 ,`last_update_date` int(11)
 ,`last_updated_by` int(11)
 ,`default_next_status` varchar(20)
+,`last_status_flag` tinyint(3) unsigned
+,`status_code` varchar(20)
+,`description` varchar(255)
 );
 -- --------------------------------------------------------
 
@@ -2330,7 +2324,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -2341,11 +2335,11 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (2, 'vl_severity', '严重程度', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (3, 'vl_priority', '优先级', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (4, 'vl_frequency', '发生频率', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(6, 'ao_order_status', '订单状态权限对象', 1, 'segment_desc', 'segment_value', 'ct_order_status_vl', NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(7, 'vl_order_category', '订单分类', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
-(8, 'ao_order_category', '订单分类权限对象', 1, 'segment_desc', 'segment_value', 'ct_order_category_vl', NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(9, 'ao_order_type', '订单类型权限对象', 1, 'segment_desc', 'segment_value', 'ct_valuelist_vl', 'valuelist_name = ''vl_order_type''', NULL, 1, NULL, NULL, NULL, NULL),
-(10, 'default_role', '订单类型默认角色', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
+(6, 'ao_order_status', '投诉单状态权限对象', 1, 'label', 'value', 'ct_order_status_vl', '', NULL, 1, NULL, NULL, 1413854418, 44),
+(7, 'vl_order_category', '投诉单分类', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
+(8, 'ao_order_category', '投诉单分类权限对象', 1, 'segment_desc', 'segment_value', 'ct_order_category_vl', NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(9, 'ao_order_type', '投诉单类型权限对象', 1, 'segment_desc', 'segment_value', 'ct_valuelist_vl', 'valuelist_name = ''vl_order_type''', NULL, 1, NULL, NULL, NULL, NULL),
+(10, 'default_role', '投诉单类型默认角色', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
 (11, 'ao_true_or_false', '权限对象选择是/否', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (12, 'default_category', '订单默认的分类（在分类未开启时）', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
 (14, 'vl_dll_type', '数据库dll操作类型', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
@@ -2354,12 +2348,13 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (17, 'vl_user', '用户列表', 1, 'full_name', 'id', 'ct_users', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (18, 'vl_meeting_cancel', '会议取消原因', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (19, 'vl_sex', '用户性别', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(20, 'vl_feedback', '订单反馈项目', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(20, 'vl_feedback', '投诉单反馈项目', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (22, 'vl_authobject', '供权限对象使用的值集', 1, 'description', 'id', 'ct_valuelist_header', 'valuelist_name like ''ao_%''', NULL, 1, 1412754189, 44, 1412991840, 44),
 (23, 'vl_tables', '系统表/视图值集', 1, 'label', 'value', 'ct_tables_vl', '', NULL, 0, 1412907002, 44, 1412907002, 44),
 (24, 'vl_roles', '系统角色列表', 1, 'description', 'id', 'ct_roles', '', NULL, 1, 1412927876, 44, 1412928109, 44),
 (25, 'ao_log_type', '投诉单日志类型', 1, 'description', 'log_type', 'ct_order_log_types', NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(26, 'vl_auth_object', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1413513361, 44, 1413513361, 44);
+(26, 'vl_auth_object', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1413513361, 44, 1413513361, 44),
+(27, 'default_status', '投诉单默认状态', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, 1413850930, 44);
 
 -- --------------------------------------------------------
 
@@ -2392,7 +2387,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=50 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=53 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -2438,7 +2433,10 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (46, 10, '20', '201', 'asdf', 0, 1, 'vendor', 1412903034, 44, 1412903055, 44),
 (47, 7, '30', '30', '设计图纸', 0, 2, 'vendor', 1413419139, 44, 1413419167, 44),
 (48, 7, '40', '40', '采购部门服务', 0, 3, 'vendor', 1413419234, 44, 1413419234, 44),
-(49, 1, '40', 'test', 'set', 1, 0, '', 1413507444, 44, 1413507587, 44);
+(49, 1, '40', 'test', 'set', 1, 0, '', 1413507444, 44, 1413507587, 44),
+(50, 27, '10', 'order_status', '客户投诉单状态流', 0, 0, 'customer', 1413850731, 44, 1413852760, 44),
+(51, 27, '20', 'order_status', '供应商投诉单状态流', 0, 0, 'vendor', 1413850784, 44, 1413853099, 44),
+(52, 27, '30', 'order_status', '内部员工投诉单状态流', 0, 0, 'employee', 1413850827, 44, 1413852782, 44);
 
 -- --------------------------------------------------------
 
@@ -2585,7 +2583,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_order_status_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_status_vl` AS select `l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`next_status` AS `next_status`,`l`.`back_status` AS `back_status`,`l`.`default_flag` AS `default_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by` from (`ct_status_header` `h` join `ct_status_lines` `l`) where ((`h`.`id` = `l`.`status_id`) and (`h`.`status_code` = 'order_status'));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_status_vl` AS select concat(`ot`.`segment_desc`,' - ',`sl`.`segment_desc`) AS `label`,`sl`.`segment_value` AS `value` from ((`ct_status_lines_v` `sl` join `ct_valuelist_lines_v` `vl`) join `ct_valuelist_lines_v` `ot`) where ((`vl`.`valuelist_name` = 'default_status') and (`vl`.`inactive_flag` = 0) and (`sl`.`status_code` = `vl`.`segment_value`) and (`ot`.`valuelist_name` = 'vl_order_type') and (`ot`.`inactive_flag` = 0) and (`ot`.`segment_value` = `vl`.`parent_segment`)) order by `ot`.`segment_desc`;
 
 -- --------------------------------------------------------
 
@@ -2621,7 +2619,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_status_lines_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_lines_v` AS select `h`.`status_code` AS `status_code`,`h`.`description` AS `description`,`l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`next_status` AS `next_status`,`l`.`back_status` AS `back_status`,`l`.`default_flag` AS `default_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`default_next_status` AS `default_next_status` from (`ct_status_header` `h` join `ct_status_lines` `l`) where (`h`.`id` = `l`.`status_id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_lines_v` AS select `l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`next_status` AS `next_status`,`l`.`back_status` AS `back_status`,`l`.`default_flag` AS `default_flag`,`l`.`auto_ending_flag` AS `auto_ending_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`default_next_status` AS `default_next_status`,`l`.`last_status_flag` AS `last_status_flag`,`h`.`status_code` AS `status_code`,`h`.`description` AS `description` from (`ct_status_lines` `l` join `ct_status_header` `h`) where (`h`.`id` = `l`.`status_id`);
 
 -- --------------------------------------------------------
 

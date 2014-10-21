@@ -144,7 +144,7 @@ class Order extends CI_Controller {
         }else{
             //一种时，直接跳转
 //            redirect(_url('order','create',array('type'=>$rows[0])));
-            $_GET['type'] = $rows[0];
+            $_GET['order_type'] = $rows[0];
             $this->create();
         }
 
@@ -152,18 +152,19 @@ class Order extends CI_Controller {
 
     function create(){
         $order = new Order_model();
+        $order_type = v('order_type');
         if($_POST){
             //非分类管理，默认分类设置时可默认
             if(!_config('category_control')){
-                $c = $order->default_category(v('order_type'));
+                $c = $order->default_category($order_type);
                 if(!is_null($c)){
                     $_POST['category'] = $c['value'];
                 }
             }
-            $_POST['status'] = $order->default_status();
+            $_POST['status'] = $order->default_status($order_type);
             //验证提交
             //权限
-            if(check_order_auth(v('order_type'),v('status'),v('category'))){
+            if(check_order_auth($order_type,v('status'),v('category'))){
                 $data = _data('order_type','category','severity','frequency',
                     'title','contact','phone_number','mobile_telephone','address','full_name','status');
                 $content = r(v('content'));
@@ -180,8 +181,6 @@ class Order extends CI_Controller {
             }
         }else{
             //获取订单类型，如果没有则跳转到chose_create
-            $order_type = v('type');
-
             if(!$order_type){
                 $this->choose_create();
             }else{
@@ -195,7 +194,7 @@ class Order extends CI_Controller {
 
                 if(_config('category_control')){
                     $au = new Auth_model();
-                    $data['categories'] = $au->can_choose_order_categories($order_type,$order->default_status());
+                    $data['categories'] = $au->can_choose_order_categories($order_type,$order->default_status($order_type));
                 }
                 $data['order_type'] = $order_type;
                 render_view('order/create',$data);
@@ -527,7 +526,7 @@ class Order extends CI_Controller {
         //id是否有效
         if(!empty($order)){
             //先判断订单状态流是否允许更改,判断是否有权限更改次状态
-            if(is_order_allow_next_status($order['status'],$data['status']) && check_order_auth($order['order_type'],$data['status'],$order['category'])){
+            if(is_order_allow_next_status($order['order_type'],$order['status'],$data['status']) && check_order_auth($order['order_type'],$data['status'],$order['category'])){
                 if($om->do_update($order['id'],$data)){
                     message_db_success();
                 }else{

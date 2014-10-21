@@ -117,6 +117,27 @@ function clear_all_sess(){
     $CI->session->sess_destroy();
 }
 
+//默认行
+function default_line($name,$parent_segment_value){
+    $valuelist_name = 'default_'.$name;
+    $options = get_options($valuelist_name,$parent_segment_value);
+    if(count($options) > 0){
+        return $options[0];
+    }else{
+        return array();
+    }
+}
+
+//默认行
+function default_value($name,$parent_segment_value){
+    $valuelist_name = 'default_'.$name;
+    $options = get_options($valuelist_name,$parent_segment_value);
+    if(count($options) > 0){
+        return $options[0]['value'];
+    }else{
+        return null;
+    }
+}
 
 //获取值集对应的值
 function get_value($valuelist_name,$label){
@@ -310,11 +331,11 @@ function check_auth($auth_object_name,$auth_items,$user_id = null){
     return $am->check_auth($auth_object_name,$auth_items,$user_id);
 }
 
-function is_order_allow_next_status($current_status,$next_status){
+function is_order_allow_next_status($order_type,$current_status,$next_status){
     global $CI;
     $CI->load->model('order_model');
     $om = new Order_model();
-    return $om->is_allow_next_status($current_status,$next_status);
+    return $om->is_allow_next_status($order_type,$current_status,$next_status);
 }
 
 function is_order_locked($status){

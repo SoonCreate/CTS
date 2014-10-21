@@ -9,14 +9,8 @@
 <?= render_form_input('label_fieldname');?>
 <?= render_form_input('value_fieldname');?>
 
-
-<dl class="row dl-horizontal">
-    <dt><label for="source_view">源表/视图</label></dt>
-    <dd><select id="source_view" name="source_view" data-dojo-type="sckj/form/Select" >
-<?= render_options_with_value('vl_tables',_v('source_view'))?>
-</select></dd>
-<dl>
+<?= render_select_with_options('source_view','vl_tables');?>
 
 <?= render_form_textarea('condition')?>
 
-<?= render_select_with_options('parent_id','vl_valuelist');?>
+<?= render_select_add_options('parent_id',render_options('vl_valuelist',null,false,true));?>

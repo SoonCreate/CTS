@@ -17,12 +17,19 @@ class Status_model extends MY_Model{
         }
     }
 
-    function default_next_status($status_code,$current_status){
+    function next_status($status_code,$current_status){
         $slm = new Status_line_model();
-        $row = $slm->find_by(array('status_code'=>$status_code,'segment_value'=>$current_status));
+        $row = $slm->find_by_view(array('status_code'=>$status_code,'segment_value'=>$current_status));
         if(empty($row)){
             return null;
         }else{
+            //判断是否是自动完成，如果是自动完成则下一步为ending，否则为默认下一步
+            if($row['auto_ending_flag']){
+                $last = $slm->find_by_view(array('status_code'=>$status_code,'last_status_flag'=>1));
+                if(!empty($last)){
+                    return $last['segment_value'];
+                }
+            }
             $l = $slm->find_by(array('status_code'=>$status_code,'segment'=>$row['default_next_status']));
             if(empty($l)){
                 return null;

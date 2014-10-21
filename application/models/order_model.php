@@ -24,14 +24,14 @@ class Order_model extends MY_Model{
         $this->add_validate_255('phone_number','address','contact','full_name');
     }
 
-    function default_status(){
+    function default_status($order_type){
         $sm = new Status_model();
-        return $sm->default_status('order_status');
+        return $sm->default_status(default_value('status',$order_type));
     }
 
-    function default_next_status($current_status){
+    function next_status($order_type,$current_status){
         $sm = new Status_model();
-        return $sm->default_next_status('order_status',$current_status);
+        return $sm->next_status(default_value('status',$order_type),$current_status);
     }
 
     //在未开通分类管理时，默认分类
@@ -58,9 +58,9 @@ class Order_model extends MY_Model{
     }
 
     //状态本身是否允许修改
-    function is_allow_next_status($current_status,$next_status){
+    function is_allow_next_status($order_type,$current_status,$next_status){
         $sm = new Status_model();
-        return $sm->is_allow_next_status('order_status',$current_status,$next_status);
+        return $sm->is_allow_next_status(default_value('status',$order_type),$current_status,$next_status);
     }
 
     function save($base_data,$content,$addfiles=null){

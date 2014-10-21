@@ -1,4 +1,4 @@
-<?php if(_v('parent')){?>
+<?php if(_v('parent')){    ?>
     <dl class="row dl-horizontal"> <dt>父值集项目</dt><dd>
         <select name="segment" id="segment" data-dojo-type="sckj/form/Select" value="<?= _v('parent_segment')?>"
                 onchange="_valuelistItemData(this)">
@@ -48,7 +48,6 @@
 
 <script type="text/javascript">
     function _valuelistItemData(object){
-        console.info(url('valuelist/items?id=<?= v('id')?>&parent_segment='+object.getValue()));
         goto(url('valuelist/items?id=<?= v('id')?>&parent_segment='+object.getValue()),null,null,true);
     }
 </script>
