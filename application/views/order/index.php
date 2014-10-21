@@ -15,17 +15,19 @@
 </script>
 <div class="container-fluid">
     <div class="row inline">
-        <!--?= lang('title') ?--><input id="title" name="title" data-dojo-type="sckj/form/TextBox" class="leftinput"  /><!- style="width:400px" ->
-        <!--?= lang('status') ?-->
-<!--        <select  id="status" name="status" data-dojo-type="sckj/form/Select"  trim="true" class="midinput">-->
-<!--            --><?php //render_options('vl_order_status')?>
-<!--        </select>-->
+        <input id="title" name="title" data-dojo-type="sckj/form/TextBox" class="leftinput"  /><!- style="width:400px" ->
         <button data-dojo-type="sckj/form/Button" class="rightbtn"  onclick="_createIndexRefreshData()">
             <?= label('search')?>
         </button>
-        <!--?php render_form_input('title');?>
-        <!--?php render_select_with_options('status','vl_order_status')?>
-        <!--?php render_button('refresh','_createIndexRefreshData()');?-->
+
+        <?php if(count(_v('order_types')) > 0){
+                echo '<a href="#" onclick="_createIndexRefreshData({order_type:\'all\'})">'.label('all').'</a>&nbsp;&nbsp;';
+                foreach(_v('order_types') as $type){
+                    echo '<a href="#" onclick="_createIndexRefreshData()">'.get_label('vl_order_type',$type).'</a>&nbsp;&nbsp;';
+                }
+            ?>
+        <?php }?>
+
     </div>
     <div id="myOrdersList" class="gridlist"></div>
 </div>
@@ -103,9 +105,9 @@
         });
     //刷新store的数据
     function _createIndexRefreshData(options){
+        console.info(options);
         var params = new Object();
         var title = dijitObject('title');
-        var status = dijitObject('status');
         var grid = dijitObject('myOrdersList');
         if(grid){
             if(title != undefined && title.getValue() != ""){

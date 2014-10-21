@@ -11,7 +11,9 @@ class Order extends CI_Controller {
 
 	public function index()
 	{
-        render();
+        $am = new Auth_model();
+        $data['order_types'] = $am->can_show_order_types();
+        render($data);
 	}
 
     function order_data(){
@@ -102,7 +104,6 @@ class Order extends CI_Controller {
 
         $os = _format($os);
         for($i=0;$i<count($os);$i++){
-            $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
             $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
             $os[$i]['status'] = $sm->get_label(default_value('status',$os[$i]['order_type']),$os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
@@ -113,6 +114,7 @@ class Order extends CI_Controller {
                 $os[$i]['delay_flag'] = 1;
             }
             $os[$i]['plan_date_count'] = $olm->count_by_view(array('field_name'=>'plan_complete_date','dll_type'=>'update'));
+            $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
         }
 
         $data["identifier"] = 'id';
