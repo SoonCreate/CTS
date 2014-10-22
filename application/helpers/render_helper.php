@@ -79,6 +79,16 @@ function render_error($message = '',$heading = ''){
     render_view('error',$data);
 }
 
+function render_no_auth_error(){
+    global $CI;
+    $CI->load->model('message_model','message');
+    $mm = new Message_model();
+    $message = $mm->find_by_view(array('class_code'=>'system','message_code'=>'20','language'=>env_language()));
+    if(!empty($message)){
+        render_error($message['content']);
+    }
+}
+
 function render_form_error($field){
     return '<div id="error_'.$field.'_'._sess('cm').'"></div>';
 }

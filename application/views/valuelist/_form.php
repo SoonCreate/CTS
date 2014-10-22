@@ -9,7 +9,7 @@
 <?= render_form_input('label_fieldname');?>
 <?= render_form_input('value_fieldname');?>
 
-<?= render_select_with_options('source_view','vl_tables');?>
+<?= render_select_add_options('source_view',render_options('vl_tables',null,false,true));?>
 
 <?= render_form_textarea('condition')?>
 

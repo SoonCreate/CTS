@@ -15,8 +15,15 @@
             <?php
             //投诉单未分配处理人，可修改负责人
             if($status == 'confirmed'){?>
-                <?= render_link_button(array('order','choose_leader',array('id'=>$id)),'选择处理此投诉的负责人（部门经理）')?>
+                <?= render_link_button(array('order','choose_leader',array('id'=>$id)),'选择投诉的责任人（部门经理）')?>
             <?php }?>
+
+        <?php }?>
+
+        <?php
+        //如果为当前投诉单的责任人，则可以分配处理人
+        if(is_order_allow_next_status($order_type,$status,'allocated') && check_order_auth($order_type,'allocated',$category) && $leader_id == _sess('uid')){?>
+            <?= render_link_button(array('order','dispatcher',array('id'=>$id)),'选择投诉的具体处理人员')?>
         <?php }?>
 
         <?php if(is_order_allow_next_status($order_type,$status,'done') && check_order_auth($order_type,'done',$category)){?>

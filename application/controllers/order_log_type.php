@@ -99,6 +99,7 @@ class Order_log_type extends CI_Controller {
                 $_POST['inactive_flag'] = v('inactive_flag');
                 $_POST['notice_created_by'] = v('notice_created_by');
                 $_POST['notice_manager'] = v('notice_manager');
+                $_POST['notice_leader'] = v('notice_leader');
                 $this->load->model('notice_rule_model');
                 $nrm = new Notice_rule_model();
                 if($nrm->insert($_POST)){
@@ -124,6 +125,7 @@ class Order_log_type extends CI_Controller {
                 $_POST['inactive_flag'] = v('inactive_flag');
                 $_POST['notice_created_by'] = v('notice_created_by');
                 $_POST['notice_manager'] = v('notice_manager');
+                $_POST['notice_leader'] = v('notice_leader');
                 if($nrm->update($o['id'],$_POST)){
                     go_back();
                     message_db_success();

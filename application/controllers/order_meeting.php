@@ -23,6 +23,15 @@ class Order_meeting extends CI_Controller {
                 $objects[$i] = $this->_meeting_status($objects[$i]);
             }
             $data['objects'] = _format($objects);
+            if(check_meeting_auth($order['order_type'],$order['category'],'create')){
+                $data['can_create'] = 1;
+            }
+            if(check_meeting_auth($order['order_type'],$order['category'],'edit')){
+                $data['can_edit'] = 1;
+            }
+            if(check_meeting_auth($order['order_type'],$order['category'],'active')){
+                $data['can_cancel'] = 1;
+            }
             render($data);
         }
     }
@@ -51,9 +60,14 @@ class Order_meeting extends CI_Controller {
             if(v('order_id') && empty($order)){
                 show_404();
             }else{
-                $data['start_date'] = date('Y-m-d');
-                $data['end_date'] = date('Y-m-d');
-                render_view('order_meeting/create',$data);
+                if(!check_meeting_auth($order['order_type'],$order['category'],'create')){
+                    render_no_auth_error();
+                }else{
+                    $data['start_date'] = date('Y-m-d');
+                    $data['end_date'] = date('Y-m-d');
+                    render_view('order_meeting/create',$data);
+                }
+
             }
         }
     }

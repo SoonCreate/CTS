@@ -136,8 +136,10 @@ class Order_model extends MY_Model{
                             if(!empty($rules)){
                                 foreach($rules as $rule){
                                     $order = $this->find($new_data['id']);
+
                                     //是否存在投诉单类型控制
                                     if($rule['order_type'] == _config('all_values') || $rule['order_type'] == $order['order_type']){
+
                                         if($rule['when_new_value'] == _config('all_values')){
                                             $rule['when_new_value'] = $log['new_value'];
                                         }
@@ -172,8 +174,31 @@ class Order_model extends MY_Model{
                                             }//if($t['notice_created_by']){
 
                                             //发给责任人
-                                            if($rule['notice_manager']){
+                                            if($rule['notice_leader']){
                                                 //判断老责任人
+                                                if(!is_null($old_data)){
+                                                    if(isset($old_data['leader_id'])){
+                                                        $n['received_by'] = $old_data['leader_id'];
+                                                        if(!$nm->insert($n)){
+                                                            $this->db->trans_rollback();
+                                                            return false;
+                                                        }
+                                                    }
+                                                }
+                                                //判断新责任人
+                                                if(isset($new_data['leader_id'])){
+                                                    $n['received_by'] = $new_data['leader_id'];
+                                                    if(!$nm->insert($n)){
+                                                        $this->db->trans_rollback();
+                                                        return false;
+                                                    }
+                                                }
+
+                                            }
+
+                                            //发给处理人
+                                            if($rule['notice_manager']){
+                                                //判断老处理人
                                                 if(!is_null($old_data)){
                                                     if(isset($old_data['manager_id'])){
                                                         $n['received_by'] = $old_data['manager_id'];
@@ -183,7 +208,7 @@ class Order_model extends MY_Model{
                                                         }
                                                     }
                                                 }
-                                                //判断新责任人
+                                                //判断新处理人
                                                 if(isset($new_data['manager_id'])){
                                                     $n['received_by'] = $new_data['manager_id'];
                                                     if(!$nm->insert($n)){
@@ -318,7 +343,7 @@ class Order_model extends MY_Model{
         //投诉单状态根据类型不同解释不同
         if($log['field_name'] == 'status'){
             $content =  str_replace('&new_value',$sm->get_label(default_value('status',$order_type),$log['new_value']),$content);
-            $content =  str_replace('&old_value',$sm->get_label(default_value('status',$order_type),$log['new_value']),$content);
+            $content =  str_replace('&old_value',$sm->get_label(default_value('status',$order_type),$log['old_value']),$content);
         }else{
             if(!is_null($log['field_valuelist_id'])){
                 $vl = $vm->find($log['field_valuelist_id']);

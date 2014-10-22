@@ -569,23 +569,32 @@ class MY_Model extends CI_Model
     //设置时间戳
     public function set_last_update($data){
         $data['last_update_date'] = time();
-        if(_sess('uid')){
-            $data['last_updated_by'] = _sess('uid');
-        }else{
-            $data['last_updated_by'] =  -1;
+        if(!isset($data['last_updated_by'])){
+            if(_sess('uid')){
+                $data['last_updated_by'] = _sess('uid');
+            }else{
+                $data['last_updated_by'] =  -1;
+            }
         }
         return $data;
     }
 
     public function set_creation_date($data){
         $data['last_update_date'] = time();
-        $data['creation_date'] = time();;
-        if(_sess('uid')){
-            $data['last_updated_by'] = _sess('uid');
-            $data['created_by'] = _sess('uid');
-        }else{
-            $data['last_updated_by'] =  -1;
-            $data['created_by'] =  -1;
+        $data['creation_date'] = time();
+        if(!isset($data['last_updated_by'])){
+            if(_sess('uid')){
+                $data['last_updated_by'] = _sess('uid');
+            }else{
+                $data['last_updated_by'] =  -1;
+            }
+        }
+        if(!isset($data['created_by'])){
+            if(_sess('uid')){
+                $data['created_by'] = _sess('uid');
+            }else{
+                $data['created_by'] =  -1;
+            }
         }
         return $data;
     }

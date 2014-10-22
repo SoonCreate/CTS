@@ -12,6 +12,10 @@ function goto(url,target,noRender,noRecord){
         $dijit.byId("mainTabContainer").selectChild(wso,true);
     }else{
         dojoConfirm("是否确定执行此操作？",function(){
+            //显示运行状态
+            require(["dojo/dom-style"],function(domStyle){
+                domStyle.set("preloader","opacity","1");
+            });
             $ajax.get(url,{handleAs : "json"}).then(function(response){
                 handleResponse(response,null,function(){
                     refresh();
@@ -325,10 +329,11 @@ function refresh_env(mid){
     require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
         if($dom.byId("preloader")){
             baseFx.fadeOut({  //Get rid of the loader once parsing is done
-                node: "preloader",
-                onEnd: function() {
-                    domStyle.set("preloader","display","none");
-                }
+                node: "preloader"
+                //,
+                //onEnd: function() {
+                //    domStyle.set("preloader","display","none");
+                //}
             }).play();
         }
     });

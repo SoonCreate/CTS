@@ -331,6 +331,16 @@ function check_auth($auth_object_name,$auth_items,$user_id = null){
     return $am->check_auth($auth_object_name,$auth_items,$user_id);
 }
 
+//检查会议操作权限
+function check_meeting_auth($order_type,$order_category,$action){
+    if(check_auth('meeting_control',array('ao_order_type'=>$order_type,'ao_order_category'=>$order_category,'ao_action'=>$action))){
+        echo 'go';
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function is_order_allow_next_status($order_type,$current_status,$next_status){
     global $CI;
     $CI->load->model('order_model');

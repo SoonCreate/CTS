@@ -20,12 +20,14 @@
                 <?= render_link(array('order_meeting','show',array('id'=>$o['id'])),label('show'))?>
                 <?php if($o['inactive_flag'] == 0) : ?>
                     &nbsp;|&nbsp;
-                    <?= render_link(array('order_meeting','edit',array('id'=>$o['id'])),label('edit'))?>
+                    <?php if(_v('can_edit')){
+                            echo render_link(array('order_meeting','edit',array('id'=>$o['id'])),label('edit'));}?>
 <!--                    &nbsp;|&nbsp;-->
 <!--                    --><?php //render_link(array('order_meeting','upload_file',array('id'=>$o['id'])),label('upload_file'))?>
                 <?php if( $o['discuss'] == ''|| is_null($o['discuss'])):?>
                         &nbsp;|&nbsp;
-                        <?= render_link(array('order_meeting','cancel',array('id'=>$o['id'])),label('cancel'))?>
+                        <?php if(_v('can_cancel')){
+                                echo  render_link(array('order_meeting','cancel',array('id'=>$o['id'])),label('cancel'));}?>
                 <?php endif;
                 endif;?>
             </td>
@@ -33,4 +35,8 @@
         </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('order_meeting','create',array('order_id'=>_v('order_id'))),label('meeting_create'))?>
+<?php
+if(_v('can_create')){
+    echo render_link(array('order_meeting','create',array('order_id'=>_v('order_id'))),label('meeting_create'));
+}
+?>
