@@ -13,6 +13,20 @@ class Order extends CI_Controller {
 	{
         $am = new Auth_model();
         $data['order_types'] = $am->can_show_order_types();
+        $data['status'] = array();
+        $this->load->model('status_line_model');
+        $slm = new Status_line_model();
+        $status_codes = array();
+        foreach($data['order_types']  as $t){
+            array_push($status_codes,default_value('status',$t)) ;
+        }
+        $this->db->distinct();
+        $this->db->select('segment_value,segment_desc');
+        $this->db->where_in('status_code',$status_codes);
+        $lines = $slm->find_all_by_view();
+        foreach($lines as $l){
+            array_push($data['status'],$l);
+        }
         render($data);
 	}
 
@@ -34,15 +48,20 @@ class Order extends CI_Controller {
             $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
         }
 
-        $types = $am->can_show_order_types();
+        if(v('order_type')){
+            $types = array(v('order_type'));
+        }else{
+            $types = $am->can_show_order_types();
+        }
+
+        $title = $this->input->get('title');
+        $status = $this->input->get('status');
 
         //获取数据
         if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
 
             $om->limit($end+1,$start);
 
-            $title = $this->input->get('title');
-            $status = $this->input->get('status');
             if($title){
                 $this->db->like('title',$title);
             }
@@ -75,8 +94,7 @@ class Order extends CI_Controller {
             $totalCnt = $om->count_by($where);
         }else{
             $om->limit($end+1,$start);
-            $title = $this->input->get('title');
-            $status = $this->input->get('status');
+
             if($title){
                 $this->db->like('title',$title);
             }

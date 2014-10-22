@@ -20,11 +20,19 @@
             <?= label('search')?>
         </button>
 
-        <?php if(count(_v('order_types')) > 0){
-                echo '<a href="#" onclick="_createIndexRefreshData({order_type:\'all\'})">'.label('all').'</a>&nbsp;&nbsp;';
+        <?php if(count(_v('order_types')) > 1){
+                echo '<a href="#" onclick="_createIndexRefreshData({order_type:\''._config('all_values').'\'})">'.label(_config('all_values')).'</a>';
                 foreach(_v('order_types') as $type){
-                    echo '<a href="#" onclick="_createIndexRefreshData()">'.get_label('vl_order_type',$type).'</a>&nbsp;&nbsp;';
+                    echo '<a href="#" onclick="_createIndexRefreshData({order_type:\''.$type.'\'})">'.get_label('vl_order_type',$type).'</a>';
                 }
+            ?>
+        <?php }?>
+
+        <?php if(count(_v('status')) > 0){
+            echo '<a href="#" onclick="_createIndexRefreshData({status:\''._config('all_values').'\'})">'.label(_config('all_values')).'</a>';
+            foreach(_v('status') as $s){
+                echo '<a href="#" onclick="_createIndexRefreshData({status:\''.$s['segment_value'].'\'})">'.$s['segment_desc'].'</a>';
+            }
             ?>
         <?php }?>
 
@@ -64,7 +72,9 @@
                     structure: [
 
                         {name : "投诉单号",field : "id",width : "80px",dataType :"number",style:"text-align: center"},
+                        <?php if(count(_v('order_types')) > 1){?>
                         {name : "投诉单类型",field : "order_type",width : "120px",dataType :"string"},
+                        <?php }?>
                         <?php if(_config('category_control')){?>
                         {name : "分类",field : "category",width : "120px",dataType :"string"},
                         <?php }?>
@@ -113,10 +123,14 @@
             if(title != undefined && title.getValue() != ""){
                 params.title = title.getValue();
             }
-
-            if(status != undefined && status.getValue() != ""){
-                params.status = status.getValue();
+            if(options && "status" in options && options.status != '<?= _config('all_values') ?>'){
+                params.status = options.status;
             }
+
+            if(options && "order_type" in options && options.order_type != '<?= _config('all_values') ?>'){
+                params.order_type = options.order_type;
+            }
+
             require(["dojo/store/JsonRest"],function(JsonRest){
                 var newStore = new JsonRest({idProperty: 'id', target:url('order/order_data',params),sortParam: "sortBy"});
                 grid.refresh(newStore);
