@@ -1,4 +1,3 @@
-
 <?= render_form_open('order','create') ?>
 <div class="container-fluid userd">
     <?= render_select_with_options('severity','vl_severity');?>

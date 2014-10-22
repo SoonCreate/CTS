@@ -115,12 +115,17 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
         beforeSubmit();
     }
     require(["dojo/dom-form","dojo/request"],function(domForm,request){
+        //显示运行状态
+        require(["dojo/dom-style"],function(domStyle){
+            domStyle.set("preloader","opacity","1");
+        });
+
         //fix form中有name为action组件时优先调用组件值的情况 20141017
         request.post(object.attributes["action"]["value"], {
             // Send the username and password
             data: domForm.toObject(object),
-            // Wait 2 seconds for a response
-            timeout: 2000,
+            // Wait 2 seconds for a response，由于机器性能不同，可能反馈的效率不一，设置5秒以防万一
+            timeout: 5000,
             handleAs : "json"
         }).then(function(response){
             clearCurrentStatus();

@@ -129,7 +129,6 @@ class Order_model extends MY_Model{
                         $id = $olm->insert($log);
 
                         if(!$id){
-                            $this->db->trans_rollback();
                             return false;
                         }else{
                             $rules = $nrm->find_all_by(array('log_type_id'=>$t['id'],'inactive_flag'=>0));
@@ -168,7 +167,6 @@ class Order_model extends MY_Model{
                                                 }
                                                 $notice_id = $nm->insert($n);
                                                 if(!$notice_id){
-                                                    $this->db->trans_rollback();
                                                     return false;
                                                 }
                                             }//if($t['notice_created_by']){
@@ -180,7 +178,6 @@ class Order_model extends MY_Model{
                                                     if(isset($old_data['leader_id'])){
                                                         $n['received_by'] = $old_data['leader_id'];
                                                         if(!$nm->insert($n)){
-                                                            $this->db->trans_rollback();
                                                             return false;
                                                         }
                                                     }
@@ -189,7 +186,6 @@ class Order_model extends MY_Model{
                                                 if(isset($new_data['leader_id'])){
                                                     $n['received_by'] = $new_data['leader_id'];
                                                     if(!$nm->insert($n)){
-                                                        $this->db->trans_rollback();
                                                         return false;
                                                     }
                                                 }
@@ -203,7 +199,6 @@ class Order_model extends MY_Model{
                                                     if(isset($old_data['manager_id'])){
                                                         $n['received_by'] = $old_data['manager_id'];
                                                         if(!$nm->insert($n)){
-                                                            $this->db->trans_rollback();
                                                             return false;
                                                         }
                                                     }
@@ -212,7 +207,6 @@ class Order_model extends MY_Model{
                                                 if(isset($new_data['manager_id'])){
                                                     $n['received_by'] = $new_data['manager_id'];
                                                     if(!$nm->insert($n)){
-                                                        $this->db->trans_rollback();
                                                         return false;
                                                     }
                                                 }
@@ -227,7 +221,6 @@ class Order_model extends MY_Model{
                                                 foreach($users as $u){
                                                     $n['received_by'] = $u['user_id'];
                                                     if(!$nm->insert($n)){
-                                                        $this->db->trans_rollback();
                                                         return false;
                                                     }
                                                 }
@@ -361,6 +354,47 @@ class Order_model extends MY_Model{
         }
 
         return $content;
+    }
+
+    function confirm($id){
+        $order = $this->find($id);
+        //先判断订单状态流是否允许更改,判断是否有权限更改次状态
+        if(is_order_allow_next_status($order['order_type'],$order['status'],'confirmed')
+            && check_order_auth($order['order_type'],'confirmed',$order['category'])){
+            if($this->do_update($order['id'],array('status'=>'confirmed'))){
+                message_db_success();
+                if(_config('auto_leader')){
+                    //判断责任人如果唯一，则直接赋值
+                    $this->load->model('auth_model');
+                    $am = new Auth_model();
+                    $leaders = $am->can_choose_leaders($order);
+                    if(count($leaders) == 1){
+                        $d['leader_id'] = $leaders[0];
+                        if($this->do_update($order['id'],$d)){
+                            custz_message('I','已自动选择选择唯一的责任人');
+                            if(_config('auto_manager')){
+                                //如果处理人也只有唯一时，则投诉单直接分配
+                                $managers = $am->can_choose_managers($order);
+                                if(count($managers) == 1) {
+                                    $dd['status'] = 'allocated';
+                                    $dd['manager_id'] = $managers[0];
+                                    if ($this->do_update($order['id'], $dd)) {
+                                        custz_message('I', '已自动选择唯一的处理人');
+                                    } else {
+                                        message_db_failure();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }else{
+                message_db_failure();
+            }
+        }else{
+            custz_message('E','不允许状态流向！');
+        }
     }
 
     function field_list(){

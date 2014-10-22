@@ -196,7 +196,12 @@ class Order extends CI_Controller {
                 $addfiles = tpost('addfiles');
                 $order_id = $order->save($data,$content,$addfiles);
                 if($order_id){
-                    message_db_success();
+                    //如果同时拥有提交和确认权限，则自动确认
+                    if(check_order_auth($order_type,'confirmed',v('category'))){
+                        $order->confirm($order_id);
+                    }else{
+                        message_db_success();
+                    }
                     redirect_to('order','show',array('id'=>$order_id));
                 }else{
                     validation_error();
@@ -298,41 +303,8 @@ class Order extends CI_Controller {
         //默认更新下一个状态
         $data['status'] = 'confirmed';
         //id是否有效
-        if(!empty($order)){
-            //先判断订单状态流是否允许更改,判断是否有权限更改次状态
-            if(is_order_allow_next_status($order['order_type'],$order['status'],$data['status']) && check_order_auth($order['order_type'],$data['status'],$order['category'])){
-                if($om->do_update($order['id'],$data)){
-                    message_db_success();
-                    //判断责任人如果唯一，则直接赋值
-                    $am = new Auth_model();
-                    $leaders = $am->can_choose_leaders($order);
-                    if(count($leaders) == 1){
-                        $d['leader_id'] = $leaders[0];
-                        if($om->do_update($order['id'],$data)){
-                            custz_message('I','已自动选择选择唯一的责任人');
-
-                            //如果处理人也只有唯一时，则投诉单直接分配
-                            $managers = $am->can_choose_managers($order);
-                            if(count($managers) == 1) {
-                                $d['status'] = 'allocated';
-                                $d['manager_id'] = $managers[0];
-                                if ($om->do_update($order['id'], $d)) {
-                                    custz_message('I', '已自动选择唯一的处理人');
-                                } else {
-                                    message_db_failure();
-                                }
-                            }
-
-                        }
-                    }
-                }else{
-                        message_db_failure();
-                }
-            }else{
-                custz_message('E','不允许状态流向！');
-            }
-        }else{
-            show_404();
+        if(!empty($order)){;
+            $om->confirm($order['id']);
         }
     }
 
