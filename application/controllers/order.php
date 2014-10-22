@@ -62,26 +62,6 @@ class Order extends CI_Controller {
 
             $om->limit($end+1,$start);
 
-            if($title){
-                $this->db->like('title',$title);
-            }
-            $where['status'] = $status;
-            $where['created_by'] = _sess('uid');
-
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-
-            //fix ：Error in Body._buildRowContent: Row is not in cache
-            if($title){
-                $this->db->like('title',$title);
-            }
-            $om->order_by('id','DESC');
-            $os = $om->find_all_by($where);
-
-            if($title){
-                $this->db->like('title',$title);
-            }
-            $where['status'] = $status;
             //与自己相关的用户id字段
             $this->db->or_where('created_by',_sess('uid'));
             $this->db->or_where('leader_id',_sess('uid'));
@@ -94,32 +74,54 @@ class Order extends CI_Controller {
             if($title){
                 $this->db->like('title',$title);
             }
-            $totalCnt = $om->count_by($where);
+            if($status){
+                $this->db->where('status',$status) ;
+            }
+            $om->order_by('id','DESC');
+            $os = $om->find_all();
+
+
+            //与自己相关的用户id字段
+            $this->db->or_where('created_by',_sess('uid'));
+            $this->db->or_where('leader_id',_sess('uid'));
+            $this->db->or_where('manager_id',_sess('uid'));
+
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+
+            //fix ：Error in Body._buildRowContent: Row is not in cache
+            if($title){
+                $this->db->like('title',$title);
+            }
+            if($status){
+                $this->db->where('status',$status) ;
+            }
+            $totalCnt = $om->count_by();
         }else{
             $om->limit($end+1,$start);
 
             if($title){
                 $this->db->like('title',$title);
             }
-            $where['status'] = $status;
+
+            if($status){
+                $this->db->where('status',$status) ;
+            }
+
             //获取允许查看的订单类型
             $this->db->where_in('order_type',$types);
-            if($title){
-                $this->db->like('title',$title);
-            }
             $om->order_by('id','DESC');
-            $os = $om->find_all_by($where);
+            $os = $om->find_all();
 
             if($title){
                 $this->db->like('title',$title);
             }
-            $where['status'] = $status;
+            if($status){
+                $this->db->where('status',$status) ;
+            }
             //获取允许查看的订单类型
             $this->db->where_in('order_type',$types);
-            if($title){
-                $this->db->like('title',$title);
-            }
-            $totalCnt = $om->count_by($where);
+            $totalCnt = $om->count_by();
         }
 //        print_r($os);
 
@@ -234,9 +236,16 @@ class Order extends CI_Controller {
         if(!empty($order)){
             //是否只能看到自己的订单
             $am = new Auth_model();
-            if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE')) && $order['created_by'] != _sess('uid')){
-                show_404();
-            }else{
+            $pass = true;
+            if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE')) ){
+                if($order['created_by'] == _sess('uid') || $order['leader_id'] == _sess('uid') || $order['manager_id'] == _sess('uid')){
+                    $pass = true;
+                }else{
+                    $pass = false;
+                }
+            }
+            //检验通过
+            if($pass){
                 $this->load->model('status_model');
                 $this->load->model('order_addfile_model');
                 $this->load->model('order_content_model');
@@ -386,7 +395,7 @@ class Order extends CI_Controller {
         }
     }
 
-    //分配任务，制定负责人，计划完成时间
+    //分配任务，指定处理人
     function dispatcher(){
         $om = new Order_model();
         $order = $om->find(v('id'));
@@ -394,20 +403,13 @@ class Order extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $_POST['plan_complete_date'] = strtotime($_POST['plan_complete_date']);
-                if($_POST['plan_complete_date'] < strtotime(date('Y-m-d'))){
-                    add_validation_error('plan_complete_date','日期不能选择在过去的时间（今天之前）');
-                }else{
-                    $data = _data('manager_id','plan_complete_date');
-                    $data['status'] = 'allocated';
-                    $this->_update(v('id'),$data);
-                }
-
+                $data = _data('manager_id');
+                $this->_update(v('id'),$data);
             }else{
                 $am = new Auth_model();
                 $ids = $am->can_choose_managers($order);
                 if(empty($ids)){
-                    custz_message('E','无对应的责任人');
+                    render_error('无对应的责任人');
                 }else{
                     $order['managers'] = array();
                     foreach($ids as $id){
@@ -417,17 +419,56 @@ class Order extends CI_Controller {
                         $d['label'] = full_name($id);
                         array_push($order['managers'],$d);
                     }
-                    if(is_null($order['plan_complete_date']) || !$order['plan_complete_date']){
-                        $order['plan_complete_date'] = date('Y-m-d',time());
-                    }else{
-                        $order['plan_complete_date'] = date('Y-m-d',$order['plan_complete_date']);
-                    }
                     render($order);
                 }
             }
 
         }
 
+
+    }
+
+    function pcd_change(){
+        $om = new Order_model();
+        $order = $om->find(v('id'));
+        if(empty($order)){
+            show_404();
+        }else{
+            if($order['pcd_change_times'] < _config('pcd_change_times')){
+                if($_POST){
+
+                    //格式化提交的日期
+                    $_POST['plan_complete_date'] = str_replace('T',' ',$_POST['plan_complete_date'] . $_POST['plan_complete_time']);
+
+                    $_POST['plan_complete_date'] = strtotime($_POST['plan_complete_date']);
+                    if($_POST['plan_complete_date'] < time()){
+                        add_validation_error('plan_complete_date','不能选择在过去的时间');
+                        add_validation_error('plan_complete_time','');
+                    }else{
+                        $data = _data('plan_complete_date');
+                        $data['pcd_change_times'] = $order['pcd_change_times'] + 1;
+                        if($om->do_update($order['id'],$data,true)){
+                            go_back();
+                            message_db_success();
+                        }else{
+                            message_db_failure();
+                        }
+                    }
+
+                }else{
+                    if(is_null($order['plan_complete_date']) || !$order['plan_complete_date']){
+                        $order['plan_complete_date'] = date('Y-m-d',time());
+                    }else{
+                        $order['plan_complete_date'] = date('Y-m-d H:m:s',$order['plan_complete_date']);
+                        $order['plan_complete_time'] = 'T'.substr($order['plan_complete_date'],11,9);
+                        $order['plan_complete_date'] = substr($order['plan_complete_date'],0,10);
+                    }
+                    render($order);
+                }
+            }else{
+                render_error('无法继续修改计划完成日期，已超出允许修改次数！');
+            }
+        }
 
     }
 

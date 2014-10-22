@@ -26,6 +26,12 @@
             <?= render_link_button(array('order','dispatcher',array('id'=>$id)),'选择投诉的具体处理人员')?>
         <?php }?>
 
+        <?php
+        //必须小于规定的修改次数
+        if(check_order_auth($order_type,'done',$category) && $manager_id == _sess('uid') && $pcd_change_times < _config('pcd_change_times')){?>
+            <?= render_link_button(array('order','pcd_change',array('id'=>$id)),'填写计划完成日期')?>
+        <?php }?>
+
         <?php if(is_order_allow_next_status($order_type,$status,'done') && check_order_auth($order_type,'done',$category)){?>
             <?= render_link_button(array('order','done',array('id'=>$id)),'投诉已解决',null,null,true)?>
         <?php }?>
@@ -58,6 +64,7 @@
     <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
         <dl class="row dl-horizontal"><dt>责任人</dt><dd><?= full_name($leader_id) ?></dd></dl>
         <dl class="row dl-horizontal"><dt>处理人</dt><dd><?= full_name($manager_id) ?></dd></dl>
+        <dl class="row dl-horizontal"><dt>计划完成日期</dt><dd><?= $plan_complete_date ?></dd></dl>
     <?php }?>
     <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
     <dl class="row dl-horizontal"><dt>严重性</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>

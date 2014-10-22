@@ -420,8 +420,10 @@ class MY_Model extends CI_Model
      */
     public function count_by()
     {
-        $where = func_get_args();
-        $this->_set_where($where);
+        if(count(func_get_args())>0){
+            $where = func_get_args();
+            $this->_set_where($where);
+        }
 
         return $this->db->count_all_results($this->_table);
     }

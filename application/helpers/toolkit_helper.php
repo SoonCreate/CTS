@@ -334,7 +334,6 @@ function check_auth($auth_object_name,$auth_items,$user_id = null){
 //检查会议操作权限
 function check_meeting_auth($order_type,$order_category,$action){
     if(check_auth('meeting_control',array('ao_order_type'=>$order_type,'ao_order_category'=>$order_category,'ao_action'=>$action))){
-        echo 'go';
         return true;
     }else{
         return false;
