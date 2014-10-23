@@ -402,6 +402,4 @@ class Order_model extends MY_Model{
         where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_ORDERS'
         and COLUMN_NAME not in ('id','created_by','creation_date','last_updated_by','last_update_date')");
     }
-
-
 }

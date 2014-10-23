@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2014 at 10:29 AM
+-- Generation Time: Oct 23, 2014 at 05:25 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=43 ;
 
 --
 -- Dumping data for table `ct_configs`
@@ -169,8 +169,9 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (37, 'feedback_star', '用户反馈的打分星数', '5', 1, 'number', NULL, NULL, 1413693616, 44),
 (38, 'feedback_control', '反馈功能开关', 'FALSE', 1, 'boolean', NULL, NULL, 1413856201, 44),
 (39, 'pcd_change_times', '计划完成日期允许修改次数', '2', 1, 'number', NULL, NULL, 1413960977, 44),
-(40, 'auto_leader', '如果责任人只有唯一人选，在投诉单确认时自动选择', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(41, 'auto_manager', '如果处理人只有唯一人选，在投诉单确认时自动选择', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL);
+(40, 'auto_leader', '如果责任人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', NULL, NULL, 1414024127, 44),
+(41, 'auto_manager', '如果处理人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', NULL, NULL, 1414024012, 44),
+(42, 'allow_reopen', '是否允许关闭订单重新打开', 'FALSE', 1, 'boolean', NULL, NULL, 1414032071, 44);
 
 -- --------------------------------------------------------
 
@@ -741,7 +742,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=157 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=173 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -903,7 +904,23 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (153, 345, 0, '投诉单提交', 1, '投诉单 141 提交', 141, 72, NULL, 1, 70, 1413965895, 1413965895, 70),
 (154, 347, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 141  责任人变更', 141, 0, NULL, 1, 70, 1413965896, 1413965896, 70),
 (155, 347, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 141  责任人变更', 141, 67, NULL, 1, 70, 1413965896, 1413965896, 70),
-(156, 349, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 141 处理人变更', 141, 73, NULL, 1, 70, 1413965897, 1413966015, 73);
+(156, 349, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 141 处理人变更', 141, 73, NULL, 1, 70, 1413965897, 1413966015, 73),
+(157, 350, 1, '投诉单提交', 1, '投诉单 142 提交', 142, 48, NULL, 1, 45, 1414023602, 1414023632, 48),
+(158, 350, 0, '投诉单提交', 1, '投诉单 142 提交', 142, 72, NULL, 1, 45, 1414023602, 1414023602, 45),
+(159, 352, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 142  责任人变更', 142, 0, NULL, 1, 48, 1414023622, 1414023622, 48),
+(160, 352, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 142  责任人变更', 142, 67, NULL, 1, 48, 1414023622, 1414023622, 48),
+(161, 354, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 142 处理人变更', 142, 73, NULL, 1, 48, 1414023622, 1414023622, 48),
+(162, 355, 0, '投诉单提交', 1, '投诉单 143 提交', 143, 48, NULL, 1, 70, 1414023982, 1414023982, 70),
+(163, 355, 0, '投诉单提交', 1, '投诉单 143 提交', 143, 72, NULL, 1, 70, 1414023982, 1414023982, 70),
+(164, 357, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 143  责任人变更', 143, 0, NULL, 1, 70, 1414023983, 1414023983, 70),
+(165, 357, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 143  责任人变更', 143, 67, NULL, 1, 70, 1414023983, 1414023983, 70),
+(166, 359, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 143 处理人变更', 143, 73, NULL, 1, 70, 1414023984, 1414023984, 70),
+(167, 360, 0, '投诉单提交', 1, '投诉单 144 提交', 144, 48, NULL, 1, 71, 1414024058, 1414024058, 71),
+(168, 360, 0, '投诉单提交', 1, '投诉单 144 提交', 144, 72, NULL, 1, 71, 1414024058, 1414024058, 71),
+(169, 362, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 144  责任人变更', 144, 0, NULL, 1, 71, 1414024059, 1414024059, 71),
+(170, 362, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 144  责任人变更', 144, 66, NULL, 1, 71, 1414024059, 1414024059, 71),
+(171, 364, 0, '投诉单提交', 1, '投诉单 145 提交', 145, 48, NULL, 1, 70, 1414024378, 1414024378, 70),
+(172, 364, 0, '投诉单提交', 1, '投诉单 145 提交', 145, 72, NULL, 1, 70, 1414024378, 1414024378, 70);
 
 -- --------------------------------------------------------
 
@@ -975,7 +992,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_type`,`status`,`manager_id`) USING BTREE,
   KEY `Index_3` (`created_by`,`creation_date`,`status`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=142 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=146 ;
 
 --
 -- Dumping data for table `ct_orders`
@@ -1112,7 +1129,11 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (138, 'customer', 'allocated', 'low', 'low', '10', '士大夫阿三东帆', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413965796, 70, 1413965798, 70),
 (139, 'customer', 'confirmed', 'low', 'low', '10', '士大夫阿三东帆', NULL, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413965830, 70, 1413965831, 70),
 (140, 'customer', 'confirmed', 'low', 'low', '10', 'asdf', NULL, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413965875, 70, 1413965876, 70),
-(141, 'customer', 'allocated', 'low', 'low', '10', 'asdf', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413965895, 70, 1413965897, 70);
+(141, 'customer', 'allocated', 'low', 'low', '10', 'asdf', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413965895, 70, 1413965897, 70),
+(142, 'customer', 'closed', 'low', 'low', '30', '产品线严重质量问题', 73, 67, NULL, '陈某某', '', '13777777777', '', '', 0, 0, 1414023602, 45, 1414030878, 45),
+(143, 'customer', 'done', 'low', 'low', '10', '产品线严重质量问题', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1414023982, 70, 1414024144, 73),
+(144, 'vendor', 'confirmed', 'low', 'low', '30', '图纸变更太频繁', NULL, 66, NULL, '高某某', '', '1356789', '', '', 0, 0, 1414024058, 71, 1414024059, 71),
+(145, 'customer', 'confirmed', 'low', 'low', '10', 'asdfdffff', NULL, 0, NULL, '陈杨阳', '', '13777777777', '', '', 0, 0, 1414024378, 70, 1414024378, 70);
 
 -- --------------------------------------------------------
 
@@ -1175,7 +1196,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=198 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=202 ;
 
 --
 -- Dumping data for table `ct_order_contents`
@@ -1370,7 +1391,11 @@ INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `cre
 (194, 138, '阿三东帆', 70, 1413965796, 1413965796, 70),
 (195, 139, '阿三东帆', 70, 1413965830, 1413965830, 70),
 (196, 140, 'asdfasdf', 70, 1413965875, 1413965875, 70),
-(197, 141, 'asdfasdf', 70, 1413965895, 1413965895, 70);
+(197, 141, 'asdfasdf', 70, 1413965895, 1413965895, 70),
+(198, 142, '如题', 45, 1414023602, 1414023602, 45),
+(199, 143, '产品线严重质量问题', 70, 1414023982, 1414023982, 70),
+(200, 144, '图纸变更太频繁', 71, 1414024058, 1414024058, 71),
+(201, 145, 'asf', 70, 1414024378, 1414024378, 70);
 
 -- --------------------------------------------------------
 
@@ -1393,7 +1418,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=350 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=367 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -1736,7 +1761,24 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (346, 141, 'order_status', 'confirmed', 'released', NULL, 1413965895, 1413965895, 70, 1413965895, 70),
 (347, 141, 'leader_change', '67', '0', NULL, 1413965896, 1413965896, 70, 1413965896, 70),
 (348, 141, 'order_status', 'allocated', 'confirmed', NULL, 1413965897, 1413965897, 70, 1413965897, 70),
-(349, 141, 'manager_change', '73', NULL, NULL, 1413965897, 1413965897, 70, 1413965897, 70);
+(349, 141, 'manager_change', '73', NULL, NULL, 1413965897, 1413965897, 70, 1413965897, 70),
+(350, 142, 'order_status_new', 'released', '', NULL, 1414023602, 1414023602, 45, 1414023602, 45),
+(351, 142, 'order_status', 'confirmed', 'released', NULL, 1414023621, 1414023621, 48, 1414023621, 48),
+(352, 142, 'leader_change', '67', '0', NULL, 1414023622, 1414023622, 48, 1414023622, 48),
+(353, 142, 'order_status', 'allocated', 'confirmed', NULL, 1414023622, 1414023622, 48, 1414023622, 48),
+(354, 142, 'manager_change', '73', NULL, NULL, 1414023622, 1414023622, 48, 1414023622, 48),
+(355, 143, 'order_status_new', 'released', '', NULL, 1414023982, 1414023982, 70, 1414023982, 70),
+(356, 143, 'order_status', 'confirmed', 'released', NULL, 1414023982, 1414023982, 70, 1414023982, 70),
+(357, 143, 'leader_change', '67', '0', NULL, 1414023983, 1414023983, 70, 1414023983, 70),
+(358, 143, 'order_status', 'allocated', 'confirmed', NULL, 1414023984, 1414023984, 70, 1414023984, 70),
+(359, 143, 'manager_change', '73', NULL, NULL, 1414023984, 1414023984, 70, 1414023984, 70),
+(360, 144, 'order_status_new', 'released', '', NULL, 1414024058, 1414024058, 71, 1414024058, 71),
+(361, 144, 'order_status', 'confirmed', 'released', NULL, 1414024058, 1414024058, 71, 1414024058, 71),
+(362, 144, 'leader_change', '66', '0', NULL, 1414024059, 1414024059, 71, 1414024059, 71),
+(363, 143, 'order_status', 'done', 'allocated', NULL, 1414024144, 1414024145, 73, 1414024145, 73),
+(364, 145, 'order_status_new', 'released', '', NULL, 1414024378, 1414024378, 70, 1414024378, 70),
+(365, 145, 'order_status', 'confirmed', 'released', NULL, 1414024378, 1414024378, 70, 1414024378, 70),
+(366, 142, 'order_status', 'closed', 'allocated', NULL, 1414030878, 1414030878, 45, 1414030878, 45);
 
 -- --------------------------------------------------------
 
@@ -2413,6 +2455,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines` (
   `back_status` varchar(20) DEFAULT NULL COMMENT '冲销后状态',
   `default_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '默认标识',
   `auto_ending_flag` tinyint(4) NOT NULL COMMENT '自动结束',
+  `inactive_flag` tinyint(1) NOT NULL DEFAULT '0',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -2427,13 +2470,13 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines` (
 -- Dumping data for table `ct_status_lines`
 --
 
-INSERT INTO `ct_status_lines` (`id`, `status_id`, `segment`, `segment_value`, `segment_desc`, `next_status`, `back_status`, `default_flag`, `auto_ending_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `default_next_status`, `last_status_flag`) VALUES
-(1, 1, '10', 'released', '已提交', '20,50', NULL, 1, 0, NULL, NULL, NULL, NULL, '20', 0),
-(2, 1, '20', 'confirmed', '已确认', '30,50', NULL, 0, 0, NULL, NULL, NULL, NULL, '30', 0),
-(3, 1, '30', 'allocated', '已分配', '30,40,50', NULL, 0, 0, NULL, NULL, NULL, NULL, '40', 0),
-(4, 1, '40', 'done', '已解决', '50', NULL, 0, 0, NULL, NULL, NULL, NULL, '50', 0),
-(5, 1, '50', 'closed', '已关闭', '60', NULL, 0, 0, NULL, NULL, NULL, NULL, '60', 0),
-(6, 1, '60', 'reopen', '重新打开', '30,50', NULL, 0, 0, NULL, NULL, NULL, NULL, '30', 0);
+INSERT INTO `ct_status_lines` (`id`, `status_id`, `segment`, `segment_value`, `segment_desc`, `next_status`, `back_status`, `default_flag`, `auto_ending_flag`, `inactive_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `default_next_status`, `last_status_flag`) VALUES
+(1, 1, '10', 'released', '已提交', '20,50', NULL, 1, 0, 0, NULL, NULL, NULL, NULL, '20', 0),
+(2, 1, '20', 'confirmed', '已确认', '30,50', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '30', 0),
+(3, 1, '30', 'allocated', '已分配', '30,40,50', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '40', 0),
+(4, 1, '40', 'done', '已解决', '50', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '50', 0),
+(5, 1, '50', 'closed', '已关闭', '60', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '60', 0),
+(6, 1, '60', 'reopen', '重新打开', '30,50', NULL, 0, 0, 1, NULL, NULL, 1414032071, 44, '30', 0);
 
 -- --------------------------------------------------------
 
@@ -2458,6 +2501,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 ,`last_status_flag` tinyint(3) unsigned
 ,`status_code` varchar(20)
 ,`description` varchar(255)
+,`inactive_flag` tinyint(1)
 );
 -- --------------------------------------------------------
 
@@ -2973,7 +3017,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_status_lines_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_lines_v` AS select `l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`next_status` AS `next_status`,`l`.`back_status` AS `back_status`,`l`.`default_flag` AS `default_flag`,`l`.`auto_ending_flag` AS `auto_ending_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`default_next_status` AS `default_next_status`,`l`.`last_status_flag` AS `last_status_flag`,`h`.`status_code` AS `status_code`,`h`.`description` AS `description` from (`ct_status_lines` `l` join `ct_status_header` `h`) where (`h`.`id` = `l`.`status_id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_lines_v` AS select `l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`next_status` AS `next_status`,`l`.`back_status` AS `back_status`,`l`.`default_flag` AS `default_flag`,`l`.`auto_ending_flag` AS `auto_ending_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`default_next_status` AS `default_next_status`,`l`.`last_status_flag` AS `last_status_flag`,`h`.`status_code` AS `status_code`,`h`.`description` AS `description`,`l`.`inactive_flag` AS `inactive_flag` from (`ct_status_lines` `l` join `ct_status_header` `h`) where (`h`.`id` = `l`.`status_id`);
 
 -- --------------------------------------------------------
 

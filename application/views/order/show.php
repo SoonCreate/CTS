@@ -28,7 +28,7 @@
 
         <?php
         //必须小于规定的修改次数
-        if(check_order_auth($order_type,'done',$category) && $manager_id == _sess('uid') && $pcd_change_times < _config('pcd_change_times')){?>
+        if(check_order_auth($order_type,'done',$category) && $manager_id == _sess('uid') && $pcd_change_times < _config('pcd_change_times') && $status != 'done'){?>
             <?= render_link_button(array('order','pcd_change',array('id'=>$id)),'填写计划完成日期')?>
         <?php }?>
 
@@ -43,7 +43,7 @@
 
 
     <?php }else{?>
-        <?php if(is_order_allow_next_status($order_type,$status,'reopen') && check_order_auth($order_type,'reopen',$category)){?>
+        <?php if(_config('allow_reopen') && is_order_allow_next_status($order_type,$status,'reopen') && check_order_auth($order_type,'reopen',$category)){?>
             <?= render_link_button(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
         <?php }?>
         <?php if(_config('feedback_control')){ ?>

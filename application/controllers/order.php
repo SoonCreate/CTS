@@ -15,16 +15,13 @@ class Order extends CI_Controller {
         $data['order_types'] = $am->can_show_order_types();
         $data['status'] = array();
         $this->load->model('status_line_model');
-        $slm = new Status_line_model();
+        $sm = new Status_model();
         $status_codes = array();
         foreach($data['order_types']  as $t){
             array_push($status_codes,default_value('status',$t)) ;
         }
-        $this->db->distinct();
-        $this->db->select('segment_value,segment_desc');
-        $this->db->where_in('status_code',$status_codes);
-        $lines = $slm->find_all_by_view();
-        foreach($lines as $l){
+
+        foreach($sm->options($status_codes) as $l){
             array_push($data['status'],$l);
         }
         render($data);
@@ -59,13 +56,13 @@ class Order extends CI_Controller {
 
         //获取数据
         if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
-
             $om->limit($end+1,$start);
+            $om->order_by('id','DESC');
 
             //与自己相关的用户id字段
-            $this->db->or_where('created_by',_sess('uid'));
-            $this->db->or_where('leader_id',_sess('uid'));
-            $this->db->or_where('manager_id',_sess('uid'));
+            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
+//            $this->db->or_where('leader_id',_sess('uid'));
+//            $this->db->or_where('manager_id',_sess('uid'));
 
             //获取允许查看的订单类型
             $this->db->where_in('order_type',$types);
@@ -77,14 +74,11 @@ class Order extends CI_Controller {
             if($status){
                 $this->db->where('status',$status) ;
             }
-            $om->order_by('id','DESC');
+
             $os = $om->find_all();
 
-
             //与自己相关的用户id字段
-            $this->db->or_where('created_by',_sess('uid'));
-            $this->db->or_where('leader_id',_sess('uid'));
-            $this->db->or_where('manager_id',_sess('uid'));
+            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
 
             //获取允许查看的订单类型
             $this->db->where_in('order_type',$types);
@@ -127,7 +121,7 @@ class Order extends CI_Controller {
 
         $os = _format($os);
         for($i=0;$i<count($os);$i++){
-            $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category']);
+            $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category'],$os[$i]['order_type']);
             $os[$i]['status'] = $sm->get_label(default_value('status',$os[$i]['order_type']),$os[$i]['status']);
             $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
             $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])),10);
@@ -519,7 +513,11 @@ class Order extends CI_Controller {
         if(empty($order)){
             show_404();
         }else{
-            $this->_update(v('id'),array('status'=>'reopen'));
+            if(_config('allow_reopen') ){
+                $this->_update(v('id'),array('status'=>'reopen'));
+            }else{
+                render_error('不允许重新打开投诉单！');
+            }
         }
     }
 

@@ -130,7 +130,7 @@
             if(options && "order_type" in options && options.order_type != '<?= _config('all_values') ?>'){
                 params.order_type = options.order_type;
             }
-
+            console.info(url('order/order_data',params));
             require(["dojo/store/JsonRest"],function(JsonRest){
                 var newStore = new JsonRest({idProperty: 'id', target:url('order/order_data',params),sortParam: "sortBy"});
                 grid.refresh(newStore);
