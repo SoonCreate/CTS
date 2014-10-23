@@ -485,23 +485,6 @@ class Order extends CI_Controller {
             show_404();
         }else{
             $this->_update($order['id'],array('status'=>'closed'));
-            //关闭之后发送反馈信息给创建人填写
-            if(_config('feedback_control')){
-                $nm = new Notice_model();
-                $data['order_id'] = $order['id'];
-                $data['with_manager'] = 0;
-                $data['received_by'] = $order['created_by'];
-                $data['title'] = '关于投诉单'.$data['order_id'].'的反馈';
-                $data['direct_url'] = _url('order','feedback',array('id'=>$data['order_id'] ));
-                $notice_id = $nm->insert($data);
-                if($notice_id){
-                    $om->send_mail_by_notice($notice_id);
-                }else{
-                    custz_message('E','反馈消息传送失败，请您'.
-                        render_link(array('order','feedback',array('id'=>$data['order_id'] )),'点击此链接').'进行本次投诉的反馈！');
-                }
-            }
-
         }
     }
 

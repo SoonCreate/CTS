@@ -90,21 +90,21 @@
     </dl>
     <hr/>
 
-<!--    <dl class="row dl-horizontal"><dt>-->
-<!--            --><?php //if(!is_order_locked($status)){?>
-<!--                <a href="--><?php //_url('order','upload_file')?><!--">上传附件</a>-->
-<!--            --><?php //}?>
-<!--            附件</dt>-->
-<!--        <dd>-->
-<!--            --><?php //foreach($addfiles as $f):
-//                //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
-//                ?>
-<!--                <a href="--><?//= $f['full_path']?><!--">--><?//= $f['file_name']?><!--</a>-->
-<!--                --><?//= $f['description']?>
-<!--            --><?php //endforeach;?>
-<!--        </dd>-->
-<!--    </dl>-->
-<!--    <hr/>-->
+    <dl class="row dl-horizontal"><dt>
+            <?php if(!is_order_locked($status)){?>
+                <a href="#" onclick="_uploadDialog()">上传附件</a>
+            <?php }?>
+            附件</dt>
+        <dd>
+            <?php foreach($addfiles as $f):
+                //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
+                ?>
+                <a href="<?= $f['full_path']?>"><?= $f['file_name']?></a>
+                <?= $f['description']?>
+            <?php endforeach;?>
+        </dd>
+    </dl>
+    <hr/>
     <?= render_form_open('order','reply','null','null','addContent') ?>
     <dl class="row dl-horizontal"><dt>&nbsp;</dt>
         <dd >
@@ -202,5 +202,9 @@
 //            //直接定义class时 IE8不支持，只能事后set
 //            domConstruct.create("div",{innerHTML : content,id: "content_"+d["id"]},node);
 //        });
+    }
+
+    function _uploadDialog(){
+
     }
 </script>

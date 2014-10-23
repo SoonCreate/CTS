@@ -52,7 +52,11 @@ if ( ! function_exists('env_language')) {
         //判断浏览器语言
         $default_lang_arr = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
         $strarr = explode(",", $default_lang_arr);
-        return $strarr[0];
+        if(strpos($strarr[0],'zh') == 0){
+            return 'zh-CN';
+        }else{
+            return 'en-us';
+        }
     }
 }
 
