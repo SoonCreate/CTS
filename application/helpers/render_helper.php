@@ -302,13 +302,26 @@ function _render_input_by_type($name,$required = FALSE,$attributes = array(),$ty
     return $echo;
 }
 
-function render_form_combobox($name,$data,$required = FALSE,$attributes = array(),$disabled = FALSE){
+function render_form_combobox($name,$data,$required = FALSE,$search_attr = null,$label_attr = null,$multi = false,$attributes = array(),$disabled = FALSE){
+    if(is_null($search_attr)){
+        $search_attr = $name;
+    }
+    if(is_null($label_attr)){
+        $label_attr = $name;
+    }
+
+    $dojo_type = 'sckj/form/ComboBox';
+    if($multi){
+        $dojo_type = 'sckj/form/MultiComboBox';
+    }
+
     $echo = '';
     $echo = $echo. '<div data-dojo-type="dojo/store/Memory" data-dojo-id="stateStore_'._sess('cm').'" data-dojo-props=\''.
         'data: '.$data.'\'></div>';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input data-dojo-type="sckj/form/ComboBox" data-dojo-props="store:stateStore_'._sess('cm').', searchAttr:\'contact\'"'.
-           'name="'.$name.'" id="'.$name.'"';
+    <dd><input data-dojo-type="'.$dojo_type.'" data-dojo-props="store:stateStore_'._sess('cm').', searchAttr:\''.
+        $search_attr.'\',labelAttr:\''.$label_attr.'\'"'.
+           'name="'.$name.'" id="'.$name.'" value="'._v($name).'"';
     if($required){
         $echo = $echo. ' required ';
     }

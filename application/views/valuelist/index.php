@@ -27,5 +27,5 @@
     <?php endforeach;?>
 </table>
 <div class="row">
-    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('valuelist','create'),label('valuelist_create'))?></button>
+    <?= render_link_button(array('valuelist','create'),label('valuelist_create'))?>
 </div>

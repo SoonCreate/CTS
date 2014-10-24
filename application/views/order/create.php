@@ -21,7 +21,8 @@
 <?= render_form_header('contact_information');?>
 <div class="container-fluid userd">
     <?php if(isset($contact_data)){?>
-        <?= render_form_combobox('contact',$contact_data,TRUE,array('onInput'=>'_orderCreatesetValue(this)'));?>
+        <?= render_form_combobox('contact',$contact_data,TRUE,null,null,false,
+            array('onInput'=>'_orderCreatesetValue(this)','onchange'=>'_orderCreatesetValue(this)'));?>
     <?php }else{?>
         <?= render_form_input('contact',TRUE);?>
     <?php }?>

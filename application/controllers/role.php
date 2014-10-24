@@ -387,11 +387,15 @@ class Role extends CI_Controller {
     //权限对象值编辑
     function profile_object_item_edit(){
         $rpm = new Role_profile_line_model();
-        $line = $rpm->find(v('id'));
+        $line = $rpm->find_by_view(array('id'=>v('id')));
         if(empty($line)){
             show_404();
         }else{
             if($_POST){
+                $auth_value = tpost('auth_value');
+                $auth_value = str_replace(',',' ',$auth_value);
+                $auth_value = _trim($auth_value);
+                $_POST['auth_value'] = str_replace(' ',',',$auth_value);
                 if($rpm->update($line['id'],_data('auth_value'))){
                     go_back();
                     message_db_success();
@@ -399,6 +403,7 @@ class Role extends CI_Controller {
                     message_db_failure();
                 }
             }else{
+                $line['auth_data'] = json_encode(get_options($line['auth_item_name'],null,true));
                 render($line);
             }
 

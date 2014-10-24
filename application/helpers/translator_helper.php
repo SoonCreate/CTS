@@ -5,10 +5,25 @@ function label($name){
     $line = _text('label_'.$name);
     if(!$line){
         $words = explode('_',$name);
+        $pass = true;
+        $lines = array();
         for($i =0;$i<count($words);$i++){
-            $words[$i] = ucfirst($words[$i]);
+            $w = _text('label_'.$words[$i]);
+            if(!$w){
+                $pass = false;
+                break;
+            }else{
+                array_push($lines,$w);
+            }
         }
-        $line = join(' ',$words);
+        if($pass){
+            $line = join('',$lines);
+        }else{
+            for($i =0;$i<count($words);$i++){
+                $words[$i] = ucfirst($words[$i]);
+            }
+            $line = join(' ',$words);
+        }
     }
     return $line;
 }

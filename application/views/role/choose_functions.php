@@ -1,6 +1,6 @@
-<?= render_form_open('role','choose_functions') ?>
 <?= render_form_header('choose_functions');?>
-    <table>
+<?= render_form_open('role','choose_functions') ?>
+    <table class="table">
         <thead>
         <th>选择</th>
         <th>所属模块</th>
@@ -10,7 +10,7 @@
         </thead>
         <?php foreach($objects as $o) :?>
             <tr>
-                <td><input type="checkbox" name="lines[]" id="fn_<?= $o['id'] ?>" value="<?= $o['id']?>" <?= $o['checked']?>/></td>
+                <td><input data-dojo-type="sckj/form/CheckBox" type="checkbox" name="lines[]" id="fn_<?= $o['id'] ?>" value="<?= $o['id']?>" <?= $o['checked']?>/></td>
                 <td><label for="fn_<?= $o['id'] ?>"><?= $o['module_name'] ?></label></td>
                 <td><?= $o['module_desc'] ?></td>
                 <td><?= $o['function_name']?></td>
