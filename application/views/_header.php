@@ -59,7 +59,7 @@
             "sckj/form/TimeTextBox",
             "sckj/Dialog",
             "sckj/Gridx",
-            'gridx/allModules',
+//            'gridx/allModules',
             "gridx/core/model/cache/Sync",
             "gridx/core/model/cache/Async",
             "dojo/data/ItemFileReadStore",

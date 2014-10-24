@@ -12,10 +12,6 @@ function goto(url,target,noRender,noRecord){
         $dijit.byId("mainTabContainer").selectChild(wso,true);
     }else{
         dojoConfirm("是否确定执行此操作？",function(){
-            //显示运行状态
-            require(["dojo/dom-style"],function(domStyle){
-                domStyle.set("preloader","opacity","1");
-            });
             $ajax.get(url,{handleAs : "json"}).then(function(response){
                 handleResponse(response,null,function(){
                     refresh();
@@ -115,11 +111,6 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
         beforeSubmit();
     }
     require(["dojo/dom-form","dojo/request"],function(domForm,request){
-        //显示运行状态
-        require(["dojo/dom-style"],function(domStyle){
-            domStyle.set("preloader","opacity","1");
-        });
-
         //fix form中有name为action组件时优先调用组件值的情况 20141017
         request.post(object.attributes["action"]["value"], {
             // Send the username and password

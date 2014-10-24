@@ -1,6 +1,5 @@
 <table class="table">
     <thead>
-        <th>function_id</th>
         <th>功能名</th>
         <th>描述</th>
         <th>控制器</th>
@@ -11,7 +10,6 @@
     </thead>
     <?php foreach($functions as $fn):?>
     <tr>
-        <td><?= $fn['id']?></td>
         <td><?= $fn['function_name']?></td>
         <td><?= $fn['description']?></td>
         <td><?= $fn['controller']?></td>
@@ -32,5 +30,5 @@
     <?php endforeach;?>
 </table>
 <div class="row">
-    <button data-dojo-type="sckj/form/Button" ><?= render_link(array('functions','create'),label('function_create'))?></button>
+    <?= render_link_button(array('functions','create'),label('function_create'))?>
 </div>

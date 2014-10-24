@@ -1,4 +1,4 @@
-<table>
+<table class="table">
     <thead>
         <th>段值</th>
         <th>段描述</th>

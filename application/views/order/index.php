@@ -31,7 +31,7 @@
         <?php if(count(_v('status')) > 0){
             echo '<a href="#" onclick="_createIndexRefreshData({status:\''._config('all_values').'\'})">'.label(_config('all_values')).'</a>';
             foreach(_v('status') as $s){
-                echo '<a href="#" onclick="_createIndexRefreshData({status:\''.$s['segment_value'].'\'})">'.$s['segment_desc'].'</a>';
+                echo '<a href="#" onclick="_createIndexRefreshData({status:\''.$s['step_value'].'\'})">'.$s['step_desc'].'</a>';
             }
             ?>
         <?php }?>

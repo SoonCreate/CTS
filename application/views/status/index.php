@@ -11,7 +11,7 @@
         <td>
             <?= render_link(array('status','edit',array('id'=>$o['id'])),label('edit'))?>
             &nbsp;|&nbsp;
-            <<?= render_link(array('status','items',array('id'=>$o['id'])),label('items'))?>
+            <?= render_link(array('status','items',array('id'=>$o['id'])),label('items'))?>
         </td>
 
     </tr>

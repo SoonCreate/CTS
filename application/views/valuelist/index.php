@@ -13,14 +13,10 @@
         <td><?= $o['parent_name'] ?></td>
         <td><?= $o['parent_desc'] ?></td>
         <td>
-            <?= render_link(array('valuelist','edit',array('id'=>$o['id'])),label('edit'))?>
-            &nbsp;|&nbsp;
-            <?php
-            $s = label('item_manage');
-            if($o['object_flag']) {
-                $s = label('item_show');
-            }?>
-            <?= render_link(array('valuelist','items',array('id'=>$o['id'])),$s)?>
+            <?php if($o['editable_flag']){?>
+            <?= render_link(array('valuelist','edit',array('id'=>$o['id'])),label('edit'))?>&nbsp;|&nbsp;
+            <?php }?>
+            <?= render_link(array('valuelist','items',array('id'=>$o['id'])),label('items'))?>
         </td>
 
     </tr>

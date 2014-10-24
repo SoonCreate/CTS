@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2014 at 05:25 AM
+-- Generation Time: Oct 24, 2014 at 07:34 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -323,7 +323,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (19, 'order_create', '投诉单创建', 'order', 'create', NULL, 1413543810, 44, 1413543810, 44, 0, ''),
 (20, 'notice_show', '显示消息', 'user', 'notice_show', NULL, 1413544917, 44, 1413544917, 44, 0, ''),
 (21, 'user_admin_edit', '用户信息管理', 'user', 'admin_edit', NULL, 1413683565, 44, 1413683573, 44, 0, ''),
-(22, 'order_meeting', '会议记录', 'order_meeting', 'index', NULL, 1413858257, 44, 1413858349, 44, 0, '');
+(22, 'order_meeting', '会议记录', 'order_meeting', 'index', NULL, 1413858257, 44, 1413858349, 44, 0, ''),
+(23, 'status_manage', '状态流管理', 'status', 'index', NULL, 1414116975, 44, 1414116975, 44, 1, '');
 
 -- --------------------------------------------------------
 
@@ -639,7 +640,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=48 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=49 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -665,7 +666,8 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (44, 3, 14, 0, 1413628063, 44, 1413628063, 44),
 (45, 3, 21, 0, 1413683578, 44, 1413683578, 44),
 (46, 3, 15, 0, 1413699819, 44, 1413699819, 44),
-(47, 6, 22, 0, 1413858270, 44, 1413858270, 44);
+(47, 6, 22, 0, 1413858270, 44, 1413858270, 44),
+(48, 3, 23, 0, 1414116986, 44, 1414116986, 44);
 
 -- --------------------------------------------------------
 
@@ -742,7 +744,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=173 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=179 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -913,14 +915,20 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (162, 355, 0, '投诉单提交', 1, '投诉单 143 提交', 143, 48, NULL, 1, 70, 1414023982, 1414023982, 70),
 (163, 355, 0, '投诉单提交', 1, '投诉单 143 提交', 143, 72, NULL, 1, 70, 1414023982, 1414023982, 70),
 (164, 357, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 143  责任人变更', 143, 0, NULL, 1, 70, 1414023983, 1414023983, 70),
-(165, 357, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 143  责任人变更', 143, 67, NULL, 1, 70, 1414023983, 1414023983, 70),
+(165, 357, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 143  责任人变更', 143, 67, NULL, 1, 70, 1414023983, 1414049717, 67),
 (166, 359, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 143 处理人变更', 143, 73, NULL, 1, 70, 1414023984, 1414023984, 70),
 (167, 360, 0, '投诉单提交', 1, '投诉单 144 提交', 144, 48, NULL, 1, 71, 1414024058, 1414024058, 71),
 (168, 360, 0, '投诉单提交', 1, '投诉单 144 提交', 144, 72, NULL, 1, 71, 1414024058, 1414024058, 71),
 (169, 362, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 144  责任人变更', 144, 0, NULL, 1, 71, 1414024059, 1414024059, 71),
 (170, 362, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 144  责任人变更', 144, 66, NULL, 1, 71, 1414024059, 1414024059, 71),
-(171, 364, 0, '投诉单提交', 1, '投诉单 145 提交', 145, 48, NULL, 1, 70, 1414024378, 1414024378, 70),
-(172, 364, 0, '投诉单提交', 1, '投诉单 145 提交', 145, 72, NULL, 1, 70, 1414024378, 1414024378, 70);
+(171, 364, 1, '投诉单提交', 1, '投诉单 145 提交', 145, 48, NULL, 1, 70, 1414024378, 1414050664, 48),
+(172, 364, 0, '投诉单提交', 1, '投诉单 145 提交', 145, 72, NULL, 1, 70, 1414024378, 1414024378, 70),
+(173, 367, 1, '投诉单提交', 1, '投诉单 146 提交', 146, 48, NULL, 1, 47, 1414049889, 1414049988, 48),
+(174, 367, 0, '投诉单提交', 1, '投诉单 146 提交', 146, 72, NULL, 1, 47, 1414049889, 1414049889, 47),
+(175, 368, 0, '投诉单提交', 1, '投诉单 147 提交', 147, 48, NULL, 1, 45, 1414050787, 1414050787, 45),
+(176, 368, 0, '投诉单提交', 1, '投诉单 147 提交', 147, 72, NULL, 1, 45, 1414050787, 1414050787, 45),
+(177, 370, 0, '投诉单提交', 1, '投诉单 148 提交', 148, 48, NULL, 1, 45, 1414120205, 1414120205, 45),
+(178, 370, 0, '投诉单提交', 1, '投诉单 148 提交', 148, 72, NULL, 1, 45, 1414120205, 1414120205, 45);
 
 -- --------------------------------------------------------
 
@@ -992,7 +1000,7 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_type`,`status`,`manager_id`) USING BTREE,
   KEY `Index_3` (`created_by`,`creation_date`,`status`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=146 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=149 ;
 
 --
 -- Dumping data for table `ct_orders`
@@ -1133,7 +1141,10 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (142, 'customer', 'closed', 'low', 'low', '30', '产品线严重质量问题', 73, 67, NULL, '陈某某', '', '13777777777', '', '', 0, 0, 1414023602, 45, 1414030878, 45),
 (143, 'customer', 'done', 'low', 'low', '10', '产品线严重质量问题', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1414023982, 70, 1414024144, 73),
 (144, 'vendor', 'confirmed', 'low', 'low', '30', '图纸变更太频繁', NULL, 66, NULL, '高某某', '', '1356789', '', '', 0, 0, 1414024058, 71, 1414024059, 71),
-(145, 'customer', 'confirmed', 'low', 'low', '10', 'asdfdffff', NULL, 0, NULL, '陈杨阳', '', '13777777777', '', '', 0, 0, 1414024378, 70, 1414024378, 70);
+(145, 'customer', 'confirmed', 'low', 'low', '10', 'asdfdffff', NULL, 0, NULL, '陈杨阳', '', '13777777777', '', '', 0, 0, 1414024378, 70, 1414024378, 70),
+(146, 'employee', 'released', 'low', 'low', '30', 'adsf', NULL, 0, NULL, '洪仙横', '', '1387777777', '', '天正', 0, 0, 1414049889, 47, 1414049889, 47),
+(147, 'customer', 'confirmed', 'low', 'low', '10', 'ASD', NULL, 0, NULL, '11', '', '11', '', '', 0, 0, 1414050787, 45, 1414050810, 48),
+(148, 'customer', 'released', 'low', 'low', '10', 'sdf', NULL, 0, NULL, '李四', '0577-68873723', '139898989', 'ABC路88号', '速创科技', 0, 0, 1414120204, 45, 1414120204, 45);
 
 -- --------------------------------------------------------
 
@@ -1196,7 +1207,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=202 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=205 ;
 
 --
 -- Dumping data for table `ct_order_contents`
@@ -1395,7 +1406,10 @@ INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `cre
 (198, 142, '如题', 45, 1414023602, 1414023602, 45),
 (199, 143, '产品线严重质量问题', 70, 1414023982, 1414023982, 70),
 (200, 144, '图纸变更太频繁', 71, 1414024058, 1414024058, 71),
-(201, 145, 'asf', 70, 1414024378, 1414024378, 70);
+(201, 145, 'asf', 70, 1414024378, 1414024378, 70),
+(202, 146, 'asdf', 47, 1414049889, 1414049889, 47),
+(203, 147, 'ASDFSADF ', 45, 1414050787, 1414050787, 45),
+(204, 148, 'asdf', 45, 1414120204, 1414120204, 45);
 
 -- --------------------------------------------------------
 
@@ -1418,7 +1432,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`),
   KEY `Index_3` (`change_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=367 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=371 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -1778,7 +1792,11 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (363, 143, 'order_status', 'done', 'allocated', NULL, 1414024144, 1414024145, 73, 1414024145, 73),
 (364, 145, 'order_status_new', 'released', '', NULL, 1414024378, 1414024378, 70, 1414024378, 70),
 (365, 145, 'order_status', 'confirmed', 'released', NULL, 1414024378, 1414024378, 70, 1414024378, 70),
-(366, 142, 'order_status', 'closed', 'allocated', NULL, 1414030878, 1414030878, 45, 1414030878, 45);
+(366, 142, 'order_status', 'closed', 'allocated', NULL, 1414030878, 1414030878, 45, 1414030878, 45),
+(367, 146, 'order_status_new', 'released', '', NULL, 1414049889, 1414049889, 47, 1414049889, 47),
+(368, 147, 'order_status_new', 'released', '', NULL, 1414050787, 1414050787, 45, 1414050787, 45),
+(369, 147, 'order_status', 'confirmed', 'released', NULL, 1414050810, 1414050810, 48, 1414050810, 48),
+(370, 148, 'order_status_new', 'released', '', NULL, 1414120204, 1414120204, 45, 1414120204, 45);
 
 -- --------------------------------------------------------
 
@@ -1958,7 +1976,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=164 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=165 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -2090,7 +2108,8 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (160, 17, 36, 1413943867, 44, 1413943867, 44),
 (161, 17, 47, 1413943867, 44, 1413943867, 44),
 (162, 17, 24, 1413943867, 44, 1413943867, 44),
-(163, 17, 38, 1413943867, 44, 1413943867, 44);
+(163, 17, 38, 1413943867, 44, 1413943867, 44),
+(164, 8, 48, 1414117076, 44, 1414117076, 44);
 
 -- --------------------------------------------------------
 
@@ -2196,9 +2215,6 @@ INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `
 (133, 5, 5, 1413941635, 44, 1413941635, 44, NULL),
 (134, 6, 5, 1413941701, 44, 1413941701, 44, NULL),
 (135, 7, 5, 1413941727, 44, 1413941727, 44, NULL),
-(136, 15, 5, 1413943846, 44, 1413943846, 44, 47),
-(137, 16, 5, 1413943856, 44, 1413943856, 44, 47),
-(138, 17, 5, 1413943867, 44, 1413943867, 44, 47),
 (139, 17, 1, 1413943894, 44, 1413943894, 44, NULL),
 (140, 17, 2, 1413943897, 44, 1413943897, 44, NULL),
 (141, 17, 3, 1413943900, 44, 1413943900, 44, NULL),
@@ -2261,7 +2277,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (49, 47, 3, 'customer', 1413034064, 44, 1413034064, 44),
 (50, 47, 4, 'released,confirmed', 1413034064, 44, 1413859684, 44),
 (51, 47, 5, 'all', 1413034064, 44, 1413034064, 44),
-(61, 53, 3, 'vendor', 1413427676, 44, 1413427696, 44),
+(61, 53, 3, 'vendor', 1413427676, 44, 1414116089, 44),
 (62, 53, 4, 'released', 1413427676, 44, 1413677725, 44),
 (63, 53, 5, 'all', 1413427676, 44, 1413427676, 44),
 (68, 56, 7, 'order_status,order_status_new', 1413433089, 44, 1413677589, 44),
@@ -2359,15 +2375,6 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (220, 135, 16, 'all', 1413941727, 44, 1413941727, 44),
 (221, 135, 15, 'employee', 1413941727, 44, 1413941750, 44),
 (222, 135, 14, 'show', 1413941727, 44, 1413941738, 44),
-(223, 136, 16, 'all', 1413943846, 44, 1413943846, 44),
-(224, 136, 15, 'customer', 1413943846, 44, 1413944609, 44),
-(225, 136, 14, 'create,edit,inactive', 1413943846, 44, 1413944603, 44),
-(226, 137, 16, 'all', 1413943856, 44, 1413943856, 44),
-(227, 137, 15, 'vendor', 1413943856, 44, 1413944521, 44),
-(228, 137, 14, 'create,edit,inactive', 1413943856, 44, 1413944514, 44),
-(229, 138, 16, 'all', 1413943867, 44, 1413943867, 44),
-(230, 138, 15, 'employee', 1413943867, 44, 1413944004, 44),
-(231, 138, 14, 'create,edit,inactive', 1413943867, 44, 1413943995, 44),
 (232, 139, 4, 'done', 1413943894, 44, 1413944060, 44),
 (233, 139, 5, 'all', 1413943894, 44, 1413943894, 44),
 (234, 139, 3, 'employee', 1413943894, 44, 1413944020, 44),
@@ -2430,14 +2437,17 @@ CREATE TABLE IF NOT EXISTS `ct_status_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`status_code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_status_header`
 --
 
 INSERT INTO `ct_status_header` (`id`, `status_code`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'order_status', '投诉订单状态', NULL, NULL, NULL, NULL);
+(1, 'order_status', '投诉订单状态', NULL, NULL, 1414117871, 44),
+(2, 'vendor_status', '供应商投诉单状态流', 1414117801, 44, 1414117801, 44),
+(3, 'customer_status', '客户投诉单状态流', 1414117834, 44, 1414117834, 44),
+(4, 'employee_status', '内部投诉单状态流', 1414117866, 44, 1414117866, 44);
 
 -- --------------------------------------------------------
 
@@ -2448,35 +2458,53 @@ INSERT INTO `ct_status_header` (`id`, `status_code`, `description`, `creation_da
 CREATE TABLE IF NOT EXISTS `ct_status_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `status_id` int(11) NOT NULL,
-  `segment` varchar(20) NOT NULL COMMENT '段',
-  `segment_value` varchar(255) NOT NULL COMMENT '段值',
-  `segment_desc` varchar(255) NOT NULL COMMENT '段描述',
-  `next_status` varchar(255) DEFAULT NULL COMMENT '下一步状态列表',
-  `back_status` varchar(20) DEFAULT NULL COMMENT '冲销后状态',
-  `default_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '默认标识',
+  `step` varchar(20) NOT NULL COMMENT '步骤',
+  `step_value` varchar(255) NOT NULL COMMENT '状态',
+  `step_desc` varchar(255) NOT NULL COMMENT '步骤描述',
+  `next_steps` varchar(255) DEFAULT NULL COMMENT '下一步允许范围',
+  `callback_step` varchar(20) DEFAULT NULL COMMENT '冲销默认返回',
+  `initial_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '初始化标识',
   `auto_ending_flag` tinyint(4) NOT NULL COMMENT '自动结束',
   `inactive_flag` tinyint(1) NOT NULL DEFAULT '0',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
-  `default_next_status` varchar(20) DEFAULT NULL COMMENT '默认下一步',
-  `last_status_flag` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '流程结尾',
+  `default_next_step` varchar(20) DEFAULT NULL COMMENT '默认下一步',
+  `last_step_flag` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '流程结尾',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `i_vl_line_01` (`status_id`,`segment`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态步骤表' AUTO_INCREMENT=7 ;
+  UNIQUE KEY `i_vl_line_01` (`status_id`,`step`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态步骤表' AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `ct_status_lines`
 --
 
-INSERT INTO `ct_status_lines` (`id`, `status_id`, `segment`, `segment_value`, `segment_desc`, `next_status`, `back_status`, `default_flag`, `auto_ending_flag`, `inactive_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `default_next_status`, `last_status_flag`) VALUES
-(1, 1, '10', 'released', '已提交', '20,50', NULL, 1, 0, 0, NULL, NULL, NULL, NULL, '20', 0),
+INSERT INTO `ct_status_lines` (`id`, `status_id`, `step`, `step_value`, `step_desc`, `next_steps`, `callback_step`, `initial_flag`, `auto_ending_flag`, `inactive_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `default_next_step`, `last_step_flag`) VALUES
+(1, 1, '10', 'released', '已提交', '20,50', NULL, 1, 0, 0, NULL, NULL, 1414124284, 44, '20', 0),
 (2, 1, '20', 'confirmed', '已确认', '30,50', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '30', 0),
 (3, 1, '30', 'allocated', '已分配', '30,40,50', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '40', 0),
 (4, 1, '40', 'done', '已解决', '50', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '50', 0),
 (5, 1, '50', 'closed', '已关闭', '60', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, '60', 0),
-(6, 1, '60', 'reopen', '重新打开', '30,50', NULL, 0, 0, 1, NULL, NULL, 1414032071, 44, '30', 0);
+(6, 1, '60', 'reopen', '重新打开', '30,50', NULL, 0, 0, 1, NULL, NULL, 1414032071, 44, '30', 0),
+(7, 2, '10', 'released', '已提交', '20,50', '', 1, 0, 0, 1414124622, 44, 1414124866, 44, '20', 0),
+(8, 2, '20', 'confirmed', '已确认', '30,50', '', 0, 0, 0, 1414124771, 44, 1414124903, 44, '30', 0),
+(9, 2, '30', 'allocated', '已分配', '30,40,50', '', 0, 0, 0, 1414124980, 44, 1414124980, 44, '40', 0),
+(10, 2, '40', 'done', '已解决', '50', '', 0, 0, 0, 1414125008, 44, 1414125008, 44, '50', 0),
+(11, 2, '50', 'closed', '已关闭', '60', '', 0, 0, 0, 1414125037, 44, 1414125037, 44, '60', 0),
+(12, 2, '60', 'reopen', '重新打开', '30,50', '', 0, 0, 1, 1414125067, 44, 1414125067, 44, '30', 0),
+(13, 3, '10', 'released', '已提交', '20,50', '', 1, 0, 0, 1414125183, 44, 1414125183, 44, '20', 0),
+(14, 3, '20', 'confirmed', '已确认', '30,50', '', 0, 0, 0, 1414125209, 44, 1414125209, 44, '30', 0),
+(15, 3, '30', 'allocated', '已分配', '30,40,50', '', 0, 0, 0, 1414125237, 44, 1414125237, 44, '40', 0),
+(16, 3, '40', 'done', '已解决', '50', '', 0, 0, 0, 1414125263, 44, 1414125263, 44, '50', 0),
+(17, 3, '50', 'closed', '已关闭', '60', '', 0, 0, 0, 1414125289, 44, 1414125289, 44, '60', 0),
+(18, 3, '60', 'reopen', '重新打开', '30,50', '', 0, 0, 1, 1414125319, 44, 1414125319, 44, '30', 0),
+(19, 4, '10', 'released', '已提交', '20,50', '', 1, 0, 0, 1414125347, 44, 1414125347, 44, '20', 0),
+(20, 4, '20', 'confirmed', '已确认', '30,50', '', 0, 0, 0, 1414125556, 44, 1414125556, 44, '30', 0),
+(21, 4, '30', 'allocated', '已分配', '30,40,50', '', 0, 0, 0, 1414125582, 44, 1414125582, 44, '40', 0),
+(22, 4, '40', 'done', '已解决', '50', '', 0, 0, 0, 1414125609, 44, 1414125609, 44, '50', 0),
+(23, 4, '50', 'closed', '已关闭', '60', '', 0, 0, 0, 1414125631, 44, 1414125631, 44, '60', 0),
+(24, 4, '60', 'reopen', '重新打开', '30,50', '', 0, 0, 1, 1414125658, 44, 1414125658, 44, '30', 0);
 
 -- --------------------------------------------------------
 
@@ -2486,22 +2514,22 @@ INSERT INTO `ct_status_lines` (`id`, `status_id`, `segment`, `segment_value`, `s
 CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 `id` int(11)
 ,`status_id` int(11)
-,`segment` varchar(20)
-,`segment_value` varchar(255)
-,`segment_desc` varchar(255)
-,`next_status` varchar(255)
-,`back_status` varchar(20)
-,`default_flag` tinyint(1)
+,`step` varchar(20)
+,`step_value` varchar(255)
+,`step_desc` varchar(255)
+,`next_steps` varchar(255)
+,`callback_step` varchar(20)
+,`initial_flag` tinyint(1)
 ,`auto_ending_flag` tinyint(4)
+,`inactive_flag` tinyint(1)
 ,`creation_date` int(11)
 ,`created_by` int(11)
 ,`last_update_date` int(11)
 ,`last_updated_by` int(11)
-,`default_next_status` varchar(20)
-,`last_status_flag` tinyint(3) unsigned
+,`default_next_step` varchar(20)
+,`last_step_flag` tinyint(3) unsigned
 ,`status_code` varchar(20)
 ,`description` varchar(255)
-,`inactive_flag` tinyint(1)
 );
 -- --------------------------------------------------------
 
@@ -2734,14 +2762,14 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (11, 'ao_true_or_false', '权限对象选择是/否', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (12, 'default_category', '订单默认的分类（在分类未开启时）', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
 (14, 'vl_dll_type', '数据库dll操作类型', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(15, 'vl_valuelist', '值集列表', 1, 'label', 'value', 'ct_valuelist_header_vl', '', NULL, 0, NULL, NULL, NULL, NULL),
+(15, 'vl_valuelist', '值集列表', 1, 'label', 'value', 'ct_valuelist_header_vl', '', NULL, 1, NULL, NULL, NULL, NULL),
 (16, 'vl_order_status', '投诉单状态', 1, 'label', 'value', 'ct_order_status_vl', '', NULL, 1, NULL, NULL, 1413873207, 44),
 (17, 'vl_user', '用户列表', 1, 'full_name', 'id', 'ct_users', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (18, 'vl_meeting_cancel', '会议取消原因', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (19, 'vl_sex', '用户性别', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (20, 'vl_feedback', '投诉单反馈项目', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (22, 'vl_authobject', '供权限对象使用的值集', 1, 'description', 'id', 'ct_valuelist_header', 'valuelist_name like ''ao_%''', NULL, 1, 1412754189, 44, 1412991840, 44),
-(23, 'vl_tables', '系统表/视图值集', 1, 'label', 'value', 'ct_tables_vl', '', NULL, 0, 1412907002, 44, 1412907002, 44),
+(23, 'vl_tables', '系统表/视图值集', 1, 'label', 'value', 'ct_tables_vl', '', NULL, 1, 1412907002, 44, 1412907002, 44),
 (24, 'vl_roles', '系统角色列表', 1, 'description', 'id', 'ct_roles', '', NULL, 1, 1412927876, 44, 1412928109, 44),
 (25, 'ao_log_type', '投诉单日志类型', 1, 'description', 'log_type', 'ct_order_log_types', NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (26, 'vl_auth_object', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1413513361, 44, 1413513361, 44),
@@ -2788,7 +2816,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
 INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_value`, `segment_desc`, `inactive_flag`, `sort`, `parent_segment_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 1, '10', 'vendor', '供应商投诉单', 0, 1, '0', NULL, NULL, 1413506503, 44),
 (2, 1, '20', 'employee', '内部员工投诉单', 0, 2, '0', NULL, NULL, NULL, NULL),
-(3, 1, '30', 'customer', '客户投诉单', 0, 1, '0', NULL, NULL, 1412902860, 44),
+(3, 1, '30', 'customer', '客户投诉单', 0, 1, '0', NULL, NULL, 1414127308, 44),
 (4, 2, '30', 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
 (5, 2, '20', 'middle', '中', 0, 1, '0', NULL, NULL, 1413688001, 45),
 (6, 2, '10', 'high', '高', 0, 2, '0', NULL, NULL, 1413688007, 45),
@@ -2826,9 +2854,9 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (47, 7, '30', '30', '设计图纸', 0, 2, 'vendor', 1413419139, 44, 1413419167, 44),
 (48, 7, '40', '40', '采购部门服务', 0, 3, 'vendor', 1413419234, 44, 1413419234, 44),
 (49, 1, '40', 'test', 'set', 1, 0, '', 1413507444, 44, 1413507587, 44),
-(50, 27, '10', 'order_status', '客户投诉单状态流', 0, 0, 'customer', 1413850731, 44, 1413852760, 44),
-(51, 27, '20', 'order_status', '供应商投诉单状态流', 0, 0, 'vendor', 1413850784, 44, 1413853099, 44),
-(52, 27, '30', 'order_status', '内部员工投诉单状态流', 0, 0, 'employee', 1413850827, 44, 1413852782, 44),
+(50, 27, '10', 'customer_status', '客户投诉单状态流', 0, 0, 'customer', 1413850731, 44, 1414125703, 44),
+(51, 27, '20', 'vendor_status', '供应商投诉单状态流', 0, 0, 'vendor', 1413850784, 44, 1414125691, 44),
+(52, 27, '30', 'employee_status', '内部员工投诉单状态流', 0, 0, 'employee', 1413850827, 44, 1414125713, 44),
 (53, 28, '10', 'create', '创建', 0, 0, '', 1413941375, 44, 1413941436, 44),
 (54, 28, '20', 'edit', '编辑', 0, 1, '', 1413941384, 44, 1413941451, 44),
 (55, 28, '30', 'show', '查看', 0, 2, '', 1413941397, 44, 1413941455, 44),
@@ -2981,7 +3009,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_order_status_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_status_vl` AS select concat(`ot`.`segment_desc`,' - ',`sl`.`segment_desc`) AS `label`,`sl`.`segment_value` AS `value` from ((`ct_status_lines_v` `sl` join `ct_valuelist_lines_v` `vl`) join `ct_valuelist_lines_v` `ot`) where ((`vl`.`valuelist_name` = 'default_status') and (`vl`.`inactive_flag` = 0) and (`sl`.`status_code` = `vl`.`segment_value`) and (`ot`.`valuelist_name` = 'vl_order_type') and (`ot`.`inactive_flag` = 0) and (`ot`.`segment_value` = `vl`.`parent_segment`)) order by `ot`.`segment_desc`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_status_vl` AS select concat(`ot`.`segment_desc`,' - ',`sl`.`step_desc`) AS `label`,`sl`.`step_value` AS `value` from ((`ct_status_lines_v` `sl` join `ct_valuelist_lines_v` `vl`) join `ct_valuelist_lines_v` `ot`) where ((`vl`.`valuelist_name` = 'default_status') and (`vl`.`inactive_flag` = 0) and (`sl`.`status_code` = `vl`.`segment_value`) and (`ot`.`valuelist_name` = 'vl_order_type') and (`ot`.`inactive_flag` = 0) and (`ot`.`segment_value` = `vl`.`parent_segment`)) order by `ot`.`segment_desc`;
 
 -- --------------------------------------------------------
 
@@ -3017,7 +3045,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_status_lines_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_lines_v` AS select `l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`next_status` AS `next_status`,`l`.`back_status` AS `back_status`,`l`.`default_flag` AS `default_flag`,`l`.`auto_ending_flag` AS `auto_ending_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`default_next_status` AS `default_next_status`,`l`.`last_status_flag` AS `last_status_flag`,`h`.`status_code` AS `status_code`,`h`.`description` AS `description`,`l`.`inactive_flag` AS `inactive_flag` from (`ct_status_lines` `l` join `ct_status_header` `h`) where (`h`.`id` = `l`.`status_id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_lines_v` AS select `l`.`id` AS `id`,`l`.`status_id` AS `status_id`,`l`.`step` AS `step`,`l`.`step_value` AS `step_value`,`l`.`step_desc` AS `step_desc`,`l`.`next_steps` AS `next_steps`,`l`.`callback_step` AS `callback_step`,`l`.`initial_flag` AS `initial_flag`,`l`.`auto_ending_flag` AS `auto_ending_flag`,`l`.`inactive_flag` AS `inactive_flag`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`default_next_step` AS `default_next_step`,`l`.`last_step_flag` AS `last_step_flag`,`h`.`status_code` AS `status_code`,`h`.`description` AS `description` from (`ct_status_header` `h` join `ct_status_lines` `l`) where (`h`.`id` = `l`.`status_id`);
 
 -- --------------------------------------------------------
 

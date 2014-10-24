@@ -6,11 +6,11 @@
                 <option value="<?= $l['value']?>"><?= $l['label']?></option>
             <?php }?>
         </select>
+            <?php if(_v('parent_inactive_flag')) : echo '(已失效)' ; endif;?>
             </dd>
         </dl>
-<!--        --><?php //if($parent['segment']['inactive_flag']) : echo '(已失效)' ; endif;?>
 <?php }?>
-<table>
+<table  class="table">
     <thead>
         <th>段</th>
         <th>段值</th>
@@ -27,24 +27,29 @@
         <td><?= $o['inactive_flag'] ?></td>
         <td><?= $o['sort'] ?></td>
         <td>
-            <?= render_link(array('valuelist','item_edit',array('id'=>$o['id'])),label('edit'))?>
-            &nbsp;|&nbsp;
-            <?php if($o['inactive_flag']) { ?>
-                <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>0)),label('active'),null,null,true)?>
-            <?php } else{?>
-                <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>1)),label('inactive'),null,null,true)?>
-            <?php }?>
+        <?php if(!_v('parent_inactive_flag') && _v('editable_flag')) {?>
+                <?= render_link(array('valuelist','item_edit',array('id'=>$o['id'])),label('edit'))?>
+                &nbsp;|&nbsp;
+                <?php if($o['inactive_flag']) { ?>
+                    <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>0)),label('active'),null,null,true)?>
+                <?php } else{?>
+                    <?= render_link(array('valuelist','change_item_status',array('id'=>$o['id'],'inactive_flag'=>1)),label('inactive'),null,null,true)?>
+                <?php }?>
+        <?php }?>
         </td>
     </tr>
     <?php endforeach;?>
 </table>
-<?php if(_v('parent') ){?>
-        <?= render_link(array('valuelist','item_create',array('id'=>v('id'),'parent_segment'=>_v('parent_segment'))),
-            label('item_create'))?>
-    <?php }else{?>
-    <?= render_link(array('valuelist','item_create',array('id'=>v('id'))),
-        label('item_create'))?>
-<?php }?>
+<?php if(!_v('parent_inactive_flag') && _v('editable_flag')) {
+            if (_v('parent')) { ?>
+                <?= render_link(array('valuelist', 'item_create', array('id' => v('id'), 'parent_segment' => _v('parent_segment'))),
+                    label('item_create')) ?>
+            <?php } else { ?>
+                <?= render_link(array('valuelist', 'item_create', array('id' => v('id'))),
+                    label('item_create')) ?>
+            <?php
+            }
+}?>
 
 <script type="text/javascript">
     function _valuelistItemData(object){

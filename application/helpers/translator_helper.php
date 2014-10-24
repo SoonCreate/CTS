@@ -4,6 +4,7 @@
 function label($name){
     $line = _text('label_'.$name);
     if(!$line){
+        //拆分英文，组合翻译
         $words = explode('_',$name);
         $pass = true;
         $lines = array();
@@ -19,6 +20,7 @@ function label($name){
         if($pass){
             $line = join('',$lines);
         }else{
+            //大写英文头字母
             for($i =0;$i<count($words);$i++){
                 $words[$i] = ucfirst($words[$i]);
             }

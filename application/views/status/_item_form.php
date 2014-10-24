@@ -1,0 +1,9 @@
+<?= render_form_input('step_value',true) ?>
+<?= render_form_input('step_desc',true) ?>
+<?= render_form_input('next_steps') ?>
+<?= render_form_input('callback_step') ?>
+<?= render_form_input('default_next_step') ?>
+<?= render_single_checkbox('initial_flag',1) ?>
+<?= render_single_checkbox('last_step_flag',1) ?>
+<?= render_single_checkbox('auto_ending_flag',1) ?>
+<?= render_single_checkbox('inactive_flag',1) ?>

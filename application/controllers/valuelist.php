@@ -92,7 +92,7 @@ class Valuelist extends CI_Controller {
                     render($v);
                 }
             }else{
-                custz_message('E','值集为系统配置不能被编辑！');
+                render_error('值集为系统配置不能被编辑！');
             }
 
         }
@@ -118,12 +118,15 @@ class Valuelist extends CI_Controller {
                     if(empty($parent)){
                         custz_message('E','父值集不存在');
                     }else{
-                        $lines = $vm->find_active_options($parent['valuelist_name'])->result_array();
+                        $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
                         if(count($lines) > 0){
                             if(!$parent_segment){
+                                //没有参数则默认第一个
                                 $parent['segment'] = $lines[0];
                                 $parent_segment = $lines[0]['value'];
                                 $data['parent'] = $parent;
+                                $data['editable_flag'] = $h['editable_flag'];
+                                $data['parent_inactive_flag'] = $lines[0]['inactive_flag'];
                                 $data['lines'] = $lines;
                                 $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id'],'parent_segment'=>$parent_segment));
                                 $data['objects'] = _format($data['objects']);
@@ -132,12 +135,14 @@ class Valuelist extends CI_Controller {
                                 $has = false;
                                 foreach($lines as $l){
                                     if($l['value'] == $parent_segment){
+                                        $data['parent_inactive_flag'] = $l['inactive_flag'];
                                         $has = true;
                                         break;
                                     }
                                 }
                                 if($has){
                                     $data['parent'] = $parent;
+                                    $data['editable_flag'] = $h['editable_flag'];
                                     $data['lines'] = $lines;
                                     $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id'],'parent_segment'=>$parent_segment));
                                     $data['objects'] = _format($data['objects']);
@@ -152,6 +157,7 @@ class Valuelist extends CI_Controller {
                         }
                     }
                 }else{
+                    $data['editable_flag'] = $h['editable_flag'];
                     $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id']));
                     $data['objects'] = _format($data['objects']);
                     render($data);
@@ -169,38 +175,43 @@ class Valuelist extends CI_Controller {
         if(empty($h)){
             show_404();
         }else{
-            //如果存在父值集，没有指定父值集项目的时候，默认第一项
-            if($h['parent_id']){
-                $parent = $vm->find($h['parent_id']);
-                if(empty($parent)){
-                    custz_message('E','父值集不存在');
-                }else{
-                    $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
-                    if(count($lines) > 0){
-                        if(!$parent_segment){
-                            show_404();
-                        }else{
-                            $has = false;
-                            foreach($lines as $l){
-                                if($l['value'] == $parent_segment){
-                                    $has = true;
-                                    break;
+            //判断是否可编辑
+            if($h['editable_flag']){
+                //如果存在父值集，没有指定父值集项目的时候，默认第一项
+                if($h['parent_id']){
+                    $parent = $vm->find($h['parent_id']);
+                    if(empty($parent)){
+                        custz_message('E','父值集不存在');
+                    }else{
+                        $lines = $vm->find_all_options($parent['valuelist_name'])->result_array();
+                        if(count($lines) > 0){
+                            if(!$parent_segment){
+                                show_404();
+                            }else{
+                                $has = false;
+                                foreach($lines as $l){
+                                    if($l['value'] == $parent_segment){
+                                        $has = true;
+                                        break;
+                                    }
+                                }
+                                if($has){
+
+                                    $this->_item_create();
+                                }else{
+                                    custz_message('E','父值集无'.$parent_segment.'项目');
                                 }
                             }
-                            if($has){
 
-                                $this->_item_create();
-                            }else{
-                                custz_message('E','父值集无'.$parent_segment.'项目');
-                            }
+                        }else{
+                            custz_message('E', '父值集无项目');
                         }
-
-                    }else{
-                        custz_message('E', '父值集无项目');
                     }
+                }else{
+                    $this->_item_create();
                 }
             }else{
-                $this->_item_create();
+                render_error('值集为系统配置不能被编辑！');
             }
         }
     }
@@ -211,12 +222,20 @@ class Valuelist extends CI_Controller {
         if(empty($l) && isset($_POST['inactive_flag'])){
             show_404();
         }else{
-            $data['inactive_flag'] = v('inactive_flag');
-            if($vlm->update($l['id'],$data,true)){
-                message_db_success();
+            $vm = new Valuelist_model();
+            $o = $vm->find($l['valuelist_id']);
+            //判断是否可编辑
+            if($o['editable_flag']){
+                $data['inactive_flag'] = v('inactive_flag');
+                if($vlm->update($l['id'],$data,true)){
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
             }else{
-                validation_error();
+                render_error('值集为系统配置不能被编辑！');
             }
+
         }
     }
 
@@ -226,17 +245,25 @@ class Valuelist extends CI_Controller {
         if(empty($item)){
             show_404();
         }else{
-            if($_POST){
-                $_POST['inactive_flag'] = v('inactive_flag');
-                if($vlm->update($item['id'],_data('segment_value','segment_desc','sort','inactive_flag'))){
-                    go_back();
-                    message_db_success();
+            $vm = new Valuelist_model();
+            $o = $vm->find($item['valuelist_id']);
+            //判断是否可编辑
+            if($o['editable_flag']){
+                if($_POST){
+                    $_POST['inactive_flag'] = v('inactive_flag');
+                    if($vlm->update($item['id'],_data('segment_value','segment_desc','sort','inactive_flag'))){
+                        go_back();
+                        message_db_success();
+                    }else{
+                        validation_error();
+                    }
                 }else{
-                    validation_error();
+                    render($item);
                 }
             }else{
-                render($item);
+                render_error('值集为系统配置不能被编辑！');
             }
+
         }
     }
 
