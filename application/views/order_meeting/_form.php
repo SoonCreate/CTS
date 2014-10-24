@@ -6,14 +6,16 @@
 <?= render_form_input('recorder');?>
 <?= render_form_input('actor',TRUE);?>
 <?= render_form_textarea('discuss');?>
-<?= render_form_input('order_id',TRUE)?>
-以英文“,”分隔可关联多个投诉单
+<?= render_form_input('order_id',TRUE,array('title'=>'以英文“,”分隔可关联多个投诉单'))?>
+<?= render_button_group(array(render_button('choose_order','_showOrderSelectDialog()','normal')))?>
 <br/>
 <br/>
 <br/>
 <br/>
 <script type="text/javascript">
-    function showOrderSelectDialog(){
-        console.info(11);
+    function _showOrderSelectDialog(){
+        require(["sckj/Dialog"],function(Dialog){
+            dojoConfirm({title : '<?= label('choose_order')?>',href:url('order_meeting/choose_orders')});
+        });
     }
 </script>

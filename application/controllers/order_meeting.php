@@ -29,7 +29,7 @@ class Order_meeting extends CI_Controller {
             if(check_meeting_auth($order['order_type'],$order['category'],'edit')){
                 $data['can_edit'] = 1;
             }
-            if(check_meeting_auth($order['order_type'],$order['category'],'active')){
+            if(check_meeting_auth($order['order_type'],$order['category'],'inactive')){
                 $data['can_cancel'] = 1;
             }
             render($data);
@@ -210,6 +210,7 @@ class Order_meeting extends CI_Controller {
                     $data['id'] = v('id');
                 }
                 if($mm->save($data,$ids)){
+                    go_back();
                     message_db_success();
                 }else{
                     validation_error();
@@ -220,6 +221,10 @@ class Order_meeting extends CI_Controller {
             add_validation_error('order_id','订单号输入有误，其中单号'.$error.'不存在');
         }
 
+    }
+
+    function choose_orders(){
+        render_view('order_meeting/_choose_orders');
     }
 
     private function _meeting_status($object){

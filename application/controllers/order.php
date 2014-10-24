@@ -369,7 +369,8 @@ class Order extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $data = _data('manager_id');
+                $_POST['status'] = 'allocated';
+                $data = _data('manager_id','status');
                 $this->_update(v('id'),$data);
             }else{
                 $am = new Auth_model();

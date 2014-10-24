@@ -364,30 +364,38 @@ function dojoConfirm(content,callback,noback,type){
             if(di){
                 di.hide();
             }
-            switch(type){
-                case "E" :
-                    //此处可以再渲染
-                    content =  "<div class='messageContainer'><img src='resources/images/error.gif' width='60px' height='60px'/>" +
-                    "<div class='messageContent'>" + content + "</div></div>";
-                    break;
-                case "W" :
-                    content = "<div class='messageContainer'><img src='resources/images/warning.png' width='60px' height='60px'/>" +
-                    "<div class='messageContent'>" +content + "</div></div>";
-                    break;
-                default :
-                    content = "<div class='messageContent'>" +content + "</div>";
-                    break;
-            }
-            var confirmDialog = new Dialog({
-                content : content,
-                id : "confirmDialog",
-                title : "消息",
-                onClick : function(){
-                    if(type == "I"){
-                        this.hide();
-                    }
+
+            var confirmDialog = new Object();
+            //判断为字符串还是参数
+            if(Object.prototype.toString.call(content) != "[object String]"){
+                confirmDialog = new Dialog(content);
+            }else{
+                switch(type){
+                    case "E" :
+                        //此处可以再渲染
+                        content =  "<div class='messageContainer'><img src='resources/images/error.gif' width='60px' height='60px'/>" +
+                        "<div class='messageContent'>" + content + "</div></div>";
+                        break;
+                    case "W" :
+                        content = "<div class='messageContainer'><img src='resources/images/warning.png' width='60px' height='60px'/>" +
+                        "<div class='messageContent'>" +content + "</div></div>";
+                        break;
+                    default :
+                        content = "<div class='messageContent'>" +content + "</div>";
+                        break;
                 }
-            });
+                confirmDialog = new Dialog({
+                    content : content,
+                    id : "confirmDialog",
+                    title : "消息",
+                    onClick : function(){
+                        if(type == "I"){
+                            this.hide();
+                        }
+                    }
+                });
+            }
+
             //IE优化
 //            var node = domConstruct.create("div",{class : "confirmButtonGroup"});
             var node = document.createElement('div');
