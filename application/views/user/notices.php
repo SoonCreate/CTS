@@ -1,9 +1,9 @@
-<div class="container-fluid">
-    <div class="row">
-        <?= render_button('notice_read_all','_userNoticesRefreshData()');?>
-    </div>
-    <div id="myNoticeList" class="gridlist"></div>
-</div>
+<!--<div class="container-fluid">-->
+<!--    <div class="row">-->
+<!--        --><?//= render_button('notice_read_all','_userNoticesRefreshData()') ?>
+<!--    </div>-->
+<!--    <div id="myNoticeList" class="gridlist"></div>-->
+<!--</div>-->
 
 
 <div id="myNoticeList"></div>
@@ -26,6 +26,8 @@
                  ColumnResizer,
                  VirtualVScroller,TouchVScroller){
             ready(function(){
+
+                toolbarAddButton("<?= label('notice_read_all') ?>",_userNoticesRefreshData);
 
                 var restStore = new JsonRest({idProperty: 'id', target:url('user/notice_data'),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});

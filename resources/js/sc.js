@@ -75,7 +75,7 @@ function refresh(then){
     }
 }
 
-function currentGoto(){
+function currentGoto(url){
     var wso = currentWso();
     wso.set("href",url);
 }
@@ -349,7 +349,7 @@ function onModuleShow(mid){
 function fixDijitId(id){
     var rtId = "";
     if($env && $env.cm){
-        rtId =  id + "_" + $env.cm ;
+        rtId =  id + "_" + $env.cm + "_" + $env.mid ;
     }
     return rtId;
 }
@@ -465,5 +465,29 @@ function refresh_notice_count(n){
             $dom.byId("scbadge").innerHTML = data;
         });
     }
+
+}
+
+//工具栏加入功能按钮
+function toolbarAddButton(label,onclick){
+    require(["dijit/ToolbarSeparator","sckj/form/Button"], function (ToolbarSeparator,Button) {
+        var handle = dojo.connect(currentWso(),"onDownloadEnd",function(){
+            //在工具栏添加一个功能按钮
+            var toolBar = dijitObject('toolbar');
+            console.info(toolBar);
+            if(toolBar){
+                var ts = new ToolbarSeparator();
+                var bt = new Button({
+                    label : label,
+                    onClick : onclick
+                });
+                ts.startup();
+                bt.startup();
+                toolBar.addChild(ts);
+                toolBar.addChild(bt);
+                dojo.disconnect(handle);
+            }
+        });
+    });
 
 }

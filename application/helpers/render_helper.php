@@ -404,7 +404,7 @@ function render_submit_button(){
     return '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.label('submit').'</button>';
 }
 
-function render_button($name,$onclick = "",$class = 'success'){
+function render_button($name,$onclick = "",$class = 'normal'){
     return '<button type="button" data-dojo-type="sckj/form/Button" class="'.$class.'" onclick="'.$onclick.'">'.label($name).'</button>';
 }
 
