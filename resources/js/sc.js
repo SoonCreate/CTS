@@ -11,7 +11,7 @@ function goto(url,target,noRender,noRecord){
         wso.set("href",url);
         $dijit.byId("mainTabContainer").selectChild(wso,true);
     }else{
-        dojoConfirm("是否确定执行此操作？",function(){
+        dojoConfirm("是否确定执行此操作？",null,function(){
             $ajax.get(url,{handleAs : "json"}).then(function(response){
                 handleResponse(response,null,function(){
                     refresh();
@@ -35,7 +35,7 @@ function recordWso(url){
         }
     }
     $env.history.unshift({url:currentWso().href,target:$env.mid});
-    console.info($env.history);
+    //console.info($env.history);
 }
 
 function isURL(str_url){
@@ -63,7 +63,7 @@ function goback(){
         if($env.history.length > 0 ){
             goto($env.history[0]['url'],$env.history[0]['target'],false,true);
             $env.history.shift();
-            console.info($env.history);
+            //console.info($env.history);
         }
     }
 }
@@ -339,6 +339,7 @@ function refresh_env(mid){
         $env.mid = mid;
         console.log("current module line id : "+$env.cm+" mid : "+$env.mid);
     }
+    //console.info(dijitObject('toolbar'));
 }
 
 function onModuleShow(mid){
@@ -469,17 +470,24 @@ function refresh_notice_count(n){
 }
 
 //工具栏加入功能按钮
-function toolbarAddButton(label,onclick){
+function toolbarAddButton(label,onclick,title){
     require(["dijit/ToolbarSeparator","sckj/form/Button"], function (ToolbarSeparator,Button) {
-        var handle = dojo.connect(currentWso(),"onDownloadEnd",function(){
+        var handle = dojo.connect(currentWso(),"onLoad",function(){
             //在工具栏添加一个功能按钮
             var toolBar = dijitObject('toolbar');
-            console.info(toolBar);
             if(toolBar){
+                if(title == undefined){
+                    title = "";
+                }
                 var ts = new ToolbarSeparator();
                 var bt = new Button({
                     label : label,
-                    onClick : onclick
+                    onClick : function(){
+                        if(onclick){
+                            onclick();
+                        }
+                    },
+                    title : title
                 });
                 ts.startup();
                 bt.startup();
@@ -490,4 +498,11 @@ function toolbarAddButton(label,onclick){
         });
     });
 
+}
+
+//添加链接跳转
+function toolBarAddLinkButton(label,url,target,noRender,noRecord){
+    toolbarAddButton(label,function(){
+        goto(url,target,noRender,noRecord);
+    });
 }

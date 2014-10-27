@@ -1,11 +1,10 @@
 <div class="container-fluid">
-    <div class="row">
-        <?= render_link_button(array('user','create'),label('user_create'))?>
-    </div>
     <div id="userManageGrid" class="gridlist"></div>
 </div>
 
 <script type="text/javascript">
+    toolBarAddLinkButton("<?= label('user_create') ?>",url('user/create'));
+
     require(["dojo/ready",
             "sckj/Gridx",
             "gridx/core/model/cache/Async",
@@ -32,7 +31,7 @@
                     id : "userManageGrid",
                     store: store ,
                     structure: [
-                        {name : "<?= label('username')?>",field : "username",width : "100px",dataType :"string" },
+                        {name : "<?= label('username')?>",field : "username",width : "140px",dataType :"string" },
                         {name : "<?= label('full_name')?>",field : "full_name",width : "200px",dataType :"string" },
                         {name : "<?= label('email')?>",field : "email",width : "160px",dataType :"string",
                             decorator: function(cellData, rowId, rowIndex){
@@ -90,9 +89,11 @@
     //刷新store的数据
     function _userIndexRefreshData(url){
         require(["dojo/store/JsonRest"],function(JsonRest){
-            $ajax.get(url,{handleAs : "json"}).then(function(responce){
-                handleResponse(responce,null,function(){
-                    dijitObject('userManageGrid').refresh();
+            dojoConfirm("是否确定执行此操作？",null,function(){
+                $ajax.get(url,{handleAs : "json"}).then(function(responce){
+                    handleResponse(responce,null,function(){
+                        dijitObject('userManageGrid').refresh();
+                    });
                 });
             });
         });

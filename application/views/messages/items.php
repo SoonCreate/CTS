@@ -1,5 +1,3 @@
-<h2><?= $description ?></h2>
-<h3>Class_code：<?= $class_code ?></h3>
 <table class="table">
     <thead>
         <th>消息码</th>
@@ -21,4 +19,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('messages','create',array('class_id'=>v('class_id'))),label('message_create'))?>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('message_create') ?>",url('messages/create?class_id=<?= v('class_id')?>'));
+</script>

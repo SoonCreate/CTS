@@ -22,4 +22,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('auth_object','create'),label('auth_object_create'))?>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('auth_object_create') ?>",url('auth_object/create'));
+</script>

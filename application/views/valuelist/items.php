@@ -42,6 +42,11 @@
 </table>
 <?php if(!_v('parent_inactive_flag') && _v('editable_flag')) {
             if (_v('parent')) { ?>
+
+                <script type="text/javascript">
+                    toolBarAddLinkButton("<?= label('item_create') ?>",url('valuelist/item_create?id=<?= v('id')?>&parent_segment=<?= _v('parent_segment') ?>'));
+                </script>
+
                 <?= render_link(array('valuelist', 'item_create', array('id' => v('id'), 'parent_segment' => _v('parent_segment'))),
                     label('item_create')) ?>
             <?php } else { ?>

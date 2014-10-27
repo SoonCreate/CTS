@@ -9,6 +9,9 @@
 <div id="myNoticeList"></div>
 
 <script type="text/javascript">
+
+    toolbarAddButton("<?= label('notice_read_all') ?>",_userNoticesRefreshData);
+
     require(["dojo/ready",
             "sckj/Gridx",
             "gridx/core/model/cache/Async",
@@ -26,9 +29,6 @@
                  ColumnResizer,
                  VirtualVScroller,TouchVScroller){
             ready(function(){
-
-                toolbarAddButton("<?= label('notice_read_all') ?>",_userNoticesRefreshData);
-
                 var restStore = new JsonRest({idProperty: 'id', target:url('user/notice_data'),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});
                 var pageSize = 13;

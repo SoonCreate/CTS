@@ -29,6 +29,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<div class="row">
-    <?= render_link_button(array('functions','create'),label('function_create'))?>
-</div>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('function_create') ?>",url('functions/create'));
+</script>

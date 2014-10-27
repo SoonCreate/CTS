@@ -18,4 +18,6 @@
         </tr>
     <?php endforeach;?>
 </table>
-<?= render_link_button(array('order_log_type','notice_rule_create',array('log_type_id'=>v('id'))),label('notice_rule_create'))?>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('notice_rule_create') ?>",url('order_log_type/notice_rule_create?log_type_id=<?= v('id') ?>'));
+</script>

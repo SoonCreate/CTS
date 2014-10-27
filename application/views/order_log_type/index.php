@@ -29,6 +29,6 @@
         </tr>
     <?php endforeach;?>
 </table>
-<div class="row">
-    <?= render_link_button(array('order_log_type','create'),label('order_log_type_create'))?>
-</div>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('order_log_type_create') ?>",url('order_log_type/create'));
+</script>

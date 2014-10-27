@@ -22,6 +22,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<div class="row">
-    <?= render_link_button(array('valuelist','create'),label('valuelist_create'))?>
-</div>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('valuelist_create') ?>",url('valuelist/create'));
+</script>

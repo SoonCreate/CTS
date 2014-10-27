@@ -17,6 +17,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<div class="row">
-    <?= render_link_button(array('status','create'),label('status_create'))?>
-</div>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('status_create') ?>",url('status/create'));
+</script>

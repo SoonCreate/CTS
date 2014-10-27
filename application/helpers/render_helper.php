@@ -34,6 +34,11 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 //}
 
 function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
+    $g = url_goto($url);
+    return '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$g['url'].'\',\''.$g['module_id'].'\','.$noRender.');">'.$label.'</a>';
+}
+
+function url_goto($url){
     $module_id = _sess('mid');
     $link = '';
     $params = array();
@@ -62,7 +67,9 @@ function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
     }else{
         $link = $url;
     }
-    return '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$link.'\',\''.$module_id.'\','.$noRender.');">'.$label.'</a>';
+    $g['url'] = $link;
+    $g['module_id'] = $module_id;
+    return $g;
 }
 
 function render_link_button($url,$label,$title = '',$class = '',$noRender = 'false'){
@@ -429,5 +436,18 @@ function render_label($name,$required = FALSE,$label = null){
         return '<label for="'.$name.'_'._sess('cm').'">'.'* '.$label."</label>";
     }else{
         return '<label for="'.$name.'_'._sess('cm').'">'.$label."</label>";
+    }
+}
+
+//输出当前页地址
+function render_path($current_page = null){
+    global $CI;
+    $CI->load->model('module_line_model');
+    $mlm = new Module_line_model();
+    $line = $mlm->find_by_view(array('id'=>_sess('cm')));
+    if(is_null($current_page)){
+        return '<div>页面路径：'.$line['module_desc'].' > '.$line['function_desc'].'</div>';
+    }else{
+        return '<div>页面路径：'.$line['module_desc'].' > '.$line['function_desc'].' > '.$current_page.'</div>';
     }
 }

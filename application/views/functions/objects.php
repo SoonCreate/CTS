@@ -19,4 +19,6 @@
         </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('functions','object_create',array('function_id'=>v('id'))),label('object_create'))?>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('object_create') ?>",url('functions/object_create?function_id=<?= v('id') ?>'));
+</script>

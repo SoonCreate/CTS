@@ -24,7 +24,7 @@
                          title="<?= $m['module_desc']?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
                          data-dojo-props=" href:'<?= $m['url']?>'"
-                         onDownloadEnd = "refresh_env(<?= $m['module_id']?>);"
+                         onLoad = "refresh_env(<?= $m['module_id']?>);"
                          onShow = "onModuleShow(<?= $m['module_id']?>);"></div>
              <?php  endforeach;?>
             <?php endif;?>

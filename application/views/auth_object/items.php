@@ -20,4 +20,6 @@
     </tr>
     <?php endforeach;?>
 </table>
-<?= render_link(array('auth_object','item_create',array('object_id'=>v('id'))),label('item_create'))?>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('item_create') ?>",url('auth_object/item_create?object_id=<?= v('id') ?>'));
+</script>
