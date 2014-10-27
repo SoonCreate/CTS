@@ -186,15 +186,16 @@ class Order_meeting extends CI_Controller {
             add_validation_error('start_date','开始日期大于结束日期！') ;
         }
 
-        if($_POST['start_date'] < strtotime(date('Y-m-d'))){
-            $p = false;
-            add_validation_error('start_date','日期不能为过去！') ;
-        }
-
-        if($_POST['end_date'] < strtotime(date('Y-m-d'))){
-            $p = false;
-            add_validation_error('end_date','日期不能为过去！') ;
-        }
+        //时间允许为过去
+//        if($_POST['start_date'] < strtotime(date('Y-m-d'))){
+//            $p = false;
+//            add_validation_error('start_date','日期不能为过去！') ;
+//        }
+//
+//        if($_POST['end_date'] < strtotime(date('Y-m-d'))){
+//            $p = false;
+//            add_validation_error('end_date','日期不能为过去！') ;
+//        }
         $error = '';
         foreach($ids as $id){
             $o = $om->find($id);
@@ -224,7 +225,16 @@ class Order_meeting extends CI_Controller {
     }
 
     function choose_orders(){
-        render_view('order_meeting/_choose_orders');
+        $om = new Order_model();
+        $order = $om->find(v('id'));
+        $order_type = null;
+        if(!empty($order)){
+            $order_type = $order['order_type'];
+        }
+        $output = $om->find_my_orders($order_type,null,'allocated');
+//        $data['objects'] = $output['data']['items'];
+//        $this->load->view('order_meeting/_choose_orders',$data);
+        echo json_encode($output['data']);
     }
 
     private function _meeting_status($object){

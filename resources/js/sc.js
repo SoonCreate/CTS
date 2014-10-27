@@ -356,7 +356,7 @@ function fixDijitId(id){
 
 //效果同js原先的confirm
 //content ：弹出框内容 ； callback ： 确认后要执行的内容
-function dojoConfirm(content,callback,noback,type){
+function dojoConfirm(content,title,callback,noback,type){
     require(["sckj/Dialog","dijit/form/Button"],
         function(Dialog,Button){
             //检查如果存在则销毁
@@ -365,10 +365,25 @@ function dojoConfirm(content,callback,noback,type){
                 di.hide();
             }
 
-            var confirmDialog = new Object();
+            if(title == undefined){
+                title = "消息";
+            }
+
+            var confirmDialog = new Dialog({
+                id : "confirmDialog",
+                title : title,
+                onClick : function(){
+                    if(type == "I"){
+                        this.hide();
+                    }
+                }
+            });
+
+            confirmDialog.startup();
+
             //判断为字符串还是参数
             if(Object.prototype.toString.call(content) != "[object String]"){
-                confirmDialog = new Dialog(content);
+                confirmDialog.containerNode.appendChild(content.domNode);
             }else{
                 switch(type){
                     case "E" :
@@ -384,16 +399,7 @@ function dojoConfirm(content,callback,noback,type){
                         content = "<div class='messageContent'>" +content + "</div>";
                         break;
                 }
-                confirmDialog = new Dialog({
-                    content : content,
-                    id : "confirmDialog",
-                    title : "消息",
-                    onClick : function(){
-                        if(type == "I"){
-                            this.hide();
-                        }
-                    }
-                });
+                confirmDialog.set("content",content);
             }
 
             //IE优化
@@ -412,6 +418,7 @@ function dojoConfirm(content,callback,noback,type){
                     confirmDialog.hide();
                 }
             });
+            okbutton.set("class","success");
             okbutton.placeAt(node,"last");
 
             //取消按钮

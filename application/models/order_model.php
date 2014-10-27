@@ -24,6 +24,113 @@ class Order_model extends MY_Model{
         $this->add_validate_255('phone_number','address','contact','full_name');
     }
 
+    function find_my_orders($order_type,$title,$status,$end = null,$start = 0){
+        $this->load->model('auth_model');
+        $om = new Order_model();
+        $sm = new Status_model();
+        $olm = new Order_log_model();
+        $am = new Auth_model();
+
+        if($order_type){
+            $types = array($order_type);
+        }else{
+            $types = $am->can_show_order_types();
+        }
+
+        $totalCnt = 0;
+
+        //获取数据
+        if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
+            //与自己相关的用户id字段
+            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
+
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+
+            //fix ：Error in Body._buildRowContent: Row is not in cache
+            if($title){
+                $this->db->like('title',$title);
+            }
+            if($status){
+                $this->db->where('status',$status) ;
+            }
+            $totalCnt = $om->count_by();
+
+            //分页显示
+            if(!is_null($end)){
+                $om->limit($end+1,$start);
+            }
+
+            $om->order_by('id','DESC');
+
+            //与自己相关的用户id字段
+            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
+
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+
+            //fix ：Error in Body._buildRowContent: Row is not in cache
+            if($title){
+                $this->db->like('title',$title);
+            }
+            if($status){
+                $this->db->where('status',$status) ;
+            }
+
+            $os = $om->find_all();
+        }else{
+            //分页显示
+            if(!is_null($end)){
+                $om->limit($end+1,$start);
+            }
+
+            if($title){
+                $this->db->like('title',$title);
+            }
+
+            if($status){
+                $this->db->where('status',$status) ;
+            }
+
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+            $om->order_by('id','DESC');
+            $os = $om->find_all();
+
+            if($title){
+                $this->db->like('title',$title);
+            }
+            if($status){
+                $this->db->where('status',$status) ;
+            }
+            //获取允许查看的订单类型
+            $this->db->where_in('order_type',$types);
+            $totalCnt = $om->count_by();
+        }
+
+        $os = _format($os,true);
+        for($i=0;$i<count($os);$i++){
+            $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category'],$os[$i]['order_type']);
+            $os[$i]['status'] = $sm->get_label(default_value('status',$os[$i]['order_type']),$os[$i]['status']);
+            $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
+            $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])),10);
+            $os[$i]['managed_by'] = $os[$i]['manager_id'];
+            $os[$i]['delay_flag'] = 0;
+            if(!is_null($os[$i]['plan_complete_date']) && $os[$i]['plan_complete_date'] < time()){
+                $os[$i]['delay_flag'] = 1;
+            }
+            $os[$i]['plan_date_count'] = $olm->count_by_view(array('field_name'=>'plan_complete_date','dll_type'=>'update'));
+            $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
+        }
+
+        $data["identifier"] = 'id';
+        $data["label"] = 'title';
+        $data['items'] = $os;
+        $output['data'] = $data;
+        $output['cnt'] = $totalCnt;
+        return $output;
+    }
+
     function default_status($order_type){
         $sm = new Status_model();
         return $sm->default_status(default_value('status',$order_type));

@@ -31,13 +31,9 @@ class Order extends CI_Controller {
         $this->load->model('status_model');
         $this->load->model('order_log_model');
         $om = new Order_model();
-        $sm = new Status_model();
-        $olm = new Order_log_model();
-        $am = new Auth_model();
 
         $start = 0;
         $end = 0 ;
-
 //        print_r($where);
         if(isset($_SERVER['HTTP_RANGE'])){
             $idx = stripos($_SERVER['HTTP_RANGE'],'-');
@@ -45,104 +41,15 @@ class Order extends CI_Controller {
             $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
         }
 
-        if(v('order_type')){
-            $types = array(v('order_type'));
-        }else{
-            $types = $am->can_show_order_types();
-        }
-
         $title = $this->input->get('title');
         $status = $this->input->get('status');
 
-        //获取数据
-        if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
-            $om->limit($end+1,$start);
-            $om->order_by('id','DESC');
-
-            //与自己相关的用户id字段
-            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
-//            $this->db->or_where('leader_id',_sess('uid'));
-//            $this->db->or_where('manager_id',_sess('uid'));
-
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-
-            //fix ：Error in Body._buildRowContent: Row is not in cache
-            if($title){
-                $this->db->like('title',$title);
-            }
-            if($status){
-                $this->db->where('status',$status) ;
-            }
-
-            $os = $om->find_all();
-
-            //与自己相关的用户id字段
-            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
-
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-
-            //fix ：Error in Body._buildRowContent: Row is not in cache
-            if($title){
-                $this->db->like('title',$title);
-            }
-            if($status){
-                $this->db->where('status',$status) ;
-            }
-            $totalCnt = $om->count_by();
-        }else{
-            $om->limit($end+1,$start);
-
-            if($title){
-                $this->db->like('title',$title);
-            }
-
-            if($status){
-                $this->db->where('status',$status) ;
-            }
-
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-            $om->order_by('id','DESC');
-            $os = $om->find_all();
-
-            if($title){
-                $this->db->like('title',$title);
-            }
-            if($status){
-                $this->db->where('status',$status) ;
-            }
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-            $totalCnt = $om->count_by();
-        }
-//        print_r($os);
-
-        $os = _format($os);
-        for($i=0;$i<count($os);$i++){
-            $os[$i]['category'] = get_label('vl_order_category',$os[$i]['category'],$os[$i]['order_type']);
-            $os[$i]['status'] = $sm->get_label(default_value('status',$os[$i]['order_type']),$os[$i]['status']);
-            $os[$i]['severity'] = get_label('vl_severity',$os[$i]['severity']);
-            $os[$i]['content'] = word_truncate(t($om->first_content($os[$i]['id'])),10);
-            $os[$i]['managed_by'] = $os[$i]['manager_id'];
-            $os[$i]['delay_flag'] = 0;
-            if(!is_null($os[$i]['plan_complete_date']) && $os[$i]['plan_complete_date'] < time()){
-                $os[$i]['delay_flag'] = 1;
-            }
-            $os[$i]['plan_date_count'] = $olm->count_by_view(array('field_name'=>'plan_complete_date','dll_type'=>'update'));
-            $os[$i]['order_type'] = get_label('vl_order_type',$os[$i]['order_type']);
-        }
-
-        $data["identifier"] = 'id';
-        $data["label"] = 'title';
-        $data['items'] = $os;
-        $output = $data;
+        $output = $om->find_my_orders(v('order_type'),$title,$status,$end,$start);
 
         if(isset($_SERVER['HTTP_RANGE'])){
 //                    header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.round($totalCnt/($end+1)));
-            header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.$totalCnt);
-            $output = $data['items'];
+            header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.$output['cnt']);
+            $output = $output['data']['items'];
         }
         echo json_encode($output);
     }
