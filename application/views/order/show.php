@@ -74,18 +74,21 @@
     <dl class="row dl-horizontal"><dt>标题</dt><dd><?= $title ?></dd></dl>
     <dl class="row dl-horizontal"><dt>内容</dt>
         <dd class="contentContainer">
-        <?php foreach($contents as $c):?>
-            <div class="row" id="content_<?= $c['id']?>">
+            <ul class="commentList">
+            <?php foreach($contents as $c):?>
+                <li class="item cl" id="content_<?= $c['id']?>">
+                    <a href="#"><img width="48" height="48" class="comment-avatar" alt="" src="<?= base_url() ?>resources/images/avatar-default-S.gif"></a>
+
+                    <div class="comment-main">
                 <?php
-                echo '<span class="ddname"><i class="icon-user"></i>
-&nbsp;&nbsp;'.full_name($c['created_by'],!check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .':
-</span><div class="righttip">
-<div class="triangle "></div><div class="tooltipinner">'.$c['content'];
-                echo '<span class="ddtime"> 时间：'.$c['creation_date'].'</span></div></div>';
+                echo '<header class="comment-header"><div class="comment-meta"><a class="comment-author" href="#">
+'.full_name($c['created_by'],!check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .'</a> 评论于 <time>'.$c['creation_date'].'</time></div></header><div class="comment-body"><p>'.$c['content'].'</p></div>';
+
                 ?>
-            </div>
-            <br/>
-        <?php endforeach;?>
+                </div>
+            </li>
+            <?php endforeach;?>
+            </ul>
         </dd>
     </dl>
     <hr/>
@@ -106,15 +109,12 @@
     </dl>
     <hr/>
     <?= render_form_open('order','reply','null','null','addContent') ?>
-    <dl class="row dl-horizontal"><dt>&nbsp;</dt>
-        <dd >
 
             <?= render_form_textarea('content',TRUE);?>
             <input name="id" id="id" type="hidden" value="<?= v('id') ?>"/>
-        </dd>
-     </dl>
+
     <dl class="row dl-horizontal"><dt>&nbsp;</dt>
-        <dd style="margin-left:40px !important">
+        <dd>
             <?= render_submit_button();?>
 
         </dd>
