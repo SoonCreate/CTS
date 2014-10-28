@@ -47,11 +47,12 @@
                     toolBarAddLinkButton("<?= label('item_create') ?>",url('valuelist/item_create?id=<?= v('id')?>&parent_segment=<?= _v('parent_segment') ?>'));
                 </script>
 
-                <?= render_link(array('valuelist', 'item_create', array('id' => v('id'), 'parent_segment' => _v('parent_segment'))),
-                    label('item_create')) ?>
             <?php } else { ?>
-                <?= render_link(array('valuelist', 'item_create', array('id' => v('id'))),
-                    label('item_create')) ?>
+
+                <script type="text/javascript">
+                    toolBarAddLinkButton("<?= label('item_create') ?>",url('valuelist/item_create?id=<?= v('id')?>'));
+                </script>
+
             <?php
             }
 }?>

@@ -10,7 +10,7 @@ class Order_log_type extends CI_Controller {
 
     function index(){
         $oltm = new Order_log_type_model();
-        $data['objects'] = _format($oltm->find_all());
+        $data['objects'] = _format($oltm->find_all(),true);
         render($data);
     }
 
@@ -83,7 +83,7 @@ class Order_log_type extends CI_Controller {
         if(!empty($o)){
             $this->load->model('notice_rule_model');
             $nrm = new Notice_rule_model();
-            $data['objects'] = $nrm->find_all_by(array('log_type_id'=>$o['id']));
+            $data['objects'] = _format($nrm->find_all_by(array('log_type_id'=>$o['id'])),true);
             render($data);
         }else{
             show_404();

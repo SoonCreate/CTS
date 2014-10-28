@@ -12,6 +12,7 @@ class Valuelist extends CI_Controller {
     public function index()
     {
         $vm = new Valuelist_model();
+        $vm->order_by('valuelist_name');
         $rows = $vm->find_all();
         for($i=0;$i<count($rows);$i++){
             $rows[$i]['parent_name'] = '';
@@ -124,6 +125,7 @@ class Valuelist extends CI_Controller {
                                 //没有参数则默认第一个
                                 $parent['segment'] = $lines[0];
                                 $parent_segment = $lines[0]['value'];
+                                $data['parent_segment'] = $parent_segment;
                                 $data['parent'] = $parent;
                                 $data['editable_flag'] = $h['editable_flag'];
                                 $data['parent_inactive_flag'] = $lines[0]['inactive_flag'];

@@ -13,6 +13,8 @@ class Functions extends CI_Controller {
 	public function index()
 	{
         $fn = new Function_model();
+        $fn->order_by('controller');
+        $fn->order_by('function_name');
 		$data['functions'] = $fn->find_all();
         render($data);
 	}

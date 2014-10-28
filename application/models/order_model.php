@@ -209,10 +209,12 @@ class Order_model extends MY_Model{
 
     function add_logs($dll_type,$new_data,$old_data = NULL){
         $this->load->model('notice_rule_model');
+        $this->load->model('function_model');
         $nrm = new Notice_rule_model();
         $nm = new Notice_model();
         $oltm = new Order_log_type_model();
         $olm = new Order_log_model();
+        $fm = new Function_model();
         $need_reason = 0;
         $change_hash = time();
         $log['change_hash'] = $change_hash;
@@ -264,6 +266,12 @@ class Order_model extends MY_Model{
                                             $n['title'] = $this->_format_log($log_v,$order['order_type'],$t['title'],true);
                                             $n['content'] = $this->_format_log($log_v,$order['order_type'],$t['content'],true);
                                             $n['order_id'] = $new_data['id'];
+
+                                            //如果存在触发器的功能点，则获取功能点，参数为id=&order_id
+                                            $fn = $fm->find($rule['function_id']);
+                                            if(!empty($fn)){
+                                                $n['direct_url'] = $fn['controller'].'/'.$fn['action'].'?id='.$new_data['id'];
+                                            }
 
                                             //发给创建者
                                             if($rule['notice_created_by']){
