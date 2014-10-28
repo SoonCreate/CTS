@@ -210,15 +210,18 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
                     });
 
             }
+            return errorStatus;
         }else{
             if(remoteFail){
                 remoteFail();
             }
+            return false;
         }
     }else{
         if(remoteNoBack){
             remoteNoBack();
         }
+        return false;
     }
 
 
@@ -414,9 +417,13 @@ function dojoConfirm(content,title,callback,noback,type){
                 label : "确认",
                 onClick : function(){
                     if(callback){
-                        callback();
+                        var rt = callback();
+                        if(rt){
+                            confirmDialog.hide();
+                        }
+                    }else{
+                        confirmDialog.hide();
                     }
-                    confirmDialog.hide();
                 }
             });
             okbutton.set("class","success");

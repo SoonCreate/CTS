@@ -91,6 +91,21 @@
             </ul>
         </dd>
     </dl>
+
+    <hr/>
+    <?= render_form_open('order','reply','null','null','addContent') ?>
+
+    <?= render_form_textarea('content',TRUE);?>
+    <input name="id" id="id" type="hidden" value="<?= v('id') ?>"/>
+
+    <dl class="row dl-horizontal"><dt>&nbsp;</dt>
+        <dd>
+            <?= render_submit_button();?>
+
+        </dd>
+    </dl>
+    <?= render_form_close() ?>
+
     <hr/>
 
     <dl class="row dl-horizontal"><dt>
@@ -101,25 +116,12 @@
         <dd>
             <?php foreach($addfiles as $f):
                 //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
+                echo render_file_link($f);
                 ?>
-                <a href="<?= $f['full_path']?>"><?= $f['file_name']?></a>
-                <?= $f['description']?>
+                &nbsp;&nbsp;&nbsp;<?= $f['description']?><br/>
             <?php endforeach;?>
         </dd>
     </dl>
-    <hr/>
-    <?= render_form_open('order','reply','null','null','addContent') ?>
-
-            <?= render_form_textarea('content',TRUE);?>
-            <input name="id" id="id" type="hidden" value="<?= v('id') ?>"/>
-
-    <dl class="row dl-horizontal"><dt>&nbsp;</dt>
-        <dd>
-            <?= render_submit_button();?>
-
-        </dd>
-    </dl>
-    <?= render_form_close() ?>
     <hr/>
     <dl class="row dl-horizontal"><dt>本次投诉联系人</dt><dd><?= $contact ?></dd></dl>
     <dl class="row dl-horizontal"><dt>手机号码</dt><dd><?= $mobile_telephone ?></dd></dl>
@@ -205,6 +207,31 @@
     }
 
     function _uploadDialog(){
-
+        require(["dojox/layout/ContentPane","dojo/io/iframe"],function(ContentPane,iframe){
+            var cp = new ContentPane({
+                href : url("order/upload_file?id=<?= _v('id')?>"),
+                id : "uploadFileContentPane"
+            });
+            cp.startup();
+            dojoConfirm(cp,"文件上传",function(){
+                console.info(url("order/upload_file"));
+                iframe.send({
+                    form: "upload_file",
+                    method: "POST",
+                    timeOut: 2000,
+                    handleAs: "json",
+                    url : url("order/upload_file")
+                }).then(function(response) {
+                    console.info(response);
+                    //成功
+                    handleResponse(response,null,function(){
+                        refresh();
+                    })
+                },function (error) {
+                    //失败
+                    console.info(error);
+                });
+            });
+        });
     }
 </script>

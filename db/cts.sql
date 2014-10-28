@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2014 at 03:24 AM
+-- Generation Time: Oct 28, 2014 at 08:26 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `ct_files` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='上传文件记录表' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='上传文件记录表' AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `ct_files`
@@ -274,7 +274,16 @@ CREATE TABLE IF NOT EXISTS `ct_files` (
 INSERT INTO `ct_files` (`id`, `file_name`, `file_type`, `file_size`, `is_image`, `file_path`, `full_path`, `raw_name`, `orig_name`, `client_name`, `file_ext`, `image_width`, `image_height`, `image_type`, `image_size_str`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, '07849043460b9e3f5bf54b3dd5e69793.doc', 'application/msword', 40.5, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/07849043460b9e3f5bf54b3dd5e69793.doc', '07849043460b9e3f5bf54b3dd5e69793', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '.doc', 0, 0, '', '', 1412296792, 44, 1412296792, 44),
 (2, 'f14237f81c80fbb22517a0cbb368d8ae.doc', 'application/msword', 40.5, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/f14237f81c80fbb22517a0cbb368d8ae.doc', 'f14237f81c80fbb22517a0cbb368d8ae', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '2014年第3季度专项计划检查(自查)记录表_陈杨阳.doc', '.doc', 0, 0, '', '', 1412316270, 44, 1412316270, 44),
-(3, '86bfdf2b8c98f67fbccea33d8d26632c.jpg', 'image/jpeg', 20, 1, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/86bfdf2b8c98f67fbccea33d8d26632c.jpg', '86bfdf2b8c98f67fbccea33d8d26632c', '11-b.jpg', '11-b.jpg', '.jpg', 175, 131, 'jpeg', 'width="175" height="131"', 1412391635, 44, 1412391635, 44);
+(3, '86bfdf2b8c98f67fbccea33d8d26632c.jpg', 'image/jpeg', 20, 1, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/86bfdf2b8c98f67fbccea33d8d26632c.jpg', '86bfdf2b8c98f67fbccea33d8d26632c', '11-b.jpg', '11-b.jpg', '.jpg', 175, 131, 'jpeg', 'width="175" height="131"', 1412391635, 44, 1412391635, 44),
+(4, 'fc0cbe8d99139559fc410631a437be8d.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/fc0cbe8d99139559fc410631a437be8d.XLSX', 'fc0cbe8d99139559fc410631a437be8d', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414476555, 70, 1414476555, 70),
+(5, 'dec8667590aed67170e1944e69743dc3.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/dec8667590aed67170e1944e69743dc3.XLSX', 'dec8667590aed67170e1944e69743dc3', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414479331, 70, 1414479331, 70),
+(6, 'c24285da83892d44c6ba3932d6a38fc7.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/c24285da83892d44c6ba3932d6a38fc7.xlsx', 'c24285da83892d44c6ba3932d6a38fc7', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414479988, 70, 1414479988, 70),
+(7, '8a87a6cce1c33cee939e3a80670a3a7c.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/8a87a6cce1c33cee939e3a80670a3a7c.XLSX', '8a87a6cce1c33cee939e3a80670a3a7c', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414480130, 70, 1414480130, 70),
+(8, '5e52044254635fb53cab01dfe808a588.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/5e52044254635fb53cab01dfe808a588.xlsx', '5e52044254635fb53cab01dfe808a588', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480203, 70, 1414480203, 70),
+(9, 'ea35220a74b718b9cf47032ce337096b.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/ea35220a74b718b9cf47032ce337096b.xlsx', 'ea35220a74b718b9cf47032ce337096b', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480224, 70, 1414480224, 70),
+(10, 'd7cfdec929278ede788b6a0e3e185ca8.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/d7cfdec929278ede788b6a0e3e185ca8.XLSX', 'd7cfdec929278ede788b6a0e3e185ca8', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414480465, 70, 1414480465, 70),
+(11, '22990ec1aa179dc56221c741944e4bf4.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/22990ec1aa179dc56221c741944e4bf4.xlsx', '22990ec1aa179dc56221c741944e4bf4', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480577, 70, 1414480577, 70),
+(12, 'a5821682e5ca532f53601b66cf517944.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/a5821682e5ca532f53601b66cf517944.xlsx', 'a5821682e5ca532f53601b66cf517944', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480726, 70, 1414480726, 70);
 
 -- --------------------------------------------------------
 
@@ -981,6 +990,37 @@ INSERT INTO `ct_notice_rules` (`id`, `log_type_id`, `description`, `order_type`,
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `ct_notice_rules_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_notice_rules_v` (
+`id` int(10) unsigned
+,`log_type_id` int(11)
+,`description` varchar(255)
+,`order_type` varchar(255)
+,`notice_created_by` tinyint(1) unsigned
+,`notice_manager` tinyint(1) unsigned
+,`notice_leader` tinyint(1)
+,`when_new_value` varchar(255)
+,`when_old_value` varchar(255)
+,`default_role_id` int(10) unsigned
+,`inactive_flag` int(10) unsigned
+,`function_id` int(11)
+,`created_by` int(11)
+,`creation_date` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`log_type` varchar(45)
+,`log_type_desc` varchar(255)
+,`title` varchar(255)
+,`content` text
+,`need_reason_flag` tinyint(4)
+,`field_name` varchar(100)
+,`dll_type` varchar(20)
+,`field_valuelist_id` int(10) unsigned
+);
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ct_orders`
 --
 
@@ -1173,7 +1213,21 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles` (
   `description` varchar(255) NOT NULL COMMENT '文件描述',
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投诉单附件表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单附件表' AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `ct_order_addfiles`
+--
+
+INSERT INTO `ct_order_addfiles` (`id`, `order_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `file_id`, `description`) VALUES
+(1, 145, 70, 1414479331, 1414479331, 70, 5, '附件测试'),
+(2, 145, 70, 1414479988, 1414479988, 70, 6, '安防'),
+(3, 145, 70, 1414480130, 1414480130, 70, 7, '111'),
+(4, 145, 70, 1414480204, 1414480204, 70, 8, 'a'),
+(5, 145, 70, 1414480224, 1414480224, 70, 9, 'aa'),
+(6, 145, 70, 1414480465, 1414480465, 70, 10, ''),
+(7, 145, 70, 1414480577, 1414480577, 70, 11, ''),
+(8, 145, 70, 1414480726, 1414480726, 70, 12, '');
 
 -- --------------------------------------------------------
 
@@ -1191,6 +1245,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles_v` (
 ,`description` varchar(255)
 ,`file_name` varchar(255)
 ,`full_path` varchar(255)
+,`client_name` varchar(100)
 );
 -- --------------------------------------------------------
 
@@ -1217,7 +1272,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=206 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=207 ;
 
 --
 -- Dumping data for table `ct_order_contents`
@@ -1420,7 +1475,8 @@ INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `cre
 (202, 146, 'asdf', 47, 1414049889, 1414049889, 47),
 (203, 147, 'ASDFSADF ', 45, 1414050787, 1414050787, 45),
 (204, 148, 'asdf', 45, 1414120204, 1414120204, 45),
-(205, 149, 'sadfsadfsdaf', 45, 1414131122, 1414131122, 45);
+(205, 149, 'sadfsadfsdaf', 45, 1414131122, 1414131122, 45),
+(206, 145, 'asdf', 70, 1414481082, 1414481082, 70);
 
 -- --------------------------------------------------------
 
@@ -3007,11 +3063,20 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `ct_notice_rules_v`
+--
+DROP TABLE IF EXISTS `ct_notice_rules_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_notice_rules_v` AS select `nr`.`id` AS `id`,`nr`.`log_type_id` AS `log_type_id`,`nr`.`description` AS `description`,`nr`.`order_type` AS `order_type`,`nr`.`notice_created_by` AS `notice_created_by`,`nr`.`notice_manager` AS `notice_manager`,`nr`.`notice_leader` AS `notice_leader`,`nr`.`when_new_value` AS `when_new_value`,`nr`.`when_old_value` AS `when_old_value`,`nr`.`default_role_id` AS `default_role_id`,`nr`.`inactive_flag` AS `inactive_flag`,`nr`.`function_id` AS `function_id`,`nr`.`created_by` AS `created_by`,`nr`.`creation_date` AS `creation_date`,`nr`.`last_update_date` AS `last_update_date`,`nr`.`last_updated_by` AS `last_updated_by`,`olt`.`log_type` AS `log_type`,`olt`.`description` AS `log_type_desc`,`olt`.`title` AS `title`,`olt`.`content` AS `content`,`olt`.`need_reason_flag` AS `need_reason_flag`,`olt`.`field_name` AS `field_name`,`olt`.`dll_type` AS `dll_type`,`olt`.`field_valuelist_id` AS `field_valuelist_id` from (`ct_notice_rules` `nr` join `ct_order_log_types` `olt`) where (`olt`.`id` = `nr`.`log_type_id`);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `ct_order_addfiles_v`
 --
 DROP TABLE IF EXISTS `ct_order_addfiles_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_addfiles_v` AS select `oa`.`id` AS `id`,`oa`.`order_id` AS `order_id`,`oa`.`created_by` AS `created_by`,`oa`.`creation_date` AS `creation_date`,`oa`.`last_update_date` AS `last_update_date`,`oa`.`last_updated_by` AS `last_updated_by`,`oa`.`file_id` AS `file_id`,`oa`.`description` AS `description`,`f`.`file_name` AS `file_name`,`f`.`full_path` AS `full_path` from (`ct_order_addfiles` `oa` join `ct_files` `f`) where (`f`.`id` = `oa`.`file_id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_addfiles_v` AS select `oa`.`id` AS `id`,`oa`.`order_id` AS `order_id`,`oa`.`created_by` AS `created_by`,`oa`.`creation_date` AS `creation_date`,`oa`.`last_update_date` AS `last_update_date`,`oa`.`last_updated_by` AS `last_updated_by`,`oa`.`file_id` AS `file_id`,`oa`.`description` AS `description`,`f`.`file_name` AS `file_name`,`f`.`full_path` AS `full_path`,`f`.`client_name` AS `client_name` from (`ct_order_addfiles` `oa` join `ct_files` `f`) where (`f`.`id` = `oa`.`file_id`);
 
 -- --------------------------------------------------------
 

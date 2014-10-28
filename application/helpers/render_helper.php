@@ -433,9 +433,9 @@ function render_label($name,$required = FALSE,$label = null){
         $label = label($name);
     }
     if($required){
-        return '<label for="'.$name.'_'._sess('cm').'">'.'* '.$label."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'_'._sess('mid').'">'.'* '.$label."</label>";
     }else{
-        return '<label for="'.$name.'_'._sess('cm').'">'.$label."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'_'._sess('mid').'">'.$label."</label>";
     }
 }
 

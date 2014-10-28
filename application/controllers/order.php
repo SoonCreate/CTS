@@ -210,26 +210,44 @@ class Order extends CI_Controller {
     }
 
     function upload_file(){
-        if($_FILES){
-            $this->load->library('upload', load_upload_config());
-            print_r(load_upload_config());
-            if ( ! $this->upload->do_upload())
-            {
-                echo $this->upload->display_errors();
-            }
-            else
-            {
-                $this->load->model('file_model');
-                $fm = new File_model();
-                if($fm->insert($this->upload->data())){
-                    print_r($this->upload->data());
-                }else{
-                    echo validation_errors('<div class="error">', '</div>');
-                }
-            }
+        $om = new Order_model();
+        $order = $om->find(v('id'));
+        if(empty($order)){
+            show_404();
         }else{
-            render();
+            if($_FILES && $_POST){
+                $this->load->library('upload', load_upload_config());
+                if ( ! $this->upload->do_upload())
+                {
+                    foreach($this->upload->error_msg as $msg){
+                        custz_message('E',$msg);
+                    }
+                }
+                else
+                {
+                    $this->load->model('file_model');
+                    $this->load->model('order_addfile_model');
+                    $fm = new File_model();
+                    $oam = new Order_addfile_model();
+                    $this->db->trans_start();
+                    $data['file_id'] = $fm->insert($this->upload->data());
+                    $data['order_id'] = $order['id'];
+                    $data['description'] = v('description');
+                    $oam->insert($data);
+                    $this->db->trans_complete();
+                    if($this->db->trans_status() === TRUE){
+                        custz_message('I','文件上传成功');
+                    }else{
+                        custz_message('E','文件上传失败');
+                    }
+                }
+                echo '<html><body><textarea>'.json_encode(_sess('output')).'</textarea></body></html>';
+                unset_sess('output');
+            }else{
+                $this->load->view('order/upload_file');
+            }
         }
+
     }
 
     //选择责任人（部门经理）
