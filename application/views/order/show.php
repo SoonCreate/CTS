@@ -110,7 +110,7 @@
 
     <dl class="row dl-horizontal"><dt>
             <?php if(!is_order_locked($status)){?>
-                <a href="#" onclick="_uploadDialog()">上传附件</a>
+                <a href="#" onclick="_orderUploadDialog()">上传附件</a>
             <?php }?>
             附件</dt>
         <dd>
@@ -206,7 +206,7 @@
 //        });
     }
 
-    function _uploadDialog(){
+    function _orderUploadDialog(){
         require(["dojox/layout/ContentPane","dojo/io/iframe"],function(ContentPane,iframe){
             var cp = new ContentPane({
                 href : url("order/upload_file?id=<?= _v('id')?>"),
@@ -214,7 +214,6 @@
             });
             cp.startup();
             dojoConfirm(cp,"文件上传",function(){
-                console.info(url("order/upload_file"));
                 iframe.send({
                     form: "upload_file",
                     method: "POST",
@@ -222,7 +221,6 @@
                     handleAs: "json",
                     url : url("order/upload_file")
                 }).then(function(response) {
-                    console.info(response);
                     //成功
                     handleResponse(response,null,function(){
                         refresh();

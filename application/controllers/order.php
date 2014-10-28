@@ -244,7 +244,7 @@ class Order extends CI_Controller {
                 echo '<html><body><textarea>'.json_encode(_sess('output')).'</textarea></body></html>';
                 unset_sess('output');
             }else{
-                $this->load->view('order/upload_file');
+                $this->load->view('upload_file');
             }
         }
 

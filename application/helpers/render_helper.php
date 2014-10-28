@@ -226,7 +226,8 @@ function render_radio_with_value(){
 
 //输出文件链接
 function render_file_link($file){
-    return '<a href="'.base_url(_config('upload_path')).'/'.$file['file_name'].'" title="'.$file['description'].'">'.$file['client_name'].'</a>';
+    return '<a href="'._url('welcome','file_download',array('name'=>$file['client_name'],'path'=>base_url(_config('upload_path')).'/'.$file['file_name'])).'"
+    title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
 
 function render_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail= 'null',$remoteSuccess= 'null',$remoteNoBack= 'null'){

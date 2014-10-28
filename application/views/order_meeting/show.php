@@ -23,6 +23,7 @@
 //更改文件名下载使用以下，需加入download的helper
 //   echo  force_download($f['client_name'], file_get_contents(FCPATH._config('upload_path').'/'.$f['file_name']));
                 echo render_file_link($f);
+                echo '&nbsp;&nbsp;&nbsp;'.$f['description'].'<br/>';
             }?></dd></dl>
 
 </div>

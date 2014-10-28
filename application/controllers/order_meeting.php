@@ -17,10 +17,13 @@ class Order_meeting extends CI_Controller {
         if(empty($order)){
             show_404();
         }else{
+            $this->load->model('meeting_file_model');
+            $mfm = new Meeting_file_model();
             $omm = new Order_meeting_model();
             $objects = $omm->find_all_by_view(array('order_id'=>$order['id']));
             for($i=0;$i<count($objects);$i++){
                 $objects[$i] = $this->_meeting_status($objects[$i]);
+                $objects[$i]['file_count'] = $mfm->count_by(array('meeting_id'=>$objects[$i]['id']));
             }
             $data['objects'] = _format($objects);
             if(check_meeting_auth($order['order_type'],$order['category'],'create')){
@@ -132,34 +135,31 @@ class Order_meeting extends CI_Controller {
                 $this->load->library('upload', load_upload_config());
                 if ( ! $this->upload->do_upload())
                 {
-                    custz_message('E',$this->upload->display_errors()) ;
+                    foreach($this->upload->error_msg as $msg){
+                        custz_message('E',$msg);
+                    }
                 }
                 else
                 {
                     $this->load->model('file_model');
                     $fm = new File_model();
                     $omf = new Meeting_file_model();
-                    $this->db->trans_begin();
-                    $id = $fm->insert($this->upload->data());
-                    if($id){
-                        $data['file_id'] = $id;
-                        $data['meeting_id'] = $m['id'];
-                        $data['description'] = v('description');
-                        if($omf->insert($data)){
-                            $this->db->trans_commit();
-                            go_back();
-                            message_db_success();
-                        }else{
-                            $this->db->trans_rollback();
-                            validation_error();
-                        }
+                    $this->db->trans_start();
+                    $data['file_id'] = $fm->insert($this->upload->data());
+                    $data['meeting_id'] = $m['id'];
+                    $data['description'] = v('description');
+                    $omf->insert($data);
+                    $this->db->trans_complete();
+                    if($this->db->trans_status() === TRUE){
+                        custz_message('I','文件上传成功');
                     }else{
-                        $this->db->trans_rollback();
-                        validation_error();
+                        custz_message('E','文件上传失败');
                     }
                 }
+                echo '<html><body><textarea>'.json_encode(_sess('output')).'</textarea></body></html>';
+                unset_sess('output');
             }else{
-                render();
+                $this->load->view('upload_file');
             }
         }
     }

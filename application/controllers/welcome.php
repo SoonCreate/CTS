@@ -137,6 +137,11 @@ class Welcome extends CI_Controller {
         }
     }
 
+    function file_download(){
+        $data = file_get_contents(v('path')); // 读文件内容
+        force_download(v('name'), $data);
+    }
+
     //验证码
     private
     function code($num,$w,$h) {
