@@ -663,28 +663,97 @@ hr {
 .c-orange a:hover,a.c-orange:hover{}
 
 /*3.1.14 文字颜色强调
-	Example:		class="text-muted/text-primary/text-warning/text-error/text-danger/text-success/text-info"
-	Explain:		柔和/重要/警告/错误/危险/成功/信息
+	Example:		class="text-muted/text-primary/text-success/text-info/text-warning/text-danger"
+	Explain:
 */
-.text-muted{color:#999}a.text-muted:hover{color:#808080}
-.text-primary{color:#428BCA}a.text-primary:hover{color:#247dc9}
-.text-warning{color:#f33}a.text-warning:hover{color:#f03}
-.text-error{color:#f33}a.text-error:hover{color:#f03}
-.text-danger{color:#c00}a.text-danger:hover{color:#900}
-.text-success{color:#0c0}a.text-success:hover{color:#093}
-.text-info{color:#1faef2}a.text-info:hover{color:#06c}
-.text-price{color:#f60}a.text-price:hover{color:#f60}
+.text-muted {
+    color: #777;
+}
+.text-primary {
+    color: #428bca;
+}
+a.text-primary:hover {
+    color: #3071a9;
+}
+.text-success {
+    color: #3c763d;
+}
+a.text-success:hover {
+    color: #2b542c;
+}
+.text-info {
+    color: #31708f;
+}
+a.text-info:hover {
+    color: #245269;
+}
+.text-warning {
+    color: #8a6d3b;
+}
+a.text-warning:hover {
+    color: #66512c;
+}
+.text-danger {
+    color: #a94442;
+}
+a.text-danger:hover {
+    color: #843534;
+}
+.bg-primary {
+    color: #fff;
+    background-color: #428bca;
+}
+a.bg-primary:hover {
+    background-color: #3071a9;
+}
+.bg-success {
+    background-color: #dff0d8;
+}
+a.bg-success:hover {
+    background-color: #c1e2b3;
+}
+.bg-info {
+    background-color: #d9edf7;
+}
+a.bg-info:hover {
+    background-color: #afd9ee;
+}
+.bg-warning {
+    background-color: #fcf8e3;
+}
+a.bg-warning:hover {
+    background-color: #f7ecb5;
+}
+.bg-danger {
+    background-color: #f2dede;
+}
+a.bg-danger:hover {
+    background-color: #e4b9b9;
+}
 /*3.1.15 缩略语
 	Example:		<abbr title="User Interface" class="initialism">UI</abbr>
 	Explain:		
 */
-abbr[title],abbr[data-original-title]{cursor:help;border-bottom:1px dotted #999}
-abbr.initialism{font-size:90%;text-transform:uppercase}
+abbr[title],
+abbr[data-original-title] {
+    cursor: help;
+    border-bottom: 1px dotted #777;
+}
+abbr.initialism {
+    font-size: 90%;
+    text-transform: uppercase;
+}
 /*3.1.16 地址
 	Example:		<address>北京市海淀区上地……</address>
 	Explain:		
 */
-address{display:block;margin-bottom:20px;font-style:normal;line-height:20px}
+address {
+    display:block;
+    margin-bottom: 20px;
+    font-style: normal;
+    line-height: 20px;
+}
+
 /*3.1.17 引用
 	Example:		<blockquote>这是引用的内容</blockquote>
 	Explain:		
@@ -721,9 +790,27 @@ sup{top:-0.5em}sub{bottom:-0.25em}
 					<ol class="linenums"><li>有序列表</li><li>有序列表</li><li>有序列表</li></ol>
 	Explain:		
 */
-ul.unstyled,ol.unstyled{margin-left:0;list-style:none}
+ul.list-unstyled,
+ol.list-unstyled{
+    margin-left:0;
+    list-style:none;
+}
+ul.list-inline,
+ol.list-inline {
+    margin-left:0;
+    list-style:none;
+}
+ul.list-inline > li,
+ol.list-inline > li {
+    display:inline-block;
+    *display:inline;
+    padding-right:5px;
+    padding-left:5px;
+    *zoom:1;
+}
+/*ul.unstyled,ol.unstyled{margin-left:0;list-style:none}
 ul.inline,ol.inline{margin-left:0;list-style:none}
-ul.inline>li,ol.inline>li{display:inline-block;*display:inline;padding-right:5px;padding-left:5px;*zoom:1}
+ul.inline>li,ol.inline>li{display:inline-block;*display:inline;padding-right:5px;padding-left:5px;*zoom:1}*/
 ol.linenums{list-style:decimal outside none;margin:0 0 0 22px;/* IE indents via margin-left */}
 .tlist li{line-height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}/*禁止换行*/
 	.dot-1{padding-left:10px;background:url(../images/dot_1.gif) no-repeat 3px center}/*圆点*/

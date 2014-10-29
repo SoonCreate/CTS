@@ -433,7 +433,6 @@ html, body {
 .fixtop a:hover{
     background:#fff;
     color:#26AF92;
-
 }
 .fixnavbar{
     position: fixed;
@@ -442,43 +441,26 @@ html, body {
     right: 15px;
     height:41px;
     font-size:11px;
+}
 
-}
-.fixnavbar ul li{
-    font-size:17px;
-    display:block;
-    float: left;
-    margin-right: 1px;
-    padding :5px 10px;
-    border-radius: 5px;
+.fixnavbar ul li a{
+    display: inline-block;
+    padding: 5px 6px;
+    border-radius: 3px;
     color:#777;
-    min-width: 50px;
-    cursor: pointer;
+    font-weight: bold;
 }
-.fixnavbar ul li:hover{
-    background: #26AF92;
+.fixnavbar ul li a:hover{
     color:#fff;
+    background: #26AF92;
 }
+
 .fixnavbar ul li i{
+    font-size: 17px;
     padding-top:5px !important;
     margin-right: 6px;
 }
-.fixnavbar ul li .text{
-    display: inline-block;
-    font-size:12px;
-    font-weight: bolder;
-    font-family:Microsoft Yahei;
-    margin:0;
-    padding:0;
-}
-.fixnavbar ul li a,
-.fixnavbar ul li .text a,
-.fixtop a,
-.applist a,
-.gridx a,
-.dijit a{
-    text-decoration: none;
-}
+
 .messageno{
     z-index: 992;
     position: fixed;
@@ -488,16 +470,16 @@ html, body {
 .scbadge {
     display: inline-block;
     min-width: 10px;
-    padding: 3px 6px;
-    font-size: 12px;
+    padding: 2px 4px;
+    font-size: 8px;
     font-weight: bold;
-    color: #ffffff;
+    color: #fff;
     line-height: 1;
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
     background-color: #cc0000 !important;
-    border-radius: 12px;
+    border-radius: 15px;
     border: 2px solid #fff;
 }
 /*TAB内容框，边框bug相关*/
