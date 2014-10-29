@@ -4,20 +4,25 @@ function goto(url,target,noRender,noRecord){
     if(wso == undefined){
         wso = currentWso();
     }
-    if(!noRender){
-        if(!noRecord){
-            recordWso();
-        }
-        wso.set("href",url);
-        $dijit.byId("mainTabContainer").selectChild(wso,true);
-    }else{
-        dojoConfirm("是否确定执行此操作？",null,function(){
-            $ajax.get(url,{handleAs : "json"}).then(function(response){
-                handleResponse(response,null,function(){
-                    refresh();
+    //wso都没有定义，比如登录，注册页面
+    if(wso){
+        if(!noRender){
+            if(!noRecord){
+                recordWso();
+            }
+            wso.set("href",url);
+            $dijit.byId("mainTabContainer").selectChild(wso,true);
+        }else{
+            dojoConfirm("是否确定执行此操作？",null,function(){
+                $ajax.get(url,{handleAs : "json"}).then(function(response){
+                    handleResponse(response,null,function(){
+                        refresh();
+                    });
                 });
             });
-        });
+        }
+    }else{
+        redirect(url);
     }
 
 }
@@ -115,12 +120,12 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
         request.post(object.attributes["action"]["value"], {
             // Send the username and password
             data: domForm.toObject(object),
-            // Wait 2 seconds for a response，由于机器性能不同，可能反馈的效率不一，设置5秒以防万一
-            timeout: 5000,
+            // Wait 2 seconds for a response，由于机器性能不同，可能反馈的效率不一，设置10秒以防万一
+            timeout: 10000,
             handleAs : "json"
         }).then(function(response){
-            clearCurrentStatus();
-            handleResponse(response,remoteFail,remoteSuccess,remoteNoBack);
+            clearCurrentStatus(object);
+            handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,object);
         },function(e){
             showMessage({type : 'E',content : "请求出现未知出错，请联系管理员！"});
             console.log(e);
@@ -130,22 +135,22 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
 }
 
 //清楚当前错误（dijitTextBoxError）class的dom并清除状态
-function clearCurrentStatus(){
-    require(["dojo/dom-class"],function(domClass){
-        //formAlertclose();
-        var wso = currentWso();
-        var nodes = $(".dijitTextBoxError",wso.domNode);
-        for(var i = 0; i<nodes.length;i++){
-            var widgetid = nodes[i]["attributes"]["widgetid"]["value"];
-            if(widgetid){
-                $dijit.byId(widgetid).set("state","");
-            }
+function clearCurrentStatus(object){
+    var nodes = $(".dijitTextBoxError",object);
+    for(var i = 0; i<nodes.length;i++){
+        var widgetid = nodes[i]["attributes"]["widgetid"]["value"];
+        if(widgetid){
+            $dijit.byId(widgetid).set("state","");
         }
-    });
+    }
+    var errorNodes = $('div[id^="error_"]',object);
+    for(var y=0;y<errorNodes.length;y++){
+        errorNodes[y].innerHTML = "";
+    }
 }
 
 //处理返回值
-function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
+function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,target){
     if(response){
         var errorStatus = false;
         //处理验证信息
@@ -153,7 +158,7 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack){
             errorStatus = true;
             //提示验证消息
             //addFormAlertLine(response["validation"]);
-            renderValidError(response["validation"]);
+            renderValidError(response["validation"],target);
         }
 
         //处理消息
@@ -296,7 +301,7 @@ function formAlertclose(){
     });
 }
 
-function renderValidError(lines){
+function renderValidError(lines,target){
 
     for(var i=0;i<lines.length;i++){
         for (var key in lines[i]) {
@@ -306,9 +311,11 @@ function renderValidError(lines){
                 //object.focus();
                 object.set("state","Error");
                 //object.displayMessage(lines[i][key]);
-                var wso = currentWso();
+                if(target == undefined){
+                    target = currentWso().domNode;
+                }
                 //object.displayMessage("gogo");
-                var nodes = $("#error_"+fixDijitId(key),wso.domNode);
+                var nodes = $("#error_"+fixDijitId(key),target);
                 for(var y=0;y<nodes.length;y++){
                     nodes[y].innerHTML = lines[i][key];
                 }

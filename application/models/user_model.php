@@ -30,28 +30,35 @@ class User_model extends MY_Model{
         $this->db->trans_begin();
         $user_id = $this->insert(elements(array('username','password','full_name','initial_pass_flag'),$data,NULL));
         if($user_id){
+            $this->load->model('valuelist_line_model');
             //内容
-            $row['user_id'] = $user_id;
-            $roles = $this->default_roles($data['order_type']);
-            if(!empty($roles)){
-                //多个默认角色
-                foreach($roles as $role){
-                    $r = $this->role->find_by(array('role_name'=>$role['value']));
-                    if(!empty($r)){
-                        $row['role_id'] = $r['id'];
-                        $this->user_role->insert($row);
+            $vlm = new Valuelist_line_model();
+            //查找对应的订单类型
+            $line = $vlm->find_by_view(array('valuelist_name'=>'vl_register_select','segment_value'=>$data['user_type']));
+            if(!empty($line)){
+                $row['user_id'] = $user_id;
+                $roles = $this->default_roles($line['parent_segment']);
+                if(!empty($roles)){
+                    //多个默认角色
+                    foreach($roles as $role){
+                        $r = $this->role->find_by(array('role_name'=>$role['value']));
+                        if(!empty($r)){
+                            $row['role_id'] = $r['id'];
+                            $this->user_role->insert($row);
+                        }
                     }
-                }
-                if ($this->db->trans_status() === FALSE) {
-                    $this->db->trans_rollback();
+                    if ($this->db->trans_status() === FALSE) {
+                        $this->db->trans_rollback();
+                    }else{
+                        $this->db->trans_commit();
+                        $return = true;
+                    }
                 }else{
-                    $this->db->trans_commit();
-                    $return = true;
+                    $this->db->trans_rollback();
                 }
             }else{
                 $this->db->trans_rollback();
             }
-
         }else{
             $this->db->trans_rollback();
         }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= full_name(_sess('uid'),false,false)?></title>
+    <title><?= label('version')?></title>
     <?php $this->load->view('_header') ?>
 </head>
 <body class="sc">

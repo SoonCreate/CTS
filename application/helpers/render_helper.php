@@ -97,7 +97,7 @@ function render_no_auth_error(){
 }
 
 function render_form_error($field){
-    return '<div id="error_'.$field.'_'._sess('cm').'"></div>';
+    return '<div id="error_'.$field.'_'._sess('cm').'_'._sess('mid').'"></div>';
 }
 
 //输出到view里面的option
@@ -123,18 +123,23 @@ function render_options_by_array($options){
 }
 
 //输出到view里的radio
-function render_radio($name,$valuelist_name,$parent_segment_value = null){
+function render_radio($name,$label = null,$valuelist_name,$parent_segment_value = null){
     $options = get_options($valuelist_name,$parent_segment_value );
+    if(is_null($label)){
+        $label = label($name);
+    }
     $echo = "";
+    $echo = $echo . '<dl class="row dl-horizontal"> <dt><label>'.$label.'</label></dt><dd>';
     for($i=0;$i<count($options);$i++){
         if($i>0){
             $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
-                '"/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
+                '"/>'.render_label($options[$i]['value'],false,$options[$i]['label']);
         }else{
             $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
-                '" checked/><label for="'.$options[$i]['value'].'">'.$options[$i]['label'].'</label>';
+                '" checked/>'.render_label($options[$i]['value'],false,$options[$i]['label']);
         }
     }
+    $echo = $echo .'</dd></dl>';
     return $echo;
 }
 
@@ -205,7 +210,7 @@ function render_radio_with_value(){
                 }
             }
         }else{
-            $echo = $echo . render_radio($args[0],$args[1]);
+            $echo = $echo . render_radio($args[0],null,$args[1]);
         }
     }elseif(count($args) > 3){
         $options = get_options($args[1],$args[2] );
@@ -429,14 +434,14 @@ function render_button_group($buttons = array(),$has_submit = TRUE){
     return $echo;
 }
 
-function render_label($name,$required = FALSE,$label = null){
+function render_label($id,$required = FALSE,$label = null){
     if(is_null($label)){
-        $label = label($name);
+        $label = label($id);
     }
     if($required){
-        return '<label for="'.$name.'_'._sess('cm').'_'._sess('mid').'">'.'* '.$label."</label>";
+        return '<label for="'.$id.'_'._sess('cm').'_'._sess('mid').'">'.'* '.$label."</label>";
     }else{
-        return '<label for="'.$name.'_'._sess('cm').'_'._sess('mid').'">'.$label."</label>";
+        return '<label for="'.$id.'_'._sess('cm').'_'._sess('mid').'">'.$label."</label>";
     }
 }
 

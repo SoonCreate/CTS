@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2014 at 08:26 AM
+-- Generation Time: Oct 29, 2014 at 07:36 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -165,7 +165,7 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
 (34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, 'string', NULL, NULL, NULL, NULL),
 (35, 'word_truncate', '文字截断默认长度', '100', 1, 'number', NULL, NULL, NULL, NULL),
-(36, 'allow_register', '是否允许用户注册', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
+(36, 'allow_register', '是否允许用户注册', 'TRUE', 1, 'boolean', NULL, NULL, 1414557033, 44),
 (37, 'feedback_star', '用户反馈的打分星数', '5', 1, 'number', NULL, NULL, 1413693616, 44),
 (38, 'feedback_control', '反馈功能开关', 'FALSE', 1, 'boolean', NULL, NULL, 1414463049, 44),
 (39, 'pcd_change_times', '计划完成日期允许修改次数', '2', 1, 'number', NULL, NULL, 1413960977, 44),
@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `ct_files` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='上传文件记录表' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='上传文件记录表' AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `ct_files`
@@ -283,7 +283,11 @@ INSERT INTO `ct_files` (`id`, `file_name`, `file_type`, `file_size`, `is_image`,
 (9, 'ea35220a74b718b9cf47032ce337096b.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/ea35220a74b718b9cf47032ce337096b.xlsx', 'ea35220a74b718b9cf47032ce337096b', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480224, 70, 1414480224, 70),
 (10, 'd7cfdec929278ede788b6a0e3e185ca8.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/d7cfdec929278ede788b6a0e3e185ca8.XLSX', 'd7cfdec929278ede788b6a0e3e185ca8', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414480465, 70, 1414480465, 70),
 (11, '22990ec1aa179dc56221c741944e4bf4.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/22990ec1aa179dc56221c741944e4bf4.xlsx', '22990ec1aa179dc56221c741944e4bf4', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480577, 70, 1414480577, 70),
-(12, 'a5821682e5ca532f53601b66cf517944.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/a5821682e5ca532f53601b66cf517944.xlsx', 'a5821682e5ca532f53601b66cf517944', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480726, 70, 1414480726, 70);
+(12, 'a5821682e5ca532f53601b66cf517944.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/a5821682e5ca532f53601b66cf517944.xlsx', 'a5821682e5ca532f53601b66cf517944', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414480726, 70, 1414480726, 70),
+(13, '6ca36bedf0b097005d6ee5d764cc696a.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/6ca36bedf0b097005d6ee5d764cc696a.XLSX', '6ca36bedf0b097005d6ee5d764cc696a', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414483483, 73, 1414483483, 73),
+(14, 'a32dbbcc4d559d0bbf85fde45cd7b75e.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/a32dbbcc4d559d0bbf85fde45cd7b75e.XLSX', 'a32dbbcc4d559d0bbf85fde45cd7b75e', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414483662, 73, 1414483662, 73),
+(15, 'f25ed4263f2845d624b1d5020f67e978.XLSX', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 11.53, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/f25ed4263f2845d624b1d5020f67e978.XLSX', 'f25ed4263f2845d624b1d5020f67e978', 'export.XLSX', 'export.XLSX', '.XLSX', 0, 0, '', '', 1414483700, 73, 1414483700, 73),
+(16, '1bf3995adc7fd51b2642b085b8ec4f5c.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 20.65, 0, 'E:/xampp/htdocs/CTS/resources/uploads/', 'E:/xampp/htdocs/CTS/resources/uploads/1bf3995adc7fd51b2642b085b8ec4f5c.xlsx', '1bf3995adc7fd51b2642b085b8ec4f5c', '安防.xlsx', '安防.xlsx', '.xlsx', 0, 0, '', '', 1414484724, 73, 1414484724, 73);
 
 -- --------------------------------------------------------
 
@@ -490,7 +494,7 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
   `last_update_date` int(10) unsigned DEFAULT NULL,
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议文件记录表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议文件记录表' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_meeting_files`
@@ -498,7 +502,9 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
 
 INSERT INTO `ct_meeting_files` (`id`, `meeting_id`, `file_id`, `description`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
 (1, 1, 2, '会议纪要', 44, 1412316270, 1412316270, 44),
-(2, 2, 3, 'asfd', 44, 1412391635, 1412391635, 44);
+(2, 2, 3, 'asfd', 44, 1412391635, 1412391635, 44),
+(3, 7, 13, 'adf', 73, 1414483483, 1414483483, 73),
+(4, 7, 14, 'adf', 73, 1414483662, 1414483662, 73);
 
 -- --------------------------------------------------------
 
@@ -1213,7 +1219,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles` (
   `description` varchar(255) NOT NULL COMMENT '文件描述',
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单附件表' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单附件表' AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `ct_order_addfiles`
@@ -1227,7 +1233,8 @@ INSERT INTO `ct_order_addfiles` (`id`, `order_id`, `created_by`, `creation_date`
 (5, 145, 70, 1414480224, 1414480224, 70, 9, 'aa'),
 (6, 145, 70, 1414480465, 1414480465, 70, 10, ''),
 (7, 145, 70, 1414480577, 1414480577, 70, 11, ''),
-(8, 145, 70, 1414480726, 1414480726, 70, 12, '');
+(8, 145, 70, 1414480726, 1414480726, 70, 12, ''),
+(9, 149, 73, 1414484724, 1414484724, 73, 16, '');
 
 -- --------------------------------------------------------
 
@@ -2661,7 +2668,7 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`username`),
   KEY `Index_3` (`username`,`password`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统用户信息表' AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统用户信息表' AUTO_INCREMENT=79 ;
 
 --
 -- Dumping data for table `ct_users`
@@ -2672,7 +2679,7 @@ INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`,
 (45, 'reporter_customer', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', '客户测试账号', '', '', '', '', '客户测试账号', 0, 0, 0, 1, 44, 1412229944, 1413633221, 44),
 (46, 'reporter_vender', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', '供应商测试账号', '', '', '', '', '供应商测试账号', 0, 0, 0, 1, 44, 1412230134, 1413633243, 44),
 (47, 'reporter_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '内部员工测试账号', '', '', '', '', '内部员工测试账号', 0, 0, 0, 1, 44, 1412230196, 1413633237, 44),
-(48, 'dispatcher', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '调度员测试账号1', 'gs1357@qq.com', '', '', '', '调度员测试账号', 0, 1, 0, 1, 44, 1412230229, 1414396912, 44),
+(48, 'dispatcher', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', '调度员测试账号1', 'gs1357@qq.com', '', '', '', '调度员测试账号', 0, 1, 0, 0, 44, 1412230229, 1414556731, 48),
 (66, 'leader_vendor', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '采购经理测试账号', '383731104@qq.com', '', '', '', '采购经理测试账号', 0, 1, 0, 1, 44, 1412231054, 1413704167, 66),
 (67, 'leader_customer', '3421ecde2a5de6543b48460b867cf323b018bc22', 'female', '质量经理测试账号', '', '', '', '', '质量经理测试账号', 0, 0, 0, 0, 44, 1412404281, 1413633152, 44),
 (68, 'leader_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'female', '', '', '', '', '', '人事经理测试账号', 0, 0, 0, 1, 44, 1412404348, 1413633189, 44),
@@ -2757,7 +2764,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`user_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=82 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=85 ;
 
 --
 -- Dumping data for table `ct_user_roles`
@@ -2836,7 +2843,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=31 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -2868,7 +2875,8 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (26, 'vl_auth_object', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1413513361, 44, 1413513361, 44),
 (27, 'default_status', '投诉单默认状态', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, 1413850930, 44),
 (28, 'ao_action', '权限对象通常操作', 0, NULL, NULL, NULL, NULL, 0, 1, 1413941359, 44, 1413941359, 44),
-(29, 'vl_functions', '功能列表', 1, 'description', 'id', 'ct_functions', '', NULL, 1, 1414459315, 44, 1414459315, 44);
+(29, 'vl_functions', '功能列表', 1, 'description', 'id', 'ct_functions', '', NULL, 1, 1414459315, 44, 1414459315, 44),
+(30, 'vl_register_select', '用户类型（用户注册用）', 0, NULL, NULL, NULL, NULL, 1, 1, 1414558238, 44, 1414558299, 44);
 
 -- --------------------------------------------------------
 
@@ -2901,7 +2909,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=59 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=62 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -2956,7 +2964,10 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (55, 28, '30', 'show', '查看', 0, 2, '', 1413941397, 44, 1413941455, 44),
 (56, 28, '40', 'destroy', '删除', 0, 3, '', 1413941429, 44, 1413941465, 44),
 (57, 28, '50', 'inactive', '失效', 0, 4, '', 1413943072, 66, 1413943072, 66),
-(58, 28, '60', 'run', '执行', 0, 5, '', 1413943089, 66, 1413943253, 66);
+(58, 28, '60', 'run', '执行', 0, 5, '', 1413943089, 66, 1413943253, 66),
+(59, 30, '10', 'vendor', '供应商', 0, 0, 'vendor', 1414558391, 44, 1414558391, 44),
+(60, 30, '10', 'customer', '客户', 0, 0, 'customer', 1414558402, 44, 1414558402, 44),
+(61, 30, '10', 'employee', '内部员工', 0, 0, 'employee', 1414558418, 44, 1414558418, 44);
 
 -- --------------------------------------------------------
 

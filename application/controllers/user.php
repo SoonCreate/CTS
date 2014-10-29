@@ -88,19 +88,33 @@ class User extends CI_Controller {
     function register(){
         if(_config('allow_register')){
             if($_POST){
-                $data['username'] = tpost('username');
-                $data['password']  = sha1(v('password'));
-                $data['order_type'] = v('order_type');
+                $pass = true;
+                if(v('password') != v('repassword')){
+                    add_validation_error('password', '');
+                    add_validation_error('repassword', '两次输入密码不一致');
+                    $pass = false;
+                }
+
+                $data['username'] = v('username');
+                $data['password']  = v('password');
+                $data['user_type'] = v('user_type');
                 $data['full_name'] = v('full_name');
                 $data['initial_pass_flag'] = 0;
-                $user = new User_model();
-                if($user->register_save($data)){
-                    echo 'done';
+                $um = new User_model();
+                if($um->run_validation($data) && $pass){
+                    $data['password']  = sha1(v('password'));
+                    if($um->register_save($data)){
+                        custz_message('I','用户注册成功！');
+                        redirect_to('user','login');
+                    }else{
+                        validation_error();
+                    }
                 }else{
-                    echo validation_errors('<div class="error">', '</div>');
+                    $pass = false;
+                    validation_error();
                 }
             }else{
-                $this->load->view('user/register');;
+                $this->load->view('user/register');
             }
         }else{
             show_404();
@@ -188,6 +202,7 @@ class User extends CI_Controller {
                     //验证旧密码是否有效
                     if(!empty($user)){
                         if($um->update($user['id'],$data,true)){
+                            go_back();
                             message_db_success();
                         }else{
                             message_db_failure();
