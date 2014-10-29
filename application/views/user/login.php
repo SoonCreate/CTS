@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html>
-<?php $this->load->view('_header') ?>
+<head>
+    <title><?= full_name(_sess('uid'),false,false)?></title>
+    <?php $this->load->view('_header') ?>
+</head>
 <body class="sc">
+
+<script type="text/javascript">
+    require(["dojo/dom","dojo/on","dojo/domReady!"],function(dom,on){
+        var node = dom.byId("getcode_num");
+        on(node, "click", function(e){
+            node.src = '<?= _url('user','get_code?num=')?>' + Math.random();
+        });
+    });
+</script>
 
 <style type="text/css">
 
@@ -37,15 +49,15 @@
     <div class="DialogPaneContent container-fluid" >
         <form class="form-horizontal" id="userForm" method="post" action="<?= _url('user','login')?>" onsubmit="return cFormSubmit(this);" >
             <dl class="row dl-horizontal">
-                <dt><label for="username">用户名：</label></dt>
-                <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="username" id="username" /></dd>
+                <dt><label for="username">用户名</label></dt>
+                <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="username" id="username" required trim="true" /></dd>
             </dl>
             <dl class="row dl-horizontal">
-                <dt><label for="password">密码：</label></dt>
-                <dd><input data-dojo-type="dijit/form/ValidationTextBox" type="password"  name="password" id="password" /></dd>
+                <dt><label for="password">密码</label></dt>
+                <dd><input data-dojo-type="dijit/form/ValidationTextBox" type="password"  name="password" id="password" required trim="true" /></dd>
             </dl>
             <dl class="row dl-horizontal">
-                <dt><label for="code">验证码：</label></dt>
+                <dt><label for="code">验证码</label></dt>
                 <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="code" class="codebox"
                            id="code" trim="true" required="true" maxlength="4" regExp="[0-9]+"
                            style="width: 50px" />
@@ -81,26 +93,37 @@
 
 <script type="text/javascript">
     function cFormSubmit(object){
-        require(["dojo/dom-form","dojo/request"],function(domForm,request){
-            var mes = $dom.byId("flashMessage");
-            request.post(object.action, {
-                // Send the username and password
-                data: domForm.toObject(object),
-                // Wait 2 seconds for a response
-                timeout: 2000,
-                handleAs : "json"
-            }).then(function(response){
-                    if(response == "1")
-                        mes.innerHTML = "你输入的验证码有误";
-                    if(response == "2")
-                        mes.innerHTML = "用户名或密码有误";
-                    if(response == "3"){
-                        mes.innerHTML = "用户登录验证成功";
-                        redirect("<?= _url('welcome','index')?>");
+        require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry"],function(domForm,request,dom,registry){
+            var mes = dom.byId("flashMessage");
+            if(registry.byId("username").validate() && registry.byId("password").validate() &&  registry.byId("code").validate()){
+                request.post(object.action, {
+                    // Send the username and password
+                    data: domForm.toObject(object),
+                    // Wait 2 seconds for a response
+                    timeout: 2000,
+                    handleAs : "json"
+                }).then(function(response){
+                    //处理消息
+                    if("message" in response ){
+                        var output = "";
+                        for(var i=0;i < response["message"].length;i++){
+                            var message = response["message"][i];
+                            if(message["type"] == "E"){
+                                output = output + message["content"];
+                            }
+                        }
+                        mes.innerHTML = output;
                     }
+
+                    //处理跳转
+                    if("redirect" in response ){
+                        redirect(response["redirect"]["url"]);
+                    }
+
                 },function(){
                     console.log('remote request error!');
                 });
+            }
         });
         return false;
     }

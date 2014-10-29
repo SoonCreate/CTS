@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-<?php $this->load->view('_header') ?>
+<head>
+    <title><?= full_name(_sess('uid'),false,false)?></title>
+    <?php $this->load->view('_header') ?>
+    <?php $this->load->view('_perloading') ?>
+</head>
 <body class="sc">
 <div id="preloader"><i class=""></i>Loading......</div>
 

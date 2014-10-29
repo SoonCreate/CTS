@@ -52,23 +52,15 @@ class User extends CI_Controller {
             $um = new User_model();
             $user = $um->find_by(array('username'=>$username,'password'=>$password,'inactive_flag'=>0));
             if($code != _sess('code')){
-                echo '1';
-            }else{
-                if(empty($user)){
-                    echo '2';
-                    //redirect(_url('welcome','index'));
-                    //render();
-                }else{
-                    //set_sess('uid',$user['id']);
-                    //if($user['initial_pass_flag']){
-                     //   redirect(_url('user','change_password'));
-                   // }else{
-                        echo '3';
-                       // redirect(_url('welcome','index'));
-
-                }
+                custz_message('E','验证码错误！');
             }
 
+            if(empty($user)){
+                custz_message('E','账号密码输入错误！');
+            }else{
+                set_sess('uid',$user['id']);
+                redirect_to('welcome', 'app_index');
+            }
         }else{
             $this->load->view('user/login');
         }
