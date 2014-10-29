@@ -39,16 +39,16 @@
      id="toaster">
 </div>
 <div class="fixnavbar">
-    <ul>
-            <li><span class="text"><?= render_link(array('user','user_edit'),full_name(_sess('uid'),false,false))?></span></li>
+    <ul class="list-inline">
+            <li><?= render_link(array('user','user_edit'),full_name(_sess('uid'),false,false))?></li>
             <li>
                 <?= render_link(array('user','notices'),'
-                <i class="icon-envelope icon-1x"></i><span class="text">'.label('notice').'</span>
+                <i class="icon-envelope"></i>'.label('notice').'
                 <span class="scbadge" id="scbadge">'._v('notice_need_to_read').'</span>')?>
             </li>
             <li>
                 <a href="<?= _url('user','logout')?>">
-                <i class=" icon-off icon-1x"></i><span class="text"><?= label('logout')?></span>
+                <i class="icon-off"></i><?= label('logout')?>
                 </a>
             </li>
         </ul>
