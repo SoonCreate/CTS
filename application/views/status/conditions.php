@@ -16,11 +16,13 @@
         <td><?= $o['target_value']?></td>
         <td>
             <?= render_link(array('status','condition_edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('status','condition_destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
         </td>
 
     </tr>
     <?php endforeach;?>
 </table>
 <script type="text/javascript">
-    toolBarAddLinkButton("<?= label('condition_create') ?>",url('status/condition_create?line_id=<?= _v('id') ?>'));
+    toolBarAddLinkButton("<?= label('condition_create') ?>",url('status/condition_create?status_line_id=<?= _v('id') ?>'));
 </script>

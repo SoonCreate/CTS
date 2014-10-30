@@ -526,7 +526,8 @@ function table_comment($table){
 }
 //字段名
 function field_comment($table,$field){
-    $query = $this->db->query( "select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
+    global $CI;
+    $query = $CI->db->query( "select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
         where TABLE_SCHEMA = 'CTS' AND  table_name = '.$table.' and COLUMN_NAME = '".$field."'" );
     $result = $query->result_array();
     if(count($result)>0){

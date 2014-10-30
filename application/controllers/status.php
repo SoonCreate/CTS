@@ -131,14 +131,14 @@ class Status extends CI_Controller {
     //条件公式
     function condition_create(){
         $slm = new Status_line_model();
-        $line = $slm->find(v('line_id'));
+        $line = $slm->find(v('status_line_id'));
         if(empty($line)){
             show_404();
         }else{
             if($_POST){
                 $this->load->model('status_condition_model');
                 $scm = new Status_condition_model();
-                if($scm->insert(_data('and_or','table_name','field_name','operation','target_value','line_id'))){
+                if($scm->insert(_data('and_or','table_name','field_name','operation','target_value','status_line_id'))){
                     go_back();
                     message_db_success();
                 }else{
@@ -157,11 +157,39 @@ class Status extends CI_Controller {
 
     //条件公式
     function condition_edit(){
-
+        $this->load->model('status_condition_model');
+        $scm = new Status_condition_model();
+        $cline = $scm->find(v('id'));
+        if(empty($cline)){
+            show_404();
+        }else{
+            if($_POST){
+                if($scm->update($cline['id'],_data('and_or','table_name','field_name','operation','target_value'))){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                $cline['field_options'] = field_list($cline['table_name']);
+                render($cline);
+            }
+        }
     }
 
     //条件公式
-    function condition_destory(){
-
+    function condition_destroy(){
+        $this->load->model('status_condition_model');
+        $scm = new Status_condition_model();
+        $cline = $scm->find(v('id'));
+        if(empty($cline)){
+            show_404();
+        }else{
+            if($scm->delete($cline['id'])){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
+        }
     }
 }
