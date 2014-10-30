@@ -16,5 +16,7 @@
         </tr>
     <?php endforeach;?>
 </table>
-<?= render_link_button(array('role','profile_add_object',array('role_id'=>v('role_id'))),label('create_object'))?>
+<script type="text/javascript">
+    toolBarAddLinkButton("<?= label('create_object') ?>",url('role/profile_add_object?role_id=<?= v('role_id')?>'));
+</script>
 

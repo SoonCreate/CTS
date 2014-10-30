@@ -135,8 +135,28 @@ class Welcome extends CI_Controller {
         force_download(v('name'), $data);
     }
 
+    //字段列表
     function field_list(){
         echo json_encode(field_list(v('table')));
+    }
+
+    function options(){
+        $pv = null;
+        if(v('pv')){
+            $pv = v('pv');
+        }
+        $all = false;
+        if(v('all')){
+            $all = string_to_boolean(v('all'));
+        }
+        $none = false;
+        if(v('none')){
+            $none =string_to_boolean(v('none'));
+        }
+        $data['items'] = get_options(v('n'),$pv,$all,$none);
+        $data["identifier"] = 'value';
+        $data["label"] = 'label';
+        echo json_encode($data);
     }
 
 }

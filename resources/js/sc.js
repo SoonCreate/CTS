@@ -448,7 +448,7 @@ function dojoConfirm(content,title,callback,noback,type){
 }
 
 //包含grid的dialog
-function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pageSize){
+function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,pageSize){
     require(["sckj/Gridx",
             "gridx/core/model/cache/Sync",
             "dojo/data/ItemFileReadStore",
@@ -476,13 +476,19 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pageSize){
                     data : data
                 });
                 var modules = [
-                    Pagination,
-                    PaginationBar,
                     ColumnResizer,
                     VirtualVScroller,
                     TouchVScroller,
                     IndirectSelectColumn
                 ];
+
+                //是否分页
+                if(pagination == undefined || pagination){
+                    modules.push(Pagination);
+                    modules.push(PaginationBar);
+                }
+
+                //多选单选
                 if(selectRowMultiple){
                     modules.push(selectMultipleRow);
                 }else{
@@ -497,16 +503,19 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pageSize){
                     selectRowMultiple : selectRowMultiple,
                     autoWidth : false,
                     autoHeight : true,
-                    style:"margin-left: 20px;"
+                    style:"margin-left: 20px;min-width:400px"
 
                 });
                 grid.startup();
 
-                //默认10行
-                if(pageSize == undefined){
-                    pageSize = 10;
+                //是否分页
+                if(pagination == undefined || pagination){
+                    //默认10行
+                    if(pageSize == undefined){
+                        pageSize = 10;
+                    }
+                    grid.pagination.setPageSize(pageSize);
                 }
-                grid.pagination.setPageSize(pageSize);
                 var value = target.getValue();
                 value = value.split(',');
                 for(var i=0;i<value.length;i++){
@@ -517,6 +526,38 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pageSize){
                 });
             });
         });
+}
+
+//值集选择框
+function vlGridDialog(valuelist_name,parent_segment_value,all_value,blank_row,selectRowMultiple,target,pagination,pageSize,onSelect){
+    var structure = [{field : "value",name : "值"},{field : "label",name : "描述"}];
+    var params = new Object();
+    if(valuelist_name != undefined){
+        params.n = valuelist_name;
+    }
+
+    if(parent_segment_value != undefined){
+        params.pv = parent_segment_value;
+    }
+
+    if(all_value != undefined){
+        if(all_value){
+            params.all = 'true';
+        }else{
+            params.all = 'false';
+        }
+    }
+
+    if(blank_row != undefined){
+        if(blank_row){
+            params.none = 'true';
+        }else{
+            params.none = 'false';
+        }
+    }
+
+    gridDialog("请选择",structure,url("welcome/options",params),selectRowMultiple,target,pagination,pageSize);
+
 }
 
 function closeDialog(){
