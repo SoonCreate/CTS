@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2014 at 07:36 AM
+-- Generation Time: Oct 30, 2014 at 06:04 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -117,61 +117,63 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `config_value` varchar(255) NOT NULL COMMENT '配置值',
   `editable_flag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否可被前台编辑',
   `data_type` varchar(20) NOT NULL DEFAULT 'string' COMMENT '数据类型',
+  `user_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户可配置（默认为系统配置）',
   `creation_date` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=43 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=44 ;
 
 --
 -- Dumping data for table `ct_configs`
 --
 
-INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `data_type`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'company_name', '公司名称', '浙江天正集团', 1, 'string', NULL, NULL, 1413637551, 44),
-(2, 'logo_file', 'Logo文件路径', '1', 1, 'string', NULL, NULL, NULL, NULL),
-(3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, 'string', NULL, NULL, NULL, NULL),
-(4, 'category_control', '投诉订单分类功能开关', 'TRUE', 1, 'boolean', NULL, NULL, 1413338754, 44),
-(5, 'all_values', '包含所有值', 'all', 0, 'string', NULL, NULL, NULL, NULL),
-(6, 'alarm_period', '报警周期，每次报警的时间间隔，单位为小时', '24', 1, 'number', NULL, NULL, NULL, NULL),
-(7, 'mail_protocol', 'mail, sendmail, or smtp 邮件发送协议', 'smtp', 1, 'string', NULL, NULL, NULL, NULL),
-(8, 'sendmail_path', '服务器上 Sendmail 的实际路径。protocol 为 sendmail 时使用', '/usr/sbin/sendmail', 1, 'string', NULL, NULL, NULL, NULL),
-(9, 'smtp_host', 'SMTP 服务器地址', 'smtp.ym.163.com', 1, 'string', NULL, NULL, NULL, NULL),
-(10, 'smtp_user', 'SMTP 用户账号', 'yacole@sooncreate.com', 1, 'string', NULL, NULL, NULL, NULL),
-(11, 'smtp_pass', 'SMTP 密码', '325604', 1, 'string', NULL, NULL, NULL, NULL),
-(12, 'smtp_port', 'SMTP 端口', '25', 1, 'number', NULL, NULL, NULL, NULL),
-(13, 'smtp_timeout', 'SMTP 超时设置(单位：秒)', '5', 1, 'number', NULL, NULL, NULL, NULL),
-(14, 'mail_wordwrap', 'TRUE 或 FALSE (布尔值)	MAIL开启自动换行', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(15, 'mail_wrapchars', '自动换行时每行的最大字符数', '76', 1, 'number', NULL, NULL, NULL, NULL),
-(16, 'mail_content_type', 'text 或 html	邮件类型。发送 HTML 邮件比如是完整的网页。请确认网页中是否有相对路径的链接和图片地址，它们在邮件中不能正确显示。', 'html', 1, 'string', NULL, NULL, NULL, NULL),
-(17, 'mail_charset', '字符集(utf-8, iso-8859-1 等)', 'utf-8', 1, 'string', NULL, NULL, NULL, NULL),
-(18, 'mail_validate', 'TRUE 或 FALSE (布尔值)	是否验证邮件地址', 'FALSE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(19, 'mail_newline', '"\\r\\n" or "\\n" or "\\r"	换行符. (使用 "\\r\\n" to 以遵守RFC 822).', '\\n', 1, 'string', NULL, NULL, NULL, NULL),
-(20, 'bcc_batch_mode', 'TRUE or FALSE (boolean)	启用批量暗送模式', 'FALSE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(21, 'bcc_batch_size', '批量暗送的邮件数', '200', 1, 'number', NULL, NULL, NULL, NULL),
-(22, 'mail_from', '邮件默认来自于，如果是smtp方式，必须同smtp_user', 'yacole@sooncreate.com', 1, 'string', NULL, NULL, NULL, NULL),
-(23, 'mail_from_name', '邮件来自，名称用于显示自动邮件的发件人姓名', '系统管理员', 1, 'string', NULL, NULL, NULL, NULL),
-(24, 'site_url', '网站地址', 'localhost', 1, 'string', NULL, NULL, NULL, NULL),
-(25, 'initial_password', '系统用户初始密码', '123456', 1, 'string', NULL, NULL, NULL, NULL),
-(26, 'upload_allowed_types', '允许上传文件的MIME类型；通常文件扩展名可以做为MIME类型. 允许多个类型用竖线‘|’分开', 'gif|jpg|png|pdf|doc|docx|xls|xlsx', 1, 'string', NULL, NULL, NULL, NULL),
-(27, 'upload_overwrite', '是否覆盖。该参数为TRUE时，如果上传文件时碰到重名文件，将会把原文件覆盖；如果该参数为FALSE，上传文件重名时，CI将会在新文件的文件名后面加一个数字。', 'FALSE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(28, 'upload_max_size', '允许上传文件大小的最大值（以K为单位）。该参数为0则不限制。注意：通常PHP也有这项限制，可以在php.ini文件中指定。通常默认为2MB。', '200', 1, 'number', NULL, NULL, NULL, NULL),
-(29, 'upload_max_width', '上传文件的宽度最大值（像素为单位）。0为不限制。', '1024', 1, 'number', NULL, NULL, NULL, NULL),
-(30, 'upload_max_height', '上传文件的高度最大值（像素为单位）。0为不限制。', '768', 1, 'number', NULL, NULL, NULL, NULL),
-(31, 'upload_max_filename', '文件名的最大长度。0为不限制。', '0', 1, 'number', NULL, NULL, NULL, NULL),
-(32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, 'boolean', NULL, NULL, NULL, NULL),
-(34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, 'string', NULL, NULL, NULL, NULL),
-(35, 'word_truncate', '文字截断默认长度', '100', 1, 'number', NULL, NULL, NULL, NULL),
-(36, 'allow_register', '是否允许用户注册', 'TRUE', 1, 'boolean', NULL, NULL, 1414557033, 44),
-(37, 'feedback_star', '用户反馈的打分星数', '5', 1, 'number', NULL, NULL, 1413693616, 44),
-(38, 'feedback_control', '反馈功能开关', 'FALSE', 1, 'boolean', NULL, NULL, 1414463049, 44),
-(39, 'pcd_change_times', '计划完成日期允许修改次数', '2', 1, 'number', NULL, NULL, 1413960977, 44),
-(40, 'auto_leader', '如果责任人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', NULL, NULL, 1414024127, 44),
-(41, 'auto_manager', '如果处理人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', NULL, NULL, 1414024012, 44),
-(42, 'allow_reopen', '是否允许关闭订单重新打开', 'FALSE', 1, 'boolean', NULL, NULL, 1414032071, 44);
+INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `data_type`, `user_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(1, 'company_name', '公司名称', '浙江天正集团', 1, 'string', 0, NULL, NULL, 1413637551, 44),
+(2, 'logo_file', 'Logo文件路径', '1', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, 'string', 0, NULL, NULL, NULL, NULL),
+(4, 'category_control', '投诉订单分类功能开关', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1413338754, 44),
+(5, 'all_values', '包含所有值', 'all', 0, 'string', 0, NULL, NULL, NULL, NULL),
+(6, 'alarm_period', '报警周期，每次报警的时间间隔，单位为小时', '24', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(7, 'mail_protocol', 'mail, sendmail, or smtp 邮件发送协议', 'smtp', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(8, 'sendmail_path', '服务器上 Sendmail 的实际路径。protocol 为 sendmail 时使用', '/usr/sbin/sendmail', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(9, 'smtp_host', 'SMTP 服务器地址', 'smtp.ym.163.com', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(10, 'smtp_user', 'SMTP 用户账号', 'yacole@sooncreate.com', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(11, 'smtp_pass', 'SMTP 密码', '325604', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(12, 'smtp_port', 'SMTP 端口', '25', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(13, 'smtp_timeout', 'SMTP 超时设置(单位：秒)', '5', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(14, 'mail_wordwrap', 'TRUE 或 FALSE (布尔值)	MAIL开启自动换行', 'TRUE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
+(15, 'mail_wrapchars', '自动换行时每行的最大字符数', '76', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(16, 'mail_content_type', 'text 或 html	邮件类型。发送 HTML 邮件比如是完整的网页。请确认网页中是否有相对路径的链接和图片地址，它们在邮件中不能正确显示。', 'html', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(17, 'mail_charset', '字符集(utf-8, iso-8859-1 等)', 'utf-8', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(18, 'mail_validate', 'TRUE 或 FALSE (布尔值)	是否验证邮件地址', 'FALSE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
+(19, 'mail_newline', '"\\r\\n" or "\\n" or "\\r"	换行符. (使用 "\\r\\n" to 以遵守RFC 822).', '\\n', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(20, 'bcc_batch_mode', 'TRUE or FALSE (boolean)	启用批量暗送模式', 'FALSE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
+(21, 'bcc_batch_size', '批量暗送的邮件数', '200', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(22, 'mail_from', '邮件默认来自于，如果是smtp方式，必须同smtp_user', 'yacole@sooncreate.com', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(23, 'mail_from_name', '邮件来自，名称用于显示自动邮件的发件人姓名', '系统管理员', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(24, 'site_url', '网站地址', 'localhost', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(25, 'initial_password', '系统用户初始密码', '123456', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(26, 'upload_allowed_types', '允许上传文件的MIME类型；通常文件扩展名可以做为MIME类型. 允许多个类型用竖线‘|’分开', 'gif|jpg|png|pdf|doc|docx|xls|xlsx', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(27, 'upload_overwrite', '是否覆盖。该参数为TRUE时，如果上传文件时碰到重名文件，将会把原文件覆盖；如果该参数为FALSE，上传文件重名时，CI将会在新文件的文件名后面加一个数字。', 'FALSE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
+(28, 'upload_max_size', '允许上传文件大小的最大值（以K为单位）。该参数为0则不限制。注意：通常PHP也有这项限制，可以在php.ini文件中指定。通常默认为2MB。', '200', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(29, 'upload_max_width', '上传文件的宽度最大值（像素为单位）。0为不限制。', '1024', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(30, 'upload_max_height', '上传文件的高度最大值（像素为单位）。0为不限制。', '768', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(31, 'upload_max_filename', '文件名的最大长度。0为不限制。', '0', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'TRUE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
+(33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
+(34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(35, 'word_truncate', '文字截断默认长度', '100', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(36, 'allow_register', '是否允许用户注册', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1414557033, 44),
+(37, 'feedback_star', '用户反馈的打分星数', '5', 1, 'number', 0, NULL, NULL, 1413693616, 44),
+(38, 'feedback_control', '反馈功能开关', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414463049, 44),
+(39, 'pcd_change_times', '计划完成日期允许修改次数', '2', 1, 'number', 0, NULL, NULL, 1413960977, 44),
+(40, 'auto_leader', '如果责任人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414024127, 44),
+(41, 'auto_manager', '如果处理人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414024012, 44),
+(42, 'allow_reopen', '是否允许关闭订单重新打开', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414032071, 44),
+(43, 'receive_email', '是否接收邮件（默认为接收）', 'TRUE', 1, 'boolean', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -310,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -337,7 +339,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (21, 'user_admin_edit', '用户信息管理', 'user', 'admin_edit', NULL, 1413683565, 44, 1413683573, 44, 0, ''),
 (22, 'order_meeting', '会议记录', 'order_meeting', 'index', NULL, 1413858257, 44, 1413858349, 44, 0, ''),
 (23, 'status_manage', '状态流管理', 'status', 'index', NULL, 1414116975, 44, 1414116975, 44, 1, ''),
-(24, 'order_feedback', '投诉单反馈', 'order', 'feedback', NULL, 1414459689, 44, 1414459689, 44, 0, '');
+(24, 'order_feedback', '投诉单反馈', 'order', 'feedback', NULL, 1414459689, 44, 1414459689, 44, 0, ''),
+(25, 'user_config', '用户配置', 'user', 'configs', NULL, 1414638739, 44, 1414638739, 44, 1, '');
 
 -- --------------------------------------------------------
 
@@ -637,8 +640,7 @@ INSERT INTO `ct_module_header` (`id`, `module_name`, `description`, `sort`, `cre
 (4, 'user_center', '用户中心', 2, 1413076355, 44, 1413077216, 44, 'icon-user'),
 (5, 'order_create', '发布问题', 0, 1413076497, 44, 1413508328, 44, 'icon-edit'),
 (6, 'order_manage', '我的投诉', 1, 1413076525, 44, 1413077210, 44, 'icon-comments'),
-(7, 'message_manage', '我的提醒', 3, 1413076578, 44, 1413077203, 44, 'icon-envelope'),
-(10, 'test', 'test', 0, 1413510852, 44, 1413510852, 44, '');
+(7, 'message_manage', '我的提醒', 3, 1413076578, 44, 1413077203, 44, 'icon-envelope');
 
 -- --------------------------------------------------------
 
@@ -656,7 +658,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=50 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -682,7 +684,8 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (45, 3, 21, 0, 1413683578, 44, 1413683578, 44),
 (46, 3, 15, 0, 1413699819, 44, 1413699819, 44),
 (47, 6, 22, 0, 1413858270, 44, 1413858270, 44),
-(48, 3, 23, 0, 1414116986, 44, 1414116986, 44);
+(48, 3, 23, 0, 1414116986, 44, 1414116986, 44),
+(49, 4, 25, 0, 1414638752, 44, 1414638752, 44);
 
 -- --------------------------------------------------------
 
@@ -2064,7 +2067,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=165 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=179 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -2197,7 +2200,21 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (161, 17, 47, 1413943867, 44, 1413943867, 44),
 (162, 17, 24, 1413943867, 44, 1413943867, 44),
 (163, 17, 38, 1413943867, 44, 1413943867, 44),
-(164, 8, 48, 1414117076, 44, 1414117076, 44);
+(164, 8, 48, 1414117076, 44, 1414117076, 44),
+(165, 1, 49, 1414638771, 44, 1414638771, 44),
+(166, 3, 49, 1414638837, 44, 1414638837, 44),
+(167, 4, 49, 1414638848, 44, 1414638848, 44),
+(168, 5, 49, 1414638926, 44, 1414638926, 44),
+(169, 6, 49, 1414638934, 44, 1414638934, 44),
+(170, 7, 49, 1414638940, 44, 1414638940, 44),
+(171, 8, 49, 1414638948, 44, 1414638948, 44),
+(172, 11, 49, 1414638954, 44, 1414638954, 44),
+(173, 12, 49, 1414638961, 44, 1414638961, 44),
+(174, 13, 49, 1414638972, 44, 1414638972, 44),
+(175, 14, 49, 1414638980, 44, 1414638980, 44),
+(176, 15, 49, 1414638985, 44, 1414638985, 44),
+(177, 16, 49, 1414638990, 44, 1414638990, 44),
+(178, 17, 49, 1414638996, 44, 1414638996, 44);
 
 -- --------------------------------------------------------
 
@@ -2524,6 +2541,81 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines_v` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ct_status_authobjects`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `status_line_id` int(10) unsigned NOT NULL,
+  `object_id` int(10) unsigned NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `creation_date` int(11) DEFAULT NULL,
+  `last_update_date` int(11) DEFAULT NULL,
+  `last_updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_status_authobj_lines`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `status_obj_id` int(10) unsigned NOT NULL,
+  `authobj_line_id` int(10) unsigned NOT NULL,
+  `auth_value` varchar(255) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `creation_date` int(11) DEFAULT NULL,
+  `last_update_date` int(11) DEFAULT NULL,
+  `last_updated_date` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_status_conditions`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `status_line_id` int(10) unsigned NOT NULL,
+  `and_or` varchar(3) NOT NULL DEFAULT 'AND' COMMENT '与或关系',
+  `table_name` varchar(100) NOT NULL,
+  `field_name` varchar(100) NOT NULL,
+  `operation` varchar(45) NOT NULL COMMENT '运算',
+  `target_value` varchar(255) NOT NULL COMMENT '运算目标值',
+  `created_by` int(11) DEFAULT NULL,
+  `creation_date` int(11) DEFAULT NULL,
+  `last_update_date` int(11) DEFAULT NULL,
+  `last_updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_status_functions`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_status_functions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `status_line_id` int(10) unsigned NOT NULL,
+  `function_id` int(10) unsigned NOT NULL,
+  `sort` int(10) unsigned NOT NULL DEFAULT '0',
+  `label` varchar(255) NOT NULL COMMENT '功能按钮显示标签',
+  `created_by` int(11) DEFAULT NULL,
+  `creation_date` int(11) DEFAULT NULL,
+  `last_update_date` int(11) DEFAULT NULL,
+  `last_updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ct_status_header`
 --
 
@@ -2668,7 +2760,7 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`username`),
   KEY `Index_3` (`username`,`password`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统用户信息表' AUTO_INCREMENT=79 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统用户信息表' AUTO_INCREMENT=76 ;
 
 --
 -- Dumping data for table `ct_users`
@@ -2723,6 +2815,51 @@ CREATE TABLE IF NOT EXISTS `ct_user_auth_v` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ct_user_configs`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_user_configs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `config_id` int(10) unsigned NOT NULL,
+  `config_value` varchar(255) NOT NULL COMMENT '配置值',
+  `creation_date` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `last_update_date` int(11) DEFAULT NULL,
+  `last_updated_by` int(11) DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ct_user_configs`
+--
+
+INSERT INTO `ct_user_configs` (`id`, `config_id`, `config_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `user_id`) VALUES
+(1, 43, 'TRUE', 1414645437, 44, 1414645444, 44, 44);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_user_configs_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_user_configs_v` (
+`id` int(11)
+,`config_id` int(10) unsigned
+,`config_value` varchar(255)
+,`creation_date` int(11)
+,`created_by` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`user_id` int(10) unsigned
+,`config_name` varchar(20)
+,`description` varchar(255)
+,`default_value` varchar(255)
+,`editable_flag` tinyint(1)
+,`data_type` varchar(20)
+);
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `ct_user_functions_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_user_functions_v` (
@@ -2764,7 +2901,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`user_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=85 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=82 ;
 
 --
 -- Dumping data for table `ct_user_roles`
@@ -2843,7 +2980,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -2876,7 +3013,9 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (27, 'default_status', '投诉单默认状态', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, 1413850930, 44),
 (28, 'ao_action', '权限对象通常操作', 0, NULL, NULL, NULL, NULL, 0, 1, 1413941359, 44, 1413941359, 44),
 (29, 'vl_functions', '功能列表', 1, 'description', 'id', 'ct_functions', '', NULL, 1, 1414459315, 44, 1414459315, 44),
-(30, 'vl_register_select', '用户类型（用户注册用）', 0, NULL, NULL, NULL, NULL, 1, 1, 1414558238, 44, 1414558299, 44);
+(30, 'vl_register_select', '用户类型（用户注册用）', 0, NULL, NULL, NULL, NULL, 1, 1, 1414558238, 44, 1414558299, 44),
+(31, 'vl_and_or', '与或关系', 0, NULL, NULL, NULL, NULL, 0, 1, 1414632932, 44, 1414632932, 44),
+(32, 'vl_operations', '运算公式', 0, NULL, NULL, NULL, NULL, 0, 1, 1414633095, 44, 1414633095, 44);
 
 -- --------------------------------------------------------
 
@@ -2896,7 +3035,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header_vl` (
 CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `valuelist_id` int(11) NOT NULL,
-  `segment` varchar(20) NOT NULL COMMENT '段',
+  `segment` int(11) NOT NULL COMMENT '段',
   `segment_value` varchar(255) NOT NULL COMMENT '段值',
   `segment_desc` varchar(255) NOT NULL COMMENT '段描述',
   `inactive_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '失效标识',
@@ -2909,65 +3048,81 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=62 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=78 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
 --
 
 INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_value`, `segment_desc`, `inactive_flag`, `sort`, `parent_segment_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 1, '10', 'vendor', '供应商投诉单', 0, 1, '0', NULL, NULL, 1413506503, 44),
-(2, 1, '20', 'employee', '内部员工投诉单', 0, 2, '0', NULL, NULL, NULL, NULL),
-(3, 1, '30', 'customer', '客户投诉单', 0, 1, '0', NULL, NULL, 1414127308, 44),
-(4, 2, '30', 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
-(5, 2, '20', 'middle', '中', 0, 1, '0', NULL, NULL, 1413688001, 45),
-(6, 2, '10', 'high', '高', 0, 2, '0', NULL, NULL, 1413688007, 45),
-(7, 3, '30', 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
-(8, 3, '20', 'middle', '中', 0, 1, '0', NULL, NULL, 1413688031, 45),
-(9, 3, '10', 'high', '高', 0, 2, '0', NULL, NULL, 1413688035, 45),
-(10, 4, '10', 'low', '仅发生一次', 0, 0, '0', NULL, NULL, NULL, NULL),
-(11, 4, '20', 'middle', '偶尔发生', 0, 0, '0', NULL, NULL, NULL, NULL),
-(12, 4, '30', 'high', '发生频率很高', 0, 0, '0', NULL, NULL, NULL, NULL),
-(16, 7, '10', '10', '默认', 0, 0, 'vendor', NULL, NULL, NULL, NULL),
-(18, 10, '10', 'reporter_vender', '供应商', 0, 1, 'vendor', NULL, NULL, 1412902890, 44),
-(21, 10, '10', 'reporter_customer', '客户', 0, 0, 'customer', NULL, NULL, NULL, NULL),
-(22, 10, '10', 'reporter_employee', '内部员工', 0, 0, 'employee', NULL, NULL, NULL, NULL),
-(24, 7, '20', '20', '采购需求', 0, 1, 'vendor', NULL, NULL, 1413419176, 44),
-(25, 7, '10', '10', '默认', 0, 0, 'customer', NULL, NULL, NULL, NULL),
-(26, 7, '10', '30', '默认', 0, 0, 'employee', NULL, NULL, NULL, NULL),
-(27, 11, '10', 'TRUE', '是', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(28, 11, '20', 'FALSE', '否', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(29, 12, '10', '10', '默认', 0, 0, 'vendor', NULL, NULL, NULL, NULL),
-(30, 12, '20', '10', '默认', 0, 0, 'customer', NULL, NULL, NULL, NULL),
-(31, 12, '30', '10', '默认', 0, 0, 'employee', NULL, NULL, NULL, NULL),
-(32, 14, '10', 'update', '更新', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(33, 14, '20', 'insert', '创建', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(34, 18, '10', '10', '投诉问题已解决', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(35, 18, '20', '20', '创建失误', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(36, 18, '30', '30', '确认无需再召开', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(37, 19, '10', 'male', '男', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(38, 19, '20', 'female', '女', 0, 0, NULL, NULL, NULL, NULL, NULL),
-(39, 20, '10', '10', '响应速度', 0, 0, NULL, NULL, NULL, 1413623372, 44),
-(40, 20, '20', '20', '服务态度', 0, 0, NULL, NULL, NULL, 1413623384, 44),
-(43, 7, '20', '20', '产品线一', 0, 1, 'customer', 1412824646, -1, 1413689959, 44),
-(44, 7, '30', '30', '产品线二', 0, 2, 'customer', 1412824672, -1, 1413689969, 44),
-(45, 7, '40', '40', '产品线三', 0, 1, 'customer', 1412825288, -1, 1413689981, 44),
-(46, 10, '20', '201', 'asdf', 0, 1, 'vendor', 1412903034, 44, 1412903055, 44),
-(47, 7, '30', '30', '设计图纸', 0, 2, 'vendor', 1413419139, 44, 1413419167, 44),
-(48, 7, '40', '40', '采购部门服务', 0, 3, 'vendor', 1413419234, 44, 1413419234, 44),
-(49, 1, '40', 'test', 'set', 1, 0, '', 1413507444, 44, 1413507587, 44),
-(50, 27, '10', 'customer_status', '客户投诉单状态流', 0, 0, 'customer', 1413850731, 44, 1414125703, 44),
-(51, 27, '20', 'vendor_status', '供应商投诉单状态流', 0, 0, 'vendor', 1413850784, 44, 1414125691, 44),
-(52, 27, '30', 'employee_status', '内部员工投诉单状态流', 0, 0, 'employee', 1413850827, 44, 1414125713, 44),
-(53, 28, '10', 'create', '创建', 0, 0, '', 1413941375, 44, 1413941436, 44),
-(54, 28, '20', 'edit', '编辑', 0, 1, '', 1413941384, 44, 1413941451, 44),
-(55, 28, '30', 'show', '查看', 0, 2, '', 1413941397, 44, 1413941455, 44),
-(56, 28, '40', 'destroy', '删除', 0, 3, '', 1413941429, 44, 1413941465, 44),
-(57, 28, '50', 'inactive', '失效', 0, 4, '', 1413943072, 66, 1413943072, 66),
-(58, 28, '60', 'run', '执行', 0, 5, '', 1413943089, 66, 1413943253, 66),
-(59, 30, '10', 'vendor', '供应商', 0, 0, 'vendor', 1414558391, 44, 1414558391, 44),
-(60, 30, '10', 'customer', '客户', 0, 0, 'customer', 1414558402, 44, 1414558402, 44),
-(61, 30, '10', 'employee', '内部员工', 0, 0, 'employee', 1414558418, 44, 1414558418, 44);
+(1, 1, 10, 'vendor', '供应商投诉单', 0, 1, '0', NULL, NULL, 1413506503, 44),
+(2, 1, 20, 'employee', '内部员工投诉单', 0, 2, '0', NULL, NULL, NULL, NULL),
+(3, 1, 30, 'customer', '客户投诉单', 0, 1, '0', NULL, NULL, 1414127308, 44),
+(4, 2, 30, 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
+(5, 2, 20, 'middle', '中', 0, 1, '0', NULL, NULL, 1413688001, 45),
+(6, 2, 10, 'high', '高', 0, 2, '0', NULL, NULL, 1413688007, 45),
+(7, 3, 30, 'low', '低', 0, 0, '0', NULL, NULL, NULL, NULL),
+(8, 3, 20, 'middle', '中', 0, 1, '0', NULL, NULL, 1413688031, 45),
+(9, 3, 10, 'high', '高', 0, 2, '0', NULL, NULL, 1413688035, 45),
+(10, 4, 10, 'low', '仅发生一次', 0, 0, '0', NULL, NULL, NULL, NULL),
+(11, 4, 20, 'middle', '偶尔发生', 0, 0, '0', NULL, NULL, NULL, NULL),
+(12, 4, 30, 'high', '发生频率很高', 0, 0, '0', NULL, NULL, NULL, NULL),
+(16, 7, 10, '10', '默认', 0, 0, 'vendor', NULL, NULL, NULL, NULL),
+(18, 10, 10, 'reporter_vender', '供应商', 0, 1, 'vendor', NULL, NULL, 1412902890, 44),
+(21, 10, 10, 'reporter_customer', '客户', 0, 0, 'customer', NULL, NULL, NULL, NULL),
+(22, 10, 10, 'reporter_employee', '内部员工', 0, 0, 'employee', NULL, NULL, NULL, NULL),
+(24, 7, 20, '20', '采购需求', 0, 1, 'vendor', NULL, NULL, 1413419176, 44),
+(25, 7, 10, '10', '默认', 0, 0, 'customer', NULL, NULL, NULL, NULL),
+(26, 7, 10, '30', '默认', 0, 0, 'employee', NULL, NULL, NULL, NULL),
+(27, 11, 10, 'TRUE', '是', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(28, 11, 20, 'FALSE', '否', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(29, 12, 10, '10', '默认', 0, 0, 'vendor', NULL, NULL, NULL, NULL),
+(30, 12, 20, '10', '默认', 0, 0, 'customer', NULL, NULL, NULL, NULL),
+(31, 12, 30, '10', '默认', 0, 0, 'employee', NULL, NULL, NULL, NULL),
+(32, 14, 10, 'update', '更新', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(33, 14, 20, 'insert', '创建', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(34, 18, 10, '10', '投诉问题已解决', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(35, 18, 20, '20', '创建失误', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(36, 18, 30, '30', '确认无需再召开', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(37, 19, 10, 'male', '男', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(38, 19, 20, 'female', '女', 0, 0, NULL, NULL, NULL, NULL, NULL),
+(39, 20, 10, '10', '响应速度', 0, 0, NULL, NULL, NULL, 1413623372, 44),
+(40, 20, 20, '20', '服务态度', 0, 0, NULL, NULL, NULL, 1413623384, 44),
+(43, 7, 20, '20', '产品线一', 0, 1, 'customer', 1412824646, -1, 1413689959, 44),
+(44, 7, 30, '30', '产品线二', 0, 2, 'customer', 1412824672, -1, 1413689969, 44),
+(45, 7, 40, '40', '产品线三', 0, 1, 'customer', 1412825288, -1, 1413689981, 44),
+(46, 10, 20, '201', 'asdf', 0, 1, 'vendor', 1412903034, 44, 1412903055, 44),
+(47, 7, 30, '30', '设计图纸', 0, 2, 'vendor', 1413419139, 44, 1413419167, 44),
+(48, 7, 40, '40', '采购部门服务', 0, 3, 'vendor', 1413419234, 44, 1413419234, 44),
+(49, 1, 40, 'test', 'set', 1, 0, '', 1413507444, 44, 1413507587, 44),
+(50, 27, 10, 'customer_status', '客户投诉单状态流', 0, 0, 'customer', 1413850731, 44, 1414125703, 44),
+(51, 27, 20, 'vendor_status', '供应商投诉单状态流', 0, 0, 'vendor', 1413850784, 44, 1414125691, 44),
+(52, 27, 30, 'employee_status', '内部员工投诉单状态流', 0, 0, 'employee', 1413850827, 44, 1414125713, 44),
+(53, 28, 10, 'create', '创建', 0, 0, '', 1413941375, 44, 1413941436, 44),
+(54, 28, 20, 'edit', '编辑', 0, 1, '', 1413941384, 44, 1413941451, 44),
+(55, 28, 30, 'show', '查看', 0, 2, '', 1413941397, 44, 1413941455, 44),
+(56, 28, 40, 'destroy', '删除', 0, 3, '', 1413941429, 44, 1413941465, 44),
+(57, 28, 50, 'inactive', '失效', 0, 4, '', 1413943072, 66, 1413943072, 66),
+(58, 28, 60, 'run', '执行', 0, 5, '', 1413943089, 66, 1413943253, 66),
+(59, 30, 10, 'vendor', '供应商', 0, 0, 'vendor', 1414558391, 44, 1414558391, 44),
+(60, 30, 10, 'customer', '客户', 0, 0, 'customer', 1414558402, 44, 1414558402, 44),
+(61, 30, 10, 'employee', '内部员工', 0, 0, 'employee', 1414558418, 44, 1414558418, 44),
+(62, 31, 10, 'AND', '与', 0, 0, '', 1414633060, 44, 1414633060, 44),
+(63, 31, 20, 'OR', '或', 0, 1, '', 1414633071, 44, 1414633071, 44),
+(64, 32, 10, 'EQ', '等于', 0, 0, '', 1414633136, 44, 1414633136, 44),
+(65, 32, 20, 'NE', '不等于', 0, 1, '', 1414633229, 44, 1414633229, 44),
+(66, 32, 30, 'IN', '在...中', 0, 2, '', 1414633251, 44, 1414633251, 44),
+(67, 32, 40, 'NOT_IN', '不在...中', 0, 3, '', 1414633273, 44, 1414633273, 44),
+(68, 32, 50, 'GT', '大于', 0, 4, '', 1414633293, 44, 1414633293, 44),
+(69, 32, 60, 'GE', '大于等于', 0, 5, '', 1414633307, 44, 1414633307, 44),
+(70, 32, 70, 'LT', '小于', 0, 6, '', 1414633320, 44, 1414633320, 44),
+(71, 32, 80, 'LE', '小于等于', 0, 7, '', 1414633333, 44, 1414633333, 44),
+(72, 32, 90, 'HE', '开头等于', 0, 8, '', 1414633347, 44, 1414633347, 44),
+(73, 32, 100, 'HNE', '开头不等于', 0, 9, '', 1414633363, 44, 1414633363, 44),
+(74, 32, 110, 'TE', '结尾等于', 0, 10, '', 1414633602, 44, 1414633602, 44),
+(75, 32, 120, 'TNE', '结尾不等于', 0, 11, '', 1414633637, 44, 1414633637, 44),
+(76, 32, 130, 'LIKE', '部分等于', 0, 12, '', 1414633687, 44, 1414633687, 44),
+(77, 32, 140, 'NOT_LIKE', '部分不等于', 0, 13, '', 1414633702, 44, 1414633702, 44);
 
 -- --------------------------------------------------------
 
@@ -2985,7 +3140,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines_v` (
 ,`parent_id` int(11)
 ,`id` int(11)
 ,`valuelist_id` int(11)
-,`segment` varchar(20)
+,`segment` int(11)
 ,`segment_value` varchar(255)
 ,`segment_desc` varchar(255)
 ,`inactive_flag` tinyint(1)
@@ -3004,7 +3159,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines_v` (
 CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 `valuelist_name` varchar(20)
 ,`valuelist_desc` varchar(255)
-,`segment` varchar(20)
+,`segment` int(11)
 ,`segment_value` varchar(255)
 ,`segment_desc` varchar(255)
 );
@@ -3178,6 +3333,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_user_auth_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_user_auth_v` AS select `ur`.`role_id` AS `role_id`,`ao`.`object_name` AS `object_name`,`ao`.`description` AS `description`,`ur`.`user_id` AS `user_id`,`rp`.`id` AS `profile_id`,`u`.`id` AS `id`,`u`.`username` AS `username`,`u`.`password` AS `password`,`u`.`contact` AS `contact`,`u`.`email` AS `email`,`u`.`phone_number` AS `phone_number`,`u`.`mobile_telephone` AS `mobile_telephone`,`u`.`address` AS `address`,`u`.`full_name` AS `full_name`,`u`.`inactive_flag` AS `inactive_flag`,`u`.`email_flag` AS `email_flag`,`u`.`sms_flag` AS `sms_flag`,`u`.`initial_pass_flag` AS `initial_pass_flag`,`u`.`created_by` AS `created_by`,`u`.`creation_date` AS `creation_date`,`u`.`last_update_date` AS `last_update_date`,`u`.`last_updated_by` AS `last_updated_by` from (((`ct_user_roles` `ur` join `ct_role_profiles` `rp`) join `ct_authority_objects` `ao`) join `ct_users` `u`) where ((`ur`.`role_id` = `rp`.`role_id`) and (`rp`.`object_id` = `ao`.`id`) and (`u`.`id` = `ur`.`user_id`));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_user_configs_v`
+--
+DROP TABLE IF EXISTS `ct_user_configs_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_user_configs_v` AS select `uc`.`id` AS `id`,`uc`.`config_id` AS `config_id`,`uc`.`config_value` AS `config_value`,`uc`.`creation_date` AS `creation_date`,`uc`.`created_by` AS `created_by`,`uc`.`last_update_date` AS `last_update_date`,`uc`.`last_updated_by` AS `last_updated_by`,`uc`.`user_id` AS `user_id`,`c`.`config_name` AS `config_name`,`c`.`description` AS `description`,`c`.`config_value` AS `default_value`,`c`.`editable_flag` AS `editable_flag`,`c`.`data_type` AS `data_type` from (`ct_user_configs` `uc` join `ct_configs` `c`) where ((`uc`.`config_id` = `c`.`id`) and (`c`.`user_flag` = 1) and (`c`.`editable_flag` = 1));
 
 -- --------------------------------------------------------
 

@@ -135,6 +135,10 @@ class Welcome extends CI_Controller {
         force_download(v('name'), $data);
     }
 
+    function field_list(){
+        echo json_encode(field_list(v('table')));
+    }
+
 }
 
 /* End of file welcome.php */

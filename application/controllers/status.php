@@ -114,4 +114,54 @@ class Status extends CI_Controller {
         }
     }
 
+    function conditions(){
+        $this->load->model('status_condition_model');
+        $scm = new Status_condition_model();
+        $rows = $scm->find_all_by(array('status_line_id'=>v('id')));
+        for($i=0;$i<count($rows);$i++){
+            $rows[$i]['and_or'] = get_label('vl_and_or',$rows[$i]['and_or']);
+            $rows[$i]['field_name'] = field_comment($rows[$i]['table_name'],$rows[$i]['field_name']);
+            $rows[$i]['table_name'] = table_comment($rows[$i]['table_name']);
+            $rows[$i]['operation'] = get_label('vl_operations',$rows[$i]['operation']);
+        }
+        $data['objects'] = $rows;
+        render($data);
+    }
+
+    //条件公式
+    function condition_create(){
+        $slm = new Status_line_model();
+        $line = $slm->find(v('line_id'));
+        if(empty($line)){
+            show_404();
+        }else{
+            if($_POST){
+                $this->load->model('status_condition_model');
+                $scm = new Status_condition_model();
+                if($scm->insert(_data('and_or','table_name','field_name','operation','target_value','line_id'))){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                //默认为order表，order表字段
+//                $data['table_name'] = get_options('vl_tables')[0]['value'];
+                $data['table_name'] = 'ct_orders';
+                $data['field_name'] = 'status';
+                $data['field_options'] = field_list($data['table_name']);
+                render($data);
+            }
+        }
+    }
+
+    //条件公式
+    function condition_edit(){
+
+    }
+
+    //条件公式
+    function condition_destory(){
+
+    }
 }

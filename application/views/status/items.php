@@ -26,6 +26,12 @@
         <td><?= $o['inactive_flag']?></td>
         <td>
             <?= render_link(array('status','item_edit',array('id'=>$o['id'])),label('edit'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('status','conditions',array('id'=>$o['id'])),label('conditions'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('status','objects',array('id'=>$o['id'])),label('objects'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('status','functions',array('id'=>$o['id'])),label('functions'))?>
         </td>
 
     </tr>

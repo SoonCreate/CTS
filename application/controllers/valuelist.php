@@ -45,8 +45,9 @@ class Valuelist extends CI_Controller {
                 }
             }else{
                 $_POST['object_flag'] = 0;
-                if($vm->save_normal(_data('valuelist_name','description','parent_id','object_flag'))){
-                    go_back();
+                $id = $vm->save_normal(_data('valuelist_name','description','parent_id','object_flag'));
+                if($id){
+                    redirect_to('valuelist','items',array('id'=>$id));
                     message_db_success();
                 }else{
                     validation_error();
@@ -130,6 +131,8 @@ class Valuelist extends CI_Controller {
                                 $data['editable_flag'] = $h['editable_flag'];
                                 $data['parent_inactive_flag'] = $lines[0]['inactive_flag'];
                                 $data['lines'] = $lines;
+                                $vlm->order_by('sort');
+                                $vlm->order_by('segment');
                                 $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id'],'parent_segment'=>$parent_segment));
                                 $data['objects'] = _format($data['objects']);
                                 render($data);
@@ -146,6 +149,8 @@ class Valuelist extends CI_Controller {
                                     $data['parent'] = $parent;
                                     $data['editable_flag'] = $h['editable_flag'];
                                     $data['lines'] = $lines;
+                                    $vlm->order_by('sort');
+                                    $vlm->order_by('segment');
                                     $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id'],'parent_segment'=>$parent_segment));
                                     $data['objects'] = _format($data['objects']);
                                     render($data);
@@ -160,6 +165,8 @@ class Valuelist extends CI_Controller {
                     }
                 }else{
                     $data['editable_flag'] = $h['editable_flag'];
+                    $vlm->order_by('sort');
+                    $vlm->order_by('segment');
                     $data['objects'] = $vlm->find_all_by_view(array('valuelist_id'=>$h['id']));
                     $data['objects'] = _format($data['objects']);
                     render($data);

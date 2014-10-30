@@ -380,6 +380,54 @@ class User extends CI_Controller {
         }
     }
 
+    //用户配置列表
+    function configs(){
+        $this->load->model('user_config_model');
+        $this->load->model('config_model');
+        $cm = new Config_model();
+        $user_configs = $cm->find_all_by(array('user_flag'=>1,'editable_flag'=>1));
+        $ucm = new User_config_model();
+        for($i=0;$i<count($user_configs);$i++){
+            $uc = $ucm->find_by(array('user_id'=>_sess('uid'),'config_id'=>$user_configs[$i]['id']));
+            if(!empty($uc)){
+                $user_configs[$i]['config_value'] = $uc['config_value'];
+            }
+        }
+        $data['objects'] = $user_configs;
+        render($data);
+    }
+
+    //配置修改，如果当前没有配置则新建user config，再修改
+    function config_edit(){
+        $this->load->model('user_config_model');
+        $this->load->model('config_model');
+        $cm = new Config_model();
+        $ucm = new User_config_model();
+        $config_id = v('id');
+        $config = $cm->find_by(array('user_flag'=>1,'id'=>$config_id,'editable_flag'=>1));
+        if(empty($config)){
+            show_404();
+        }else{
+            $uc = $ucm->find_by_view(array('config_id'=>$config_id));
+            if(empty($uc)){
+                $data['config_id'] = $config_id;
+                $data['user_id'] = _sess('uid');
+                $data['config_value'] = $config['config_value'];
+                $uc = $ucm->find_by_view(array('id'=>$ucm->insert($data,true)));
+            }
+            if($_POST){
+                if($ucm->update($uc['id'],array('config_value'=>v('config_value')))){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render($uc);
+            }
+        }
+    }
+
     //前端控件权限验证
     function check_auth(){
         echo check_auth($this->input->get('type'),$this->input->get('status'),$this->input->get('category'));

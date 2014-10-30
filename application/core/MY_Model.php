@@ -608,7 +608,7 @@ class MY_Model extends CI_Model
         where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_{$this->_table}'" );
         }else{
             $query = $this->db->query( "select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
-        where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_{$this->_table}' and COLUMN_NAME = ".$column_name );
+        where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_{$this->_table}' and COLUMN_NAME = '".$column_name."'" );
         }
         $result = $query->result_array();
         return $result;

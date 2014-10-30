@@ -211,6 +211,38 @@ function _config($config_name){
             case 'number' :
                 $value = string_to_number($row['config_value']);
                 break;
+            case 'array' :
+                $value = explode(',',$row['config_value']);
+                break;
+            default :
+                $value = $row['config_value'];
+                break;
+        }
+
+    }
+    return $value;
+}
+
+function _user_config($config_name,$user_id = null){
+    global $CI;
+    $CI->load->model('user_config_model');
+    $ucm = new User_config_model();
+    $value = "";
+    $row = $ucm->config($config_name,$user_id = null);
+    if(!empty($row)){
+        switch($row['data_type']){
+            case 'string';
+                $value = $row['config_value'];
+                break;
+            case 'boolean':
+                $value = string_to_boolean($row['config_value']);
+                break;
+            case 'number' :
+                $value = string_to_number($row['config_value']);
+                break;
+            case 'array' :
+                $value = explode(',',$row['config_value']);
+                break;
             default :
                 $value = $row['config_value'];
                 break;
@@ -488,30 +520,23 @@ function refresh_env(){
 
 }
 
-function run_validation($data,$validate)
-{
-    global $CI;
-    if(!empty($validate))
-    {
-        foreach($data as $key => $val)
-        {
-            $_POST[$key] = $val;
-        }
-
-        $CI->load->library('form_validation');
-
-        if(is_array($validate))
-        {
-            $CI->form_validation->set_rules($validate);
-            return $CI->form_validation->run();
-        }
-        else
-        {
-            return $CI->form_validation->run($validate);
-        }
+//表名
+function table_comment($table){
+    return get_label('vl_tables',$table);
+}
+//字段名
+function field_comment($table,$field){
+    $query = $this->db->query( "select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
+        where TABLE_SCHEMA = 'CTS' AND  table_name = '.$table.' and COLUMN_NAME = '".$field."'" );
+    $result = $query->result_array();
+    if(count($result)>0){
+        return $result[0]['COLUMN_COMMENT'];
+    }else{
+        return $field;
     }
-    else
-    {
-        return TRUE;
-    }
+}
+
+function field_list($table){
+    return lazy_get_data("select COLUMN_NAME as value,concat(COLUMN_NAME,' - ',COLUMN_COMMENT) as label from INFORMATION_SCHEMA.COLUMNS
+        where TABLE_SCHEMA = 'CTS' AND  table_name = '".$table."'");
 }

@@ -90,5 +90,4 @@ class Configs extends CI_Controller {
         }
     }
 
-
 }
