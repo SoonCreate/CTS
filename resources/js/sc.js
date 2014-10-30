@@ -448,7 +448,7 @@ function dojoConfirm(content,title,callback,noback,type){
 }
 
 //包含grid的dialog
-function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,pageSize){
+function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,pageSize,onSelect){
     require(["sckj/Gridx",
             "gridx/core/model/cache/Sync",
             "dojo/data/ItemFileReadStore",
@@ -459,6 +459,7 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
             "gridx/modules/VirtualVScroller",
             "gridx/modules/TouchVScroller",  //IPAD支持
             "gridx/modules/IndirectSelectColumn",
+            //抬头全选按钮和onSelect无法兼得
             'gridx/modules/select/Row',
             "gridx/modules/extendedSelect/Row"
         ],
@@ -488,12 +489,18 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
                     modules.push(PaginationBar);
                 }
 
-                //多选单选
-                if(selectRowMultiple){
-                    modules.push(selectMultipleRow);
-                }else{
+                //抬头全选按钮和onSelect无法兼得
+                if(onSelect){
                     modules.push(selectSingleRow);
+                }else{
+                    //多选单选
+                    if(selectRowMultiple){
+                        modules.push(selectMultipleRow);
+                    }else{
+                        modules.push(selectSingleRow);
+                    }
                 }
+
                 var grid = new Grid({
                     cacheClass : SyncCache,
                     store: store ,
@@ -502,9 +509,8 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
                     selectRowTriggerOnCell: true,
                     selectRowMultiple : selectRowMultiple,
                     autoWidth : false,
-                    autoHeight : true,
+                    autoHeight : false,
                     style:"margin-left: 20px;min-width:400px"
-
                 });
                 grid.startup();
 
@@ -521,6 +527,13 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
                 for(var i=0;i<value.length;i++){
                     grid.select.row.selectById(value[i]);
                 }
+                //console.info(grid);
+                grid.connect(grid.select.row, 'onSelected', function(row){
+                    if(onSelect){
+                        onSelect(row,grid);
+                    }
+                });
+
                 dojoConfirm(grid,title,function(){
                     target.set("value",grid.select.row.getSelected().join());
                 });
@@ -529,7 +542,7 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
 }
 
 //值集选择框
-function vlGridDialog(valuelist_name,parent_segment_value,all_value,blank_row,selectRowMultiple,target,pagination,pageSize,onSelect){
+function vlGridDialog(valuelist_name,parent_segment_value,all_value,selectRowMultiple,target,pagination,pageSize){
     var structure = [{field : "value",name : "值"},{field : "label",name : "描述"}];
     var params = new Object();
     if(valuelist_name != undefined){
@@ -548,15 +561,22 @@ function vlGridDialog(valuelist_name,parent_segment_value,all_value,blank_row,se
         }
     }
 
-    if(blank_row != undefined){
-        if(blank_row){
-            params.none = 'true';
-        }else{
-            params.none = 'false';
+    gridDialog("请选择",structure,url("welcome/options",params),selectRowMultiple,target,pagination,pageSize,function(e,grid){
+        if(all_value){
+            if(e.id == "all"){
+                var selected = grid.select.row.getSelected();
+                for(var i=0;i<selected.length;i++){
+                    if(selected[i] != 'all'){
+                        grid.row(selected[i]).deselect();
+                        //deSelectById 有bug，弃用
+                        //grid.select.row.deSelectById(selected[i]);
+                    }
+                }
+            }else{
+                grid.row("all").deselect();
+            }
         }
-    }
-
-    gridDialog("请选择",structure,url("welcome/options",params),selectRowMultiple,target,pagination,pageSize);
+    });
 
 }
 

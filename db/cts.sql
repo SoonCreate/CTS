@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2014 at 06:04 AM
+-- Generation Time: Oct 30, 2014 at 11:19 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -479,7 +479,7 @@ INSERT INTO `ct_meetings` (`id`, `title`, `start_date`, `end_date`, `site`, `anc
 (4, 'asdf', 1413561600, 1413561600, 'asfd', 'asd', 'asfd', 'aadsf', NULL, '10', '', 44, 1413611547, 1413614005, 44, 1),
 (5, '第二次会议', 1413623400, 1413642600, '会议室一', '陈杨阳', '', '全部人员', NULL, NULL, NULL, 44, 1413615576, 1413616445, 44, 0),
 (6, '会议三', 1413567900, 1413568800, '暗室逢灯', '暗室逢灯', '', '暗室逢灯', NULL, NULL, NULL, 44, 1413616500, 1413616500, 44, 0),
-(7, '为了解决问题', 1414084200, 1414087800, '三楼会议室', '陈某某', '高某某', '部门全体人员', '会议决议如下', NULL, NULL, 73, 1414132468, 1414379077, 73, 0);
+(7, '为了解决问题', 1414084200, 1414087800, '三楼会议室', '陈某某', '高某某', '部门全体人员', '会议决议如下', NULL, NULL, 73, 1414132468, 1414649190, 73, 0);
 
 -- --------------------------------------------------------
 
@@ -1975,9 +1975,7 @@ INSERT INTO `ct_order_meetings` (`id`, `order_id`, `meeting_id`, `created_by`, `
 (6, 102, 5, 44, 1413615576, 1413615576, 44),
 (7, 102, 6, 44, 1413616500, 1413616500, 44),
 (8, 100, 6, 44, 1413616500, 1413616500, 44),
-(9, 149, 7, 73, 1414132468, 1414132468, 73),
-(10, 138, 7, 73, 1414379078, 1414379078, 73),
-(11, 141, 7, 73, 1414379078, 1414379078, 73);
+(9, 149, 7, 73, 1414132468, 1414132468, 73);
 
 -- --------------------------------------------------------
 
@@ -2592,7 +2590,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -2779,7 +2777,7 @@ INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`,
 (70, 'recorder_customer', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '客户投诉记录人员', 'yacole@sooncreate.com', NULL, NULL, NULL, '客户投诉记录人员', 0, 0, 0, 1, 44, 1413633537, 1413633537, 44),
 (71, 'recorder_vendor', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '供应商投诉记录人员', NULL, NULL, NULL, NULL, '供应商投诉记录人员', 0, 0, 0, 1, 44, 1413633576, 1413633576, 44),
 (72, 'recorder_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '内部投诉记录人员', NULL, NULL, NULL, NULL, '内部投诉记录人员', 0, 0, 0, 1, 44, 1413633592, 1413633592, 44),
-(73, 'manager_customer', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '客户投诉处理人', 0, 0, 0, 1, 44, 1413944283, 1413944283, 44),
+(73, 'manager_customer', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '', '', '', '', '', '客户投诉处理人', 0, 0, 0, 1, 44, 1413944283, 1414650995, 73),
 (74, 'manager_vendor', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '供应商投诉处理人', 0, 0, 0, 1, 44, 1413944310, 1413944310, 44),
 (75, 'manager_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '内部投诉处理人', 0, 0, 0, 1, 44, 1413944328, 1413944328, 44);
 

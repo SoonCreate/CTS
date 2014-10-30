@@ -10,6 +10,6 @@
 </div>
 <script type="text/javascript">
     function _selectDialog(name){
-        vlGridDialog(name,null,true,false,true,dijitObject('auth_value'),false);
+        vlGridDialog(name,null,true,true,dijitObject('auth_value'),false);
     }
 </script>
