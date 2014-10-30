@@ -1,6 +1,10 @@
 <script type="text/javascript">
+    <?php if(_sess('cm')) :?>
     $env.cm = <?= _sess('cm')?>;
+    <?php endif; ?>
+    <?php if(_sess('fid')) :?>
     $env.fid = <?= _sess('fid')?>;
+    <?php endif; ?>
 </script>
 <!--<div class="fixtop">-->
 <!--        <a href="#" onclick="menu()">菜单选择</a>-->

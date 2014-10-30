@@ -11,69 +11,20 @@
 
 <script type="text/javascript">
     function _showOrderSelectDialog(){
-        require(["dojo/ready",
-                "sckj/Gridx",
-                "gridx/core/model/cache/Sync",
-                "dojo/data/ItemFileReadStore",
-                "dojo/request",
-                "gridx/modules/Pagination",
-                "gridx/modules/pagination/PaginationBar",
-                "gridx/modules/ColumnResizer",
-                "gridx/modules/VirtualVScroller",
-                "gridx/modules/TouchVScroller",  //IPAD支持
-                "gridx/modules/IndirectSelectColumn",
-                "gridx/modules/extendedSelect/Row"
-            ],
-            function(ready,Grid,SyncCache,ItemFileReadStore,request,
-                     Pagination,
-                     PaginationBar,
-                     ColumnResizer,
-                     VirtualVScroller,
-                     TouchVScroller,
-                     IndirectSelectColumn,
-                     selectRow){
-                ready(function(){
+        require(["dojo/ready"],function(ready){
+            ready(function(){
+                var structure = [
+                    {name : "订单号",field : "id",width : "80px",dataType :"string"},
+                    {name : "标题",field : "title",width : "280px",dataType :"string"},
+                    {name : "内容概要",field : "content",width : "180px",dataType :"string"},
+                    {name : "投诉人",field : "created_by",width : "120px",dataType :"string"},
+                    {name : "创建时间",field : "creation_date",width : "140px",dataType :"string" }
 
-                    request.get(url('order_meeting/choose_orders?id=<?= _v('order_id')?>'),{handleAs : "json"}).then(function(data){
-                        var store = new ItemFileReadStore({
-                            data : data
-                        });
-                        var grid = new Grid({
-                            cacheClass : SyncCache,
-                            store: store ,
-                            structure: [
-                                {name : "订单号",field : "id",width : "80px",dataType :"string"},
-                                {name : "标题",field : "title",width : "280px",dataType :"string"},
-                                {name : "内容概要",field : "content",width : "180px",dataType :"string"},
-                                {name : "投诉人",field : "created_by",width : "120px",dataType :"string"},
-                                {name : "创建时间",field : "creation_date",width : "140px",dataType :"string" }
-
-                            ],
-                            modules : [
-                                Pagination,
-                                PaginationBar,
-                                ColumnResizer,
-                                VirtualVScroller,
-                                TouchVScroller,
-                                IndirectSelectColumn,
-                                selectRow
-                            ],
-                            selectRowTriggerOnCell: true,
-//                },
-                            autoWidth : false,
-                            autoHeight : true,
-                            style:"margin-left: 20px;"
-
-                        },"orderShowLogsGrid");
-
-                        grid.startup();
-                        grid.pagination.setPageSize(10);
-                        grid.select.row.selectById(<?= _v('order_id')?>);
-                        dojoConfirm(grid,"<?= label('choose_order')?>",function(){
-                            dijitObject("order_id").set("value",grid.select.row.getSelected().join());
-                        });
-                    });
-                });
+                ];
+                gridDialog("<?= label('choose_order')?>",structure,
+                    url('order_meeting/choose_orders?id=<?= _v('order_id')?>'),true,dijitObject("order_id"));
             });
+        });
+
     }
 </script>

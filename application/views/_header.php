@@ -93,8 +93,14 @@
     if($env == undefined){
         $env = new Object();
     }
+    <?php if(_sess('cm')) :?>
     $env.cm = <?= _sess('cm')?>;
+    <?php endif; ?>
+    <?php if(_sess('mid')) :?>
     $env.mid = <?= _sess('mid')?>;
+    <?php endif; ?>
+    <?php if(_sess('fid')) :?>
     $env.fid = <?= _sess('fid')?>;
+    <?php endif; ?>
 </script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>

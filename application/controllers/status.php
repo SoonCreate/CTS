@@ -155,7 +155,6 @@ class Status extends CI_Controller {
         }
     }
 
-    //条件公式
     function condition_edit(){
         $this->load->model('status_condition_model');
         $scm = new Status_condition_model();
@@ -177,7 +176,6 @@ class Status extends CI_Controller {
         }
     }
 
-    //条件公式
     function condition_destroy(){
         $this->load->model('status_condition_model');
         $scm = new Status_condition_model();

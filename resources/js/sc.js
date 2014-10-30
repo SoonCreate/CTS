@@ -340,11 +340,11 @@ function refresh_env(mid){
             }).play();
         }
     });
-    if($env && $env.cm){
+    if($env){
         //$(".preloader").style("display","none")
         //console.info($dijit.byId('mainTabContainer'));
         $env.mid = mid;
-        console.log("current module line id : "+$env.cm+" mid : "+$env.mid);
+        console.log("current module line id : "+ $env.cm +" mid : "+ $env.mid + " fid " + $env.fid );
     }
     //console.info(dijitObject('toolbar'));
 }
@@ -445,6 +445,78 @@ function dojoConfirm(content,title,callback,noback,type){
             confirmDialog.show();
         });
 
+}
+
+//包含grid的dialog
+function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pageSize){
+    require(["sckj/Gridx",
+            "gridx/core/model/cache/Sync",
+            "dojo/data/ItemFileReadStore",
+            "dojo/request",
+            "gridx/modules/Pagination",
+            "gridx/modules/pagination/PaginationBar",
+            "gridx/modules/ColumnResizer",
+            "gridx/modules/VirtualVScroller",
+            "gridx/modules/TouchVScroller",  //IPAD支持
+            "gridx/modules/IndirectSelectColumn",
+            'gridx/modules/select/Row',
+            "gridx/modules/extendedSelect/Row"
+        ],
+        function(Grid,SyncCache,ItemFileReadStore,request,
+                 Pagination,
+                 PaginationBar,
+                 ColumnResizer,
+                 VirtualVScroller,
+                 TouchVScroller,
+                 IndirectSelectColumn,
+                 selectSingleRow,
+                 selectMultipleRow){
+            request.get(dataUrl,{handleAs : "json"}).then(function(data){
+                var store = new ItemFileReadStore({
+                    data : data
+                });
+                var modules = [
+                    Pagination,
+                    PaginationBar,
+                    ColumnResizer,
+                    VirtualVScroller,
+                    TouchVScroller,
+                    IndirectSelectColumn
+                ];
+                if(selectRowMultiple){
+                    modules.push(selectMultipleRow);
+                }else{
+                    modules.push(selectSingleRow);
+                }
+                var grid = new Grid({
+                    cacheClass : SyncCache,
+                    store: store ,
+                    structure: structure,
+                    modules : modules,
+                    selectRowTriggerOnCell: true,
+                    selectRowMultiple : selectRowMultiple,
+                    autoWidth : false,
+                    autoHeight : true,
+                    style:"margin-left: 20px;"
+
+                });
+                grid.startup();
+
+                //默认10行
+                if(pageSize == undefined){
+                    pageSize = 10;
+                }
+                grid.pagination.setPageSize(pageSize);
+                var value = target.getValue();
+                value = value.split(',');
+                for(var i=0;i<value.length;i++){
+                    grid.select.row.selectById(value[i]);
+                }
+                dojoConfirm(grid,title,function(){
+                    target.set("value",grid.select.row.getSelected().join());
+                });
+            });
+        });
 }
 
 function closeDialog(){
