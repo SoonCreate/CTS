@@ -14,20 +14,6 @@ class User_model extends MY_Model{
         array_unshift($this->before_update,'before_update');
     }
 
-    function config($name,$user_id = null){
-        if(is_null($user_id)){
-            $user_id = _sess('uid');
-        }
-        $uc = $this->find_by_view(array('config_name'=>$name,'user_id'=>$user_id));
-        if(empty($uc)){
-            $this->load->model('config_model');
-            $cm = new Config_model();
-            return $cm->find_by(array('config_name'=>$name));
-        }else{
-            return $uc;
-        }
-    }
-
     function default_roles($order_type){
         $vm = new Valuelist_model();
         return $vm->find_active_children_options('default_role',$order_type);

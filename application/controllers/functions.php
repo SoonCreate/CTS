@@ -12,12 +12,15 @@ class Functions extends CI_Controller {
 
 	public function index()
 	{
+        render();
+	}
+
+    function data(){
         $fn = new Function_model();
         $fn->order_by('controller');
         $fn->order_by('function_name');
-		$data['functions'] = $fn->find_all();
-        render($data);
-	}
+        export_to_itemStore($fn->find_all(),'id','description',true);
+    }
 
     function create(){
         if($_POST){

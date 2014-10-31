@@ -344,12 +344,11 @@ class Role extends CI_Controller {
                 if ($this->db->trans_status() === FALSE) {
                     message_db_failure();
                 }else{
+                    go_back();
                     message_db_success();
                 }
             }else{
-                $aom = new Authority_object_model();
-                $data['objects'] = $aom->find_all();
-                render($data);
+                render();
             }
         }
     }

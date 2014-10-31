@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2014 at 11:19 AM
+-- Generation Time: Oct 31, 2014 at 03:38 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=44 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=45 ;
 
 --
 -- Dumping data for table `ct_configs`
@@ -173,7 +173,8 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (40, 'auto_leader', '如果责任人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414024127, 44),
 (41, 'auto_manager', '如果处理人只有唯一人选，在投诉单确认时自动选择', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414024012, 44),
 (42, 'allow_reopen', '是否允许关闭订单重新打开', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414032071, 44),
-(43, 'receive_email', '是否接收邮件（默认为接收）', 'TRUE', 1, 'boolean', 1, NULL, NULL, NULL, NULL);
+(43, 'receive_email', '是否接收邮件（默认为接收）', 'TRUE', 1, 'boolean', 1, NULL, NULL, NULL, NULL),
+(44, 'technical_name', '技术名词是否开启（默认为FALSE）', 'FALSE', 1, 'boolean', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -312,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -340,7 +341,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (22, 'order_meeting', '会议记录', 'order_meeting', 'index', NULL, 1413858257, 44, 1413858349, 44, 0, ''),
 (23, 'status_manage', '状态流管理', 'status', 'index', NULL, 1414116975, 44, 1414116975, 44, 1, ''),
 (24, 'order_feedback', '投诉单反馈', 'order', 'feedback', NULL, 1414459689, 44, 1414459689, 44, 0, ''),
-(25, 'user_config', '用户配置', 'user', 'configs', NULL, 1414638739, 44, 1414638739, 44, 1, '');
+(25, 'user_config', '用户配置', 'user', 'configs', NULL, 1414638739, 44, 1414638739, 44, 1, ''),
+(26, 'order_confirm', '投诉单内容确认', 'order', 'confirm', NULL, 1414718558, 44, 1414718655, 44, 0, '');
 
 -- --------------------------------------------------------
 
@@ -629,7 +631,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   `display_class` varchar(100) DEFAULT NULL COMMENT '抬头图标样式码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `ct_module_header`
@@ -1961,7 +1963,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `ct_order_meetings`
@@ -2551,8 +2553,24 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=4 ;
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_status_authobjects_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_status_authobjects_v` (
+`id` int(10) unsigned
+,`status_line_id` int(10) unsigned
+,`object_id` int(10) unsigned
+,`created_by` int(11)
+,`creation_date` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`object_name` varchar(20)
+,`description` varchar(255)
+);
 -- --------------------------------------------------------
 
 --
@@ -2567,10 +2585,31 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
-  `last_updated_date` int(11) DEFAULT NULL,
+  `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=7 ;
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_status_authobj_lines_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines_v` (
+`id` int(10) unsigned
+,`status_obj_id` int(10) unsigned
+,`authobj_line_id` int(10) unsigned
+,`auth_value` varchar(255)
+,`created_by` int(11)
+,`creation_date` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`valuelist_id` int(11)
+,`auth_item_name` varchar(20)
+,`auth_item_desc` varchar(255)
+,`object_name` varchar(20)
+,`object_desc` varchar(255)
+,`default_value` text
+);
 -- --------------------------------------------------------
 
 --
@@ -2590,7 +2629,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -2609,8 +2648,35 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `ct_status_functions`
+--
+
+INSERT INTO `ct_status_functions` (`id`, `status_line_id`, `function_id`, `sort`, `label`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(2, 8, 26, 0, '投诉内容已确认', 44, 1414718951, 1414718951, 44);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_status_functions_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_status_functions_v` (
+`id` int(10) unsigned
+,`status_line_id` int(10) unsigned
+,`function_id` int(10) unsigned
+,`sort` int(10) unsigned
+,`label` varchar(255)
+,`created_by` int(11)
+,`creation_date` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`function_name` varchar(100)
+,`description` varchar(255)
+,`controller` varchar(255)
+,`action` varchar(255)
+);
 -- --------------------------------------------------------
 
 --
@@ -2728,7 +2794,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 --
 CREATE TABLE IF NOT EXISTS `ct_tables_vl` (
 `value` varchar(64)
-,`label` text
+,`label` varchar(2048)
 );
 -- --------------------------------------------------------
 
@@ -2826,14 +2892,15 @@ CREATE TABLE IF NOT EXISTS `ct_user_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `ct_user_configs`
 --
 
 INSERT INTO `ct_user_configs` (`id`, `config_id`, `config_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `user_id`) VALUES
-(1, 43, 'TRUE', 1414645437, 44, 1414645444, 44, 44);
+(1, 43, 'TRUE', 1414645437, 44, 1414645444, 44, 44),
+(2, 44, 'TRUE', 1414716375, 44, 1414717070, 44, 44);
 
 -- --------------------------------------------------------
 
@@ -2978,7 +3045,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -3013,7 +3080,8 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (29, 'vl_functions', '功能列表', 1, 'description', 'id', 'ct_functions', '', NULL, 1, 1414459315, 44, 1414459315, 44),
 (30, 'vl_register_select', '用户类型（用户注册用）', 0, NULL, NULL, NULL, NULL, 1, 1, 1414558238, 44, 1414558299, 44),
 (31, 'vl_and_or', '与或关系', 0, NULL, NULL, NULL, NULL, 0, 1, 1414632932, 44, 1414632932, 44),
-(32, 'vl_operations', '运算公式', 0, NULL, NULL, NULL, NULL, 0, 1, 1414633095, 44, 1414633095, 44);
+(32, 'vl_operations', '运算公式', 0, NULL, NULL, NULL, NULL, 0, 1, 1414633095, 44, 1414633095, 44),
+(33, 'vl_authority_objects', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1414720433, 44, 1414720433, 44);
 
 -- --------------------------------------------------------
 
@@ -3308,6 +3376,33 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `ct_status_authobjects_v`
+--
+DROP TABLE IF EXISTS `ct_status_authobjects_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_authobjects_v` AS select `sa`.`id` AS `id`,`sa`.`status_line_id` AS `status_line_id`,`sa`.`object_id` AS `object_id`,`sa`.`created_by` AS `created_by`,`sa`.`creation_date` AS `creation_date`,`sa`.`last_update_date` AS `last_update_date`,`sa`.`last_updated_by` AS `last_updated_by`,`ao`.`object_name` AS `object_name`,`ao`.`description` AS `description` from (`ct_status_authobjects` `sa` join `ct_authority_objects` `ao`) where (`sa`.`object_id` = `ao`.`id`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_status_authobj_lines_v`
+--
+DROP TABLE IF EXISTS `ct_status_authobj_lines_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_authobj_lines_v` AS select `sal`.`id` AS `id`,`sal`.`status_obj_id` AS `status_obj_id`,`sal`.`authobj_line_id` AS `authobj_line_id`,`sal`.`auth_value` AS `auth_value`,`sal`.`created_by` AS `created_by`,`sal`.`creation_date` AS `creation_date`,`sal`.`last_update_date` AS `last_update_date`,`sal`.`last_updated_by` AS `last_updated_by`,`al`.`valuelist_id` AS `valuelist_id`,`al`.`auth_item_name` AS `auth_item_name`,`al`.`auth_item_desc` AS `auth_item_desc`,`al`.`object_name` AS `object_name`,`al`.`object_desc` AS `object_desc`,`al`.`default_value` AS `default_value` from (`ct_status_authobj_lines` `sal` join `ct_authobj_lines_v` `al`) where (`sal`.`authobj_line_id` = `al`.`id`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_status_functions_v`
+--
+DROP TABLE IF EXISTS `ct_status_functions_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_functions_v` AS select `sf`.`id` AS `id`,`sf`.`status_line_id` AS `status_line_id`,`sf`.`function_id` AS `function_id`,`sf`.`sort` AS `sort`,`sf`.`label` AS `label`,`sf`.`created_by` AS `created_by`,`sf`.`creation_date` AS `creation_date`,`sf`.`last_update_date` AS `last_update_date`,`sf`.`last_updated_by` AS `last_updated_by`,`f`.`function_name` AS `function_name`,`f`.`description` AS `description`,`f`.`controller` AS `controller`,`f`.`action` AS `action` from (`ct_status_functions` `sf` join `ct_functions` `f`) where (`sf`.`function_id` = `f`.`id`);
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `ct_status_lines_v`
 --
 DROP TABLE IF EXISTS `ct_status_lines_v`;
@@ -3321,7 +3416,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_tables_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_tables_vl` AS select `information_schema`.`tables`.`TABLE_NAME` AS `value`,concat(`information_schema`.`tables`.`TABLE_NAME`,' - ',`information_schema`.`tables`.`TABLE_COMMENT`) AS `label` from `information_schema`.`tables` where (`information_schema`.`tables`.`TABLE_SCHEMA` = 'cts');
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_tables_vl` AS select `information_schema`.`tables`.`TABLE_NAME` AS `value`,`information_schema`.`tables`.`TABLE_COMMENT` AS `label` from `information_schema`.`tables` where (`information_schema`.`tables`.`TABLE_SCHEMA` = 'cts');
 
 -- --------------------------------------------------------
 

@@ -190,4 +190,168 @@ class Status extends CI_Controller {
             }
         }
     }
+
+    //当前步骤包含的功能点
+    function functions(){
+        $this->load->model('status_function_model');
+        $sfm = new Status_function_model();
+        $data['objects'] = $sfm->find_all_by_view(array('status_line_id'=>v('id')));
+        render($data);
+    }
+
+    function function_create(){
+        $slm = new Status_line_model();
+        $line = $slm->find(v('status_line_id'));
+        if(empty($line)){
+            show_404();
+        }else{
+            if($_POST){
+                $this->load->model('status_function_model');
+                $sfm = new Status_function_model();
+                if($sfm->insert(_data('function_id','sort','label','status_line_id'))){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                $data['sort'] = 0;
+                render($data);
+            }
+        }
+    }
+
+    function function_edit(){
+        $this->load->model('status_function_model');
+        $sfm = new Status_function_model();
+        $cline = $sfm->find(v('id'));
+        if(empty($cline)){
+            show_404();
+        }else{
+            if($_POST){
+                if($sfm->update($cline['id'],_data('function_id','sort','label','status_line_id'))){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render();
+            }
+        }
+    }
+
+    function function_destroy(){
+        $this->load->model('status_function_model');
+        $sfm = new Status_function_model();
+        $cline = $sfm->find(v('id'));
+        if(empty($cline)){
+            show_404();
+        }else{
+            if($sfm->delete($cline['id'])){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
+        }
+    }
+
+    //涉及到的权限对象的验证
+    function objects(){
+        $this->load->model('status_authobject_model');
+        $sam = new Status_authobject_model();
+        $data['objects'] = $sam->find_all_by_view(array('status_line_id'=>v('id')));
+        render($data);
+    }
+
+    //添加权限对象
+    function add_object(){
+        $slm = new Status_line_model();
+        $line = $slm->find(v('status_line_id'));
+        if(empty($line)){
+            show_404();
+        }else{
+            if($_POST){
+                $this->load->model('status_authobject_model');
+                $this->load->model('status_authobj_line_model');
+                $sam = new Status_authobject_model();
+                $salm = new Status_authobj_line_model();
+                $this->db->trans_start();
+                $data['status_obj_id'] = $sam->insert(_data('object_id','status_line_id'));
+                $this->load->model('authobj_line_model');
+                $alm = new Authobj_line_model();
+                $lines = $alm->find_all_by(array('object_id'=>v('object_id')));
+                foreach($lines as $l){
+                    $data['authobj_line_id'] = $l['id'];
+                    $data['auth_value'] = $l['default_value'];
+                    $salm->insert($data);
+                }
+                $this->db->trans_complete();
+                if($this->db->trans_status() === TRUE){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render();
+            }
+        }
+    }
+
+    //权限对象项目
+    function object_items(){
+        $this->load->model('status_authobject_model');
+        $sam = new Status_authobject_model();
+        $object = $sam->find(v('id'));
+        if(empty($object)){
+            show_404();
+        }else{
+            $this->load->model('status_authobj_line_model');
+            $salm = new Status_authobj_line_model();
+            $data['objects'] = $salm->find_all_by_view(array('status_obj_id'=>$object['id']));
+            render($data);
+        }
+    }
+
+    function object_item_edit(){
+        $this->load->model('status_authobj_line_model');
+        $salm = new Status_authobj_line_model();
+        $item = $salm->find_by_view(array('id'=>v('id')));
+        if(empty($item)){
+            show_404();
+        }else{
+            if($_POST){
+                if($salm->update($item['id'],array('auth_value'=>v('auth_value')))){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render($item);
+            }
+        }
+    }
+
+    function object_destroy(){
+        $this->load->model('status_authobject_model');
+        $sam = new Status_authobject_model();
+        $object = $sam->find(v('id'));
+        if(empty($object)) {
+            show_404();
+        }else{
+            $this->load->model('status_authobj_line_model');
+            $salm = new Status_authobj_line_model();
+            $this->db->trans_start();
+            $salm->delete_by(array('status_obj_id'=>$object['id']));
+            $sam->delete($object['id']);
+            $this->db->trans_complete();
+            if($this->db->trans_status() === TRUE){
+                message_db_success();
+            }else{
+                validation_error();
+            }
+        }
+    }
 }

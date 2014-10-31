@@ -191,6 +191,14 @@ function get_options($valuelist_name,$parent_segment_value = null,$all_value = F
         $data['label'] = label('none');
         array_unshift($rt,$data);
     }
+
+    //技术名词开关
+    if(_user_config('technical_name')){
+        for($i = 0 ; $i < count($rt) ; $i++){
+            $rt[$i]['label'] = $rt[$i]['value'].' - '.$rt[$i]['label'] ;
+        }
+    }
+
     return $rt;
 }
 

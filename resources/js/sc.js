@@ -447,6 +447,12 @@ function dojoConfirm(content,title,callback,noback,type){
 
 }
 
+/*
+bug :I need to load "extendedSelect/Row" together with “IndirectSelect” to provide
+the select/deselect all function for rows; at the same time, I need to load "select/Row"
+to listen to the onSelect event. Unfortunately, when "extendedSelect/Row" & "select/Row"
+are loaded together, the onSelect event isn't captured. When only "select/Row" is loaded, it works fine
+ */
 //包含grid的dialog
 function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,pageSize,onSelect){
     require(["sckj/Gridx",
@@ -543,7 +549,7 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
 
 //值集选择框
 function vlGridDialog(valuelist_name,parent_segment_value,all_value,selectRowMultiple,target,pagination,pageSize){
-    var structure = [{field : "value",name : "值"},{field : "label",name : "描述"}];
+    var structure = [{field : "label",name : "条目"}];
     var params = new Object();
     if(valuelist_name != undefined){
         params.n = valuelist_name;
