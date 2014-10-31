@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2014 at 03:38 AM
+-- Generation Time: Oct 31, 2014 at 04:32 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -2553,7 +2553,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -2587,7 +2587,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -2629,7 +2629,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -2648,7 +2648,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `ct_status_functions`
@@ -2693,7 +2693,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`status_code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_status_header`
@@ -2730,7 +2730,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines` (
   `last_step_flag` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '流程结尾',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`status_id`,`step`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态步骤表' AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态步骤表' AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `ct_status_lines`
@@ -2748,7 +2748,6 @@ INSERT INTO `ct_status_lines` (`id`, `status_id`, `step`, `step_value`, `step_de
 (9, 2, '30', 'allocated', '已分配', '30,40,50', '', 0, 0, 0, 1414124980, 44, 1414124980, 44, '40', 0),
 (10, 2, '40', 'done', '已解决', '50', '', 0, 0, 0, 1414125008, 44, 1414125008, 44, '50', 0),
 (11, 2, '50', 'closed', '已关闭', '60', '', 0, 0, 0, 1414125037, 44, 1414125037, 44, '60', 0),
-(12, 2, '60', 'reopen', '重新打开', '30,50', '', 0, 0, 1, 1414125067, 44, 1414125067, 44, '30', 0),
 (13, 3, '10', 'released', '已提交', '20,50', '', 1, 0, 0, 1414125183, 44, 1414125183, 44, '20', 0),
 (14, 3, '20', 'confirmed', '已确认', '30,50', '', 0, 0, 0, 1414125209, 44, 1414125209, 44, '30', 0),
 (15, 3, '30', 'allocated', '已分配', '30,40,50', '', 0, 0, 0, 1414125237, 44, 1414125237, 44, '40', 0),
@@ -2760,7 +2759,8 @@ INSERT INTO `ct_status_lines` (`id`, `status_id`, `step`, `step_value`, `step_de
 (21, 4, '30', 'allocated', '已分配', '30,40,50', '', 0, 0, 0, 1414125582, 44, 1414125582, 44, '40', 0),
 (22, 4, '40', 'done', '已解决', '50', '', 0, 0, 0, 1414125609, 44, 1414125609, 44, '50', 0),
 (23, 4, '50', 'closed', '已关闭', '60', '', 0, 0, 0, 1414125631, 44, 1414125631, 44, '60', 0),
-(24, 4, '60', 'reopen', '重新打开', '30,50', '', 0, 0, 1, 1414125658, 44, 1414125658, 44, '30', 0);
+(24, 4, '60', 'reopen', '重新打开', '30,50', '', 0, 0, 1, 1414125658, 44, 1414125658, 44, '30', 0),
+(25, 2, '60', 'reopen', '重新打开', '30,50', '', 0, 0, 1, 1414726363, 44, 1414726363, 44, '30', 0);
 
 -- --------------------------------------------------------
 

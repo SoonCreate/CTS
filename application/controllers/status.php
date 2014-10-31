@@ -51,7 +51,30 @@ class Status extends CI_Controller {
     }
 
     function destroy(){
-
+        $sm = new Status_model();
+        $o = $sm->find(v('id'));
+        if(empty($o)){
+            show_404();
+        }else{
+            //验证是否被使用到投诉单类型中
+            $this->load->model('valuelist_line_model');
+            $vlm = new Valuelist_line_model();
+            $use_in_vl = $vlm->find_by_view(array('valuelist_name'=>'default_status','segment_value'=>$o['status_code']));
+            if($use_in_vl){
+                custz_message('E','状态流正在被使用，不能删除！');
+            }else{
+                $slm = new Status_line_model();
+                if($slm->count_by(array('status_id'=>$o['id'])) > 0){
+                    custz_message('E','请先清空项目！');
+                }else{
+                    if($sm->delete($o['id'])){
+                        message_db_success();
+                    }else{
+                        message_db_failure();
+                    }
+                }
+            }
+        }
     }
 
     function items(){
@@ -110,6 +133,38 @@ class Status extends CI_Controller {
                 }
             }else{
                 render($o);
+            }
+        }
+    }
+
+    function item_destroy(){
+        $slm = new Status_line_model();
+        $o = $slm->find(v('id'));
+        if(empty($o)){
+            show_404();
+        }else{
+            $this->load->model('status_condition_model');
+            $this->load->model('status_function_model');
+            $this->load->model('status_authobject_model');
+            $this->load->model('status_authobj_line_model');
+            $scm = new Status_condition_model();
+            $sfm = new Status_function_model();
+            $sam = new Status_authobject_model();
+            $salm = new Status_authobj_line_model();
+            $this->db->trans_start();
+            $objects = $sam->find_all_by(array('status_line_id'=>$o['id']));
+            foreach($objects as $l){
+                $salm->delete_by(array('status_obj_id'=>$l['id']));
+            }
+            $sam->delete_by(array('status_line_id'=>$o['id']));
+            $sfm->delete_by(array('status_line_id'=>$o['id']));
+            $scm->delete_by(array('status_line_id'=>$o['id']));
+            $slm->delete($o['id']);
+            $this->db->trans_complete();
+            if($this->db->trans_status() === TRUE){
+                message_db_success();
+            }else{
+                message_db_failure();
             }
         }
     }
@@ -236,7 +291,7 @@ class Status extends CI_Controller {
                     validation_error();
                 }
             }else{
-                render();
+                render($cline);
             }
         }
     }

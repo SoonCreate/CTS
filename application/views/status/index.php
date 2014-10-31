@@ -12,6 +12,8 @@
             <?= render_link(array('status','edit',array('id'=>$o['id'])),label('edit'))?>
             &nbsp;|&nbsp;
             <?= render_link(array('status','items',array('id'=>$o['id'])),label('items'))?>
+            &nbsp;|&nbsp;
+            <?= render_link(array('status','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
         </td>
 
     </tr>

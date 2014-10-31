@@ -1,5 +1,5 @@
 //前端触发后端链接
-function goto(url,target,noRender,noRecord){
+function goto(url,target,noRender,noRecord,message){
     var wso = $dijit.byId('module_'+target);
     if(wso == undefined){
         wso = currentWso();
@@ -13,13 +13,16 @@ function goto(url,target,noRender,noRecord){
             wso.set("href",url);
             $dijit.byId("mainTabContainer").selectChild(wso,true);
         }else{
-            dojoConfirm("是否确定执行此操作？",null,function(){
+            if(message == undefined){
+                message = "是否确定执行此操作？";
+            }
+            dojoConfirm(message,null,function(){
                 $ajax.get(url,{handleAs : "json"}).then(function(response){
                     handleResponse(response,null,function(){
                         refresh();
                     });
                 });
-            });
+            },null,'W');
         }
     }else{
         redirect(url);
