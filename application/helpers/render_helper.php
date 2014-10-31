@@ -73,8 +73,12 @@ function url_goto($url){
 }
 
 function render_link_button($url,$label,$title = '',$class = '',$noRender = 'false'){
-    $label =  '<button data-dojo-type="sckj/form/Button">'.$label.'</button>';
-    return render_link($url,$label,$title,$class,$noRender);
+    $bt =  '<button data-dojo-type="sckj/form/Button">';
+    if($class){
+        $bt = $bt + '<i class="'.$class.' icon-1x"></i>';
+    }
+    $bt =  $bt .$label.'</button>';
+    return render_link($url,$bt,$title,null,$noRender);
 }
 
 function render_error($message = '',$heading = ''){
@@ -464,4 +468,29 @@ function render_path($current_page = null){
     }else{
         return '<div>页面路径：'.$line['module_desc'].' > '.$line['function_desc'].' > '.$current_page.'</div>';
     }
+}
+
+//输出单据功能点按钮
+function render_order_button_group($order_id,$order_type,$current_status){
+    global $CI;
+    $CI->load->model('status_function_model');
+    $CI->load->model('status_line_model');
+    $CI->load->model('status_model');
+    $slm = new Status_line_model();
+    $sfm = new Status_function_model();
+    $sm = new Status_model();
+    $status_code = default_value('status',$order_type);
+    $next_status = $sm->next_status($status_code,$current_status);
+    $line = $slm->find_by_view(array('status_code'=>$status_code,'step_value'=>$next_status));
+    $buttons = array();
+    if(!empty($line)){
+        $sfm->order_by('sort');
+        $sfm->order_by('label');
+        $functions = $sfm->find_all_by_view(array('status_line_id'=>$line['id']));
+        foreach($functions as $fn){
+            array_push($buttons,render_link_button(array($fn['controller'],$fn['action'],array('id'=>$order_id)),
+                $fn['label'],$fn['description'],$fn['display_class'],!$fn['render_flag']));
+        }
+    }
+    return join('&nbsp;',$buttons);
 }

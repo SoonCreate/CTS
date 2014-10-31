@@ -25,9 +25,10 @@ class Functions extends CI_Controller {
     function create(){
         if($_POST){
             $_POST['display_flag'] = v('display_flag');
+            $_POST['render_flag'] = v('render_flag');
             $_POST['help'] = tpost('help');
             $fn = new Function_model();
-            if($fn->insert(_data('function_name','description','controller','action','display_flag','display_class','help'))){
+            if($fn->insert(_data('function_name','description','controller','action','display_flag','display_class','help','render_flag'))){
                 go_back();
                 message_db_success();
             }else{
@@ -46,8 +47,10 @@ class Functions extends CI_Controller {
             show_404();
         }else{
             if($_POST){
+                $_POST['display_flag'] = v('display_flag');
+                $_POST['render_flag'] = v('render_flag');
                 $_POST['help'] = tpost('help');
-                if($fn->update($f['id'],_data('description','controller','action','display_flag','display_class','help'))){
+                if($fn->update($f['id'],_data('description','controller','action','display_flag','render_flag','display_class','help'))){
                     go_back();
                     message_db_success();
                 }else{

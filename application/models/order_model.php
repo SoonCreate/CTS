@@ -145,12 +145,11 @@ class Order_model extends MY_Model{
         $sm = new Status_model();
         $next_status = $sm->do_next($order['id'],default_value('status',$order['order_type']),$order['status']);
         if($next_status){
-            echo $next_status;
-//            if($this->do_update($order['id'],array('status'=>$next_status))){
-//                message_db_success();
-//            }else{
-//                message_db_failure();
-//            }
+            if($this->do_update($order['id'],array('status'=>$next_status))){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
         }
     }
 

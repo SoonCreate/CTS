@@ -3,8 +3,61 @@
 <div class="container-fluid userd">
     <div class="row">
         <?= render_order_button_group($id,$order_type,$status)?>
+    <?php
+    //如果订单状态为锁定，则不显示工具栏
+    if(!is_order_locked($status)){?>
+
+        <?php if(check_order_auth($order_type,'confirmed',$category)){?>
+
+            <?php if(is_order_allow_next_status($order_type,$status,'confirmed')){?>
+            <?= render_link_button(array('order','confirm',array('id'=>$id)),'投诉内容已确认',null,null,true)?>
+            <?php }?>
+
+            <?php
+            //投诉单未分配处理人，可修改负责人
+            if($status == 'confirmed'){?>
+                <?= render_link_button(array('order','choose_leader',array('id'=>$id)),'选择投诉的责任人（部门经理）')?>
+            <?php }?>
+
+        <?php }?>
+
+        <?php
+        //如果为当前投诉单的责任人，则可以分配处理人
+        if(is_order_allow_next_status($order_type,$status,'allocated') && check_order_auth($order_type,'allocated',$category) && $leader_id == _sess('uid')){?>
+            <?= render_link_button(array('order','dispatcher',array('id'=>$id)),'选择投诉的具体处理人员')?>
+        <?php }?>
+
+        <?php
+        //必须小于规定的修改次数
+        if(check_order_auth($order_type,'done',$category) && $manager_id == _sess('uid') && $pcd_change_times < _config('pcd_change_times') && $status != 'done'){?>
+            <?= render_link_button(array('order','pcd_change',array('id'=>$id)),'填写计划完成日期')?>
+        <?php }?>
+
+        <?php if(is_order_allow_next_status($order_type,$status,'done') && check_order_auth($order_type,'done',$category)){?>
+            <?= render_link_button(array('order','done',array('id'=>$id)),'投诉已解决',null,null,true)?>
+        <?php }?>
+
+        <?php if(is_order_allow_next_status($order_type,$status,'closed') && check_order_auth($order_type,'closed',$category)){?>
+            <?= render_link_button(array('order','close',array('id'=>$id)),'投诉单关闭',null,null,true)?>
+        <?php }?>
+
+
+
+    <?php }else{?>
+        <?php if(_config('allow_reopen') && is_order_allow_next_status($order_type,$status,'reopen') && check_order_auth($order_type,'reopen',$category)){?>
+            <?= render_link_button(array('order','reopen',array('id'=>$id)),'投诉单重新打开',null,null,true)?>
+        <?php }?>
+        <?php if(_config('feedback_control')){ ?>
+            <?= render_link_button(array('order','feedback',array('id'=>$id)),'反馈建议以及评分')?>
+        <?php } ?>
+    <?php }?>
+
+        <?php if(check_function_auth('order_meeting','index')){ ?>
+            <?= render_link_button(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?>
+        <?php } ?>
+        <hr/>
     </div>
-    <hr/>
+
     <dl class="row dl-horizontal"><dt>投诉单类型</dt><dd><?= get_label('vl_order_type',$order_type); ?></dd></dl>
     <?php if(_config('category_control')) :?>
         <dl class="row dl-horizontal"><dt>分类</dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
