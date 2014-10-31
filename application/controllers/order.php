@@ -201,12 +201,17 @@ class Order extends CI_Controller {
     function confirm(){
         $om = new Order_model();
         $order = $om->find(v('id'));
-        //默认更新下一个状态
-        $data['status'] = 'confirmed';
-        //id是否有效
-        if(!empty($order)){;
-            $om->confirm($order['id']);
+        if(empty($order)){
+            show_404();
+        }else{
+            $om->do_next($order);
         }
+//        //默认更新下一个状态
+//        $data['status'] = 'confirmed';
+//        //id是否有效
+//        if(!empty($order)){;
+//            $om->confirm($order['id']);
+//        }
     }
 
     function upload_file(){

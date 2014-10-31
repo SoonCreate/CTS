@@ -141,6 +141,19 @@ class Order_model extends MY_Model{
         return $sm->next_status(default_value('status',$order_type),$current_status);
     }
 
+    function do_next($order){
+        $sm = new Status_model();
+        $next_status = $sm->do_next($order['id'],default_value('status',$order['order_type']),$order['status']);
+        if($next_status){
+            echo $next_status;
+//            if($this->do_update($order['id'],array('status'=>$next_status))){
+//                message_db_success();
+//            }else{
+//                message_db_failure();
+//            }
+        }
+    }
+
     //在未开通分类管理时，默认分类
     function default_category($order_type){
         $vm = new Valuelist_model();
@@ -170,6 +183,7 @@ class Order_model extends MY_Model{
         return $sm->is_allow_next_status(default_value('status',$order_type),$current_status,$next_status);
     }
 
+    //新建
     function save($base_data,$content,$addfiles=null){
 
         $this->db->trans_begin();
@@ -406,6 +420,7 @@ class Order_model extends MY_Model{
 
     }
 
+    //更新
     function do_update($order_id,$data){
         $order = $this->find($order_id);
         $this->db->trans_begin();

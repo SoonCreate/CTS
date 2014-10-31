@@ -372,12 +372,16 @@ function render_form_textarea($name,$required = FALSE,$attributes = array(),$dis
 }
 
 //根据值集输出select
-function render_select_with_options($name,$valuelist_name,$required = FALSE,$attributes = array()){
+function render_select_with_options($name,$valuelist_name,$required = FALSE,$attributes = array(),$disabled = false){
     $echo = '';
     $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name,$required).'</dt>';
     $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
         $echo = $echo. ' required ';
+    }
+
+    if($disabled){
+        $echo = $echo. ' disabled ';
     }
 
     foreach($attributes as $key=>$value){
@@ -391,12 +395,16 @@ function render_select_with_options($name,$valuelist_name,$required = FALSE,$att
 }
 
 //对于已有options的时候，无需再查valuelist
-function render_select_add_options($name,$options,$required = FALSE,$attributes = array()){
+function render_select_add_options($name,$options,$required = FALSE,$attributes = array(),$disabled = false){
     $echo = '';
     $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name,$required).'</dt>';
     $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
         $echo = $echo. ' required ';
+    }
+
+    if($disabled){
+        $echo = $echo. ' disabled ';
     }
 
     foreach($attributes as $key=>$value){

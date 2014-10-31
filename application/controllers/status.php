@@ -12,14 +12,14 @@ class Status extends CI_Controller {
     public function index()
     {
         $sm = new Status_model();
-        $data['objects'] = $sm->find_all();
+        $data['objects'] = $sm->find_all_by_view();
         render($data);
     }
 
     function create(){
         if($_POST){
             $sm = new Status_model();
-            if($sm->insert(_data('status_code','description'))){
+            if($sm->insert(_data('status_code','description','sys_order_id'))){
                 go_back();
                 message_db_success();
             }else{
@@ -173,10 +173,11 @@ class Status extends CI_Controller {
         $this->load->model('status_condition_model');
         $scm = new Status_condition_model();
         $rows = $scm->find_all_by(array('status_line_id'=>v('id')));
+        $table_name = $scm->table_name(v('id'));
         for($i=0;$i<count($rows);$i++){
             $rows[$i]['and_or'] = get_label('vl_and_or',$rows[$i]['and_or']);
-            $rows[$i]['field_name'] = field_comment($rows[$i]['table_name'],$rows[$i]['field_name']);
-            $rows[$i]['table_name'] = table_comment($rows[$i]['table_name']);
+            $rows[$i]['field_name'] = field_comment($table_name,$rows[$i]['field_name']);
+            $rows[$i]['table_name'] = table_comment($table_name);
             $rows[$i]['operation'] = get_label('vl_operations',$rows[$i]['operation']);
         }
         $data['objects'] = $rows;
@@ -190,10 +191,10 @@ class Status extends CI_Controller {
         if(empty($line)){
             show_404();
         }else{
+            $this->load->model('status_condition_model');
+            $scm = new Status_condition_model();
             if($_POST){
-                $this->load->model('status_condition_model');
-                $scm = new Status_condition_model();
-                if($scm->insert(_data('and_or','table_name','field_name','operation','target_value','status_line_id'))){
+                if($scm->insert(_data('and_or','field_name','operation','target_value','status_line_id'))){
                     go_back();
                     message_db_success();
                 }else{
@@ -202,7 +203,7 @@ class Status extends CI_Controller {
             }else{
                 //默认为order表，order表字段
 //                $data['table_name'] = get_options('vl_tables')[0]['value'];
-                $data['table_name'] = 'ct_orders';
+                $data['table_name'] = $scm->table_name($line['id']);
                 $data['field_name'] = 'status';
                 $data['field_options'] = field_list($data['table_name']);
                 render($data);
@@ -218,14 +219,14 @@ class Status extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                if($scm->update($cline['id'],_data('and_or','table_name','field_name','operation','target_value'))){
+                if($scm->update($cline['id'],_data('and_or','field_name','operation','target_value'))){
                     go_back();
                     message_db_success();
                 }else{
                     validation_error();
                 }
             }else{
-                $cline['field_options'] = field_list($cline['table_name']);
+                $cline['field_options'] = field_list($scm->table_name($cline['status_line_id']));
                 render($cline);
             }
         }
