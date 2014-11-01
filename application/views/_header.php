@@ -28,8 +28,10 @@
         parseOnLoad: true,
         async : true,
         packages: [
+            <!-- test --> <!-- test -->
             { name: "cts", location: "/cts/resources/js/"},
             { name: "sckj", location: "/cts/resources/js/dijit"}
+
         ]
     };
 </script>
@@ -38,7 +40,7 @@
 
 <script type="text/javascript">
     //    history.forward();
-    //history.go(1);
+    //history.go(1);111
     //全局变量
     var $env = new Object;
     var $ = new Object;
