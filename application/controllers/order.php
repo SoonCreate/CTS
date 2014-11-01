@@ -187,7 +187,7 @@ class Order extends CI_Controller {
             if($_POST){
                 $reason = v('reason');
                 if($olm->update_by(array('change_hash'=>$change_hash),array('reason'=>$reason))){
-                    message_db_success();
+//                    message_db_success();
                 }else{
 //                    message_db_failure();
                     validation_error();
@@ -201,17 +201,18 @@ class Order extends CI_Controller {
     function confirm(){
         $om = new Order_model();
         $order = $om->find(v('id'));
-        if(empty($order)){
-            show_404();
-        }else{
-            $om->do_next($order);
-        }
-//        //默认更新下一个状态
-//        $data['status'] = 'confirmed';
-//        //id是否有效
-//        if(!empty($order)){;
-//            $om->confirm($order['id']);
+//        if(empty($order)){
+//            show_404();
+//        }else{
+//            $om->do_next($order);
 //        }
+        //需把confirm原来的逻辑加入进来
+        //默认更新下一个状态
+        $data['status'] = 'confirmed';
+        //id是否有效
+        if(!empty($order)){;
+            $om->confirm($order['id']);
+        }
     }
 
     function upload_file(){
@@ -331,7 +332,7 @@ class Order extends CI_Controller {
         if(empty($order)){
             show_404();
         }else{
-            if($order['pcd_change_times'] < _config('pcd_change_times')){
+            if($order['pcd_change_times'] - 1  < _config('pcd_change_times') ){
                 if($_POST){
 
                     //格式化提交的日期

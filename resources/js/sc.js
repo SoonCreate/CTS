@@ -359,7 +359,12 @@ function onModuleShow(mid){
 //用于控件的唯一性标识
 function fixDijitId(id){
     var rtId = "";
-    if($env && $env.cm){
+    if($env){
+        //针对登陆和注册页面而言
+        if($env.mid == undefined){
+            $env.cm = "";
+            $env.mid = "";
+        }
         rtId =  id + "_" + $env.cm + "_" + $env.mid ;
     }
     return rtId;
