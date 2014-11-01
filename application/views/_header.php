@@ -30,6 +30,7 @@
         packages: [
             { name: "cts", location: "/cts/resources/js/"},
             { name: "sckj", location: "/cts/resources/js/dijit"}
+
         ]
     };
 </script>
