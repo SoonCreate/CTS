@@ -994,13 +994,33 @@ ol.linenums{list-style:decimal outside none;margin:0 0 0 22px;/* IE indents via 
 	Example:		<dl class="dl-horizontal cl"><dt>H-ui</dt><dd>基于Bootstrap框架的改进扩展的前端框架</dd></dl>
 	Explain:		.dl-horizontal 水平描述，默认不加为垂直模式。
 */
-dl{margin-bottom:20px}
-dt,dd{line-height:20px}
-dt{font-weight:bold}
-dd{margin-left:2em}
-.dl-horizontal.cl{}
-.dl-horizontal dt{float:left;width:160px;overflow:hidden;clear:left;text-align:right;text-overflow:ellipsis;white-space:nowrap}
-.dl-horizontal dd{margin-left:180px}
+dl {
+    margin-top: 0;
+    margin-bottom: 20px
+}
+dt,dd {
+    line-height: 20px
+}
+dt {
+    font-weight: bold
+}
+dd {
+    margin-left: 2em
+}
+.dl-horizontal.cl {
+}
+.dl-horizontal dt {
+    float: left;
+    width: 160px;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+.dl-horizontal dd {
+    margin-left: 180px
+}
 /*3.1.22 隐藏 显示
   Name:				style_display
   Example:    <div class="hide">隐藏的内容</div> <div class="show">显示的内容</div>

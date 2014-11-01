@@ -63,7 +63,7 @@ html, body {
 	margin-bottom:20px;
 }
 #mainSplitter{
-    margin-left:20px;
+    margin:0 10px 10px 20px;
     background: #2C3E50;
     border: 1px solid #969B9E;
     border-radius: 8px 0 0  8px;
@@ -275,7 +275,6 @@ html, body {
     font-size: 13px;
 }
 .userd{
-
     background:#F9F9F9;
     padding :20px 0 5px 0;
     margin-bottom:20px;
@@ -402,8 +401,8 @@ html, body {
 .fixbottom{
     position: fixed;
     left: 221px;
-    right: 3px;
-    bottom: 3px;
+    right: 13px;
+    bottom: 13px;
     box-shadow: 0 -3px 3px #ddd;
     background-color: #f6f6f6;
     padding: 8px 30px;
@@ -412,7 +411,7 @@ html, body {
 .fixtop{
     position: fixed;
     left: 222px;
-    right:3px;
+    right:13px;
     top: 81px;
     height: 41px;
     padding: 10px 30px;
