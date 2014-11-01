@@ -57,7 +57,7 @@
                 $dom = dom;
                 $dijit = registry;
                 $ajax = request;
-
+                console.info(<?= _v('initial_pass_flag')?>);
                 <?php if(_v('initial_pass_flag')){
                     $goto = url_goto(array('user','change_password'));
                 ?>

@@ -2,7 +2,6 @@
 
 <div class="container-fluid userd">
     <div class="row">
-        <?= render_order_button_group($id,$order_type,$status)?>
     <?php
     //如果订单状态为锁定，则不显示工具栏
     if(!is_order_locked($status)){?>
@@ -29,7 +28,7 @@
 
         <?php
         //必须小于规定的修改次数
-        if(check_order_auth($order_type,'done',$category) && $manager_id == _sess('uid') && $pcd_change_times < _config('pcd_change_times') && $status != 'done'){?>
+        if(check_order_auth($order_type,'done',$category) && $manager_id == _sess('uid') && $pcd_change_times - 1 < _config('pcd_change_times') && $status != 'done'){?>
             <?= render_link_button(array('order','pcd_change',array('id'=>$id)),'填写计划完成日期')?>
         <?php }?>
 
