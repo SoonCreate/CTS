@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2014 at 09:35 AM
+-- Generation Time: Nov 03, 2014 at 09:28 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -2590,21 +2590,21 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `status_line_id` int(10) unsigned NOT NULL,
+  `group_id` int(10) unsigned NOT NULL,
   `object_id` int(10) unsigned NOT NULL,
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `ct_status_authobjects`
 --
 
-INSERT INTO `ct_status_authobjects` (`id`, `status_line_id`, `object_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(5, 8, 1, 44, 1414731310, 1414731310, 44);
+INSERT INTO `ct_status_authobjects` (`id`, `group_id`, `object_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(5, 2, 1, 44, 1414731310, 1414731310, 44);
 
 -- --------------------------------------------------------
 
@@ -2613,7 +2613,7 @@ INSERT INTO `ct_status_authobjects` (`id`, `status_line_id`, `object_id`, `creat
 --
 CREATE TABLE IF NOT EXISTS `ct_status_authobjects_v` (
 `id` int(10) unsigned
-,`status_line_id` int(10) unsigned
+,`group_id` int(10) unsigned
 ,`object_id` int(10) unsigned
 ,`created_by` int(11)
 ,`creation_date` int(11)
@@ -2638,7 +2638,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `ct_status_authobj_lines`
@@ -2678,7 +2678,6 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines_v` (
 
 CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `status_line_id` int(10) unsigned NOT NULL,
   `and_or` varchar(3) NOT NULL DEFAULT 'AND' COMMENT '与或关系',
   `field_name` varchar(100) NOT NULL,
   `operation` varchar(45) NOT NULL COMMENT '运算',
@@ -2687,19 +2686,64 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `creation_date` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
+  `group_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `ct_status_conditions`
 --
 
-INSERT INTO `ct_status_conditions` (`id`, `status_line_id`, `and_or`, `field_name`, `operation`, `target_value`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(2, 8, 'AND', 'status', 'EQ', 'released', 44, 1414731289, 1414741598, 44),
-(3, 9, 'AND', 'status', 'EQ', 'confirmed', 44, 1414731454, 1414731454, 44),
-(4, 9, 'AND', 'leader_id', 'NE', 'null', 44, 1414731536, 1414731576, 44),
-(5, 9, 'AND', 'manager_id', 'NE', 'null', 44, 1414731591, 1414731591, 44),
-(7, 8, 'OR', 'status', 'EQ', 'confirmed', 44, 1414829103, 1414829103, 44);
+INSERT INTO `ct_status_conditions` (`id`, `and_or`, `field_name`, `operation`, `target_value`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `group_id`) VALUES
+(2, 'AND', 'status', 'EQ', 'released', 44, 1414731289, 1415001573, 44, 2),
+(3, 'AND', 'status', 'EQ', 'confirmed', 44, 1414731454, 1414731454, 44, 2),
+(4, 'AND', 'leader_id', 'NE', 'null', 44, 1414731536, 1414731576, 44, 3),
+(5, 'AND', 'manager_id', 'NE', 'null', 44, 1414731591, 1414731591, 44, 3),
+(7, 'OR', 'status', 'EQ', 'confirmed', 44, 1414829103, 1414829103, 44, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_status_conditions_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_status_conditions_v` (
+`id` int(10) unsigned
+,`and_or` varchar(3)
+,`field_name` varchar(100)
+,`operation` varchar(45)
+,`target_value` varchar(255)
+,`created_by` int(11)
+,`creation_date` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`group_id` int(10) unsigned
+,`status_line_id` int(11)
+,`group_name` varchar(255)
+);
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_status_condition_groups`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_status_condition_groups` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(255) NOT NULL,
+  `status_line_id` int(11) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `creation_date` int(11) DEFAULT NULL,
+  `last_update_date` int(11) DEFAULT NULL,
+  `last_updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流条件组' AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `ct_status_condition_groups`
+--
+
+INSERT INTO `ct_status_condition_groups` (`id`, `group_name`, `status_line_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(2, '默认条件组', 8, 44, 1414999005, 1414999005, 44),
+(3, '默认条件组', 9, 44, 1414999278, 1414999278, 44);
 
 -- --------------------------------------------------------
 
@@ -2718,7 +2762,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `ct_status_functions`
@@ -2766,7 +2810,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`status_code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `ct_status_header`
@@ -3500,7 +3544,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_status_authobjects_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_authobjects_v` AS select `sa`.`id` AS `id`,`sa`.`status_line_id` AS `status_line_id`,`sa`.`object_id` AS `object_id`,`sa`.`created_by` AS `created_by`,`sa`.`creation_date` AS `creation_date`,`sa`.`last_update_date` AS `last_update_date`,`sa`.`last_updated_by` AS `last_updated_by`,`ao`.`object_name` AS `object_name`,`ao`.`description` AS `description` from (`ct_status_authobjects` `sa` join `ct_authority_objects` `ao`) where (`sa`.`object_id` = `ao`.`id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_authobjects_v` AS select `sa`.`id` AS `id`,`sa`.`group_id` AS `group_id`,`sa`.`object_id` AS `object_id`,`sa`.`created_by` AS `created_by`,`sa`.`creation_date` AS `creation_date`,`sa`.`last_update_date` AS `last_update_date`,`sa`.`last_updated_by` AS `last_updated_by`,`ao`.`object_name` AS `object_name`,`ao`.`description` AS `description` from (`ct_status_authobjects` `sa` join `ct_authority_objects` `ao`) where (`sa`.`object_id` = `ao`.`id`);
 
 -- --------------------------------------------------------
 
@@ -3510,6 +3554,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_status_authobj_lines_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_authobj_lines_v` AS select `sal`.`id` AS `id`,`sal`.`status_obj_id` AS `status_obj_id`,`sal`.`authobj_line_id` AS `authobj_line_id`,`sal`.`auth_value` AS `auth_value`,`sal`.`created_by` AS `created_by`,`sal`.`creation_date` AS `creation_date`,`sal`.`last_update_date` AS `last_update_date`,`sal`.`last_updated_by` AS `last_updated_by`,`al`.`valuelist_id` AS `valuelist_id`,`al`.`auth_item_name` AS `auth_item_name`,`al`.`auth_item_desc` AS `auth_item_desc`,`al`.`object_name` AS `object_name`,`al`.`object_desc` AS `object_desc`,`al`.`default_value` AS `default_value` from (`ct_status_authobj_lines` `sal` join `ct_authobj_lines_v` `al`) where (`sal`.`authobj_line_id` = `al`.`id`);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_status_conditions_v`
+--
+DROP TABLE IF EXISTS `ct_status_conditions_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_status_conditions_v` AS select `sc`.`id` AS `id`,`sc`.`and_or` AS `and_or`,`sc`.`field_name` AS `field_name`,`sc`.`operation` AS `operation`,`sc`.`target_value` AS `target_value`,`sc`.`created_by` AS `created_by`,`sc`.`creation_date` AS `creation_date`,`sc`.`last_update_date` AS `last_update_date`,`sc`.`last_updated_by` AS `last_updated_by`,`sc`.`group_id` AS `group_id`,`scg`.`status_line_id` AS `status_line_id`,`scg`.`group_name` AS `group_name` from (`ct_status_conditions` `sc` join `ct_status_condition_groups` `scg`) where (`sc`.`group_id` = `scg`.`id`);
 
 -- --------------------------------------------------------
 

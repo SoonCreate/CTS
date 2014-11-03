@@ -3,7 +3,7 @@
 <?= render_select_add_options('field_name',render_options_by_array(_v('field_options')),true) ?>
 <?= render_select_with_options('operation','vl_operations',true) ?>
 <?= render_form_input('target_value',true) ?>
-<?= render_form_hidden('status_line_id');?>
+<?= render_form_hidden('group_id');?>
 <!--<script type="text/javascript">-->
 <!--    function _conditionFormFieldSelect(table){-->
 <!--        $ajax.get(url("welcome/field_list?table="+table.getValue()),{handleAs : "json"}).then(function(data){-->

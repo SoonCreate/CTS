@@ -29,9 +29,7 @@
             &nbsp;|&nbsp;
             <?= render_link(array('status','item_destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
             &nbsp;|&nbsp;
-            <?= render_link(array('status','conditions',array('id'=>$o['id'])),label('conditions'))?>
-            &nbsp;|&nbsp;
-            <?= render_link(array('status','objects',array('id'=>$o['id'])),label('objects'))?>
+            <?= render_link(array('status_condition','groups',array('id'=>$o['id'])),label('conditions'))?>
             &nbsp;|&nbsp;
             <?= render_link(array('status','functions',array('id'=>$o['id'])),label('functions'))?>
         </td>
