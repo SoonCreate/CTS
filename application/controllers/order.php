@@ -11,20 +11,30 @@ class Order extends CI_Controller {
 
 	public function index()
 	{
-        $am = new Auth_model();
-        $data['order_types'] = $am->can_show_order_types();
-        $data['status'] = array();
-        $this->load->model('status_line_model');
-        $sm = new Status_model();
-        $status_codes = array();
-        foreach($data['order_types']  as $t){
-            array_push($status_codes,default_value('status',$t)) ;
+        $order_type = v('order_type');
+        if($order_type){
+            $data['order_type'] = $order_type;
+            $this->load->model('status_line_model');
+            $sm = new Status_model();
+            $data['status'] = $sm->options(default_value('status',$data['order_type']));
+            render($data);
+        }else{
+            $am = new Auth_model();
+            $order_types = $am->can_show_order_types();
+            if(count($order_types) > 1){
+                $data['objects'] = $order_types;
+                render_view('order/choose_type',$data);
+            }elseif(count($order_types) == 1){
+                $data['order_type'] = $order_types[0];
+                $this->load->model('status_line_model');
+                $sm = new Status_model();
+                $data['status'] = $sm->options(default_value('status',$data['order_type']));
+                render($data);
+            }else{
+                render_error('您没有权限查看投诉单列表！');
+            }
         }
 
-        foreach($sm->options($status_codes) as $l){
-            array_push($data['status'],$l);
-        }
-        render($data);
 	}
 
     function order_data(){
@@ -201,17 +211,10 @@ class Order extends CI_Controller {
     function confirm(){
         $om = new Order_model();
         $order = $om->find(v('id'));
-//        if(empty($order)){
-//            show_404();
-//        }else{
-//            $om->do_next($order);
-//        }
-        //需把confirm原来的逻辑加入进来
-        //默认更新下一个状态
-        $data['status'] = 'confirmed';
-        //id是否有效
-        if(!empty($order)){;
-            $om->confirm($order['id']);
+        if(empty($order)){
+            show_404();
+        }else{
+            $om->confirm($order);
         }
     }
 

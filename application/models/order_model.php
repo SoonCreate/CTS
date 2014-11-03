@@ -488,13 +488,13 @@ class Order_model extends MY_Model{
         return $content;
     }
 
-    function confirm($id){
-        $order = $this->find($id);
-        //先判断订单状态流是否允许更改,判断是否有权限更改次状态
-        if(is_order_allow_next_status($order['order_type'],$order['status'],'confirmed')
-            && check_order_auth($order['order_type'],'confirmed',$order['category'])){
-            if($this->do_update($order['id'],array('status'=>'confirmed'))){
-                message_db_success();
+    function confirm($order){
+        $sm = new Status_model();
+        //先验证并更新下一状态
+        $next_status = $sm->validate_next($order['id'],default_value('status',$order['order_type']),$order['status'],'confirmed');
+        if($next_status){
+            //先判断订单状态流是否允许更改,判断是否有权限更改次状态
+            if($this->do_update($order['id'],array('status'=>$next_status))){
                 if(_config('auto_leader')){
                     //判断责任人如果唯一，则直接赋值
                     $this->load->model('auth_model');
@@ -519,13 +519,12 @@ class Order_model extends MY_Model{
                             }
                         }
                     }
+                }else{
+                    message_db_success();
                 }
-
             }else{
                 message_db_failure();
             }
-        }else{
-            custz_message('E','不允许状态流向！');
         }
     }
 

@@ -16,25 +16,14 @@
 <div class="container-fluid">
     <div class="row inline">
         <input id="title" name="title" data-dojo-type="sckj/form/TextBox" class="leftinput"  /><!- style="width:400px" ->
+
+        <select  id="status" name="status" data-dojo-type="sckj/form/Select"  trim="true" class="midinput">
+            <?= render_options_by_array(_v('status')) ?>
+        </select>
+
         <button data-dojo-type="sckj/form/Button" class="rightbtn"  onclick="_createIndexRefreshData()">
             <?= label('search')?>
         </button>
-
-        <?php if(count(_v('order_types')) > 1){
-                echo '<a href="#" onclick="_createIndexRefreshData({order_type:\''._config('all_values').'\'})">'.label(_config('all_values')).'</a>';
-                foreach(_v('order_types') as $type){
-                    echo '<a href="#" onclick="_createIndexRefreshData({order_type:\''.$type.'\'})">'.get_label('vl_order_type',$type).'</a>';
-                }
-            ?>
-        <?php }?>
-
-        <?php if(count(_v('status')) > 0){
-            echo '<a href="#" onclick="_createIndexRefreshData({status:\''._config('all_values').'\'})">'.label(_config('all_values')).'</a>';
-            foreach(_v('status') as $s){
-                echo '<a href="#" onclick="_createIndexRefreshData({status:\''.$s['step_value'].'\'})">'.$s['step_desc'].'</a>';
-            }
-            ?>
-        <?php }?>
 
     </div>
     <div id="myOrdersList" class="gridlist"></div>
@@ -62,7 +51,7 @@
                  TouchVScroller){
             ready(function(){
 
-                var restStore = new JsonRest({idProperty: 'id', target:url('order/order_data'),sortParam: "sortBy"});
+                var restStore = new JsonRest({idProperty: 'id', target:url("order/order_data?order_type=<?= _v('order_type')?>"),sortParam: "sortBy"});
                 var store = new ObjectStore({objectStore: restStore});
                 var pageSize = 10;
                 var grid = new Grid({
@@ -70,11 +59,8 @@
                     id : "myOrdersList",
                     store: store ,
                     structure: [
-
                         {name : "投诉单号",field : "id",width : "80px",dataType :"number",style:"text-align: center"},
-                        <?php if(count(_v('order_types')) > 1){?>
                         {name : "投诉单类型",field : "order_type",width : "120px",dataType :"string"},
-                        <?php }?>
                         <?php if(_config('category_control')){?>
                         {name : "分类",field : "category",width : "120px",dataType :"string"},
                         <?php }?>
@@ -114,23 +100,21 @@
 
         });
     //刷新store的数据
-    function _createIndexRefreshData(options){
-        console.info(options);
+    function _createIndexRefreshData(){
         var params = new Object();
         var title = dijitObject('title');
+        var status = dijitObject('status');
         var grid = dijitObject('myOrdersList');
         if(grid){
+            params.order_type = "<?= _v('order_type')?>";
+
             if(title != undefined && title.getValue() != ""){
                 params.title = title.getValue();
             }
-            if(options && "status" in options && options.status != '<?= _config('all_values') ?>'){
-                params.status = options.status;
-            }
 
-            if(options && "order_type" in options && options.order_type != '<?= _config('all_values') ?>'){
-                params.order_type = options.order_type;
+            if(status != undefined && status.getValue() != ""){
+                params.status = status.getValue();
             }
-            console.info(url('order/order_data',params));
             require(["dojo/store/JsonRest"],function(JsonRest){
                 var newStore = new JsonRest({idProperty: 'id', target:url('order/order_data',params),sortParam: "sortBy"});
                 grid.refresh(newStore);

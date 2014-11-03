@@ -28,9 +28,12 @@ class Status_model extends MY_Model{
     }
 
     //往下一步,返回下一步状态码
-    function do_next($order_id,$status_code,$current_status){
+    function validate_next($order_id,$status_code,$current_status,$next_status = null){
         $slm = new Status_line_model();
-        $next_status = $this->next_status($status_code,$current_status);
+        //验证下一步状态
+        if(is_null($next_status) || !$this->is_allow_next_status($status_code,$current_status,$next_status)){
+            $next_status = $this->next_status($status_code,$current_status);
+        }
         if(!is_null($next_status)){
             $line = $slm->find_by_view(array('status_code'=>$status_code,'step_value'=>$next_status,'inactive_flag'=>0));
             if(!empty($line)){
@@ -280,7 +283,7 @@ class Status_model extends MY_Model{
     function options($status_codes){
         $slm = new Status_line_model();
         $this->db->distinct();
-        $this->db->select('step_value,step_desc');
+        $this->db->select('step_value as value,step_desc as label');
         $this->db->where_in('status_code',$status_codes);
         $lines = $slm->find_all_by_view(array('inactive_flag'=>0));
         return $lines;
