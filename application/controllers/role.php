@@ -16,10 +16,13 @@ class Role extends CI_Controller {
 
 	public function index()
 	{
-        $o = new Role_model();
-        $data['roles'] = _format($o->find_all());
-        render($data);
+        render();
 	}
+
+    function data(){
+        $o = new Role_model();
+        export_to_itemStore($o->find_all(),'id','description');
+    }
 
     function create(){
         if($_POST){

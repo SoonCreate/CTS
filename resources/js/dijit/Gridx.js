@@ -1,9 +1,5 @@
 define(["dojo/_base/declare", "gridx/Grid"],
     function(declare,Grid){
-        /*
-         *   摘要:
-         *       富文本编辑框组件
-         */
         return declare("",[Grid],{
 
             constructor : function(args){
