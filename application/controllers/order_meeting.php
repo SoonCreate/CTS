@@ -111,6 +111,7 @@ class Order_meeting extends CI_Controller {
                     $_POST['inactive_flag'] = 1;
                     $data = _data('inactive_flag','cancel_reason','cancel_remark');
                     if($mm->update($m['id'],$data,true)){
+                        go_back();
                         message_db_success();
                     }else{
                         message_db_failure();

@@ -51,7 +51,7 @@ class Modules extends CI_Controller {
         }
 
     }
-
+    
     function destroy(){
         $this->load->model('module_line_model');
         $this->load->model('role_module_line_model');

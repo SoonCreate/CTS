@@ -478,18 +478,22 @@ function render_order_button_group($order_id,$order_type,$current_status){
     $CI->load->model('status_model');
     $slm = new Status_line_model();
     $sfm = new Status_function_model();
-    $sm = new Status_model();
     $status_code = default_value('status',$order_type);
-    $next_status = $sm->next_status($status_code,$current_status);
-    $line = $slm->find_by_view(array('status_code'=>$status_code,'step_value'=>$next_status));
+    $line = $slm->find_by_view(array('status_code'=>$status_code,'step_value'=>$current_status));
     $buttons = array();
     if(!empty($line)){
         $sfm->order_by('sort');
         $sfm->order_by('label');
         $functions = $sfm->find_all_by_view(array('status_line_id'=>$line['id']));
         foreach($functions as $fn){
-            array_push($buttons,render_link_button(array($fn['controller'],$fn['action'],array('id'=>$order_id)),
-                $fn['label'],$fn['description'],$fn['display_class'],!$fn['render_flag']));
+            if(check_function_auth($fn['function_name'])){
+                $no_render = 'true';
+                if($fn['render_flag']){
+                    $no_render = 'false';
+                }
+                array_push($buttons,render_link_button(array($fn['controller'],$fn['action'],array('id'=>$order_id)),
+                    $fn['label'],$fn['description'],$fn['display_class'],$no_render));
+            }
         }
     }
     return join('&nbsp;',$buttons);

@@ -141,11 +141,17 @@ class Order_model extends MY_Model{
         return $sm->next_status(default_value('status',$order_type),$current_status);
     }
 
-    function do_next($order){
+    function do_next($order,$next_status = null){
         $sm = new Status_model();
-        $next_status = $sm->do_next($order['id'],default_value('status',$order['order_type']),$order['status']);
+        $data = null;
+        if(is_array($next_status)){
+            $data = $next_status;
+            $next_status = $data['status'];
+        }
+        $next_status = $sm->validate_next($order['id'],default_value('status',$order['order_type']),$order['status'],$next_status);
         if($next_status){
-            if($this->do_update($order['id'],array('status'=>$next_status))){
+            $data['status'] = $next_status;
+            if($this->do_update($order['id'],$data)){
                 message_db_success();
             }else{
                 message_db_failure();

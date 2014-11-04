@@ -197,7 +197,7 @@ class Order extends CI_Controller {
             if($_POST){
                 $reason = v('reason');
                 if($olm->update_by(array('change_hash'=>$change_hash),array('reason'=>$reason))){
-//                    message_db_success();
+                    message_db_success();
                 }else{
 //                    message_db_failure();
                     validation_error();
@@ -303,9 +303,18 @@ class Order extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $_POST['status'] = 'allocated';
-                $data = _data('manager_id','status');
-                $this->_update(v('id'),$data);
+                //重新分配的情况
+                if($order['status'] == 'allocated'){
+                    if($om->do_update($order['id'],_data('manager_id'))){
+                        message_db_success();
+                    }else{
+                        message_db_failure();
+                    }
+                }else{
+                    $_POST['status'] = 'allocated';
+                    $data = _data('manager_id','status');
+                    $om->do_next($order,$data);
+                }
             }else{
                 $am = new Auth_model();
                 $ids = $am->can_choose_managers($order);
@@ -375,7 +384,13 @@ class Order extends CI_Controller {
 
     //已解决
     function done(){
-        $this->_update(v('id'),array('status'=>'done'));
+        $om = new Order_model();
+        $order = $om->find(v('id'));
+        if(empty($order)){
+            show_404();
+        }else{
+            $om->do_next($order,'done');
+        }
     }
 
     function reply(){
@@ -419,7 +434,7 @@ class Order extends CI_Controller {
         if(empty($order)){
             show_404();
         }else{
-            $this->_update($order['id'],array('status'=>'closed'));
+            $om->do_next($order,'closed');
         }
     }
 
@@ -432,7 +447,7 @@ class Order extends CI_Controller {
             show_404();
         }else{
             if(_config('allow_reopen') ){
-                $this->_update(v('id'),array('status'=>'reopen'));
+                $om->do_next($order,'reopen');
             }else{
                 render_error('不允许重新打开投诉单！');
             }
@@ -553,26 +568,6 @@ class Order extends CI_Controller {
             render_error('必须先开启反馈功能！请联系系统管理员！') ;
         }
 
-    }
-
-    private function _update($id,$data = null){
-        $om = new Order_model();
-        $order = $om->find($id);
-        //id是否有效
-        if(!empty($order)){
-            //先判断订单状态流是否允许更改,判断是否有权限更改次状态
-            if(is_order_allow_next_status($order['order_type'],$order['status'],$data['status']) && check_order_auth($order['order_type'],$data['status'],$order['category'])){
-                if($om->do_update($order['id'],$data)){
-                    message_db_success();
-                }else{
-                    validation_error();
-                }
-            }else{
-                custz_message('E','不允许状态流向！');
-            }
-        }else{
-            show_404();
-        }
     }
 
 }

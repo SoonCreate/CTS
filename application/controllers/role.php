@@ -209,7 +209,7 @@ class Role extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $ids = v('lines');
+                $ids = explode(',',v('lines'));
                 $data['role_id'] = v('role_id');
                 $this->db->trans_start();
                 if($ids === FALSE){
@@ -302,6 +302,31 @@ class Role extends CI_Controller {
         }
 
     }
+
+    function function_data(){
+        $rm = new Role_model();
+        $role = $rm->find(v('role_id'));
+        if(empty($role)){
+            show_404();
+        }else{
+            $this->load->model('module_line_model');
+            $this->load->model('role_module_line_model');
+            $ml = new Module_line_model();
+            $rml = new Role_module_line_model();
+            $fns = $ml->find_all_by_view();
+            $role_fns = $rml->find_all_by_view(array('role_id'=>$role['id']));
+            $seleceds = array();
+            foreach($role_fns as $f){
+                array_push($seleceds,$f['id']);
+            }
+            $data['items'] = $fns;
+            $data['selected'] = $seleceds;
+        }
+        $data["identifier"] = 'id';
+        $data["label"] = 'function_desc';
+        echo json_encode($data);
+    }
+
 
     function profile(){
         $rpm = new Role_profile_model();

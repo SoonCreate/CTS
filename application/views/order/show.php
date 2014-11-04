@@ -3,6 +3,10 @@
 <div class="container-fluid userd">
     <div class="row">
         <?= render_order_button_group($id,$order_type,$status)?>
+
+        <?php if(check_function_auth('order_meeting','index')){ ?>
+            <?= render_link_button(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?>
+        <?php } ?>
     </div>
     <hr/>
     <dl class="row dl-horizontal"><dt>投诉单类型</dt><dd><?= get_label('vl_order_type',$order_type); ?></dd></dl>
@@ -114,7 +118,7 @@
                             {name : "内容",field : "content",width : "300px",dataType :"string"},
                             {name : "原因",field : "reason",width : "240px",dataType :"string"},
                             <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
-                                {name : "操作人",field : "created_by",width : "100px",dataType :"string"},
+                                {name : "操作人",field : "created_by",width : "120px",dataType :"string"},
                             <?php }?>
                             {name : "操作时间",field : "creation_date",width : "140px",dataType :"string" }
 
