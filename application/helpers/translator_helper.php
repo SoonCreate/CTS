@@ -2,31 +2,39 @@
 
 //输出label语言文件下的注释
 function label($name){
-    $line = _text('label_'.$name);
-    if(!$line){
-        //拆分英文，组合翻译
+    $line = '';
+    if(env_language() == 'en-us'){
         $words = explode('_',$name);
-        $pass = true;
-        $lines = array();
         for($i =0;$i<count($words);$i++){
-            $w = _text('label_'.$words[$i]);
-            if(!$w){
-                $pass = false;
-                break;
-            }else{
-                array_push($lines,$w);
-            }
+            $words[$i] = ucfirst($words[$i]);
         }
-        if($pass){
-            $line = join('',$lines);
-        }else{
-            //大写英文头字母
+        $line = join(' ',$words);
+    }else{
+        $line = _text('label_'.$name);
+        if(!$line){
+            $words = explode('_',$name);
+            $pass = true;
+            $lines = array();
             for($i =0;$i<count($words);$i++){
-                $words[$i] = ucfirst($words[$i]);
+                $w = _text('label_'.$words[$i]);
+                if(!$w){
+                    $pass = false;
+                    break;
+                }else{
+                    array_push($lines,$w);
+                }
             }
-            $line = join(' ',$words);
+            if($pass){
+                $line = join('',$lines);
+            }else{
+                for($i =0;$i<count($words);$i++){
+                    $words[$i] = ucfirst($words[$i]);
+                }
+                $line = join(' ',$words);
+            }
         }
     }
+
     return $line;
 }
 
@@ -69,11 +77,12 @@ if ( ! function_exists('env_language')) {
         //判断浏览器语言
         $default_lang_arr = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
         $strarr = explode(",", $default_lang_arr);
-        if(strpos($strarr[0],'zh') == 0){
-            return 'zh-CN';
-        }else{
-            return 'en-us';
-        }
+//        if(strpos($strarr[0],'zh') == 0){
+//            return 'zh-CN';
+//        }else{
+//            return 'en-us';
+//        }
+        return 'en-us';
     }
 }
 

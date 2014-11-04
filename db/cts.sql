@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2014 at 05:47 AM
+-- Generation Time: Nov 04, 2014 at 08:41 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
 --
 
 INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `data_type`, `user_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'company_name', '公司名称', '浙江天正集团', 1, 'string', 0, NULL, NULL, 1413637551, 44),
+(1, 'company_name', '公司名称', '浙江天正集团', 1, 'string', 0, NULL, NULL, 1415081460, 44),
 (2, 'logo_file', 'Logo文件路径', '1', 1, 'string', 0, NULL, NULL, NULL, NULL),
 (3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, 'string', 0, NULL, NULL, NULL, NULL),
 (4, 'category_control', '投诉订单分类功能开关', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1414824394, 44),
@@ -343,7 +343,7 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (22, 'order_meeting', '会议记录', 'order_meeting', 'index', NULL, 1, 1413858257, 44, 1413858349, 44, 0, ''),
 (23, 'status_manage', '状态流管理', 'status', 'index', NULL, 1, 1414116975, 44, 1414116975, 44, 1, ''),
 (24, 'order_feedback', '投诉单反馈', 'order', 'feedback', NULL, 1, 1414459689, 44, 1414459689, 44, 0, ''),
-(25, 'user_config', '用户配置', 'user', 'configs', NULL, 1, 1414638739, 44, 1414638739, 44, 1, ''),
+(25, 'user_config', '用户配置', 'user', 'configs', NULL, 1, 1414638739, 44, 1415079683, 44, 0, ''),
 (26, 'order_confirm', '投诉单内容确认', 'order', 'confirm', NULL, 0, 1414718558, 44, 1414743146, 44, 0, ''),
 (27, 'order_choose_leader', '选择责任人（部门经理）', 'order', 'choose_leader', NULL, 1, 1415062304, 44, 1415063803, 44, 0, ''),
 (28, 'order_dispatcher', '分配任务，指定处理人', 'order', 'dispatcher', NULL, 1, 1415062338, 44, 1415062338, 44, 0, ''),
@@ -559,25 +559,24 @@ CREATE TABLE IF NOT EXISTS `ct_messages` (
   `class_id` int(11) NOT NULL COMMENT '分类ID',
   `message_code` varchar(20) NOT NULL COMMENT '消息码',
   `content` varchar(255) NOT NULL COMMENT '消息内容',
-  `language` varchar(20) NOT NULL DEFAULT 'zh-CN' COMMENT '语言环境',
   `help` text COMMENT '帮助文档',
-  `creation_date` int(11) DEFAULT NULL,
+  `creation_date` int(11) NOT NULL,
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `class_id` (`class_id`,`message_code`,`language`) USING BTREE
+  UNIQUE KEY `class_id` (`class_id`,`message_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息表' AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `ct_messages`
 --
 
-INSERT INTO `ct_messages` (`id`, `class_id`, `message_code`, `content`, `language`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(2, 3, '10', '数据保存成功！', 'zh-CN', '', 1412917791, 44, 1413699874, 44),
-(3, 4, '10', '系统未知错误，请联系管理员！', 'zh-CN', NULL, 1413091223, 44, 1413091223, 44),
-(4, 3, '20', '数据保存失败！', 'zh-CN', '', 1413094460, 44, 1413699864, 44),
-(5, 4, '20', '没有操作权限，请联系系统管理员！', 'zh-CN', NULL, 1413094784, 44, 1413094784, 44);
+INSERT INTO `ct_messages` (`id`, `class_id`, `message_code`, `content`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(2, 3, '10', '数据保存成功！', '', 1412917791, 44, 1413699874, 44),
+(3, 4, '10', '系统未知错误，请联系管理员！', NULL, 1413091223, 44, 1413091223, 44),
+(4, 3, '20', '数据保存失败！', '', 1413094460, 44, 1413699864, 44),
+(5, 4, '20', '没有操作权限，请联系系统管理员！', NULL, 1413094784, 44, 1413094784, 44);
 
 -- --------------------------------------------------------
 
@@ -595,7 +594,6 @@ CREATE TABLE IF NOT EXISTS `ct_messages_v` (
 ,`last_updated_by` int(11)
 ,`class_code` varchar(20)
 ,`class_desc` varchar(255)
-,`language` varchar(20)
 );
 -- --------------------------------------------------------
 
@@ -3088,7 +3086,7 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
 --
 
 INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `inactive_flag`, `email_flag`, `sms_flag`, `initial_pass_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(44, 'administrator', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '超级管理员', 'yacole@qq.com', '13777777777', '13989775601', '乐清柳市镇', '超级管理员', 0, 1, 0, 1, -1, 1412039595, 1414397472, 44),
+(44, 'administrator', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '超级管理员', 'yacole@qq.com', '13777777777', '13989775601', '乐清柳市镇', '超级管理员', 0, 1, 0, 1, -1, 1412039595, 1415086845, 44),
 (45, 'reporter_customer', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', '客户测试账号', '', '', '', '', '客户测试账号', 0, 0, 0, 1, 44, 1412229944, 1413633221, 44),
 (46, 'reporter_vender', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', '供应商测试账号', '', '', '', '', '供应商测试账号', 0, 0, 0, 1, 44, 1412230134, 1413633243, 44),
 (47, 'reporter_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '内部员工测试账号', '', '', '', '', '内部员工测试账号', 0, 0, 0, 1, 44, 1412230196, 1413633237, 44),
@@ -3530,7 +3528,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_messages_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_messages_v` AS select `m`.`id` AS `id`,`m`.`class_id` AS `class_id`,`m`.`message_code` AS `message_code`,`m`.`content` AS `content`,`m`.`creation_date` AS `creation_date`,`m`.`created_by` AS `created_by`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`mc`.`class_code` AS `class_code`,`mc`.`description` AS `class_desc`,`m`.`language` AS `language` from (`ct_message_classes` `mc` join `ct_messages` `m`) where (`m`.`class_id` = `mc`.`id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_messages_v` AS select `m`.`id` AS `id`,`m`.`class_id` AS `class_id`,`m`.`message_code` AS `message_code`,`m`.`content` AS `content`,`m`.`creation_date` AS `creation_date`,`m`.`created_by` AS `created_by`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`mc`.`class_code` AS `class_code`,`mc`.`description` AS `class_desc` from (`ct_message_classes` `mc` join `ct_messages` `m`) where (`m`.`class_id` = `mc`.`id`);
 
 -- --------------------------------------------------------
 

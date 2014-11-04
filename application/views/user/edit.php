@@ -1,28 +1,15 @@
-<div class="row paneltitle">
-    <h3>用户信息更新</h3>
-</div>
-<form id="user_edit" method="post" action="<?= _url('user',_v('to'))?>" onsubmit="return formSubmit(this)">
+<?= render_form_header('user_information_edit')?>
 <div class="container-fluid userd">
-    <?php if(_v('to') == 'user_edit'){?>
-    <dl class="row dl-horizontal">
-        <dt><?= lang('change_password')?></dt>
-        <dd>
-            <?= render_link_button(array('user','change_password'),label('change_password'))?>
-        </dd>
-    </dl>
-    <?php }?>
-    <dl class="row dl-horizontal">
-        <dt><label for="username">*用户名</label></dt>
-        <dd>
-            <input name="username" id="username" type="text" value="<?= _v('username')?>"  data-dojo-type="sckj/form/TextBox" disabled/>
-            <input name="id" id="id" type="hidden" value="<?= _v('id')?>" />
-        </dd>
-    </dl>
+    <?= render_form_open('user',_v('to'))?>
+    <?= render_form_input('username',false,array(),true)?>
     <?php $this->load->view('user/_form') ;?>
-
+    <?= render_form_hidden('id')?>
+    <?= render_button_group()?>
+    <?= render_form_close() ?>
 </div>
-
-<div class="fixbottom"">
-        <button type="submit" data-dojo-type="sckj/form/Button" class="success"><i class=" icon-circle-arrow-right"></i><label>提交</label></button>
-</div>
-</form>
+<?php if(_v('to') == 'user_edit'){?>
+    <script type="text/javascript">
+        toolBarAddLinkButton("<?= label('change_password') ?>",url('user/change_password'));
+        toolBarAddLinkButton("<?= label('user_configs') ?>",url('user/configs'));
+    </script>
+<?php }?>

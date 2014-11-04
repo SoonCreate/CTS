@@ -11,13 +11,13 @@ function data($key,$data){
 //输出消息
 function message($type,$class_code,$message_code,$args = array()){
     global $CI;
-    $CI->load->model('message_model','message');
+    $CI->load->model('message_model');
     $mm = new Message_model();
-    $message = $mm->find_by_view(array('class_code'=>$class_code,'message_code'=>$message_code,'language'=>env_language()));
+    $message = $mm->find_by_view(array('class_code'=>$class_code,'message_code'=>$message_code));
     if(!empty($message)){
-        $message['type'] = $type;
-        $message['code'] = $class_code.'('.$message_code.')';
-
+        $data['type'] = $type;
+        $data['code'] = $class_code.'('.$message_code.')';
+        $data['content'] = $message['content'];
         //处理内容
         if(count($args) > 0){
             $content = $message['content'];
@@ -27,10 +27,10 @@ function message($type,$class_code,$message_code,$args = array()){
                     $content = substr_replace($content,$p,$index,1);
                 }
             }
-            $message['content'] = $content;
+            $data['content'] = $content;
         }
-        $message['content'] = str_replace("&","",$message['content']);
-        _refresh_output('message',$message);
+        $data['content'] = str_replace("&","",$data['content']);
+        _refresh_output('message',$data);
     }else{
         message_unknow_error();
     }

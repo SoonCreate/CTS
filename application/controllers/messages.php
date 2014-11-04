@@ -23,8 +23,8 @@ class Messages extends CI_Controller {
         }else{
             $mm = new Message_model();
             if($_POST){
-                $data = _data('message_code','content','class_id','language','help');
-                if($this->_is_message_exists($data['message_code'],$data['class_id'],$data['language'])){
+                $data = _data('message_code','content','class_id','help');
+                if($this->_is_message_exists($data['message_code'],$data['class_id'])){
                     custz_message('E','消息条目已存在!') ;
                 }else{
                     if($mm->insert($data)){
@@ -35,7 +35,6 @@ class Messages extends CI_Controller {
                     }
                 }
             }else{
-                $data['language'] = env_language();
                 $this->db->select_max('message_code');
                 $line = $mm->find_all_by(array('class_id'=>$class['id']));
                 $data['message_code'] = string_to_number($line[0]['message_code']) + 10;
@@ -51,7 +50,7 @@ class Messages extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $data = _data('content','language','help');
+                $data = _data('content','help');
                 if($mm->update($message['id'],$data)){
                     go_back();
                     message_db_success();
@@ -146,9 +145,9 @@ class Messages extends CI_Controller {
         }
     }
 
-    private function _is_message_exists($message_code,$class_id,$language){
+    private function _is_message_exists($message_code,$class_id){
         $mm = new Message_model();
-        $message = $mm->find_by(array('message_code'=>$message_code,'class_id'=>$class_id,'language'=>$language));
+        $message = $mm->find_by(array('message_code'=>$message_code,'class_id'=>$class_id));
         if(!empty($message)){
             return true;
         }else{

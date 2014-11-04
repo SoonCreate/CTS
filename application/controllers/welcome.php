@@ -56,6 +56,12 @@ class Welcome extends CI_Controller {
                     $url = _url('welcome','show_404');
                 }
                 $modules[$i]['url'] = $url;
+
+//                //英文处理
+//                if(env_language() == 'english'){
+//                    $modules[$i]['module_desc'] = label($modules[$i]['module_name']);
+//                }
+
             }
             $this->load->model('notice_model');
             $nm = new Notice_model();
@@ -108,7 +114,15 @@ class Welcome extends CI_Controller {
             set_sess('mid',$module_id);
         }
         $am = new Auth_model();
-        $data['functions'] = $am->can_choose_functions(_sess('mid'));
+        $functions = $am->can_choose_functions(_sess('mid'));
+//        for($i=0;$i<count($functions);$i++){
+//            //英文处理
+//            if(env_language() == 'english'){
+//                $functions[$i]['function_desc'] = label($functions[$i]['function_name']);
+//            }
+//        }
+
+        $data['functions'] = $functions;
         render_view('my_functions',$data);
     }
 
