@@ -16,7 +16,8 @@ define(["dojo/_base/declare", "dijit/form/ValidationTextBox",
             allValue : false,
             selectRowMultiple : true,
             pagination : false,
-            pageSize : 10
+            pageSize : 10,
+            valueSegment : "id"
         },
         gridDialogOptions : {
             title : "请选择",
@@ -25,6 +26,7 @@ define(["dojo/_base/declare", "dijit/form/ValidationTextBox",
             selectRowMultiple : true,
             pagination : false,
             pageSize : 10,
+            valueSegment : "id",
             onSelect : function () {
 
             }
@@ -101,12 +103,12 @@ define(["dojo/_base/declare", "dijit/form/ValidationTextBox",
             //}
             if(this.vlDialogOptions.valuelistName){
                 var o = this.vlDialogOptions;
-                vlGridDialog(o.valuelistName,o.parentSegmentValue,o.allValue,
+                vlGridDialog(o.valuelistName,o.parentSegmentValue,o.allValue, o.valueSegment,
                     o.selectRowMultiple,this,o.pagination,o.pageSize);
             }else{
                 if(this.gridDialogOptions.dataUrl){
                     var o = this.gridDialogOptions;
-                    gridDialog(o.title, o.structure, o.dataUrl, o.selectRowMultiple,this, o.pagination, o.pageSize, o.onSelect)
+                    gridDialog(o.title, o.structure, o.dataUrl, o.valueSegment, o.selectRowMultiple,this, o.pagination, o.pageSize, o.onSelect)
                 }
             }
 

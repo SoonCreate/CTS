@@ -196,8 +196,21 @@ define(["dojo/_base/declare", "gridx/Grid",
                 if(this.targetDijit){
                     var value = this.targetDijit.getValue();
                     value = value.split(',');
-                    for(var i=0;i<value.length;i++){
-                        this.select.row.selectById(value[i]);
+                    //正在的传值
+                    if(this.valueSegment == undefined){
+                        for(var i=0;i<value.length;i++){
+                            this.select.row.selectById(value[i]);
+                        }
+                    }else{
+                        var valueSegment = this.valueSegment;
+                        var grid = this;
+                        this.store.fetch({
+                            onItem : function(item){
+                                if(in_array(item[valueSegment].toString(),value)){
+                                    grid.select.row.selectById(item["id"].toString());
+                                }
+                            }
+                        });
                     }
                 }
             }

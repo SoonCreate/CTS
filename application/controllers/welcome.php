@@ -164,7 +164,7 @@ class Welcome extends CI_Controller {
             $all = string_to_boolean(v('all'));
         }
         $data['items'] = get_options(v('n'),$pv,$all);
-        $data["identifier"] = 'value';
+        $data["identifier"] = 'id';
         $data["label"] = 'label';
         echo json_encode($data);
     }

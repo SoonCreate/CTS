@@ -276,7 +276,7 @@ function render_form_input_vl($name,$valuelist_name,$required = FALSE,$disabled 
     if(empty($attributes)){
         $attributes = array('vlDialogOptions'=>'{
         valuelistName : \''.$valuelist_name.'\',pagination:'.boolean_to_string($pagination).',selectRowMultiple:'.boolean_to_string($muliple).',allValue:'.
-            boolean_to_string($all_value).',pageSize:'.$page_size.'}');
+            boolean_to_string($all_value).',pageSize:'.$page_size.',valueSegment:\'value\'}');
     }
     foreach($attributes as $key=>$value){
         $echo = $echo. $key.': '.$value;

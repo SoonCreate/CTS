@@ -181,12 +181,14 @@ function get_options($valuelist_name,$parent_segment_value = null,$all_value = F
     }
 
     if($all_value){
+        $data['id'] = _config('all_values');
         $data['value'] = _config('all_values');
         $data['label'] = label('all_value');
         array_unshift($rt,$data);
     }
 
     if($blank_row){
+        $data['id'] = 'none';
         $data['value'] = '';
         $data['label'] = label('none');
         array_unshift($rt,$data);

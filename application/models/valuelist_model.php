@@ -63,7 +63,7 @@ class Valuelist_model extends MY_Model{
 
             if($header['object_flag'] == 1){
                 //由对象创建
-                $this->db->select($header['value_fieldname'].' as value,'.$header['label_fieldname'].' as label,ABS(0) as inactive_flag');
+                $this->db->select('id,'.$header['value_fieldname'].' as value,'.$header['label_fieldname'].' as label,ABS(0) as inactive_flag');
                 $this->db->from($header['source_view']);
                 //如果条件不为空
                 if($header['condition'] != ""){
@@ -73,7 +73,7 @@ class Valuelist_model extends MY_Model{
                 $rs = $this->db->get();
             }else{
                 //由值列表创建
-                $this->db->select('segment_value as value,segment_desc as label,inactive_flag');
+                $this->db->select('id,segment_value as value,segment_desc as label,inactive_flag');
                 $this->db->from('valuelist_lines');
                 $this->db->where('valuelist_id',$header['id']);
                 if(!is_null($inactive_flag)){

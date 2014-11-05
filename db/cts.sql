@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2014 at 08:41 AM
+-- Generation Time: Nov 05, 2014 at 09:23 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -489,7 +489,7 @@ INSERT INTO `ct_meetings` (`id`, `title`, `start_date`, `end_date`, `site`, `anc
 (4, 'asdf', 1413561600, 1413561600, 'asfd', 'asd', 'asfd', 'aadsf', NULL, '10', '', 44, 1413611547, 1413614005, 44, 1),
 (5, '第二次会议', 1413623400, 1413642600, '会议室一', '陈杨阳', '', '全部人员', NULL, NULL, NULL, 44, 1413615576, 1413616445, 44, 0),
 (6, '会议三', 1413567900, 1413568800, '暗室逢灯', '暗室逢灯', '', '暗室逢灯', NULL, '20', 'asdf', 44, 1413616500, 1415071784, 74, 1),
-(7, '为了解决问题', 1414084200, 1414087800, '三楼会议室', '陈某某', '高某某', '部门全体人员', '会议决议如下', NULL, NULL, 73, 1414132468, 1414649190, 73, 0),
+(7, '为了解决问题', 1414084200, 1414087800, '三楼会议室', '陈某某', '高某某', '部门全体人员', '会议决议如下', NULL, NULL, 73, 1414132468, 1415169356, 73, 0),
 (8, '开个会', 1415040300, 1415044800, 'asdf', 'asdf', 'asdf', 'asdf', 'asdf', NULL, NULL, 74, 1415069247, 1415069247, 74, 0);
 
 -- --------------------------------------------------------
@@ -1309,6 +1309,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles_v` (
 CREATE TABLE IF NOT EXISTS `ct_order_category_vl` (
 `segment_desc` text
 ,`segment_value` varchar(255)
+,`id` int(11)
 );
 -- --------------------------------------------------------
 
@@ -2050,7 +2051,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `ct_order_meetings`
@@ -2100,6 +2101,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings_v` (
 CREATE TABLE IF NOT EXISTS `ct_order_status_vl` (
 `label` text
 ,`value` varchar(255)
+,`id` int(11)
 );
 -- --------------------------------------------------------
 
@@ -2502,7 +2504,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (82, 63, 3, 'vendor', 1413440415, 44, 1413687624, 44),
 (83, 63, 4, 'released,confirmed', 1413440415, 44, 1413859643, 44),
 (84, 63, 5, 'all', 1413440415, 44, 1413440415, 44),
-(116, 79, 3, 'employee', 1413678052, 46, 1413678072, 46),
+(116, 79, 3, 'employee', 1413678052, 46, 1415160950, 44),
 (117, 79, 4, 'released', 1413678052, 46, 1413678083, 46),
 (118, 79, 5, 'all', 1413678052, 46, 1413678052, 46),
 (120, 81, 7, 'all', 1413678059, 46, 1413678059, 46),
@@ -2514,7 +2516,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (127, 85, 7, 'all', 1413678359, 47, 1413678359, 47),
 (135, 90, 8, 'FALSE', 1413678880, 47, 1413693429, 44),
 (136, 90, 11, 'all', 1413678880, 47, 1413678880, 47),
-(137, 91, 3, 'vendor', 1413687228, 44, 1413687272, 44),
+(137, 91, 3, '', 1413687228, 44, 1415156620, 44),
 (138, 91, 4, 'allocated,closed', 1413687228, 44, 1413945074, 44),
 (139, 91, 5, 'all', 1413687228, 44, 1413687228, 44),
 (141, 93, 7, 'all', 1413687232, 44, 1413687232, 44),
@@ -3050,6 +3052,7 @@ INSERT INTO `ct_system_orders` (`id`, `table_name`, `order_name`, `description`,
 CREATE TABLE IF NOT EXISTS `ct_tables_vl` (
 `value` varchar(64)
 ,`label` varchar(2048)
+,`id` varchar(64)
 );
 -- --------------------------------------------------------
 
@@ -3347,6 +3350,7 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 CREATE TABLE IF NOT EXISTS `ct_valuelist_header_vl` (
 `value` int(11)
 ,`label` varchar(278)
+,`id` int(11)
 );
 -- --------------------------------------------------------
 
@@ -3484,6 +3488,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 ,`segment` int(11)
 ,`segment_value` varchar(255)
 ,`segment_desc` varchar(255)
+,`id` int(11)
 );
 -- --------------------------------------------------------
 
@@ -3573,7 +3578,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_order_category_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_category_vl` AS select concat(`pl`.`segment_desc`,' : ',`cl`.`segment_desc`) AS `segment_desc`,`cl`.`segment_value` AS `segment_value` from ((`ct_valuelist_header` `c` join `ct_valuelist_lines` `cl`) join `ct_valuelist_lines` `pl`) where ((`cl`.`valuelist_id` = `c`.`id`) and (`c`.`valuelist_name` = 'vl_order_category') and (`pl`.`segment_value` = `cl`.`parent_segment_value`) and (`pl`.`inactive_flag` = 0) and (`cl`.`inactive_flag` = 0));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_category_vl` AS select concat(`pl`.`segment_desc`,' : ',`cl`.`segment_desc`) AS `segment_desc`,`cl`.`segment_value` AS `segment_value`,`cl`.`id` AS `id` from ((`ct_valuelist_header` `c` join `ct_valuelist_lines` `cl`) join `ct_valuelist_lines_v` `pl`) where ((`cl`.`valuelist_id` = `c`.`id`) and (`c`.`valuelist_name` = 'vl_order_category') and (`pl`.`segment_value` = `cl`.`parent_segment_value`) and (`pl`.`inactive_flag` = 0) and (`cl`.`inactive_flag` = 0) and (`pl`.`valuelist_name` = 'vl_order_type'));
 
 -- --------------------------------------------------------
 
@@ -3600,7 +3605,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_order_status_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_status_vl` AS select concat(`ot`.`segment_desc`,' - ',`sl`.`step_desc`) AS `label`,`sl`.`step_value` AS `value` from ((`ct_status_lines_v` `sl` join `ct_valuelist_lines_v` `vl`) join `ct_valuelist_lines_v` `ot`) where ((`vl`.`valuelist_name` = 'default_status') and (`vl`.`inactive_flag` = 0) and (`sl`.`status_code` = `vl`.`segment_value`) and (`ot`.`valuelist_name` = 'vl_order_type') and (`ot`.`inactive_flag` = 0) and (`ot`.`segment_value` = `vl`.`parent_segment`)) order by `ot`.`segment_desc`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_order_status_vl` AS select concat(`ot`.`segment_desc`,' - ',`sl`.`step_desc`) AS `label`,`sl`.`step_value` AS `value`,`sl`.`id` AS `id` from ((`ct_status_lines_v` `sl` join `ct_valuelist_lines_v` `vl`) join `ct_valuelist_lines_v` `ot`) where ((`vl`.`valuelist_name` = 'default_status') and (`vl`.`inactive_flag` = 0) and (`sl`.`status_code` = `vl`.`segment_value`) and (`ot`.`valuelist_name` = 'vl_order_type') and (`ot`.`inactive_flag` = 0) and (`ot`.`segment_value` = `vl`.`parent_segment`)) order by `ot`.`segment_desc`;
 
 -- --------------------------------------------------------
 
@@ -3690,7 +3695,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_tables_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_tables_vl` AS select `information_schema`.`tables`.`TABLE_NAME` AS `value`,`information_schema`.`tables`.`TABLE_COMMENT` AS `label` from `information_schema`.`tables` where (`information_schema`.`tables`.`TABLE_SCHEMA` = 'cts');
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_tables_vl` AS select `information_schema`.`tables`.`TABLE_NAME` AS `value`,`information_schema`.`tables`.`TABLE_COMMENT` AS `label`,`information_schema`.`tables`.`TABLE_NAME` AS `id` from `information_schema`.`tables` where (`information_schema`.`tables`.`TABLE_SCHEMA` = 'cts');
 
 -- --------------------------------------------------------
 
@@ -3735,7 +3740,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_valuelist_header_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_header_vl` AS select `ct_valuelist_header`.`id` AS `value`,concat(`ct_valuelist_header`.`valuelist_name`,' - ',`ct_valuelist_header`.`description`) AS `label` from `ct_valuelist_header` where (`ct_valuelist_header`.`valuelist_name` like 'vl_%');
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_header_vl` AS select `ct_valuelist_header`.`id` AS `value`,concat(`ct_valuelist_header`.`valuelist_name`,' - ',`ct_valuelist_header`.`description`) AS `label`,`ct_valuelist_header`.`id` AS `id` from `ct_valuelist_header` where (`ct_valuelist_header`.`valuelist_name` like 'vl_%');
 
 -- --------------------------------------------------------
 
@@ -3753,7 +3758,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_valuelist_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_vl` AS select `h`.`valuelist_name` AS `valuelist_name`,`h`.`description` AS `valuelist_desc`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc` from (`ct_valuelist_header` `h` join `ct_valuelist_lines` `l`) where ((`l`.`valuelist_id` = `h`.`id`) and (`l`.`inactive_flag` = 0));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_vl` AS select `h`.`valuelist_name` AS `valuelist_name`,`h`.`description` AS `valuelist_desc`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`id` AS `id` from (`ct_valuelist_header` `h` join `ct_valuelist_lines` `l`) where ((`l`.`valuelist_id` = `h`.`id`) and (`l`.`inactive_flag` = 0));
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

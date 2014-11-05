@@ -462,7 +462,7 @@ to listen to the onSelect event. Unfortunately, when "extendedSelect/Row" & "sel
 are loaded together, the onSelect event isn't captured. When only "select/Row" is loaded, it works fine
  */
 //包含grid的dialog
-function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,pageSize,onSelect,onReturn){
+function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,target,pagination,pageSize,onSelect,onReturn){
     require(["sckj/DataGrid"],
         function(Grid){
             var hasOnSelect = false;
@@ -482,7 +482,8 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
                 autoWidth : true,
                 autoHeight : false,
                 style:"margin-left: 20px;min-width:400px",
-                targetDijit : target
+                targetDijit : target,
+                valueSegment : valueSegment
             });
             grid.startup();
 
@@ -502,7 +503,15 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
             }
 
             dojoConfirm(grid,title,function(){
-                var value = grid.select.row.getSelected().join();
+                var ids = grid.select.row.getSelected();
+                var value = [];
+                if(valueSegment){
+                    for(var i=0;i<ids.length;i++){
+                        console.info(grid.row(ids[i]).item());
+                        value.push(grid.row(ids[i]).item()[valueSegment])
+                    }
+                }
+                value = value.join();
                 target.set("value",value);
                 if(onReturn){
                     onReturn(value);
@@ -512,7 +521,7 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
 }
 
 //值集选择框
-function vlGridDialog(valuelist_name,parent_segment_value,all_value,selectRowMultiple,target,pagination,pageSize){
+function vlGridDialog(valuelist_name,parent_segment_value,all_value,valueSegment,selectRowMultiple,target,pagination,pageSize){
     var structure = [{field : "label",name : "条目",width:"300px"}];
     var params = new Object();
     if(valuelist_name != undefined){
@@ -531,7 +540,7 @@ function vlGridDialog(valuelist_name,parent_segment_value,all_value,selectRowMul
         }
     }
 
-    gridDialog("请选择",structure,url("welcome/options",params),selectRowMultiple,target,pagination,pageSize,function(e,grid){
+    gridDialog("请选择",structure,url("welcome/options",params),valueSegment,selectRowMultiple,target,pagination,pageSize,function(e,grid){
         if(all_value){
             if(e.id == "all"){
                 var selected = grid.select.row.getSelected();
@@ -615,4 +624,14 @@ function toolBarAddLinkButton(label,url,target,noRender,noRecord){
     toolbarAddButton(label,function(){
         goto(url,target,noRender,noRecord);
     });
+}
+
+function in_array(stringToSearch, arrayToSearch) {
+    for (var s = 0; s < arrayToSearch.length; s++) {
+        var thisEntry = arrayToSearch[s].toString();
+        if (thisEntry == stringToSearch) {
+            return true;
+        }
+    }
+    return false;
 }
