@@ -548,6 +548,14 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
                     }
                 });
 
+                //单选双击获取值
+                if(!selectRowMultiple){
+                    grid.connect(grid, 'onRowDblClick', function(row){
+                        target.set("value",grid.select.row.getSelected().join());
+                        closeDialog();
+                    });
+                }
+
                 dojoConfirm(grid,title,function(){
                     target.set("value",grid.select.row.getSelected().join());
                 });

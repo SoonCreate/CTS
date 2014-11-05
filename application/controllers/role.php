@@ -428,7 +428,7 @@ class Role extends CI_Controller {
                     go_back();
                     message_db_success();
                 }else{
-                    message_db_failure();
+                    validation_error();
                 }
             }else{
                 $line['auth_data'] = json_encode(get_options($line['auth_item_name'],null,true));

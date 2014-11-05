@@ -258,6 +258,33 @@ function render_form_input($name,$required = FALSE,$attributes = array(),$disabl
     return _render_input_by_type($name,$required,$attributes,'text',$disabled);
 }
 
+function render_form_input_select($name,$valuelist_name,$required = FALSE,$disabled = FALSE,$muliple = true,$all_value = false,$pagination = false,$attributes = array()){
+    $echo = '';
+    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';
+    if($required){
+        $echo = $echo. ' required ';
+    }
+
+    if($disabled){
+        $echo = $echo. ' disabled ';
+    }
+
+    $echo = $echo . ' data-dojo-props = " ';
+
+    if(empty($attributes)){
+        $attributes = array('vlDialogOptions'=>'{
+        valuelistName : \''.$valuelist_name.'\',pagination:'.boolean_to_string($pagination).',selectRowMultiple:'.boolean_to_string($muliple).',allValue:'.
+            boolean_to_string($all_value).'}');
+    }
+    foreach($attributes as $key=>$value){
+        $echo = $echo. $key.': '.$value;
+    }
+    $echo = $echo . ' " ';
+    $echo = $echo. '/>'. render_form_error($name).'</dd></dl>';
+    return $echo;
+}
+
 function render_form_password($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
     return _render_input_by_type($name,$required,$attributes,'password',$disabled);
 }
@@ -311,10 +338,11 @@ function _render_input_by_type($name,$required = FALSE,$attributes = array(),$ty
         $echo = $echo. ' disabled ';
     }
 
+    $echo = $echo . ' data-dojo-props = " ';
     foreach($attributes as $key=>$value){
-        $echo = $echo. $key.'= '.'"'.$value.'"';
+        $echo = $echo. $key.': '.'\''.$value.'\'';
     }
-
+    $echo = $echo . ' " ';
     $echo = $echo. '/>'. render_form_error($name).'</dd></dl>';
     return $echo;
 }

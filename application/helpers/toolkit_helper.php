@@ -286,6 +286,14 @@ function string_to_boolean($s){
     }
 }
 
+function boolean_to_string($s){
+    if($s){
+        return 'true';
+    }else{
+        return 'false';
+    }
+}
+
 function string_to_number($s){
     return intval($s);
 }
