@@ -490,6 +490,10 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
                 var store = new ItemFileReadStore({
                     data : data
                 });
+
+                if(structure == null){
+                    structure = data["structure"];
+                }
                 var modules = [
                     ColumnResizer,
                     VirtualVScroller,
@@ -522,7 +526,7 @@ function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,
                     modules : modules,
                     selectRowTriggerOnCell: true,
                     selectRowMultiple : selectRowMultiple,
-                    autoWidth : false,
+                    autoWidth : true,
                     autoHeight : false,
                     style:"margin-left: 20px;min-width:400px"
                 });

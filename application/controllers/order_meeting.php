@@ -225,7 +225,7 @@ class Order_meeting extends CI_Controller {
 
     }
 
-    function choose_orders(){
+    function choose_orders_data(){
         $om = new Order_model();
         $order = $om->find(v('id'));
         $order_type = null;
@@ -233,9 +233,14 @@ class Order_meeting extends CI_Controller {
             $order_type = $order['order_type'];
         }
         $output = $om->find_my_orders($order_type,null,'allocated');
+        $data = $output['data'];
+        $data['structure'] = build_structure('id');
+        array_push($data['structure'],_structure('title',null,'240px'));
+        $data['structure'] = array_merge($data['structure'],build_structure('content','created_by'));
+        array_push($data['structure'],_structure('creation_date',null,'180px'));
 //        $data['objects'] = $output['data']['items'];
 //        $this->load->view('order_meeting/_choose_orders',$data);
-        echo json_encode($output['data']);
+        echo json_encode($data);
     }
 
     private function _meeting_status($object){

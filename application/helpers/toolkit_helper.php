@@ -566,3 +566,31 @@ function field_list($table){
     }
 
 }
+
+//生成grid的结构
+function _structure($field,$label = null,$width = '140px',$data_type = 'string'){
+    if(is_null($label)){
+        $label = label($field);
+    }
+    $s['field'] = $field;
+    $s['name'] = $label;
+    //id特例
+    if($field == 'id'){
+        $s['width'] = '60px';
+        $s['dataType'] = 'number';
+    }else{
+        $s['width'] = $width;
+        $s['dataType'] = $data_type;
+    }
+
+    return $s;
+}
+
+function build_structure(){
+    $fields = func_get_args();
+    $structure = array();
+    foreach($fields as $field){
+        array_push($structure,_structure($field));
+    }
+    return $structure;
+}
