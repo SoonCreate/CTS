@@ -10,12 +10,19 @@ define(["dojo/_base/declare", "gridx/Grid",
         "gridx/modules/ColumnResizer",
         "gridx/modules/VirtualVScroller",
         "gridx/modules/TouchVScroller",
+        "gridx/modules/IndirectSelectColumn",
+        //抬头全选按钮和onSelect无法兼得
+        'gridx/modules/select/Row',
+        "gridx/modules/extendedSelect/Row",
         "dojo/dom-style"
     ],
     function(declare,Gridx,Sync,ItemFileWriteStore,Async,JsonRest,ObjectStore,
-             request,Pagination,PaginationBar,ColumnResizer,VirtualVScroller,TouchVScroller,domStyle){
+             request,Pagination,PaginationBar,ColumnResizer,VirtualVScroller,TouchVScroller,
+             IndirectSelectColumn,
+             selectSingleRow,
+             selectMultipleRow,
+             domStyle){
         return declare("",[Gridx],{
-
             constructor : function(args){
                 /*
                 *operationColumn : {
@@ -85,9 +92,25 @@ define(["dojo/_base/declare", "gridx/Grid",
 
                 args.modules = [ColumnResizer,VirtualVScroller,TouchVScroller];
                 ////是否启用分页
-                if(args.pageSize != undefined){
+                if(args.pageSize != undefined || args.pagination){
                     args.modules.push(Pagination);
                     args.modules.push(PaginationBar);
+                }
+
+                //single,multiple
+                //抬头全选按钮和onSelect无法兼得
+                if(args.selectRowMultiple){
+                    args.modules.push(IndirectSelectColumn);
+                }
+                if(args.hasOnSelect){
+                    args.modules.push(selectSingleRow);
+                }else{
+                    //多选单选
+                    if(args.selectRowMultiple){
+                        args.modules.push(selectMultipleRow);
+                    }else{
+                        args.modules.push(selectSingleRow);
+                    }
                 }
 
                 //数据缓存方式
@@ -118,12 +141,17 @@ define(["dojo/_base/declare", "gridx/Grid",
                     //异步
                     var restStore = new JsonRest({idProperty: 'id', target:this.url,sortParam: "sortBy"});
                     grid.setStore(restStore);
+                    grid._setSelected();
                 }else{
                     request.get(this.url,{handleAs : "json"}).then(function(data){
                         var store = new ItemFileWriteStore({
                             data : data
                         });
                         grid.setStore(store);
+                        if("structure" in data){
+                            grid.setColumns(data["structure"]);
+                        }
+                        grid._setSelected();
                     });
                 }
                 this.inherited(arguments);
@@ -134,7 +162,6 @@ define(["dojo/_base/declare", "gridx/Grid",
                 if(this.pageSize){
                     this.pagination.setPageSize(this.pageSize);
                 }
-                console.info(this);
             },
 
             //重新刷新gird，如果没有指定数据源则刷新本身
@@ -150,15 +177,29 @@ define(["dojo/_base/declare", "gridx/Grid",
 
             //鼠标漂浮
             onRowMouseOver : function(arguments){
-                domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","1");
+                if(this.operationColumn){
+                    domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","1");
+                }
             },
 
             onRowMouseOut : function(arguments){
-                domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","0");
+                if(this.operationColumn){
+                    domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","0");
+                }
             },
 
             onRowTouchEnd : function(){
 
+            },
+            //设置初始选择项目
+            _setSelected : function () {
+                if(this.targetDijit){
+                    var value = this.targetDijit.getValue();
+                    value = value.split(',');
+                    for(var i=0;i<value.length;i++){
+                        this.select.row.selectById(value[i]);
+                    }
+                }
             }
 
 

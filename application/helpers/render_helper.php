@@ -258,8 +258,8 @@ function render_form_input($name,$required = FALSE,$attributes = array(),$disabl
     return _render_input_by_type($name,$required,$attributes,'text',$disabled);
 }
 
-function render_form_input_select($name,$valuelist_name,$required = FALSE,$disabled = FALSE,
-                                  $muliple = true,$all_value = false,$pagination = false,$page_size = 10,$attributes = array()){
+function render_form_input_vl($name,$valuelist_name,$required = FALSE,$disabled = FALSE,
+                                  $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array()){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
     <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';

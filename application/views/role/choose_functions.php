@@ -45,12 +45,7 @@
                         selectMultipleRow
                     ];
 
-                    var structure = [
-                        {field : "module_name",name:"所属模块",width: "160px"},
-                        {field : "module_desc",name:"模块描述",width: "160px"},
-                        {field : "function_name",name:"功能名",width: "160px"},
-                        {field : "function_desc",name:"功能描述",width: "160px"},
-                    ];
+                    var structure = data["structure"];
 
                     var grid = new Grid({
                         cacheClass : SyncCache,

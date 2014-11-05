@@ -4,9 +4,9 @@ define(["dojo/_base/declare", "dijit/form/ValidationTextBox",
         "dojo/_base/lang", // lang.hitch lang.isFunction
         "dojo/on",
         "dojo/touch",
-        "dojo/dom-class",
+        "dojo/dom-style",
         "dojo/text!./templates/ScTextBox.html"],
-    function(declare,ValidationTextBox,has,keys,lang,on,touch,domClass,template){
+    function(declare,ValidationTextBox,has,keys,lang,on,touch,domStyle,template){
 
     return declare("",[ValidationTextBox],{
         //配置vl参数默认值
@@ -63,7 +63,7 @@ define(["dojo/_base/declare", "dijit/form/ValidationTextBox",
                 );
             }else{
                 //隐藏按钮
-                domClass.set(this._buttonNode,"display","none");
+                domStyle.set(this._buttonNode,"display","none");
             }
 
         },

@@ -327,6 +327,7 @@ class Role extends CI_Controller {
         }
         $data["identifier"] = 'id';
         $data["label"] = 'function_desc';
+        $data["structure"] = build_structure('module_name','module_desc','function_name','function_desc');
         echo json_encode($data);
     }
 

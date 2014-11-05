@@ -462,114 +462,58 @@ to listen to the onSelect event. Unfortunately, when "extendedSelect/Row" & "sel
 are loaded together, the onSelect event isn't captured. When only "select/Row" is loaded, it works fine
  */
 //包含grid的dialog
-function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,pageSize,onSelect){
-    require(["sckj/Gridx",
-            "gridx/core/model/cache/Sync",
-            "dojo/data/ItemFileReadStore",
-            "dojo/request",
-            "gridx/modules/Pagination",
-            "gridx/modules/pagination/PaginationBar",
-            "gridx/modules/ColumnResizer",
-            "gridx/modules/VirtualVScroller",
-            "gridx/modules/TouchVScroller",  //IPAD支持
-            "gridx/modules/IndirectSelectColumn",
-            //抬头全选按钮和onSelect无法兼得
-            'gridx/modules/select/Row',
-            "gridx/modules/extendedSelect/Row"
-        ],
-        function(Grid,SyncCache,ItemFileReadStore,request,
-                 Pagination,
-                 PaginationBar,
-                 ColumnResizer,
-                 VirtualVScroller,
-                 TouchVScroller,
-                 IndirectSelectColumn,
-                 selectSingleRow,
-                 selectMultipleRow){
-            request.get(dataUrl,{handleAs : "json"}).then(function(data){
-                var store = new ItemFileReadStore({
-                    data : data
-                });
+function gridDialog(title,structure,dataUrl,selectRowMultiple,target,pagination,pageSize,onSelect,onReturn){
+    require(["sckj/DataGrid"],
+        function(Grid){
+            var hasOnSelect = false;
+            if(onSelect){
+                hasOnSelect = true;
+            }
 
-                if(structure == null){
-                    structure = data["structure"];
-                }
-                var modules = [
-                    ColumnResizer,
-                    VirtualVScroller,
-                    TouchVScroller,
-                    IndirectSelectColumn
-                ];
+            var grid = new Grid({
+                asyncCache : false,
+                pagination : pagination,
+                pageSize : pageSize,
+                hasOnSelect : hasOnSelect,
+                url : dataUrl,
+                structure : structure,
+                selectRowTriggerOnCell: true,
+                selectRowMultiple : selectRowMultiple,
+                autoWidth : true,
+                autoHeight : false,
+                style:"margin-left: 20px;min-width:400px",
+                targetDijit : target
+            });
+            grid.startup();
 
-                //是否分页
-                if(pagination == undefined || pagination){
-                    modules.push(Pagination);
-                    modules.push(PaginationBar);
-                }
-
-                //抬头全选按钮和onSelect无法兼得
-                if(onSelect){
-                    modules.push(selectSingleRow);
-                }else{
-                    //多选单选
-                    if(selectRowMultiple){
-                        modules.push(selectMultipleRow);
-                    }else{
-                        modules.push(selectSingleRow);
-                    }
-                }
-
-                var grid = new Grid({
-                    cacheClass : SyncCache,
-                    store: store ,
-                    structure: structure,
-                    modules : modules,
-                    selectRowTriggerOnCell: true,
-                    selectRowMultiple : selectRowMultiple,
-                    autoWidth : true,
-                    autoHeight : false,
-                    style:"margin-left: 20px;min-width:400px"
-                });
-                grid.startup();
-
-                //是否分页
-                if(pagination == undefined || pagination){
-                    //默认10行
-                    if(pageSize == undefined){
-                        pageSize = 10;
-                    }
-                    grid.pagination.setPageSize(pageSize);
-                }
-                var value = target.getValue();
-                value = value.split(',');
-                for(var i=0;i<value.length;i++){
-                    grid.select.row.selectById(value[i]);
-                }
-                //console.info(grid);
+            //console.info(grid);
+            if(onSelect){
                 grid.connect(grid.select.row, 'onSelected', function(row){
-                    if(onSelect){
-                        onSelect(row,grid);
-                    }
+                   onSelect(row,grid);
                 });
+            }
 
-                //单选双击获取值
-                if(!selectRowMultiple){
-                    grid.connect(grid, 'onRowDblClick', function(row){
-                        target.set("value",grid.select.row.getSelected().join());
-                        closeDialog();
-                    });
-                }
-
-                dojoConfirm(grid,title,function(){
+            //单选双击获取值
+            if(!selectRowMultiple){
+                grid.connect(grid, 'onRowDblClick', function(row){
                     target.set("value",grid.select.row.getSelected().join());
+                    closeDialog();
                 });
+            }
+
+            dojoConfirm(grid,title,function(){
+                var value = grid.select.row.getSelected().join();
+                target.set("value",value);
+                if(onReturn){
+                    onReturn(value);
+                }
             });
         });
 }
 
 //值集选择框
 function vlGridDialog(valuelist_name,parent_segment_value,all_value,selectRowMultiple,target,pagination,pageSize){
-    var structure = [{field : "label",name : "条目"}];
+    var structure = [{field : "label",name : "条目",width:"300px"}];
     var params = new Object();
     if(valuelist_name != undefined){
         params.n = valuelist_name;
