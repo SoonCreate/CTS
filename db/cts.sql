@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2014 at 09:23 AM
+-- Generation Time: Nov 11, 2014 at 05:25 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -315,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `display_class` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -350,7 +350,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (29, 'order_pcd_change', '计划完成日期', 'order', 'pcd_change', NULL, 1, 1415062363, 44, 1415062363, 44, 0, ''),
 (30, 'order_done', '问题已经解决', 'order', 'done', NULL, 0, 1415062387, 44, 1415062387, 44, 0, ''),
 (31, 'order_close', '投诉单关闭', 'order', 'close', NULL, 0, 1415062454, 44, 1415062454, 44, 0, ''),
-(32, 'order_reopen', '投诉单重新打开', 'order', 'reopen', NULL, 0, 1415062479, 44, 1415062479, 44, 0, '');
+(32, 'order_reopen', '投诉单重新打开', 'order', 'reopen', NULL, 0, 1415062479, 44, 1415062479, 44, 0, ''),
+(33, 'session_manager', '会话管理', 'sessions', 'index', NULL, 0, 1415666800, 44, 1415673066, 44, 1, '');
 
 -- --------------------------------------------------------
 
@@ -667,7 +668,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=58 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=59 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -702,7 +703,8 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (54, 6, 29, 0, 1415067128, 44, 1415067128, 44),
 (55, 6, 30, 0, 1415067128, 44, 1415067128, 44),
 (56, 6, 31, 0, 1415067128, 44, 1415067128, 44),
-(57, 6, 32, 0, 1415067128, 44, 1415067128, 44);
+(57, 6, 32, 0, 1415067128, 44, 1415067128, 44),
+(58, 3, 33, 0, 1415666811, 44, 1415666811, 44);
 
 -- --------------------------------------------------------
 
@@ -2051,7 +2053,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `ct_order_meetings`
@@ -2157,7 +2159,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=208 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=209 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -2324,7 +2326,8 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (204, 16, 54, 1415068768, 44, 1415068768, 44),
 (205, 16, 55, 1415068768, 44, 1415068768, 44),
 (206, 17, 54, 1415068788, 44, 1415068788, 44),
-(207, 17, 55, 1415068788, 44, 1415068788, 44);
+(207, 17, 55, 1415068788, 44, 1415068788, 44),
+(208, 8, 58, 1415666833, 44, 1415666833, 44);
 
 -- --------------------------------------------------------
 
@@ -2663,7 +2666,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `ct_status_authobjects`
@@ -2674,7 +2677,12 @@ INSERT INTO `ct_status_authobjects` (`id`, `group_id`, `object_id`, `created_by`
 (6, 3, 1, 44, 1415061879, 1415061879, 44),
 (7, 4, 1, 44, 1415062055, 1415062055, 44),
 (8, 5, 1, 44, 1415062146, 1415062146, 44),
-(9, 6, 1, 44, 1415062215, 1415062215, 44);
+(9, 6, 1, 44, 1415062215, 1415062215, 44),
+(10, 7, 1, 44, 1415234104, 1415234104, 44),
+(11, 8, 1, 44, 1415234267, 1415234267, 44),
+(12, 9, 1, 44, 1415234329, 1415234329, 44),
+(13, 10, 1, 44, 1415234394, 1415234394, 44),
+(14, 11, 1, 44, 1415234472, 1415234472, 44);
 
 -- --------------------------------------------------------
 
@@ -2708,7 +2716,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `ct_status_authobj_lines`
@@ -2729,7 +2737,22 @@ INSERT INTO `ct_status_authobj_lines` (`id`, `status_obj_id`, `authobj_line_id`,
 (21, 8, 3, 'vendor', 44, 1415062146, 1415062154, 44),
 (22, 9, 4, 'reopen', 44, 1415062215, 1415062224, 44),
 (23, 9, 5, 'all', 44, 1415062215, 1415062215, 44),
-(24, 9, 3, 'vendor', 44, 1415062215, 1415062231, 44);
+(24, 9, 3, 'vendor', 44, 1415062215, 1415062231, 44),
+(25, 10, 4, 'confirmed', 44, 1415234104, 1415234176, 44),
+(26, 10, 5, 'all', 44, 1415234104, 1415234104, 44),
+(27, 10, 3, 'customer', 44, 1415234104, 1415234104, 44),
+(28, 11, 4, 'allocated', 44, 1415234267, 1415234280, 44),
+(29, 11, 5, 'all', 44, 1415234267, 1415234267, 44),
+(30, 11, 3, 'customer', 44, 1415234267, 1415234267, 44),
+(31, 12, 4, 'done', 44, 1415234329, 1415234340, 44),
+(32, 12, 5, 'all', 44, 1415234329, 1415234329, 44),
+(33, 12, 3, 'customer', 44, 1415234329, 1415234329, 44),
+(34, 13, 4, 'closed', 44, 1415234394, 1415234418, 44),
+(35, 13, 5, 'all', 44, 1415234394, 1415234394, 44),
+(36, 13, 3, 'customer', 44, 1415234394, 1415234394, 44),
+(37, 14, 4, 'reopen', 44, 1415234472, 1415234486, 44),
+(38, 14, 5, 'all', 44, 1415234472, 1415234472, 44),
+(39, 14, 3, 'customer', 44, 1415234472, 1415234472, 44);
 
 -- --------------------------------------------------------
 
@@ -2770,7 +2793,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `last_updated_by` int(11) DEFAULT NULL,
   `group_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `ct_status_conditions`
@@ -2783,7 +2806,14 @@ INSERT INTO `ct_status_conditions` (`id`, `and_or`, `field_name`, `operation`, `
 (7, 'AND', 'status', 'EQ', 'confirmed', 44, 1414829103, 1415061862, 44, 3),
 (8, 'AND', 'status', 'EQ', 'allocated', 44, 1415062091, 1415062091, 44, 4),
 (9, 'AND', 'status', 'EQ', 'done', 44, 1415062134, 1415062134, 44, 5),
-(10, 'AND', 'status', 'EQ', 'closed', 44, 1415062209, 1415062209, 44, 6);
+(10, 'AND', 'status', 'EQ', 'closed', 44, 1415062209, 1415062209, 44, 6),
+(11, 'AND', 'status', 'EQ', 'released', 44, 1415234089, 1415234089, 44, 7),
+(12, 'AND', 'status', 'EQ', 'confirmed', 44, 1415234221, 1415234221, 44, 8),
+(13, 'AND', 'manager_id', 'NE', 'null', 44, 1415234235, 1415234235, 44, 8),
+(14, 'AND', 'leader_id', 'NE', 'null', 44, 1415234250, 1415234250, 44, 8),
+(15, 'AND', 'status', 'EQ', 'allocated', 44, 1415234313, 1415234313, 44, 9),
+(16, 'AND', 'status', 'EQ', 'done', 44, 1415234379, 1415234379, 44, 10),
+(17, 'AND', 'status', 'EQ', 'closed', 44, 1415234451, 1415234451, 44, 11);
 
 -- --------------------------------------------------------
 
@@ -2819,7 +2849,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_condition_groups` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流条件组' AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流条件组' AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `ct_status_condition_groups`
@@ -2830,7 +2860,12 @@ INSERT INTO `ct_status_condition_groups` (`id`, `group_name`, `status_line_id`, 
 (3, '默认条件组', 9, 44, 1414999278, 1414999278, 44),
 (4, '默认条件组', 10, 44, 1415062050, 1415062050, 44),
 (5, '默认条件组', 11, 44, 1415062126, 1415062126, 44),
-(6, '默认条件组', 25, 44, 1415062198, 1415062198, 44);
+(6, '默认条件组', 25, 44, 1415062198, 1415062198, 44),
+(7, '默认条件组', 14, 44, 1415234044, 1415234044, 44),
+(8, '默认条件组', 15, 44, 1415234201, 1415234201, 44),
+(9, '默认条件组', 16, 44, 1415234302, 1415234302, 44),
+(10, '默认条件组', 17, 44, 1415234363, 1415234363, 44),
+(11, '默认条件组', 18, 44, 1415234439, 1415234439, 44);
 
 -- --------------------------------------------------------
 
@@ -2849,7 +2884,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `ct_status_functions`
@@ -2863,7 +2898,15 @@ INSERT INTO `ct_status_functions` (`id`, `status_line_id`, `function_id`, `sort`
 (8, 9, 30, 6, '问题已解决', 44, 1415067497, 1415067554, 44),
 (10, 9, 29, 0, '计划完成日期', 44, 1415067548, 1415067548, 44),
 (11, 10, 31, 0, '投诉单关闭', 44, 1415069336, 1415069336, 44),
-(12, 25, 32, 0, '重新打开', 44, 1415076331, 1415076331, 44);
+(13, 13, 26, 0, '问题已确认', 44, 1415234016, 1415234016, 44),
+(14, 14, 27, 0, '选择责任人', 44, 1415234575, 1415234575, 44),
+(15, 14, 28, 1, '选择处理人', 44, 1415234589, 1415234589, 44),
+(16, 15, 28, 0, '重新指定处理人', 44, 1415234623, 1415234623, 44),
+(17, 15, 30, 6, '问题已解决', 44, 1415234640, 1415234640, 44),
+(18, 15, 29, 0, '计划完成日期', 44, 1415234657, 1415234657, 44),
+(19, 16, 31, 0, '投诉单关闭', 44, 1415234684, 1415234684, 44),
+(20, 11, 32, 0, '重新打开', 44, 1415234798, 1415234798, 44),
+(21, 17, 32, 0, '重新打开', 44, 1415234822, 1415234822, 44);
 
 -- --------------------------------------------------------
 
@@ -3043,6 +3086,31 @@ CREATE TABLE IF NOT EXISTS `ct_system_orders` (
 
 INSERT INTO `ct_system_orders` (`id`, `table_name`, `order_name`, `description`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'ct_orders', '投诉单', '用于投诉', NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_system_sessions`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
+  `session_id` varchar(40) NOT NULL DEFAULT '0',
+  `ip_address` varchar(45) NOT NULL DEFAULT '0',
+  `user_agent` varchar(120) NOT NULL,
+  `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
+  `user_data` text NOT NULL,
+  PRIMARY KEY (`session_id`),
+  KEY `last_activity_idx` (`last_activity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ct_system_sessions`
+--
+
+INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
+('401fd0b9e4f501374ff2bd09f4d522cb', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1415676349, ''),
+('868fcf534c77386808caf8d9a2e26cc4', '::1', 'Mozilla/5.0 (Windows NT 6.2; rv:32.0) Gecko/20100101 Firefox/32.0', 1415679746, 'a:1:{s:9:"user_data";s:0:"";}'),
+('8cea30bfe5220a7fb1bb2c9013b112c1', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1415679860, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"58";s:3:"mid";s:1:"3";s:3:"fid";s:2:"33";}');
 
 -- --------------------------------------------------------
 

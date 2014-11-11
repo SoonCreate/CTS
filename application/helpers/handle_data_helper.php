@@ -32,7 +32,7 @@ function message($type,$class_code,$message_code,$args = array()){
         $data['content'] = str_replace("&","",$data['content']);
         _refresh_output('message',$data);
     }else{
-        message_unknow_error();
+        message_unknown_error();
     }
 
 }
@@ -57,7 +57,7 @@ function message_no_authority(){
     message('E','system','20');
 }
 //未知消息
-function message_unknow_error(){
+function message_unknown_error(){
     message('E','system','10');
 }
 
@@ -122,6 +122,13 @@ function redirect_url($url){
     $output = _sess('output');
     $goto['url'] = $url;
     $output['redirect'] = $goto;
+    set_sess('output',$output);
+}
+
+//前端整体跳转
+function location_url($url){
+    $output = _sess('output');
+    $output['location'] = $url;
     set_sess('output',$output);
 }
 

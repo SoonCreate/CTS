@@ -7,7 +7,6 @@ class Admin extends CI_Controller {
     function __construct(){
         parent::__construct();
         header('Content-Type: text/html; charset=utf-8');
-        $this->load->model('config_model');
     }
 
     function order_category_manage(){

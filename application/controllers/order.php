@@ -118,7 +118,7 @@ class Order extends CI_Controller {
                     validation_error();
                 }
             }else{
-                message_unknow_error();
+                message_unknown_error();
             }
         }else{
             //获取订单类型，如果没有则跳转到chose_create

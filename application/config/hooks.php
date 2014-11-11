@@ -20,6 +20,13 @@
 
 $hook['post_controller_constructor'][] = array(
     'class'    => 'Auth',
+    'function' => 'login_check',
+    'filename' => 'Auth.php',
+    'filepath' => 'hooks'
+);
+
+$hook['post_controller_constructor'][] = array(
+    'class'    => 'Auth',
     'function' => 'function_check',
     'filename' => 'Auth.php',
     'filepath' => 'hooks'

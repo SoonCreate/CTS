@@ -58,7 +58,7 @@ function full_name($id,$only_me = FALSE,$render_me = TRUE){
         return label('administrator');
     }else{
         if(is_null($id)){
-            return label('unknow');
+            return label('unknown');
         }else{
             if($id == _sess('uid') && $render_me){
                 return label('me');
@@ -71,7 +71,7 @@ function full_name($id,$only_me = FALSE,$render_me = TRUE){
                     $um = new User_model();
                     $user = $um->find($id);
                     if(empty($user)){
-                        return label('unknow');
+                        return label('unknown');
                     }else{
                         if(is_null($user['full_name'])){
                             return $user['username'];
@@ -156,7 +156,7 @@ function get_value($valuelist_name,$label){
 
 function get_label($valuelist_name,$value,$parent_segment_value = null){
     $options = get_options($valuelist_name,$parent_segment_value);
-    $label = _text('label_unknow');
+    $label = label('unknown');
     if(count($options) > 0){
         for($i=0;$i<count($options);$i++){
             if($options[$i]["value"] == $value){

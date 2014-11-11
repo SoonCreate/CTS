@@ -177,47 +177,55 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,target){
 
         //没有错误的时候才能处理数据和重定向
         if(!errorStatus){
-            //处理数据
-            if("data" in response ){
-                if(remoteSuccess){
-                    remoteSuccess(response["data"]);
-                }
+
+            //根据优先级
+            //处理大跳转
+            if("location" in response ){
+                redirect(response["location"]);
             }else{
-                if(remoteSuccess){
-                    remoteSuccess(response);
-                }
-            }
+                //处理跳转
+                if("redirect" in response ){
+                    if(response["redirect"]["url"] == "goBack"){
+                        goback();
+                    }else{
+                        goto(response["redirect"]["url"],response["redirect"]['target']);
+                    }
 
-            //处理跳转
-            if("redirect" in response ){
-                if(response["redirect"]["url"] == "goBack"){
-                    goback();
+                }
+
+                //处理数据
+                if("data" in response ){
+                    if(remoteSuccess){
+                        remoteSuccess(response["data"]);
+                    }
                 }else{
-                    goto(response["redirect"]["url"],response["redirect"]['target']);
+                    if(remoteSuccess){
+                        remoteSuccess(response);
+                    }
                 }
 
-            }
+                if("dialog" in response){
+                    require(["sckj/Dialog"],
+                        function(Dialog){
+                            //检查如果存在则销毁
+                            var di = dijit.byId("confirmDialog");
+                            if(di){
+                                di.hide();
+                                di.destroyRecursive();
+                            }
+                            var confirmDialog = new Dialog({
+                                href : response["dialog"]["url"],
+                                id : "confirmDialog",
+                                title : response["dialog"]["title"],
+                                closable : response["dialog"]["closable"]
+                            });
 
-            if("dialog" in response){
-                require(["sckj/Dialog"],
-                    function(Dialog){
-                        //检查如果存在则销毁
-                        var di = dijit.byId("confirmDialog");
-                        if(di){
-                            di.hide();
-                            di.destroyRecursive();
-                        }
-                        var confirmDialog = new Dialog({
-                            href : response["dialog"]["url"],
-                            id : "confirmDialog",
-                            title : response["dialog"]["title"],
-                            closable : response["dialog"]["closable"]
+                            confirmDialog.show();
                         });
 
-                        confirmDialog.show();
-                    });
-
+                }
             }
+
         }else{
             if(remoteFail){
                 remoteFail();
