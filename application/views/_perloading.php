@@ -1,8 +1,11 @@
 <script type="text/javascript">
-    require(["dojo/_base/fx",
+    require(["dojo/ready",
+            "dojo/_base/fx",
             "dojo/dom-style",
             "sckj/form/Select",
             "sckj/form/TextBox",
+            "sckj/form/ScTextBox",
+            "sckj/form/Textarea",
             "sckj/Editor",
             "sckj/form/Button",
             "sckj/form/CheckBox",
@@ -11,12 +14,13 @@
             "sckj/form/TimeTextBox",
             "sckj/Dialog",
             "sckj/Gridx",
-//            'gridx/allModules',
+            "sckj/DataGrid",
+            "sckj/Toolbar",
             "gridx/core/model/cache/Sync",
             "gridx/core/model/cache/Async",
             "dojo/data/ItemFileReadStore",
             "dojo/store/JsonRest",
-            "dojo/data/ObjectStore",
+            "dojo/data/ObjectStore"
             "dojo/domReady!"
 
         ]);

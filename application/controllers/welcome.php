@@ -26,11 +26,19 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
+        if(_sess('uid')){
+            redirect('welcome/app_index');
+        }else{
+            redirect('user/login');
+        }
+	}
+
+    function demo(){
         $this->load->model('user_model');
         $um = new User_model();
         $data['users'] = $um->find_all_by(array('inactive_flag'=>0));
         $this->load->view('demo',$data);
-	}
+    }
 
     function demo_env(){
         unset_sess('uid');

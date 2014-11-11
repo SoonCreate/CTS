@@ -53,5 +53,7 @@
             </li>
         </ul>
 </div>
+
+<?php $this->load->view('_footer') ?>
 </body>
 </html>

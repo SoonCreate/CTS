@@ -1,35 +1,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" href="" type="image/x-icon" />
 <link rel="icon" href="" type=" image/png">
-<link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
-<link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />
-
-<link rel="stylesheet" href="<?= base_url() ?>resources/css/main.css" />
-<link href="<?php echo base_url(); ?>resources/css/gs.css" rel="stylesheet">
-<!-- Bootstrap-->
-<!--<link href="--><?php //base_url() ?><!--resources/css/bootstrap.css" rel="stylesheet">-->
-
-<link href="<?= base_url() ?>resources/css/font-awesome.min.css" rel="stylesheet">
-<!--[if IE 7]>
-<!--<link rel="stylesheet" href="resources/css/font-awesome-ie7.min.css">-->
-<![endif]-->
-<link rel="stylesheet" type="text/css" href="/dojo/dojox/widget/Toaster/Toaster.css" >
-<link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<!--<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
-<!--<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>-->
-<![endif]-->
 
 <script type="text/javascript">
     var dojoConfig = {
         parseOnLoad: true,
         async : true,
         packages: [
-            { name: "cts", location: "/cts/resources/js/"},
-            { name: "sckj", location: "/cts/resources/js/dijit"}
+            { name: "cts", location: "<?= base_url() ?>/resources/js/"},
+            { name: "sckj", location: "<?= base_url() ?>/resources/js/dijit"}
         ]
     };
 </script>
@@ -104,3 +83,26 @@
     <?php endif; ?>
 </script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
+<link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />
+
+<link rel="stylesheet" href="<?= base_url() ?>resources/css/main.css" />
+<link href="<?php echo base_url(); ?>resources/css/gs.css" rel="stylesheet">
+<!-- Bootstrap-->
+<!--<link href="--><?php //base_url() ?><!--resources/css/bootstrap.css" rel="stylesheet">-->
+
+<link href="<?= base_url() ?>resources/css/font-awesome.min.css" rel="stylesheet">
+<!--[if IE 7]>
+<!--<link rel="stylesheet" href="resources/css/font-awesome-ie7.min.css">-->
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/dojo/dojox/widget/Toaster/Toaster.css" >
+<link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<!--<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
+<!--<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>-->
+<![endif]-->
+<?php $this->load->view('_ie6_fix');?>

@@ -30,5 +30,6 @@
     <div data-dojo-type="dojox/widget/Toaster" data-dojo-props="positionDirection:'tr-left'"
          id="toaster">
     </div>
+    <?php $this->load->view('_footer') ?>
 </body>
 

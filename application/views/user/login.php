@@ -65,10 +65,9 @@
                 </dd>
             </dl>
             <div id="pro" >
-                <!--div data-dojo-type="dijit/ProgressBar" style="width:400px;visibility:hidden" jsId="jsProgress" id="downloadProgress"></div>
-                <div class="progress progress-success progress-striped" style="visibility:hidden" id="progress">
-                    <div class="bar" style="width: 5%"></div>
-                </div-->
+                <div  data-dojo-type="dijit/ProgressBar" style="width:400px;visibility:hidden"
+                      id="downloadProgress" data-dojo-props="maximum:10" ></div>
+                <!--class="progress progress-success progress-striped" visibility:hidden -->
             </div>
             <div class="DialogPaneActionBar">
                 <div id="flashMessage"></div>
@@ -92,42 +91,91 @@
 
 
 <script type="text/javascript">
-    function cFormSubmit(object){
-        require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry"],function(domForm,request,dom,registry){
-            var mes = dom.byId("flashMessage");
-            if(registry.byId("username").validate() && registry.byId("password").validate() &&  registry.byId("code").validate()){
-                request.post(object.action, {
-                    // Send the username and password
-                    data: domForm.toObject(object),
-                    // Wait 2 seconds for a response
-                    timeout: 2000,
-                    handleAs : "json"
-                }).then(function(response){
-                    //处理消息
-                    if("message" in response ){
-                        var output = "";
-                        for(var i=0;i < response["message"].length;i++){
-                            var message = response["message"][i];
-                            if(message["type"] == "E"){
-                                output = output + message["content"];
-                            }
+    var i = 0;
+    var toUrl = "";
+require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-style"],
+    function(domForm,request,dom,registry,domStyle){
+    cFormSubmit = function(object){
+        var mes = dom.byId("flashMessage");
+        if(registry.byId("username").validate() && registry.byId("password").validate() &&  registry.byId("code").validate()){
+            request.post(object.action, {
+                // Send the username and password
+                data: domForm.toObject(object),
+                // Wait 2 seconds for a response
+                timeout: 2000,
+                handleAs : "json"
+            }).then(function(response){
+                //处理消息
+                if("message" in response ){
+                    var output = "";
+                    for(var i=0;i < response["message"].length;i++){
+                        var message = response["message"][i];
+                        if(message["type"] == "E"){
+                            output = output + message["content"];
                         }
-                        mes.innerHTML = output;
                     }
+                    mes.innerHTML = output;
+                }
 
-                    //处理跳转
-                    if("redirect" in response ){
-                        redirect(response["redirect"]["url"]);
-                    }
+                //处理跳转
+                if("redirect" in response ){
+                    toUrl = response["redirect"]["url"];
+                    var downloadProgress = $dijit.byId("downloadProgress");
+                    downloadProgress.set("style","visibility:visible");
+                    download();
+                    perLoading();
+                }
 
-                },function(){
-                    console.log('remote request error!');
-                });
-            }
-        });
+            },function(){
+                console.log('remote request error!');
+            });
+        }
         return false;
+    };
+
+    download = function(){
+        var downloadProgress = $dijit.byId("downloadProgress");
+        downloadProgress.set({value: ++i});
+        if(i < 10){
+            setTimeout(download, 100 + Math.floor(Math.random() * 1000));
+        }else{
+            //处理跳转
+            redirect(toUrl);
+        }
+    };
+});
+    //预加载
+    function perLoading(){
+        require(["dojo/ready",
+            "dojo/_base/fx",
+            "dojo/dom-style",
+            "sckj/form/Select",
+            "sckj/form/TextBox",
+            "sckj/form/ScTextBox",
+            "sckj/form/Textarea",
+            "sckj/Editor",
+            "sckj/form/Button",
+            "sckj/form/CheckBox",
+            "sckj/form/DateTextBox",
+            "sckj/form/RadioButton",
+            "sckj/form/TimeTextBox",
+            "sckj/Dialog",
+            "sckj/Gridx",
+            "sckj/DataGrid",
+            "sckj/Toolbar",
+            "gridx/core/model/cache/Sync",
+            "gridx/core/model/cache/Async",
+            "dojo/data/ItemFileReadStore",
+            "dojo/store/JsonRest",
+            "dojo/data/ObjectStore"
+        ],function(ready){
+            ready(function(){
+                i = 2;
+            });
+        });
     }
 </script>
 
+<?php $this->load->view('_footer') ?>
 </body>
 </html>
