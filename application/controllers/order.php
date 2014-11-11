@@ -87,17 +87,17 @@ class Order extends CI_Controller {
     }
 
     function create(){
-        $order = new Order_model();
+        $om = new Order_model();
         $order_type = v('order_type');
         if($_POST){
             //非分类管理，默认分类设置时可默认
             if(!_config('category_control')){
-                $c = $order->default_category($order_type);
+                $c = $om->default_category($order_type);
                 if(!is_null($c)){
                     $_POST['category'] = $c['value'];
                 }
             }
-            $_POST['status'] = $order->default_status($order_type);
+            $_POST['status'] = $om->default_status($order_type);
             //验证提交
             //权限
             if(check_order_auth($order_type,v('status'),v('category'))){
@@ -105,11 +105,25 @@ class Order extends CI_Controller {
                     'title','contact','phone_number','mobile_telephone','address','full_name','status');
                 $content = r(v('content'));
                 $addfiles = tpost('addfiles');
-                $order_id = $order->save($data,$content,$addfiles);
+                $order_id = $om->save($data,$content,$addfiles);
                 if($order_id){
+                    $this->load->model('status_model');
+                    $sm = new Status_model();
+                    $order = $om->find($order_id);
+                    $s = $sm->validate_next($order['id'],default_value('status',$order['order_type']),$order['status']);
                     //如果同时拥有提交和确认权限，则自动确认
-                    if(check_order_auth($order_type,'confirmed',v('category'))){
-                        $order->confirm($order_id);
+                    if($s){
+                        if($s == 'confirmed'){
+                            //由于confirm是定制
+                            $om->confirm($order);
+                        }else{
+                            $d['status'] = $s;
+                            if($om->do_update($order['id'],$d)){
+                                message_db_success();
+                            }else{
+                                message_db_failure();
+                            }
+                        }
                     }else{
                         message_db_success();
                     }
@@ -127,15 +141,15 @@ class Order extends CI_Controller {
             }else{
                 $this->db->distinct();
                 $this->db->select('contact,mobile_telephone,full_name,address,phone_number ');
-                $order->order_by('creation_date','DESC');
-                $os = $order->find_all_by(array('created_by'=>_sess('uid')));
+                $om->order_by('creation_date','DESC');
+                $os = $om->find_all_by(array('created_by'=>_sess('uid')));
                 if(!empty($os)){
                     $data['contact_data'] = json_encode($os);
                 }
 
                 if(_config('category_control')){
                     $au = new Auth_model();
-                    $data['categories'] = $au->can_choose_order_categories($order_type,$order->default_status($order_type));
+                    $data['categories'] = $au->can_choose_order_categories($order_type,$om->default_status($order_type));
                 }
                 $data['order_type'] = $order_type;
                 render_view('order/create',$data);
