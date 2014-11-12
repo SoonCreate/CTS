@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-$lang['label_version'] = "企业投诉闭环跟踪系统Beta 1.0";
+$lang['label_complaint_track_system'] = "企业投诉闭环跟踪系统";
 
 $lang['label_administrator'] = '系统管理员';
 $lang['label_all_value'] = '包含所有值';
@@ -78,3 +78,6 @@ $lang['label_company_name'] = "公司名称";
 $lang['label_address'] = "联系地址";
 
 $lang['label_me'] = "我";
+
+
+?>

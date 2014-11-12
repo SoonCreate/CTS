@@ -1,6 +1,5 @@
 <script type="text/javascript">
-    require(["dojo/ready",
-            "dojo/_base/fx",
+    require(["dojo/_base/fx",
             "dojo/dom-style",
             "sckj/form/Select",
             "sckj/form/TextBox",
@@ -20,8 +19,7 @@
             "gridx/core/model/cache/Async",
             "dojo/data/ItemFileReadStore",
             "dojo/store/JsonRest",
-            "dojo/data/ObjectStore"
+            "dojo/data/ObjectStore",
             "dojo/domReady!"
-
         ]);
 </script>

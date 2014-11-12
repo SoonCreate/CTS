@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= label('version')?></title>
+    <title><?= label('complaint_track_system')?></title>
     <?php $this->load->view('_header') ?>
 </head>
 <body class="sc">
@@ -44,20 +44,20 @@
 <div class="login" >
     <div class="DialogTitleBar">
         <img src="<?=base_url()?>resources/images/sclogo.png" />
-        <h3>闭环系统用户登录</h3>
+        <h3><?= label('complaint_track_system')?></h3>
     </div>
     <div class="DialogPaneContent container-fluid" >
         <form class="form-horizontal" id="userForm" method="post" action="<?= _url('user','login')?>" onsubmit="return cFormSubmit(this);" >
             <dl class="row dl-horizontal">
-                <dt><label for="username">用户名</label></dt>
+                <dt><label for="username"><?= label('username')?></label></dt>
                 <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="username" id="username" required trim="true" /></dd>
             </dl>
             <dl class="row dl-horizontal">
-                <dt><label for="password">密码</label></dt>
+                <dt><label for="password"><?= label('password')?></label></dt>
                 <dd><input data-dojo-type="dijit/form/ValidationTextBox" type="password"  name="password" id="password" required trim="true" /></dd>
             </dl>
             <dl class="row dl-horizontal">
-                <dt><label for="code">验证码</label></dt>
+                <dt><label for="code"><?= label('code')?></label></dt>
                 <dd><input data-dojo-type="dijit/form/ValidationTextBox" name="code" class="codebox"
                            id="code" trim="true" required="true" maxlength="4" regExp="[0-9]+"
                            style="width: 50px" />
@@ -72,11 +72,11 @@
             <div class="DialogPaneActionBar">
                 <div id="flashMessage"></div>
                 <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
-                    <label>登录</label>
+                    <label><?= label('login')?></label>
                 </button>
                 <?php if(_config('allow_register')){?>
                 <button data-dojo-type="dijit/form/Button" type="button" class="success" id="regpost" onclick="redirect('<?= _url('user','register')?>')">
-                    <label>注册</label>
+                    <label><?= label('register')?></label>
                 </button>
                 <?php }?>
             </div>
@@ -122,8 +122,8 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
                     toUrl = response["redirect"]["url"];
                     var downloadProgress = $dijit.byId("downloadProgress");
                     downloadProgress.set("style","visibility:visible");
-                    download();
                     perLoading();
+                    download();
                 }
 
             },function(){

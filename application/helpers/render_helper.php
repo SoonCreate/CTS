@@ -482,8 +482,11 @@ function render_form_header($title){
     return '<div class="row paneltitle"><h3>'.label($title).'</h3></div>';
 }
 
-function render_submit_button(){
-    return '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.label('submit').'</button>';
+function render_submit_button($label = ''){
+    if(!$label){
+        $label = label('submit');
+    }
+    return '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.$label.'</button>';
 }
 
 function render_button($name,$onclick = "",$class = 'normal'){

@@ -7,7 +7,7 @@
                 <?= render_link(_url($fn['controller'],$fn['action'],array('cm'=>$fn['id'])),'
                  <div class="icon"><i class="'.$icon.' icon-3x"></i></div>
                     <div class="text">
-                        '.$fn['function_desc'].'
+                        '.label($fn['function_name']).'
                     </div>
                 ')?>
 

@@ -46,19 +46,27 @@ function custz_message($type,$content){
 
 //数据库操作返回消息
 function message_db_failure(){
-    message('E','db','20');
+    ci_translate_message('I','message_save_failure');
 }
+
+//ci中配置的多语言环境消息
+function ci_translate_message($type,$line){
+    $message['type'] = $type;
+    $message['content'] = _text($line);
+    _refresh_output('message',$message);
+}
+
 //数据库操作成功
 function message_db_success(){
-    message('I','db','10');
+    ci_translate_message('I','message_save_success');
 }
 //没有权限
 function message_no_authority(){
-    message('E','system','20');
+    ci_translate_message('I','message_no_authority');
 }
 //未知消息
 function message_unknown_error(){
-    message('E','system','10');
+    ci_translate_message('E','message_error_unknown');
 }
 
 //前端弹出框
