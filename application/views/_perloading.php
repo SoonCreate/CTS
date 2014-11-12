@@ -20,6 +20,16 @@
             "dojo/data/ItemFileReadStore",
             "dojo/store/JsonRest",
             "dojo/data/ObjectStore",
+            "dijit/layout/BorderContainer",
+            "dijit/layout/TabContainer",
+            "dojox/layout/ContentPane",
+            "dojox/widget/Toaster",
+            "dijit/layout/StackController",
+            "dijit/layout/StackContainer",
+            "dijit/layout/LayoutContainer",
+            "dijit/layout/ScrollingTabController",
+            "dijit/layout/TabController",
+            "dijit/Menu",
             "dojo/domReady!"
         ]);
 </script>

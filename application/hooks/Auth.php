@@ -14,7 +14,7 @@ class Auth {
         if(!(in_array($controller, array_keys($controllers)) && in_array($action,$controllers[$controller]))){
             //需要检查
             if(!_sess('uid')){
-                redirect('user/login');
+                location_url('user/login');
                 die();
             }
         }

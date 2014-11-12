@@ -167,7 +167,17 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
             "gridx/core/model/cache/Async",
             "dojo/data/ItemFileReadStore",
             "dojo/store/JsonRest",
-            "dojo/data/ObjectStore"
+            "dojo/data/ObjectStore",
+            "dijit/layout/BorderContainer",
+            "dijit/layout/TabContainer",
+            "dojox/layout/ContentPane",
+            "dojox/widget/Toaster",
+            "dijit/layout/StackController",
+            "dijit/layout/StackContainer",
+            "dijit/layout/LayoutContainer",
+            "dijit/layout/ScrollingTabController",
+            "dijit/layout/TabController",
+            "dijit/Menu"
         ],function(ready){
             ready(function(){
                 i = 2;
