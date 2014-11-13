@@ -177,10 +177,11 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
             "dijit/layout/LayoutContainer",
             "dijit/layout/ScrollingTabController",
             "dijit/layout/TabController",
-            "dijit/Menu"
+            "dijit/Menu",
+            "gridx/allModules"
         ],function(ready){
             ready(function(){
-                i = 2;
+                i = 6;
             });
         });
     }

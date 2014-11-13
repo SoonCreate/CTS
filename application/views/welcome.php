@@ -23,9 +23,14 @@
              data-dojo-props="region: 'center',tabPosition:'left-h',tabStrip:true" class=" "><!--,persist:true-->
 
             <?php if(isset($modules)):?>
-            <?php  foreach($modules as $m) :?>
+            <?php  foreach($modules as $m) :
+                    $label = $m['module_desc'];
+                    if(env_language() == 'en-us'){
+                        $label = label($m['module_name']);
+                    }
+                    ?>
                     <div data-dojo-type="dojox/layout/ContentPane" id="<?= 'module_'. $m['module_id']?>"
-                         title="<?= label($m['module_name'])?>"
+                         title="<?= $label ?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
                          data-dojo-props=" href:'<?= $m['url']?>'"
                          onLoad = "refresh_env(<?= $m['module_id']?>);"

@@ -643,3 +643,10 @@ function in_array(stringToSearch, arrayToSearch) {
     }
     return false;
 }
+
+//获取选中月的第一天和最后一天
+function getFirstAndLastMonthDay( year, month){
+    var day = new Date(year,month,0);
+    var lastdate = year + '-' + month + '-' + day.getDate();//获取当月最后一天日期
+    return lastdate;
+}

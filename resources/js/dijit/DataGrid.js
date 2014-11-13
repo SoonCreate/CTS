@@ -51,6 +51,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                     if(oc["dataType"] == undefined){
                         oc["dataType"] = "string";
                     }
+                    //加入一列操作列
                     args.structure.push({
                         field : oc["field"],
                         name : oc["name"],
@@ -121,14 +122,13 @@ define(["dojo/_base/declare", "gridx/Grid",
                     args.cacheClass = Sync;
                 }
 
-                //先赋予空数据
-                var store = new ItemFileWriteStore({
-                    data : {"identifier":"id","items":[]}
-                });
-                args.store = store;
-
-                //加入一列操作列
-
+                if(args.store == undefined){
+                    //先赋予空数据
+                    var store = new ItemFileWriteStore({
+                        data : {"identifier":"id","items":[]}
+                    });
+                    args.store = store;
+                }
 
                 //默认属性
                 this.inherited(arguments);
@@ -136,23 +136,25 @@ define(["dojo/_base/declare", "gridx/Grid",
 
             postCreate : function () {
                 var grid = this;
-                //数据
-                if(this.asyncCache){
-                    //异步
-                    var restStore = new JsonRest({idProperty: 'id', target:this.url,sortParam: "sortBy"});
-                    grid.setStore(restStore);
-                    grid._setSelected();
-                }else{
-                    request.get(this.url,{handleAs : "json"}).then(function(data){
-                        var store = new ItemFileWriteStore({
-                            data : data
-                        });
-                        grid.setStore(store);
-                        if("structure" in data){
-                            grid.setColumns(data["structure"]);
-                        }
+                if(this.url){
+                    //数据
+                    if(this.asyncCache){
+                        //异步
+                        var restStore = new JsonRest({idProperty: 'id', target:this.url,sortParam: "sortBy"});
+                        grid.setStore(restStore);
                         grid._setSelected();
-                    });
+                    }else{
+                        request.get(this.url,{handleAs : "json"}).then(function(data){
+                            var store = new ItemFileWriteStore({
+                                data : data
+                            });
+                            grid.setStore(store);
+                            if("structure" in data){
+                                grid.setColumns(data["structure"]);
+                            }
+                            grid._setSelected();
+                        });
+                    }
                 }
                 this.inherited(arguments);
             },
