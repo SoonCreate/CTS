@@ -16,6 +16,8 @@
         </td>
     </tr>
 </table>
+<h3>Detail</h3>
+<div id="statusStatisticsDetailGrid"></div>
 
 <script type="text/javascript">
     require(["dojo/ready",
@@ -33,7 +35,7 @@
         ],
         function(ready,DataGrid,Chart2D,Theme,MoveSlice,Highlight,Tooltip,Legend,Markers,ItemFileWriteStore){
             //全局变量
-            var chart,store,chartData,legend;
+            var chart,store,chartData,legend,detailGrid;
 
             ready(function(){
 
@@ -47,9 +49,26 @@
                         asyncCache : false,
                         structure : structure,
                         store : store,
-                        id : "statusStatisticsGrid"
+                        id : "statusStatisticsGrid",
+                        selectRowMultiple : false,
+                        selectRowTriggerOnCell: true,
+                        style : "width : 420px;min-height:180px",
+                        autoHeight : true
                     },"statusStatisticsGrid");
+
+
+                    grid.connect(grid.select.row, 'onSelected', function(row){
+                        _refreshDetailData(row);
+                    });
+
                     grid.startup();
+
+                    detailGrid = new DataGrid({
+                        asyncCache : true,
+                        structure : detail_structure,
+                        id : "statusStatisticsDetailGrid",
+                        pageSize : 10
+                    },"statusStatisticsGrid");
 
                     // x and y coordinates used for easy understanding of where they should display
                     // Data represents website visits over a week period
@@ -86,6 +105,7 @@
                     chart.updateSeries("sc",chartData);
                     chart.render();
                     legend.refresh();
+                    detailGrid.clear();
                 });
             };
             _setData = function(data){
@@ -96,6 +116,9 @@
                 for(var i = 0;i < data["items"].length ; i++){
                     chartData.push({y : data["items"][i]["status_count"],text : data["items"][i]["text"],tooltip:data["items"][i]["percent"]  });
                 }
+            };
+            _refreshDetailData = function(){
+
             }
         });
 </script>

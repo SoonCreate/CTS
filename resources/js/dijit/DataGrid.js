@@ -1,4 +1,5 @@
 define(["dojo/_base/declare", "gridx/Grid",
+        "dojo/_base/lang",
         "gridx/core/model/cache/Sync",
         "dojo/data/ItemFileWriteStore",
         "gridx/core/model/cache/Async",
@@ -16,7 +17,7 @@ define(["dojo/_base/declare", "gridx/Grid",
         "gridx/modules/extendedSelect/Row",
         "dojo/dom-style"
     ],
-    function(declare,Gridx,Sync,ItemFileWriteStore,Async,JsonRest,ObjectStore,
+    function(declare,Gridx,lang,Sync,ItemFileWriteStore,Async,JsonRest,ObjectStore,
              request,Pagination,PaginationBar,ColumnResizer,VirtualVScroller,TouchVScroller,
              IndirectSelectColumn,
              selectSingleRow,
@@ -130,41 +131,27 @@ define(["dojo/_base/declare", "gridx/Grid",
                     args.store = store;
                 }
 
-                //默认属性
-                this.inherited(arguments);
-            },
+                args.selectRowTriggerOnCell =  true;
 
-            postCreate : function () {
-                var grid = this;
-                if(this.url){
-                    //数据
-                    if(this.asyncCache){
-                        //异步
-                        var restStore = new JsonRest({idProperty: 'id', target:this.url,sortParam: "sortBy"});
-                        grid.setStore(restStore);
-                        grid._setSelected();
-                    }else{
-                        request.get(this.url,{handleAs : "json"}).then(function(data){
-                            var store = new ItemFileWriteStore({
-                                data : data
-                            });
-                            grid.setStore(store);
-                            if("structure" in data){
-                                grid.setColumns(data["structure"]);
-                            }
-                            grid._setSelected();
-                        });
-                    }
-                }
+                //默认属性
                 this.inherited(arguments);
             },
 
             startup : function () {
                 this.inherited(arguments);
+                //设置分页
                 if(this.pageSize){
                     this.pagination.setPageSize(this.pageSize);
                 }
+                //刷新数据
+                if(this.url){
+                    this.refreshByUrl(this.url);
+                }
+                //绑定事件
+                this.connect(this.select.row, 'onSelected', lang.hitch(this, "onRowSelect"));
             },
+
+            onRowSelect : function(row){},
 
             //重新刷新gird，如果没有指定数据源则刷新本身
             refresh : function(store){
@@ -175,6 +162,40 @@ define(["dojo/_base/declare", "gridx/Grid",
                 //delete this.model.store;
                 this.model.setStore(store);
                 this.body.refresh();
+            },
+
+            refreshByUrl : function (url) {
+                var grid = this;
+                if(this.asyncCache){
+                    //异步
+                    var restStore = new JsonRest({idProperty: 'id', target:url,sortParam: "sortBy"});
+                    grid.refresh(restStore);
+                    grid._setSelected();
+                }else{
+                    request.get(url,{handleAs : "json"}).then(function(data){
+                        var store = new ItemFileWriteStore({
+                            data : data
+                        });
+                        grid.setStore(store);
+                        if("structure" in data){
+                            grid.setColumns(data["structure"]);
+                        }
+                        grid._setSelected();
+                    });
+                }
+            },
+
+            clear : function(){
+                var store;
+                if(this.asyncCache){
+                    //异步
+                    store = new JsonRest();
+                }else{
+                    store = new ItemFileWriteStore({
+                        data : {"identifier":"id","items":[]}
+                    });
+                }
+                this.refresh(store);
             },
 
             //鼠标漂浮

@@ -491,16 +491,14 @@ function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,targe
                 autoHeight : false,
                 style:"margin-left: 20px;min-width:400px",
                 targetDijit : target,
-                valueSegment : valueSegment
+                valueSegment : valueSegment,
+                onRowSelect : function(row){
+                    if(onSelect){
+                        onSelect(row,grid);
+                    }
+                }
             });
             grid.startup();
-
-            //console.info(grid);
-            if(onSelect){
-                grid.connect(grid.select.row, 'onSelected', function(row){
-                   onSelect(row,grid);
-                });
-            }
 
             //单选双击获取值
             if(!selectRowMultiple){

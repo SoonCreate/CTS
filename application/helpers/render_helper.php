@@ -330,7 +330,9 @@ function render_form_hidden($name,$value = null){
 function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$disabled = FALSE,$datetime = null){
     $echo = '';
     $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTextBox" trim="true"';
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTextBox" trim="true" data-dojo-props ="constraints: {
+            datePattern: \'y-M-d\'
+        }"';
     if($required){
         $echo = $echo. ' required ';
     }
@@ -351,9 +353,11 @@ function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$
     return $echo;
 }
 
-function render_form_timebox($name,$required = FALSE){
+function render_form_timebox($name,$required = FALSE,$h = '00',$m = '15',$s = '00'){
     $echo = '<input data-dojo-type="sckj/form/TimeTextBox" name="'.$name.'" id="'.$name.'" value="'._v($name).'" data-dojo-props ="constraints: {
-            timePattern: \'HH:mm:ss\'
+            timePattern: \'HH:mm:ss\',
+            clickableIncrement: \'T'.$h.':'.$m.':'.$s.'\',
+            visibleIncrement:\'T'.$h.':'.$m.':'.$s.'\'
         }" ';
     if($required){
         $echo = $echo. ' required ';

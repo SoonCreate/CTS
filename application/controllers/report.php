@@ -34,7 +34,7 @@ class Report extends CI_Controller {
         }
         $data["items"] = $rs;
         $data["identifier"] = 'status';
-        $data["text"] = 'text';
+        $data["label"] = 'text';
         $data["structure"] = build_structure('text','status_count','percent');
         echo json_encode($data);
     }
@@ -45,8 +45,23 @@ class Report extends CI_Controller {
         render($data);
     }
 
+    //耗时分析
     function time_statistics_data(){
-        //默认为
+        //默认为结构和空数据
+        $data["structure"] = build_structure('id','title','leader','manager','release_to_confirm','confirm_to_allocate','allocate_to_close','total_time');
+        $data["items"] = array();
+        $data["identifier"] = 'id';
+        if($_POST){
+
+        }else{
+
+        }
+        echo json_encode($data);
+    }
+
+    //效率分析
+    function efficiency_statistics(){
+        //评为效率差的订单，规定各个阶段的报警时长
     }
 
 }
