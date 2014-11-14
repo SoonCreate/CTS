@@ -583,12 +583,13 @@ function field_list($table){
 }
 
 //生成grid的结构
-function _structure($field,$label = null,$width = '140px',$data_type = 'string'){
+function _structure($field,$label = null,$width = '140px',$data_type = 'string',$sortable = true){
     if(is_null($label)){
         $label = label($field);
     }
     $s['field'] = $field;
     $s['name'] = $label;
+    $s['sortable'] = $sortable;
     //id特例
     if($field == 'id'){
         $s['width'] = '60px';

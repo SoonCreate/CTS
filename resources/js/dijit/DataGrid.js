@@ -14,6 +14,8 @@ define(["dojo/_base/declare", "gridx/Grid",
         //抬头全选按钮和onSelect无法兼得
         'gridx/modules/select/Row',
         "gridx/modules/extendedSelect/Row",
+        "gridx/modules/SingleSort",
+        "gridx/core/model/extensions/FormatSort",
         "dojo/dom-style"
     ],
     function(declare,Gridx,lang,Sync,ItemFileWriteStore,Async,JsonRest,
@@ -21,6 +23,8 @@ define(["dojo/_base/declare", "gridx/Grid",
              IndirectSelectColumn,
              selectSingleRow,
              selectMultipleRow,
+             SingleSort,
+             FormatSort,
              domStyle){
         return declare("",[Gridx],{
             constructor : function(args){
@@ -131,6 +135,11 @@ define(["dojo/_base/declare", "gridx/Grid",
                 }
 
                 args.selectRowTriggerOnCell =  true;
+
+                if(args.sort){
+                    args.modelExtensions = [FormatSort];
+                    args.modules.push(SingleSort);
+                }
 
                 //默认属性
                 this.inherited(arguments);

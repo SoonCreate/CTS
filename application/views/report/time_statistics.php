@@ -10,12 +10,7 @@
 </dl>
 <?= render_form_datetextbox('from_date',true,array(),false,render_form_timebox('from_time',true,'01','00')) ?>
 <?= render_form_datetextbox('to_date',true,array(),false,render_form_timebox('to_time',true,'01','00')) ?>
-<?= render_button('submit','_refreshTopData(0)','success')?>
-<?= render_button('release_to_confirm_top','_refreshTopData(1)')?>
-<?= render_button('confirm_to_allocate_top','_refreshTopData(2)')?>
-<?= render_button('allocate_to_done_top','_refreshTopData(3)')?>
-<?= render_button('done_to_close_top','_refreshTopData(4)')?>
-<?= render_form_hidden('top_type')?>
+<?= render_submit_button()?>
 <?= render_form_close() ?>
 
 <h3 id="gridTitle"></h3>
@@ -32,8 +27,9 @@
                     asyncCache : false,
                     pageSize : 10,
                     autoHeight : true,
+                    sort : true,
                     onRowSelect : function(row){
-                        goto(url('order/show?id='+row.id));
+//                        goto(url('order/show?id='+row.id));
                     }
                 },"timeStatisticsTopGrid");
                 topGrid.startup();
@@ -41,12 +37,6 @@
             });
             _refreshData = function(data){
                 topGrid.refreshByData(data);
-            };
-
-            //top数据
-            _refreshTopData = function (o) {
-                $dom.byId("top_type").value = o;
-                formSubmit($dom.byId("report_time_statistics_data"),null,null,_refreshData) ;
             };
 
             //快捷设置日期

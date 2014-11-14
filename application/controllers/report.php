@@ -59,25 +59,12 @@ class Report extends CI_Controller {
                 }else{
                     $this->load->model('order_model');
                     $this->load->model('order_log_model');
+                    $this->load->model('status_model');
                     $om = new Order_model();
                     $olm = new Order_log_model();
+                    $sm = new Status_model();
                     //输出数据
-//                    $start = 0;
-//                    $end = 0 ;
-//                    $total_count = 0;
-//                    $output = array();
-////        print_r($where);
-//                    if(isset($_SERVER['HTTP_RANGE'])){
-//                        $idx = stripos($_SERVER['HTTP_RANGE'],'-');
-//                        $start = intval(substr($_SERVER['HTTP_RANGE'],6,$idx-6));
-//                        $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
-//                    }
-
                     $order_type = v('order_type');
-                    $top_type = v('top_type');
-                    if(!$top_type){
-                        $top_type = 0;
-                    }
 
                     $this->db->where('creation_date >= ',$start_date);
                     $this->db->where('creation_date <= ',$end_date);
@@ -87,7 +74,7 @@ class Report extends CI_Controller {
                     $total_count = count($orders);
                     for($i=0;$i<$total_count;$i++){
                         //为了排除重复项
-                        $olm->order_by('creation_date','desc');
+                        $olm->order_by('creation_date');
                         $logs = $olm->find_all_by(array('order_id'=>$orders[$i]['id'],'log_type'=>'order_status'));
                         $total_time = 0;
                         $release_to_confirm = 0;
@@ -95,10 +82,10 @@ class Report extends CI_Controller {
                         $allocate_to_done = 0;
                         $done_to_close = 0;
                         $release_time = $orders[$i]['creation_date'];
-                        $confirm_time = 0;
-                        $allocate_time = 0;
-                        $done_time = 0;
-                        $close_time = 0;
+                        $confirm_time = time();
+                        $allocate_time = time();
+                        $done_time = time();
+                        $close_time = time();
                         if(empty($logs)){
                             //一直未被处理
                             $total_time = time() - $release_time;
@@ -132,38 +119,23 @@ class Report extends CI_Controller {
                         $orders[$i]['done_to_close'] = round($done_to_close/3600/24);
                         $orders[$i]['total_time'] = round($total_time/3600/24);
                         //排序用
-                        switch($top_type){
-                            case 0 :
-                                $sort[] = $orders[$i]['total_time'];
-                                break;
-                            case 1 :
-                                $sort[] = $orders[$i]['release_to_confirm'];
-                                break;
-                            case 2 :
-                                $sort[] = $orders[$i]['confirm_to_allocate'];
-                                break;
-                            case 3 :
-                                $sort[] = $orders[$i]['allocate_to_done'];
-                                break;
-                            case 4 :
-                                $sort[] = $orders[$i]['done_to_close'];
-                                break;
-                        }
+                        $sort[] = $orders[$i]['total_time'];
+
+                        $orders[$i]['status'] = $sm->get_label(default_value('status',$order_type),$orders[$i]['status']);
+                        $orders[$i]['manager'] = full_name($orders[$i]['manager_id']);
+                        $orders[$i]['leader'] = full_name($orders[$i]['leader_id']);
+                        $orders[$i]['creation_date'] = date('Y-m-d H:i:s',$orders[$i]['creation_date']);
+                        $orders[$i]['confirm_date'] = date('Y-m-d H:i:s',$confirm_time);
+                        $orders[$i]['allocate_date'] = date('Y-m-d H:i:s',$allocate_time);
+                        $orders[$i]['done_date'] = date('Y-m-d H:i:s',$done_time);
+                        $orders[$i]['close_date'] = date('Y-m-d H:i:s',$close_time);
 
                     }
                     array_multisort($sort,SORT_DESC,$orders);
-//                        for($y = $start;$y<$end;$y++){
-//                            array_push($output,$orders[$y]);
-//                        }
-                    export_to_itemStore($orders,'id','title');
-
-
-//                    if(isset($_SERVER['HTTP_RANGE'])){
-////                    header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.round($totalCnt/($end+1)));
-//                        header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.$total_count);
-//                    }
-
-
+                    $data["identifier"] = 'id';
+                    $data["label"] = 'title';
+                    $data['items'] = $orders;
+                    echo json_encode($data);
                 }
             }
 
@@ -180,6 +152,11 @@ class Report extends CI_Controller {
     //效率分析
     function efficiency_statistics(){
         //评为效率差的订单，规定各个阶段的报警时长
+    }
+
+    //单个用户的处理情况
+    function user_statistics(){
+        //平均用时
     }
 
 }
