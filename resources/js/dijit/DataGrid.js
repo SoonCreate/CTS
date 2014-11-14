@@ -175,12 +175,25 @@ define(["dojo/_base/declare", "gridx/Grid",
                         var store = new ItemFileWriteStore({
                             data : data
                         });
-                        grid.setStore(store);
                         if("structure" in data){
                             grid.setColumns(data["structure"]);
                         }
+                        grid.refresh(store);
                         grid._setSelected();
                     });
+                }
+            },
+            //只用于同步的情况
+            refreshByData : function(data){
+                if(!this.asyncCache){
+                    var store = new ItemFileWriteStore({
+                        data : data
+                    });
+                    if("structure" in data){
+                        this.setColumns(data["structure"]);
+                    }
+                    this.refresh(store);
+                    this._setSelected();
                 }
             },
 

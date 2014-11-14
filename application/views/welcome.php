@@ -30,6 +30,8 @@
                     }
                     ?>
                     <div data-dojo-type="dojox/layout/ContentPane" id="<?= 'module_'. $m['module_id']?>"
+                         mid = "<?= $m['module_id'] ?>"
+                         cm = ""
                          title="<?= $label ?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
                          data-dojo-props=" href:'<?= $m['url']?>'"

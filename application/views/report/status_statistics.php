@@ -37,8 +37,13 @@
         function(ready,DataGrid,Chart2D,Theme,MoveSlice,Highlight,Tooltip,Legend,Markers,ItemFileWriteStore,DijitTooltip){
             //全局变量
             var chart,store,chartData,legend,detailGrid,mag,highLight,toolTip;
+
             //fix tooltip 刷新仍然存在bug
-            _hideToolTip();
+            if(toolTip){
+                DijitTooltip.hide(toolTip.aroundRect);
+                toolTip.aroundRect = null;
+            }
+
             ready(function(){
 
                 $ajax.get(url("report/status_statistics_data"),{handleAs : "json"}).then(function(data){
@@ -146,10 +151,6 @@
                 for(var i = 0;i < data["items"].length ; i++){
                     chartData.push({y : data["items"][i]["status_count"],text : data["items"][i]["text"],tooltip:data["items"][i]["percent"]  });
                 }
-            };
-            _hideToolTip = function(){
-                DijitTooltip.hide(toolTip.aroundRect);
-                toolTip.aroundRect = null;
             };
         });
 </script>

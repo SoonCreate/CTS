@@ -320,9 +320,9 @@ function render_form_password($name,$required = FALSE,$attributes = array(),$dis
 
 function render_form_hidden($name,$value = null){
     if(is_null($value)){
-        return  '<input name="'.$name.'" type="hidden" value="'._v($name).'" />';
+        return  '<input id="'.$name.'" name="'.$name.'" type="hidden" value="'._v($name).'" />';
     }else{
-        return  '<input name="'.$name.'" type="hidden" value="'.$value.'" />';
+        return  '<input id="'.$name.'" name="'.$name.'" type="hidden" value="'.$value.'" />';
     }
 
 }
@@ -492,15 +492,15 @@ function render_form_header($title){
     return '<div class="row paneltitle"><h3>'.label($title).'</h3></div>';
 }
 
-function render_submit_button($label = ''){
+function render_submit_button($label = '',$class = 'success'){
     if(!$label){
         $label = label('submit');
     }
-    return '<button type="submit" data-dojo-type="sckj/form/Button" class="success">'.$label.'</button>';
+    return '<button type="submit" data-dojo-type="dijit/form/Button" class="'.$class.'" >'.$label.'</button>';
 }
 
 function render_button($name,$onclick = "",$class = 'normal'){
-    return '<button type="button" data-dojo-type="sckj/form/Button" class="'.$class.'" onclick="'.$onclick.'">'.label($name).'</button>';
+    return '<button type="button" data-dojo-type="dijit/form/Button" class="'.$class.'" onclick="'.$onclick.'">'.label($name).'</button>';
 }
 
 function render_button_group($buttons = array(),$has_submit = TRUE){

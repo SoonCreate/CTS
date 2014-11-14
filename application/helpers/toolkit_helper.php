@@ -339,6 +339,19 @@ function is_all_has_value($data,$keys){
     }
 }
 
+//检验必输项
+function validate_required(){
+    $fields = func_get_args();
+    $return = true;
+    foreach($fields as $field){
+        if(v($field) == ""){
+            add_validation_error($field,'');
+            $return = false;
+        }
+    }
+    return $return;
+}
+
 //判断是否为分类控制，再进行权限判断。默认为分类为all
 function check_order_auth($order_type,$order_status,$order_category = null,$user_id = null){
     global $CI;

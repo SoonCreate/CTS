@@ -355,6 +355,8 @@ function refresh_env(mid){
         //$(".preloader").style("display","none")
         //console.info($dijit.byId('mainTabContainer'));
         $env.mid = mid;
+        var wso = currentWso();
+        wso.cm = $env.cm;
         console.log("current module line id : "+ $env.cm +" mid : "+ $env.mid + " fid " + $env.fid );
     }
     //console.info(dijitObject('toolbar'));
@@ -579,7 +581,10 @@ function closeDialogAndRefresh(){
 
 //根据id fix之后返回控件对象
 function dijitObject(id){
-    return $dijit.byId(fixDijitId(id));
+    //return $dijit.byId(fixDijitId(id));
+    //fix 频繁切换后获取对象失败
+    var wso = currentWso();
+    return $dijit.byId(id + "_" + wso.cm + "_" + wso.mid);
 }
 
 //刷新未读消息数量:后续等待优化，采用ajax长轮询

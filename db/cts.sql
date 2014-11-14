@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 13, 2014 at 06:59 AM
+-- Generation Time: Nov 14, 2014 at 09:19 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -1602,8 +1602,8 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `Index_2` (`order_id`),
-  KEY `Index_3` (`change_hash`)
+  KEY `Index_3` (`change_hash`),
+  KEY `Index_2` (`order_id`,`log_type`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=439 ;
 
 --
@@ -2219,7 +2219,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=212 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=215 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -2390,7 +2390,10 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (208, 8, 58, 1415666833, 44, 1415666833, 44),
 (209, 8, 59, 1415753980, 44, 1415753980, 44),
 (210, 8, 60, 1415843261, 44, 1415843261, 44),
-(211, 8, 61, 1415853192, 44, 1415853192, 44);
+(211, 8, 61, 1415853192, 44, 1415853192, 44),
+(212, 8, 22, 1415950201, 44, 1415950201, 44),
+(213, 8, 36, 1415950201, 44, 1415950201, 44),
+(214, 8, 47, 1415950201, 44, 1415950201, 44);
 
 -- --------------------------------------------------------
 
@@ -2436,7 +2439,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
   `module_line_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`role_id`,`object_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=154 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=158 ;
 
 --
 -- Dumping data for table `ct_role_profiles`
@@ -2510,7 +2513,11 @@ INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `
 (150, 15, 4, 1413944620, 44, 1413944620, 44, NULL),
 (151, 15, 5, 1414131379, 44, 1414131379, 44, NULL),
 (152, 16, 5, 1414131442, 44, 1414131442, 44, NULL),
-(153, 17, 5, 1414131463, 44, 1414131463, 44, NULL);
+(153, 17, 5, 1414131463, 44, 1414131463, 44, NULL),
+(154, 8, 5, 1415950201, 44, 1415950201, 44, 47),
+(155, 8, 1, 1415950226, 44, 1415950226, 44, NULL),
+(156, 8, 2, 1415950258, 44, 1415950258, 44, NULL),
+(157, 8, 3, 1415951540, 44, 1415951540, 44, NULL);
 
 -- --------------------------------------------------------
 
@@ -2545,7 +2552,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`profile_id`,`object_line_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=265 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=274 ;
 
 --
 -- Dumping data for table `ct_role_profile_lines`
@@ -2691,7 +2698,16 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (261, 152, 14, 'all', 1414131442, 44, 1414131442, 44),
 (262, 153, 16, 'all', 1414131463, 44, 1414131463, 44),
 (263, 153, 15, 'employee', 1414131463, 44, 1414131474, 44),
-(264, 153, 14, 'all', 1414131463, 44, 1414131463, 44);
+(264, 153, 14, 'all', 1414131463, 44, 1414131463, 44),
+(265, 154, 16, 'all', 1415950202, 44, 1415950202, 44),
+(266, 154, 15, 'all', 1415950202, 44, 1415950202, 44),
+(267, 154, 14, 'all', 1415950202, 44, 1415950202, 44),
+(268, 155, 4, 'all', 1415950226, 44, 1415950226, 44),
+(269, 155, 5, 'all', 1415950226, 44, 1415950226, 44),
+(270, 155, 3, 'all', 1415950226, 44, 1415950236, 44),
+(271, 156, 13, 'all', 1415950258, 44, 1415950258, 44),
+(272, 156, 6, 'FALSE', 1415950258, 44, 1415950267, 44),
+(273, 157, 7, 'all', 1415951540, 44, 1415951540, 44);
 
 -- --------------------------------------------------------
 
@@ -3171,8 +3187,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('5e218daaf96d304342e1d77b06db4ee4', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1415858237, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"9887";s:3:"uid";s:2:"44";s:2:"cm";s:2:"61";s:3:"mid";s:1:"8";s:3:"fid";s:2:"36";}'),
-('d6c390e20463bdc498911c0b993e73d0', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1415853208, 'a:2:{s:9:"user_data";s:0:"";s:6:"output";a:1:{s:8:"location";s:10:"user/login";}}');
+('e3d27c87e186f1d3d58b55e05400441e', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1415952945, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"4635";s:3:"uid";s:2:"44";s:2:"cm";s:2:"61";s:3:"mid";s:1:"8";s:3:"fid";s:2:"36";}');
 
 -- --------------------------------------------------------
 
