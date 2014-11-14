@@ -64,6 +64,12 @@ class Order extends CI_Controller {
         echo json_encode($output);
     }
 
+    //投诉单结构
+    function order_structure(){
+        $om = new Order_model();
+        echo json_encode($om->grid_structure());
+    }
+
     //在创建之前做选择
     function choose_create(){
         $a = new Auth_model();

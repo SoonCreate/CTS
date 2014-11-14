@@ -31,12 +31,14 @@
             "dojox/charting/widget/Legend",
             //  We want to use Markers
             "dojox/charting/plot2d/Markers",
-            "dojo/data/ItemFileWriteStore"
+            "dojo/data/ItemFileWriteStore",
+            "dijit/Tooltip"
         ],
-        function(ready,DataGrid,Chart2D,Theme,MoveSlice,Highlight,Tooltip,Legend,Markers,ItemFileWriteStore){
+        function(ready,DataGrid,Chart2D,Theme,MoveSlice,Highlight,Tooltip,Legend,Markers,ItemFileWriteStore,DijitTooltip){
             //全局变量
-            var chart,store,chartData,legend,detailGrid;
-
+            var chart,store,chartData,legend,detailGrid,mag,highLight,toolTip;
+            //fix tooltip 刷新仍然存在bug
+            _hideToolTip();
             ready(function(){
 
                 $ajax.get(url("report/status_statistics_data"),{handleAs : "json"}).then(function(data){
@@ -44,22 +46,39 @@
                     _setData(data);
 
                     var structure = data["structure"];
+                    var detail_structure = data["detail_structure"];
 
                     var grid = new DataGrid({
                         asyncCache : false,
                         structure : structure,
                         store : store,
                         id : "statusStatisticsGrid",
-                        selectRowMultiple : false,
-                        selectRowTriggerOnCell: true,
                         style : "width : 420px;min-height:180px",
-                        autoHeight : true
+                        autoHeight : true,
+                        onRowSelect : function(row){
+                            mag.reset();
+                            var rowIndex = row.index();
+                            var evtObjects = chart.getPlot("default")._eventSeries["default"];
+                            //渲染效果
+                            for(var i=0;i<evtObjects.length;i++){
+                                var evt = evtObjects[i];
+                                if(i == rowIndex){
+                                    //模拟鼠标over
+                                    evt.type = "onmouseover";
+                                    toolTip.process(evt);
+                                }
+                                else{
+                                    //去除其他的鼠标out
+                                    evt.type = "onmouseout";
+//                                    toolTip.process({ type: "onmouseout"});
+                                }
+                                highLight.process(evt);
+                                mag.process(evt);
+                            }
+                            var rowData = row.rawData();
+                            detailGrid.refreshByUrl(url("order/order_data?order_type="+dijitObject("order_type").getValue()+"&status="+rowData["status"]));
+                        }
                     },"statusStatisticsGrid");
-
-
-                    grid.connect(grid.select.row, 'onSelected', function(row){
-                        _refreshDetailData(row);
-                    });
 
                     grid.startup();
 
@@ -67,8 +86,11 @@
                         asyncCache : true,
                         structure : detail_structure,
                         id : "statusStatisticsDetailGrid",
-                        pageSize : 10
-                    },"statusStatisticsGrid");
+                        pageSize : 10,
+                        url : url("order/order_data?order_type="+dijitObject("order_type").getValue()),
+                        autoHeight : true
+                    },"statusStatisticsDetailGrid");
+                    detailGrid.startup();
 
                     // x and y coordinates used for easy understanding of where they should display
                     // Data represents website visits over a week period
@@ -86,26 +108,34 @@
                         markers: true
                     });
 
-                    chart.addSeries("sc",chartData);
+                    chart.addSeries("default",chartData);
 
                     // Highlight!
-                    new Highlight(chart,"default");
-                    new Tooltip(chart, "default");
+                    highLight = new Highlight(chart,"default");
+                    toolTip = new Tooltip(chart, "default");
                     // Create the slice mover
-                    var mag = new MoveSlice(chart,"default");
+                    mag = new MoveSlice(chart,"default",{scale : 1.1,shift:5});
 
                     chart.render();
                     legend = new Legend({chart: chart},"legend_Pie");
+
+                    // Connect an event to the "default" plot
+//                    chart.connectToPlot("default", function(evt) {
+////                        Use console to output information about the event
+//                        console.info("Chart event on default plot!",evt);
+//                        console.info("Event type is: ",evt.type);
+//                        console.info("The element clicked was: ",evt.element);
+//                    });
                 });
             });
             _refreshData = function(object){
                 $ajax.get(url('report/status_statistics_data?order_type='+object.getValue()),{handleAs : "json"}).then(function(data){
                     _setData(data);
                     dijitObject("statusStatisticsGrid").refresh(store);
-                    chart.updateSeries("sc",chartData);
+                    chart.updateSeries("default",chartData);
                     chart.render();
                     legend.refresh();
-                    detailGrid.clear();
+                    detailGrid.refreshByUrl(url("order/order_data?order_type="+object.getValue()));
                 });
             };
             _setData = function(data){
@@ -117,8 +147,9 @@
                     chartData.push({y : data["items"][i]["status_count"],text : data["items"][i]["text"],tooltip:data["items"][i]["percent"]  });
                 }
             };
-            _refreshDetailData = function(){
-
-            }
+            _hideToolTip = function(){
+                DijitTooltip.hide(toolTip.aroundRect);
+                toolTip.aroundRect = null;
+            };
         });
 </script>

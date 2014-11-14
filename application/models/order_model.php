@@ -539,4 +539,18 @@ class Order_model extends MY_Model{
         where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_ORDERS'
         and COLUMN_NAME not in ('id','created_by','creation_date','last_updated_by','last_update_date')");
     }
+
+    function grid_structure(){
+        $structure = array();
+        array_push($structure,_structure('id',label('order_id'),'80px','number'));
+        array_push($structure,_structure('order_type',null,'120px'));
+        if(_config('category_control')){
+            array_push($structure,_structure('category',null,'120px'));
+        }
+        array_push($structure,_structure('title',null,'300px'));
+        array_push($structure,_structure('content',null,'160px'));
+        array_push($structure,_structure('status',null,'60px'));
+        array_push($structure,_structure('creation_date',null,'130px'));
+        return $structure;
+    }
 }

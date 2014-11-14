@@ -36,6 +36,7 @@ class Report extends CI_Controller {
         $data["identifier"] = 'status';
         $data["label"] = 'text';
         $data["structure"] = build_structure('text','status_count','percent');
+        $data["detail_structure"] = $om->grid_structure();
         echo json_encode($data);
     }
 
