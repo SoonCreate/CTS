@@ -11,7 +11,10 @@ class Sessions extends CI_Controller {
     }
 
     function index(){
+        render();
+    }
 
+    function data(){
         $this->load->model('user_model');
         $this->load->model('module_line_model');
         $this->load->model('module_model');
@@ -22,7 +25,7 @@ class Sessions extends CI_Controller {
         $mlm = new Module_line_model();
         $mm = new Module_model();
         $sessions = $ssm->find_all();
-        $data['objects'] = array();
+        $d = array();
 //        foreach($sessions as $s){
 //            print_r($this->session->_unserialize($s['user_data']));
 //        }
@@ -96,11 +99,15 @@ class Sessions extends CI_Controller {
                     }
                 }
 
-                array_push($data['objects'],$sessions[$i]);
+                array_push($d,$sessions[$i]);
 
             }//if
         }
-        render($data);
+        $data["structure"] = build_structure('username','full_name','platform','browser','mobile','ip_address','module_desc','function_desc');
+        $data["identifier"] = 'session_id';
+        $data["label"] = 'username';
+        $data['items'] = $d;
+        echo json_encode($data);
     }
 
     function kill(){

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2014 at 09:19 AM
+-- Generation Time: Nov 17, 2014 at 05:20 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -2745,7 +2745,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `ct_status_authobjects`
@@ -2761,7 +2761,12 @@ INSERT INTO `ct_status_authobjects` (`id`, `group_id`, `object_id`, `created_by`
 (11, 8, 1, 44, 1415234267, 1415234267, 44),
 (12, 9, 1, 44, 1415234329, 1415234329, 44),
 (13, 10, 1, 44, 1415234394, 1415234394, 44),
-(14, 11, 1, 44, 1415234472, 1415234472, 44);
+(14, 11, 1, 44, 1415234472, 1415234472, 44),
+(15, 12, 1, 44, 1416197326, 1416197326, 44),
+(16, 14, 1, 44, 1416197503, 1416197503, 44),
+(17, 13, 1, 44, 1416197531, 1416197531, 44),
+(18, 15, 1, 44, 1416197599, 1416197599, 44),
+(19, 16, 1, 44, 1416197656, 1416197656, 44);
 
 -- --------------------------------------------------------
 
@@ -2795,7 +2800,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=55 ;
 
 --
 -- Dumping data for table `ct_status_authobj_lines`
@@ -2831,7 +2836,22 @@ INSERT INTO `ct_status_authobj_lines` (`id`, `status_obj_id`, `authobj_line_id`,
 (36, 13, 3, 'customer', 44, 1415234394, 1415234394, 44),
 (37, 14, 4, 'reopen', 44, 1415234472, 1415234486, 44),
 (38, 14, 5, 'all', 44, 1415234472, 1415234472, 44),
-(39, 14, 3, 'customer', 44, 1415234472, 1415234472, 44);
+(39, 14, 3, 'customer', 44, 1415234472, 1415234472, 44),
+(40, 15, 4, 'confirmed', 44, 1416197326, 1416197340, 44),
+(41, 15, 5, 'all', 44, 1416197326, 1416197326, 44),
+(42, 15, 3, 'employee', 44, 1416197326, 1416197347, 44),
+(43, 16, 4, 'done', 44, 1416197503, 1416197513, 44),
+(44, 16, 5, 'all', 44, 1416197503, 1416197503, 44),
+(45, 16, 3, 'employee', 44, 1416197503, 1416197521, 44),
+(46, 17, 4, 'allocated', 44, 1416197531, 1416197537, 44),
+(47, 17, 5, 'all', 44, 1416197531, 1416197531, 44),
+(48, 17, 3, 'employee', 44, 1416197531, 1416197547, 44),
+(49, 18, 4, 'closed', 44, 1416197599, 1416197610, 44),
+(50, 18, 5, 'all', 44, 1416197599, 1416197599, 44),
+(51, 18, 3, 'employee', 44, 1416197599, 1416197617, 44),
+(52, 19, 4, 'reopen', 44, 1416197656, 1416197665, 44),
+(53, 19, 5, 'all', 44, 1416197656, 1416197656, 44),
+(54, 19, 3, 'employee', 44, 1416197656, 1416197671, 44);
 
 -- --------------------------------------------------------
 
@@ -2872,7 +2892,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `last_updated_by` int(11) DEFAULT NULL,
   `group_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `ct_status_conditions`
@@ -2892,7 +2912,14 @@ INSERT INTO `ct_status_conditions` (`id`, `and_or`, `field_name`, `operation`, `
 (14, 'AND', 'leader_id', 'NE', 'null', 44, 1415234250, 1415234250, 44, 8),
 (15, 'AND', 'status', 'EQ', 'allocated', 44, 1415234313, 1415234313, 44, 9),
 (16, 'AND', 'status', 'EQ', 'done', 44, 1415234379, 1415234379, 44, 10),
-(17, 'AND', 'status', 'EQ', 'closed', 44, 1415234451, 1415234451, 44, 11);
+(17, 'AND', 'status', 'EQ', 'closed', 44, 1415234451, 1415234451, 44, 11),
+(18, 'AND', 'status', 'EQ', 'released', 44, 1416197256, 1416197256, 44, 12),
+(19, 'AND', 'manager_id', 'NE', 'null', 44, 1416197399, 1416197399, 44, 13),
+(20, 'AND', 'leader_id', 'NE', 'null', 44, 1416197417, 1416197417, 44, 13),
+(21, 'AND', 'status', 'EQ', 'confirmed', 44, 1416197431, 1416197431, 44, 13),
+(22, 'AND', 'status', 'EQ', 'allocated', 44, 1416197491, 1416197491, 44, 14),
+(23, 'AND', 'status', 'EQ', 'done', 44, 1416197587, 1416197587, 44, 15),
+(24, 'AND', 'status', 'EQ', 'closed', 44, 1416197649, 1416197649, 44, 16);
 
 -- --------------------------------------------------------
 
@@ -2928,7 +2955,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_condition_groups` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流条件组' AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流条件组' AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `ct_status_condition_groups`
@@ -2944,7 +2971,12 @@ INSERT INTO `ct_status_condition_groups` (`id`, `group_name`, `status_line_id`, 
 (8, '默认条件组', 15, 44, 1415234201, 1415234201, 44),
 (9, '默认条件组', 16, 44, 1415234302, 1415234302, 44),
 (10, '默认条件组', 17, 44, 1415234363, 1415234363, 44),
-(11, '默认条件组', 18, 44, 1415234439, 1415234439, 44);
+(11, '默认条件组', 18, 44, 1415234439, 1415234439, 44),
+(12, '默认条件组', 20, 44, 1416197242, 1416197242, 44),
+(13, '默认条件组', 21, 44, 1416197366, 1416197366, 44),
+(14, '默认条件组', 22, 44, 1416197480, 1416197480, 44),
+(15, '默认条件组', 23, 44, 1416197576, 1416197576, 44),
+(16, '默认条件组', 24, 44, 1416197637, 1416197637, 44);
 
 -- --------------------------------------------------------
 
@@ -2963,7 +2995,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `ct_status_functions`
@@ -2985,7 +3017,15 @@ INSERT INTO `ct_status_functions` (`id`, `status_line_id`, `function_id`, `sort`
 (18, 15, 29, 0, '计划完成日期', 44, 1415234657, 1415234657, 44),
 (19, 16, 31, 0, '投诉单关闭', 44, 1415234684, 1415234684, 44),
 (20, 11, 32, 0, '重新打开', 44, 1415234798, 1415234798, 44),
-(21, 17, 32, 0, '重新打开', 44, 1415234822, 1415234822, 44);
+(21, 17, 32, 0, '重新打开', 44, 1415234822, 1415234822, 44),
+(22, 19, 26, 0, '问题已确认', 44, 1416197706, 1416197706, 44),
+(23, 20, 27, 0, '选择责任人', 44, 1416197738, 1416197738, 44),
+(24, 20, 28, 1, '选择处理人', 44, 1416197749, 1416197749, 44),
+(25, 21, 28, 0, '重新指定处理人', 44, 1416197771, 1416197771, 44),
+(26, 21, 30, 6, '问题已解决', 44, 1416197781, 1416197791, 44),
+(27, 21, 29, 0, '计划完成日期', 44, 1416197806, 1416197806, 44),
+(28, 22, 31, 0, '投诉单关闭', 44, 1416197826, 1416197826, 44),
+(29, 23, 32, 0, '重新打开', 44, 1416197845, 1416197845, 44);
 
 -- --------------------------------------------------------
 
@@ -3187,7 +3227,9 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('e3d27c87e186f1d3d58b55e05400441e', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1415952945, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"4635";s:3:"uid";s:2:"44";s:2:"cm";s:2:"61";s:3:"mid";s:1:"8";s:3:"fid";s:2:"36";}');
+('7e64b56be81fccb2f0b17a0163035274', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416194803, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"3175";s:3:"uid";s:2:"44";s:2:"cm";s:2:"48";s:3:"mid";s:1:"3";s:3:"fid";s:2:"23";}'),
+('d45262c8a973d7f3eb785ae62d32912f', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416197169, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"0410";s:3:"uid";s:2:"44";s:2:"cm";s:2:"48";s:3:"mid";s:1:"3";s:3:"fid";s:2:"23";}'),
+('fbca80cb8b4339ad641a08b554c3bdff', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416197811, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"7111";s:3:"uid";s:2:"44";s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}');
 
 -- --------------------------------------------------------
 

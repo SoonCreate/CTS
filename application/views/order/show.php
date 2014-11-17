@@ -5,26 +5,26 @@
         <?= render_order_button_group($id,$order_type,$status)?>
 
         <?php if(check_function_auth('order_meeting','index')){ ?>
-            <?= render_link_button(array('order_meeting','index',array('order_id'=>$id)),'会议记录') ?>
+            <?= render_link_button(array('order_meeting','index',array('order_id'=>$id)),label('order_meeting')) ?>
         <?php } ?>
     </div>
     <hr/>
-    <dl class="row dl-horizontal"><dt>投诉单类型</dt><dd><?= get_label('vl_order_type',$order_type); ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('order_type')?></dt><dd><?= get_label('vl_order_type',$order_type); ?></dd></dl>
     <?php if(_config('category_control')) :?>
-        <dl class="row dl-horizontal"><dt>分类</dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
+        <dl class="row dl-horizontal"><dt><?= label('category')?></dt><dd><?= get_label('vl_order_category',$category,$order_type) ?></dd></dl>
     <?php endif;?>
     <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
-        <dl class="row dl-horizontal"><dt>责任人</dt><dd><?= full_name($leader_id) ?></dd></dl>
-        <dl class="row dl-horizontal"><dt>处理人</dt><dd><?= full_name($manager_id) ?></dd></dl>
-        <dl class="row dl-horizontal"><dt>计划完成日期</dt><dd><?= $plan_complete_date ?></dd></dl>
+        <dl class="row dl-horizontal"><dt><?= label('leader')?></dt><dd><?= full_name($leader_id) ?></dd></dl>
+        <dl class="row dl-horizontal"><dt><?= label('manager')?></dt><dd><?= full_name($manager_id) ?></dd></dl>
+        <dl class="row dl-horizontal"><dt><?= label('plan_complete_date')?></dt><dd><?= $plan_complete_date ?></dd></dl>
     <?php }?>
-    <dl class="row dl-horizontal"><dt>状态</dt><dd><?= $status_desc ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>严重性</dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>发生频率</dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>提交时间</dt><dd><?= $creation_date ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('status')?></dt><dd><?= $status_desc ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('severity')?></dt><dd><?= get_label('vl_severity',$severity) ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('frequency')?></dt><dd><?= get_label('vl_frequency',$frequency) ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('submit_date')?></dt><dd><?= $creation_date ?></dd></dl>
     <hr/>
-    <dl class="row dl-horizontal"><dt>标题</dt><dd><?= $title ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>内容</dt>
+    <dl class="row dl-horizontal"><dt><?= label('title')?></dt><dd><?= $title ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('content')?></dt>
         <dd class="contentContainer">
             <ul class="commentList">
             <?php foreach($contents as $c):?>
@@ -34,7 +34,8 @@
                     <div class="comment-main">
                 <?php
                 echo '<header class="comment-header"><div class="comment-meta"><a class="comment-author" href="#">
-'.full_name($c['created_by'],!check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .'</a> 评论于 <time>'.$c['creation_date'].'</time></div></header><div class="comment-body"><p>'.$c['content'].'</p></div>';
+                '.full_name($c['created_by'],!check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) .'</a> '.
+                    label('comment_at').' <time>'.$c['creation_date'].'</time></div></header><div class="comment-body"><p>'.$c['content'].'</p></div>';
 
                 ?>
                 </div>
@@ -62,9 +63,9 @@
 
     <dl class="row dl-horizontal"><dt>
             <?php if(!is_order_locked($status)){?>
-                <a href="#" onclick="_orderUploadDialog()">上传附件</a>
+                <a href="#" onclick="_orderUploadDialog()"><?= label('upload_file')?></a>
             <?php }?>
-            附件</dt>
+            <?= label('attachment')?></dt>
         <dd>
             <?php foreach($addfiles as $f):
                 //不同文件类型图标不同doc用word，xls用excel，以此类推，如果未知文件类型，用通用图标
@@ -75,74 +76,35 @@
         </dd>
     </dl>
     <hr/>
-    <dl class="row dl-horizontal"><dt>本次投诉联系人</dt><dd><?= $contact ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>手机号码</dt><dd><?= $mobile_telephone ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>公司电话</dt><dd><?= $phone_number ?></dd></dl>
-    <dl class="row dl-horizontal"><dt>公司名称</dt><dd><?= $full_name?></dd></dl>
-    <dl class="row dl-horizontal"><dt>公司地址</dt><dd><?= $address ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('contact') ?></dt><dd><?= $contact ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('mobile_telephone') ?></dt><dd><?= $mobile_telephone ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('phone_number') ?></dt><dd><?= $phone_number ?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('full_name') ?></dt><dd><?= $full_name?></dd></dl>
+    <dl class="row dl-horizontal"><dt><?= label('address') ?></dt><dd><?= $address ?></dd></dl>
     <hr/>
 </div>
 
 <?= render_form_header(label('order_logs')) ?>
 <div id="orderShowLogsGrid"></div>
 <script type="text/javascript">
-    require(["dojo/ready",
-            "sckj/Gridx",
-            "gridx/core/model/cache/Sync",
-            "dojo/data/ItemFileReadStore",
-            "dojo/request",
-            "gridx/modules/Pagination",
-            "gridx/modules/pagination/PaginationBar",
-            "gridx/modules/ColumnResizer",
-            "gridx/modules/VirtualVScroller",
-            "gridx/modules/TouchVScroller"  //IPAD支持
-        ],
-        function(ready,Grid,SyncCache,ItemFileReadStore,request,
-                 Pagination,
-                 PaginationBar,
-                 ColumnResizer,
-                 VirtualVScroller,
-                 TouchVScroller){
-            ready(function(){
 
-                request.get(url('order/log_data?id=<?=$id?>'),{handleAs : "json"}).then(function(data){
-                    var store = new ItemFileReadStore({
-                        data : data
-                    });
-                    var grid = new Grid({
-                        cacheClass : SyncCache,
-                        id : "orderShowLogsGrid",
-                        store: store ,
-                        structure: [
-                            {name : "日志类型",field : "description",width : "120px",dataType :"string"},
-                            {name : "内容",field : "content",width : "300px",dataType :"string"},
-                            {name : "原因",field : "reason",width : "240px",dataType :"string"},
-                            <?php if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))){?>
-                                {name : "操作人",field : "created_by",width : "120px",dataType :"string"},
-                            <?php }?>
-                            {name : "操作时间",field : "creation_date",width : "140px",dataType :"string" }
+    require(["dojo/ready","sckj/DataGrid"], function(ready,Grid){
+        ready(function(){
+            var grid = new Grid({
+                asyncCache : false,
+                url : url('order/log_data?id=<?=$id?>'),
+                pageSize : 10,
+                autoWidth : false,
+                autoHeight : true,
+                style:"margin-left: 20px;"
 
-                        ],
-                        modules : [
-                            Pagination,
-                            PaginationBar,
-                            ColumnResizer,
-                            VirtualVScroller,
-                            TouchVScroller
-                        ],
-//                },
-                        autoWidth : false,
-                        autoHeight : true,
-                        style:"margin-left: 20px;"
+            },"orderShowLogsGrid");
 
-                    },"orderShowLogsGrid");
+            grid.startup();
 
-                    grid.startup();
-//                    grid.pagination.setPageSize(pageSize);
-
-                });
-                });
         });
+    });
+
 
 
     function addContent(data){

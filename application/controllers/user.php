@@ -349,6 +349,14 @@ class User extends CI_Controller {
         echo json_encode($output);
     }
 
+    function notice_structure(){
+        $structure = array();
+        array_push($structure,_blank_structure());
+        array_push($structure,_structure('title',null,'300px'));
+        array_push($structure,_structure('creation_date',null,'160px'));
+        echo json_encode($structure);
+    }
+
     function notice_show(){
         $this->load->model('notice_model');
         $nm = new Notice_model();

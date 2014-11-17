@@ -602,6 +602,13 @@ function _structure($field,$label = null,$width = '140px',$data_type = 'string',
     return $s;
 }
 
+function _blank_structure(){
+    $s['field'] = '';
+    $s['name'] = '';
+    $s['width'] = '50px';
+    return $s;
+}
+
 function build_structure(){
     $fields = func_get_args();
     $structure = array();

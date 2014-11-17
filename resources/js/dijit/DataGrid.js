@@ -16,16 +16,13 @@ define(["dojo/_base/declare", "gridx/Grid",
         "gridx/modules/extendedSelect/Row",
         "gridx/modules/SingleSort",
         "gridx/core/model/extensions/FormatSort",
-        "dojo/dom-style"
+        "dojo/dom-style",
+        "dojo/i18n!gridx/nls/gridx"
     ],
     function(declare,Gridx,lang,Sync,ItemFileWriteStore,Async,JsonRest,
              request,Pagination,PaginationBar,ColumnResizer,VirtualVScroller,TouchVScroller,
-             IndirectSelectColumn,
-             selectSingleRow,
-             selectMultipleRow,
-             SingleSort,
-             FormatSort,
-             domStyle){
+             IndirectSelectColumn, selectSingleRow, selectMultipleRow, SingleSort, FormatSort,
+             domStyle, res){
         return declare("",[Gridx],{
             constructor : function(args){
                 /*
@@ -43,48 +40,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                  },
                 *
                 * */
-                if(args.structure && args.operationColumn){
-                    var oc = args.operationColumn;
-                    //默认值
-                    if(oc["name"] == undefined){
-                        oc["name"] = "操作";
-                    }
-                    if(oc["width"] == undefined){
-                        oc["width"] = "300px";
-                    }
-                    if(oc["dataType"] == undefined){
-                        oc["dataType"] = "string";
-                    }
-                    //加入一列操作列
-                    args.structure.push({
-                        field : oc["field"],
-                        name : oc["name"],
-                        width : oc["width"],
-                        dataType : oc["dataType"],
-                        style : "opacity:0",
-                        decorator : function(cellData, rowId, rowIndex){
-                            var value = "";
-                            var data = oc["data"];
-                            for(var i=0;i<data.length;i++){
-                                if(data[i]["param"]  == undefined){
-                                    data[i]["param"] = "id";
-                                }
-                                if(data[i]["target"] == undefined){
-                                    data[i]["target"] = null;
-                                }
-                                if(data[i]["noRender"] == undefined){
-                                    data[i]["noRender"] = false;
-                                }
-                                if(i != 0){
-                                    value = value + "&nbsp;|&nbsp;";
-                                }
-                                value = value + '<a href="#" onclick="goto(\'' + url(data[i]["url"] + '?'+ data[i]["param"] +'='+rowId) + '\','+
-                                data[i]["target"] +','+ data[i]["noRender"] +')">' + data[i]["label"] + '</a>';
-                            }
-                            return value;
-                        }
-                    });
-                }
+
 
                 //默认属性
                 if(args.name != undefined || args.id != undefined ){
@@ -133,6 +89,8 @@ define(["dojo/_base/declare", "gridx/Grid",
                     });
                     args.store = store;
                 }
+                //先标注加载，如果没有数据则显示为空
+                args.bodyEmptyInfo = res.loadingInfo;
 
                 args.selectRowTriggerOnCell =  true;
 
@@ -147,6 +105,7 @@ define(["dojo/_base/declare", "gridx/Grid",
 
             startup : function () {
                 this.inherited(arguments);
+
                 //设置分页
                 if(this.pageSize){
                     this.pagination.setPageSize(this.pageSize);
@@ -157,12 +116,64 @@ define(["dojo/_base/declare", "gridx/Grid",
                 }
                 //绑定事件
                 this.connect(this.select.row, 'onSelected', lang.hitch(this, "onRowSelect"));
+                this.connect(this.body, 'onEmpty', function () {
+                    console.info("onEmpty");
+                });
             },
 
             onRowSelect : function(row){},
 
+            //构造操作列
+            pushOperationColumn : function(structure){
+                if(structure && this.operationColumn){
+                    var oc = this.operationColumn;
+                    //默认值
+                    if(oc["name"] == undefined){
+                        oc["name"] = "操作";
+                    }
+                    if(oc["width"] == undefined){
+                        oc["width"] = "300px";
+                    }
+                    if(oc["dataType"] == undefined){
+                        oc["dataType"] = "string";
+                    }
+                    //加入一列操作列
+                    structure.push({
+                        field : oc["field"],
+                        name : oc["name"],
+                        width : oc["width"],
+                        dataType : oc["dataType"],
+                        style : "opacity:0",
+                        decorator : function(cellData, rowId, rowIndex){
+                            var value = "";
+                            var data = oc["data"];
+                            for(var i=0;i<data.length;i++){
+                                if(data[i]["param"]  == undefined){
+                                    data[i]["param"] = "id";
+                                }
+                                if(data[i]["target"] == undefined){
+                                    data[i]["target"] = null;
+                                }
+                                if(data[i]["noRender"] == undefined){
+                                    data[i]["noRender"] = false;
+                                }
+                                if(i != 0){
+                                    value = value + "&nbsp;|&nbsp;";
+                                }
+                                value = value + '<a href="#" onclick="goto(\'' + url(data[i]["url"] + '?'+ data[i]["param"] +'='+rowId) + '\','+
+                                data[i]["target"] +','+ data[i]["noRender"] +')">' + data[i]["label"] + '</a>';
+                            }
+                            return value;
+                        }
+                    });
+                }
+                return structure;
+            },
+
             //重新刷新gird，如果没有指定数据源则刷新本身
             refresh : function(store){
+                //重设标识，emptyInfo是在renderRows方法中被调用，refresh则会调用renderRows
+                this.body.emptyInfo = res.emptyInfo;
                 if(!store){
                     store = this.store;
                 }
@@ -170,25 +181,18 @@ define(["dojo/_base/declare", "gridx/Grid",
                 //delete this.model.store;
                 this.model.setStore(store);
                 this.body.refresh();
+                this._setSelected();
             },
 
             refreshByUrl : function (url) {
-                var grid = this;
                 if(this.asyncCache){
                     //异步
                     var restStore = new JsonRest({idProperty: 'id', target:url,sortParam: "sortBy"});
-                    grid.refresh(restStore);
-                    grid._setSelected();
+                    this.refresh(restStore);
                 }else{
+                    var grid = this;
                     request.get(url,{handleAs : "json"}).then(function(data){
-                        var store = new ItemFileWriteStore({
-                            data : data
-                        });
-                        if("structure" in data){
-                            grid.setColumns(data["structure"]);
-                        }
-                        grid.refresh(store);
-                        grid._setSelected();
+                        grid.refreshByData(data);
                     });
                 }
             },
@@ -199,10 +203,9 @@ define(["dojo/_base/declare", "gridx/Grid",
                         data : data
                     });
                     if("structure" in data){
-                        this.setColumns(data["structure"]);
+                        this.setColumns(this.pushOperationColumn(data["structure"]));
                     }
                     this.refresh(store);
-                    this._setSelected();
                 }
             },
 

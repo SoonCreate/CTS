@@ -202,7 +202,19 @@ class Order extends CI_Controller {
 
     function log_data(){
         $om = new Order_model();
-        export_to_itemStore($om->logs(v('id')),'id','log_type',check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) ;
+        $rows = _format($om->logs(v('id')),check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE')));
+        $data["identifier"] = 'id';
+        $data["label"] = 'log_type';
+        $data['items'] = $rows;
+        $data['structure'] = array();
+        array_push($data['structure'],_structure('description',label('log_type'),'120px'));
+        array_push($data['structure'],_structure('content',null,'300px'));
+        array_push($data['structure'],_structure('reason',null,'240px'));
+        if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) {
+            array_push($data['structure'], _structure('created_by', label('operator'), '120px'));
+        }
+        array_push($data['structure'],_structure('creation_date',label('operation_time'),'140px'));
+        echo json_encode($data);
     }
 
     //如果日志类型需要原因，此页面用于补充
