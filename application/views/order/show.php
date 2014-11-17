@@ -1,5 +1,4 @@
-<?= render_form_header(label('order_number').'  '.$id ) ?>
-
+<div class="row paneltitle"><h3><?= label('order_number').'  '.$id  ?></h3></div>
 <div class="container-fluid userd">
     <div class="row">
         <?= render_order_button_group($id,$order_type,$status)?>
@@ -84,7 +83,7 @@
     <hr/>
 </div>
 
-<?= render_form_header(label('order_logs')) ?>
+<?= render_form_header('order_logs') ?>
 <div id="orderShowLogsGrid"></div>
 <script type="text/javascript">
 

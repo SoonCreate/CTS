@@ -110,15 +110,16 @@ define(["dojo/_base/declare", "gridx/Grid",
                 if(this.pageSize){
                     this.pagination.setPageSize(this.pageSize);
                 }
-                //刷新数据
+
+                //刷新列
+                this.setColumns(this.pushOperationColumn(this.structure));
+
+                //刷新数据和结构
                 if(this.url){
                     this.refreshByUrl(this.url);
                 }
                 //绑定事件
                 this.connect(this.select.row, 'onSelected', lang.hitch(this, "onRowSelect"));
-                this.connect(this.body, 'onEmpty', function () {
-                    console.info("onEmpty");
-                });
             },
 
             onRowSelect : function(row){},
