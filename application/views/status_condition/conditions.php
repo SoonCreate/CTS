@@ -1,11 +1,11 @@
 <table class="table">
     <thead>
-        <th>与或关系</th>
-        <th>表</th>
-        <th>字段</th>
-        <th>运算公式</th>
-        <th>目标值</th>
-        <th>操作</th>
+        <th><?= label('and_or') ?></th>
+        <th><?= label('table_name') ?></th>
+        <th><?= label('field_name') ?></th>
+        <th><?= label('operational_formula') ?></th>
+        <th><?= label('target_value') ?></th>
+        <th><?= label('operation') ?></th>
     </thead>
     <?php foreach($objects as $o):?>
     <tr>

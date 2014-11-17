@@ -1,10 +1,10 @@
 <table class="table">
     <thead>
-        <th>功能名</th>
-        <th>描述</th>
-        <th>按钮标签</th>
-        <th>排序码</th>
-        <th>操作</th>
+        <th><?= label('function_name') ?></th>
+        <th><?= label('description') ?></th>
+        <th><?= label('label') ?></th>
+        <th><?= label('sort') ?></th>
+        <th><?= label('operation') ?></th>
     </thead>
     <?php foreach($objects as $o):?>
     <tr>

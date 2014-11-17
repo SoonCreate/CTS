@@ -1,14 +1,12 @@
 <table class="table">
     <thead>
-        <th>module_id</th>
-        <th>模块名</th>
-        <th>描述</th>
-        <th>排序码</th>
-        <th>操作</th>
+        <th><?= label('module_name')?></th>
+        <th><?= label('description')?></th>
+        <th><?= label('sort')?></th>
+        <th><?= label('operation')?></th>
     </thead>
     <?php foreach($modules as $o):?>
     <tr>
-        <td><?= $o['id']?></td>
         <td><?= $o['module_name']?></td>
         <td><?= $o['description']?></td>
         <td><?= $o['sort']?></td>

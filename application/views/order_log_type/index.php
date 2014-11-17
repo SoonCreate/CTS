@@ -1,20 +1,20 @@
 <table class="table">
     <thead>
-    <th>类型</th>
-    <th>描述</th>
-    <th>标题格式</th>
-    <th>内容格式</th>
-    <th>是否需要填写原因</th>
-    <th>对应字段</th>
-    <th>数据库操作</th>
-    <th>操作</th>
+    <th><?= label('log_type') ?></th>
+    <th><?= label('description') ?></th>
+    <th><?= label('title') ?></th>
+<!--    <th>--><?//= label('content') ?><!--</th>-->
+    <th><?= label('need_reason_flag') ?></th>
+    <th><?= label('field_name') ?></th>
+    <th><?= label('dll_type') ?></th>
+    <th><?= label('operation') ?></th>
     </thead>
     <?php foreach($objects as $o):?>
         <tr>
             <td><?= $o['log_type']?></td>
             <td><?= $o['description']?></td>
             <td><?= word_truncate($o['title'])?></td>
-            <td><?= word_truncate($o['content'])?></td>
+<!--            <td>--><?//= word_truncate($o['content'])?><!--</td>-->
             <td><?= $o['need_reason_flag']?></td>
             <td><?= $o['field_name']?></td>
             <td><?= $o['dll_type']?></td>
@@ -30,5 +30,5 @@
     <?php endforeach;?>
 </table>
 <script type="text/javascript">
-    toolBarAddLinkButton("<?= label('order_log_type_create') ?>",url('order_log_type/create'));
+    toolBarAddLinkButton("<?= label('log_type_create') ?>",url('order_log_type/create'));
 </script>

@@ -1,16 +1,16 @@
 <table class="table">
     <thead>
-        <th>步骤</th>
-        <th>状态</th>
-        <th>状态描述</th>
-        <th>下一步允许范围</th>
-        <th>默认下一步骤</th>
-        <th>默认撤回步骤</th>
-        <th>初始步骤标识</th>
-        <th>最终步骤标识</th>
-        <th>自动结束标识</th>
-        <th>是否失效</th>
-        <th>操作</th>
+        <th><?= label('step') ?></th>
+        <th><?= label('step_value')?></th>
+        <th><?= label('description')?></th>
+        <th><?= label('next_steps')?></th>
+        <th><?= label('default_next_step')?></th>
+        <th><?= label('callback_step')?></th>
+        <th><?= label('initial_flag')?></th>
+        <th><?= label('last_step_flag')?></th>
+        <th><?= label('auto_ending_flag')?></th>
+        <th><?= label('auto_ending_flag')?></th>
+        <th><?= label('inactive_flag')?></th>
     </thead>
     <?php foreach($items as $o):?>
     <tr>

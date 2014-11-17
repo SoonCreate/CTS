@@ -48,13 +48,13 @@
                         {name : "<?= label('operation')?>",field : "inactive_flag",width : "300px",dataType :"string",
                             decorator: function(cellData, rowId, rowIndex){
                                 var value =  '<a href="#" onclick="goto(\'' + url('user/admin_edit?id='+rowId) + '\')"><?= label("edit")?></a>'+
-                                '|<a href="#" onclick="_userIndexRefreshData(\'' + url('user/initial_password?id='+rowId) + '\')"><?= label("initial_password")?></a>';
+                                '&nbsp;|&nbsp;<a href="#" onclick="_userIndexRefreshData(\'' + url('user/initial_password?id='+rowId) + '\')"><?= label("initial_password")?></a>';
                                 if(cellData == 1){
-                                    value = value + '|<a href="#" onclick="_userIndexRefreshData(\'' + url('user/change_status?id='+rowId) + '\')"><?= label("active")?></a>';
+                                    value = value + '&nbsp;|&nbsp;<a href="#" onclick="_userIndexRefreshData(\'' + url('user/change_status?id='+rowId) + '\')"><?= label("active")?></a>';
                                 }else{
-                                    value = value + '|<a href="#" onclick="_userIndexRefreshData(\'' + url('user/change_status?id='+rowId) + '\')"><?= label("inactive")?></a>';
+                                    value = value + '&nbsp;|&nbsp;<a href="#" onclick="_userIndexRefreshData(\'' + url('user/change_status?id='+rowId) + '\')"><?= label("inactive")?></a>';
                                 }
-                                value = value + '|<a href="#" onclick="goto(\'' + url('user/choose_roles?id='+rowId) + '\')"><?= label("choose_roles")?></a>'
+                                value = value + '&nbsp;|&nbsp;<a href="#" onclick="goto(\'' + url('user/choose_roles?id='+rowId) + '\')"><?= label("choose_roles")?></a>'
                                 return value;
                             } }
                     ],

@@ -1,8 +1,8 @@
 <table class="table">
     <thead>
-    <th>描述</th>
-    <th>是否失效</th>
-    <th>操作</th>
+    <th><?= label('description')?></th>
+    <th><?= label('inactive_flag')?></th>
+    <th><?= label('operation')?></th>
     </thead>
     <?php foreach($objects as $o):?>
         <tr>

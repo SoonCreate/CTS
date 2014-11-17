@@ -91,7 +91,8 @@ define(["dojo/_base/declare", "gridx/Grid",
                     args.store = store;
                 }
                 //先标注加载，如果没有数据则显示为空
-                args.bodyEmptyInfo = res.loadingInfo;
+                //加上loading效果
+                args.bodyEmptyInfo = '<i class="icon-spinner icon-spin"></i>'+res.loadingInfo;
 
                 //ie下有bug，如果有操作列，则点击选择无效
                 if(!args.operationColumn){

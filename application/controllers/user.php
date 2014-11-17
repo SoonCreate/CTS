@@ -227,15 +227,19 @@ class User extends CI_Controller {
         if(empty($user)){
             show_404();
         }else{
-            if($user['inactive_flag']){
-                $data['inactive_flag'] = 0;
+            if($user['username'] == 'administrator'){
+                custz_message('E','不允许修改超级管理员帐号的状态');
             }else{
-                $data['inactive_flag'] = 1;
-            }
-            if($um->update($user['id'],$data,true)){
-                message_db_success();
-            }else{
-                message_db_failure();
+                if($user['inactive_flag']){
+                    $data['inactive_flag'] = 0;
+                }else{
+                    $data['inactive_flag'] = 1;
+                }
+                if($um->update($user['id'],$data,true)){
+                    message_db_success();
+                }else{
+                    message_db_failure();
+                }
             }
         }
     }

@@ -10,7 +10,7 @@
         <td><?= $o['description']?></td>
         <td>
             <?= render_link(array('messages','class_edit',array('id'=>$o['id'])),label('edit'))?>
-            &nbsp;|&nbsp;<?= render_link(array('messages','items',array('class_id'=>$o['id'])),label('item_manage'))?>
+            &nbsp;|&nbsp;<?= render_link(array('messages','items',array('class_id'=>$o['id'])),label('message_manage'))?>
             &nbsp;|&nbsp;<?= render_link(array('messages','class_destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
         </td>
 
