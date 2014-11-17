@@ -17,12 +17,13 @@ define(["dojo/_base/declare", "gridx/Grid",
         "gridx/modules/SingleSort",
         "gridx/core/model/extensions/FormatSort",
         "dojo/dom-style",
-        "dojo/i18n!gridx/nls/gridx"
+        "dojo/i18n!gridx/nls/gridx",
+        "dojo/has"
     ],
     function(declare,Gridx,lang,Sync,ItemFileWriteStore,Async,JsonRest,
              request,Pagination,PaginationBar,ColumnResizer,VirtualVScroller,TouchVScroller,
              IndirectSelectColumn, selectSingleRow, selectMultipleRow, SingleSort, FormatSort,
-             domStyle, res){
+             domStyle, res,has){
         return declare("",[Gridx],{
             constructor : function(args){
                 /*
@@ -92,7 +93,11 @@ define(["dojo/_base/declare", "gridx/Grid",
                 //先标注加载，如果没有数据则显示为空
                 args.bodyEmptyInfo = res.loadingInfo;
 
-                args.selectRowTriggerOnCell =  true;
+                //ie下有bug，如果有操作列，则点击选择无效
+                if(!args.operationColumn){
+                    args.selectRowTriggerOnCell =  true;
+                }
+
 
                 if(args.sort){
                     args.modelExtensions = [FormatSort];
@@ -138,13 +143,19 @@ define(["dojo/_base/declare", "gridx/Grid",
                     if(oc["dataType"] == undefined){
                         oc["dataType"] = "string";
                     }
+
+                    //ie对透明度支持不好
+                    var style = "opacity:0";
+                    if(has("ie") < 9){
+                        style = "";
+                    }
                     //加入一列操作列
                     structure.push({
                         field : oc["field"],
                         name : oc["name"],
                         width : oc["width"],
                         dataType : oc["dataType"],
-                        style : "opacity:0",
+                        style : style,
                         decorator : function(cellData, rowId, rowIndex){
                             var value = "";
                             var data = oc["data"];
@@ -226,13 +237,21 @@ define(["dojo/_base/declare", "gridx/Grid",
             //鼠标漂浮
             onRowMouseOver : function(arguments){
                 if(this.operationColumn){
-                    domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","1");
+                    if(has("ie") < 9){
+
+                    }else{
+                        domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","1");
+                    }
                 }
             },
 
             onRowMouseOut : function(arguments){
                 if(this.operationColumn){
-                    domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","0");
+                    if(has("ie") < 9){
+
+                    }else{
+                        domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","0");
+                    }
                 }
             },
 
