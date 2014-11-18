@@ -75,14 +75,28 @@ if ( ! function_exists('env_language')) {
     function env_language()
     {
         //判断浏览器语言
-        $default_lang_arr = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-        $strarr = explode(",", $default_lang_arr);
-        if(strpos($strarr[0],'zh') == 0){
-            return 'zh-CN';
-        }else{
-            return 'en-us';
-        }
-//        return 'en-us';
+        $language = "en-us";
+        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 4); //只取前4位，这样只判断最优先的语言。如果取前5位，可能出现en,zh的情况，影响判断。
+        if (preg_match("/zh/i", $lang))
+            $language = "zh-CN";
+//        else if (preg_match("/zh/i", $lang))
+//            $language = "zh-FT";
+        else if (preg_match("/en/i", $lang))
+            $language = "en-us";
+        else if (preg_match("/fr/i", $lang))
+            $language = "fr"; //法国
+        else if (preg_match("/de/i", $lang))
+            $language = "de"; //德国
+        else if (preg_match("/jp/i", $lang))
+            $language = "jp";
+        else if (preg_match("/ko/i", $lang))
+            $language = "ko"; //Korean
+        else if (preg_match("/es/i", $lang))
+            $language = "es"; //西班牙
+        else if (preg_match("/sv/i", $lang))
+            $language = "sv"; //瑞典
+
+        return $language;
     }
 }
 

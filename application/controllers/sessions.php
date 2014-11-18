@@ -38,7 +38,7 @@ class Sessions extends CI_Controller {
                     $sessions[$i]['username'] = $user['username'];
                     $sessions[$i]['full_name'] = $user['full_name'];
                 }
-                if($user_data['cm']){
+                if(isset($user_data['cm'])){
                     $function = $mlm->find_by_view(array('id'=>$user_data['cm']));
                     if(!empty($function)){
                         $sessions[$i]['module_desc'] = $function['module_desc'];
@@ -48,7 +48,7 @@ class Sessions extends CI_Controller {
                         $sessions[$i]['function_desc'] = '';
                     }
                 }else{
-                    if($user_data['mid']){
+                    if(isset($user_data['mid'])){
                         $module = $mm->find($user_data['mid']);
                         $sessions[$i]['module_desc'] = $module['description'];
                         $sessions[$i]['function_desc'] = '';
@@ -98,12 +98,12 @@ class Sessions extends CI_Controller {
                         }
                     }
                 }
-
+                $sessions[$i]['last_activity'] = date('Y-m-d H:i:s',$sessions[$i]['last_activity']);
                 array_push($d,$sessions[$i]);
 
             }//if
         }
-        $data["structure"] = build_structure('username','full_name','platform','browser','mobile','ip_address','module_desc','function_desc');
+        $data["structure"] = build_structure('username','full_name','platform','browser','mobile','ip_address','module_desc','function_desc','last_activity');
         $data["identifier"] = 'session_id';
         $data["label"] = 'username';
         $data['items'] = $d;
