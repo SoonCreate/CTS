@@ -1,13 +1,13 @@
 <table class="table">
     <thead>
-    <th>会议主题</th>
-    <th>开始时间</th>
-    <th>结束时间</th>
-    <th>会议地点</th>
-    <th>主持人</th>
-    <th>状态</th>
-    <th>会议文件</th>
-    <th>操作</th>
+    <th><?= label('meeting_title')?></th>
+    <th><?= label('start_date')?></th>
+    <th><?= label('end_date')?></th>
+    <th><?= label('site')?></th>
+    <th><?= label('anchor')?></th>
+    <th><?= label('status')?></th>
+    <th><?= label('file_count')?></th>
+    <th><?= label('operation')?></th>
     </thead>
     <?php foreach($objects as $o):?>
         <tr>

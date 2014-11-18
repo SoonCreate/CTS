@@ -176,6 +176,30 @@ $lang['label_source_view'] = "数据来源于表/视图";
 $lang['label_parent_id'] = "父值集";
 $lang['label_valuelist_edit'] = "值集编辑";
 
+//会议记录
+$lang['label_start_date'] = "开始时间";
+$lang['label_end_date'] = "结束时间";
+$lang['label_site'] = "会议地点";
+$lang['label_anchor'] = "主持人";
+$lang['label_recorder'] = "记录人";
+$lang['label_actor'] = "参与者";
+$lang['label_actor'] = "参与者";
+$lang['label_meeting_create'] = "召开会议";
+$lang['label_meeting_edit'] = "会议编辑";
+$lang['label_meeting_title'] = "会议主题";
+$lang['label_file_count'] = "相关文件";
+$lang['label_discuss'] = "会议决议";
+$lang['label_done'] = "已解决";
+$lang['label_ready'] = "等待开始";
+$lang['label_canceled'] = "取消";
+$lang['label_running'] = "正在进行";
+$lang['label_closed'] = "结束";
+$lang['label_show'] = "查看";
+$lang['label_file'] = "文件";
+$lang['label_meeting_cancel'] = "会议取消";
+$lang['label_cancel_reason'] = "取消原因";
+$lang['label_cancel_remark'] = "补充";
+
 //会话管理
 $lang['label_kill_all_sessions'] = "注销所有会话";
 $lang['label_kill_session'] = "注销会话";
