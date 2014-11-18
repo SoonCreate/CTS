@@ -115,15 +115,15 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
                         }
                     }
                     mes.innerHTML = output;
-                }
-
-                //处理跳转
-                if("redirect" in response ){
-                    toUrl = response["redirect"]["url"];
-                    var downloadProgress = $dijit.byId("downloadProgress");
-                    downloadProgress.set("style","visibility:visible");
-                    perLoading();
-                    download();
+                }else{
+                    //处理跳转
+                    if("redirect" in response ){
+                        toUrl = response["redirect"]["url"];
+                        var downloadProgress = $dijit.byId("downloadProgress");
+                        downloadProgress.set("style","visibility:visible");
+                        perLoading();
+                        download();
+                    }
                 }
 
             },function(){
@@ -181,7 +181,7 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
             "gridx/allModules"
         ],function(ready){
             ready(function(){
-                i = 6;
+                i = 5;
             });
         });
     }
