@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />
     <link rel="stylesheet" href="<?= base_url() ?>/resources/css/main.css" />
     <!-- Bootstrap-->
-    <link href="<?= base_url() ?>/resources/css/bootstrap.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/resources/css/gs.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -37,7 +37,7 @@
     <div id="header">
         <div class="comlogo" style="padding-left:0px !important"><img src="<?= base_url() ?>resources/images/sclogo.png" style="height: 50px"/></div>
     </div>
-    <div id="demowarp">
+    <div id="demowarp" class="clearfix">
         <ul class="applist">
             <?php foreach($users as $u){?>
                 <li>

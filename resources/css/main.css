@@ -729,9 +729,7 @@ html, body {
 }
 #demowarp{
     width:900px;
-    height:445px;
     border-radius: 5px 5px 0 0;
-    outline: 0;
     border: 1px solid #C7C7C7;
     font-size: 12px;
     line-height: 1.666;
@@ -739,8 +737,7 @@ html, body {
     background: #fafafa;
     background-color: #ECF0F1;
     margin-top:10px;
-    padding-top:90px;
-    padding-left:19px;
+    padding:50px 0 50px 18px;
 }
 #demowarp ul li{
     margin-bottom: 30px !important;
@@ -767,4 +764,29 @@ html, body {
     min-width: 275px !important;
     min-height: 140px !important;
 }*/
+.sc .dijitProgressBar {
+    margin: 1px 0 1px 0;
+    height: 10px;
+}
+.sc .dijitProgressBarEmpty {
+    background-color: #fff;
+    border-color: #19BC9C;
+}
+.sc .dijitProgressBarTile {
+    background-color: #19BC9C;
+}
 
+.sc .dijitProgressBarFull {
+    margin:1px 1px;
+    height: 6px;
+    border: 0px solid  #19BC9C;
+    border-right-width: 1px;
+}
+.sc .dijitProgressBarLabel {
+    display: none;
+    color: #000000;
+}
+
+.dl-horizontal dt label{
+    margin-right: 5px;
+}

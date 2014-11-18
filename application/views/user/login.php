@@ -65,7 +65,7 @@
                 </dd>
             </dl>
             <div id="pro" >
-                <div  data-dojo-type="dijit/ProgressBar" style="width:400px;visibility:hidden"
+                <div  data-dojo-type="dijit/ProgressBar" style="width:398px;visibility:hidden"
                       id="downloadProgress" data-dojo-props="maximum:10" ></div>
                 <!--class="progress progress-success progress-striped" visibility:hidden -->
             </div>
