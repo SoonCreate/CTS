@@ -21,7 +21,7 @@
         background-color: #BDC3C7;
     }
     #flashMessage{
-        /*width: 300px;*/
+        width: 220px;
         height: 28px;
         /*opacity: 0; /*Chrome、Safari、Firefox、Opera */
         /*filter: progid:DXImageTransform.Microsoft.Alpha(opacity=10); *//* IE6/IE7/8 */
@@ -29,8 +29,8 @@
         /*filter:Alpha(opacity=0,finishOpacity=0,style=0);*/
         float: left;
         text-align: center;
-        margin-right: 120px;
         padding: 5px 5px 0 5px;
+        color:red;
     }
     .numcode{
         margin-left: 10px;
@@ -42,11 +42,11 @@
 </style>
 <!--div class="row"-->
 <div class="login" >
-    <div class="DialogTitleBar">
+    <div class="loginTitleBar">
         <img src="<?=base_url()?>resources/images/sclogo.png" />
         <h3><?= label('complaint_track_system')?></h3>
     </div>
-    <div class="DialogPaneContent container-fluid" >
+    <div class="loginPaneContent container-fluid" >
         <form class="form-horizontal" id="userForm" method="post" action="<?= _url('user','login')?>" onsubmit="return cFormSubmit(this);" >
             <dl class="row dl-horizontal">
                 <dt><label for="username"><?= label('username')?></label></dt>
@@ -69,7 +69,7 @@
                       id="downloadProgress" data-dojo-props="maximum:10" ></div>
                 <!--class="progress progress-success progress-striped" visibility:hidden -->
             </div>
-            <div class="DialogPaneActionBar">
+            <div class="loginPaneActionBar">
                 <div id="flashMessage"></div>
                 <button data-dojo-type="dijit/form/Button" type="submit" id="logonpost"  name="logonpost">
                     <label><?= label('login')?></label>
@@ -117,8 +117,19 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
                     mes.innerHTML = output;
                 }
 
-                //处理跳转
+                //处理跳转 登录成功后该处有中文提示，并将表单disabled, !未国际化-by GS
                 if("redirect" in response ){
+                    mes.innerHTML = "<a style='color:#000'>登录成功，正在加载...</a>";
+                    var logonpost = $dijit.byId("logonpost");
+                    var regpost = $dijit.byId("regpost");
+                    var username = $dijit.byId("username");
+                    var password = $dijit.byId("password");
+                    var code = $dijit.byId("code");
+                    logonpost.set("disabled","disabled");
+                    regpost.set("disabled","disabled");
+                    username.set("disabled","disabled");
+                    password.set("disabled","disabled");
+                    code.set("disabled","disabled");
                     toUrl = response["redirect"]["url"];
                     var downloadProgress = $dijit.byId("downloadProgress");
                     downloadProgress.set("style","visibility:visible");

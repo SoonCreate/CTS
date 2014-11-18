@@ -630,6 +630,9 @@ hr {
 .pt-20 {
     padding-top: 20px
 }
+.pt-50 {
+    padding-top: 50px !important;
+}
 .pb-5 {
     padding-bottom: 5px
 }
@@ -880,7 +883,7 @@ blockquote small {
     line-height: 20px;
     color: #999
 }
-blockquote small: before {
+blockquote small:before {
     content: '\2014 \00A0'
 }
 blockquote.text-r {
@@ -892,13 +895,13 @@ blockquote.text-r {
 blockquote.text-r p,blockquote.text-r small {
     text-align: right
 }
-blockquote.text-r small: before {
+blockquote.text-r small:before {
     content: ''
 }
-blockquote.text-r small: after {
+blockquote.text-r small:after {
     content: '\00A0 \2014'
 }
-q: before,q: after,blockquote: before,blockquote: after {
+q:before,q:after,blockquote:before,blockquote:after {
     content: ""
 }
 q {

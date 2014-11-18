@@ -16,7 +16,7 @@
 <!--    <div data-dojo-type="dijit/form/Button" id="toolbar1.cut"-->
 <!--         data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut', showLabel:false">Cut</div>-->
     <?= render_button('menu','menu()') ?>
-    <span data-dojo-type="dijit/ToolbarSeparator"></span>
+    <pan data-dojo-type="dijit/ToolbarSeparator"></span>
     <?= render_button('back','goback()') ?>
     <span data-dojo-type="dijit/ToolbarSeparator"></span>
     <?= render_button('refresh','refresh()') ?>
