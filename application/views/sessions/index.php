@@ -13,6 +13,7 @@
                         {url : "sessions/kill",label: "<?= label('kill_session')?>",noRender:true}
                     ]
                 },
+                sort : true,
                 pageSize : 10,
                 autoWidth : false,
                 autoHeight : true,

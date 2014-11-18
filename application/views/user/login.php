@@ -105,6 +105,8 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
                 timeout: 2000,
                 handleAs : "json"
             }).then(function(response){
+                //先清空
+                mes.innerHTML = "";
                 //处理消息
                 if("message" in response ){
                     var output = "";

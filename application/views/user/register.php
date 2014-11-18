@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= label('version')?></title>
+    <title><?= label('complaint_track_system')?></title>
     <?php $this->load->view('_header') ?>
 </head>
 <body class="sc">
@@ -12,7 +12,7 @@
 
     <div  class="regcontent" >
         <div class="regcontent-tit">
-            <h4>用户注册</h4>
+            <h4><?= label('user_register')?></h4>
         </div>
         <?= render_form_open('user','register')?>
         <div class="container-fluid userd">

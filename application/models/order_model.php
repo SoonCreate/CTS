@@ -524,6 +524,8 @@ class Order_model extends MY_Model{
                                 }
                             }
                         }
+                    }else{
+                        message_db_success();
                     }
                 }else{
                     message_db_success();

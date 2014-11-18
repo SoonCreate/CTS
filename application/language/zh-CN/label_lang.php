@@ -50,7 +50,8 @@ $lang['label_change_password'] = "修改密码";
 $lang['label_old_password'] = "原密码";
 $lang['label_new_password'] = "新密码";
 $lang['label_re_new_password'] = "重复新密码";
-$lang['label_re_password'] = "重复密码";
+$lang['label_repassword'] = "重复密码";
+$lang['label_user_register'] = "用户注册";
 $lang['label_user_information_edit'] = "用户信息编辑";
 $lang['label_user_create'] = "用户创建";
 $lang['label_initial_password'] = "密码初始化";
@@ -87,6 +88,7 @@ $lang['label_attachment'] = "附件";
 $lang['label_comment_at'] = "发布于";
 $lang['label_log_type'] = "日志类型";
 $lang['label_operation_time'] = "操作时间";
+$lang['label_plan_complete_date'] = "计划完成时间";
 
 //状态流
 $lang['label_step'] = "步骤";
@@ -209,6 +211,7 @@ $lang['label_mobile'] = "手机型号";
 $lang['label_ip_address'] = "IP地址";
 $lang['label_module_desc'] = "模块";
 $lang['label_function_desc'] = "功能";
+$lang['label_last_activity'] = "登录时间";
 
 $lang['label_config'] = "配置";
 $lang['label_configs'] = "配置";
