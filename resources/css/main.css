@@ -1,8 +1,8 @@
 @CHARSET "UTF-8";
 /*Global Detail*/
 *{
-    box-sizing:border-box;
-    -moz-box-sizing: border-box;
+    /*box-sizing:border-box;
+    -moz-box-sizing: border-box;*/
     outline: none !important;
  }
 a {
@@ -54,7 +54,7 @@ html, body {
 
 #headerPane {
 	padding:3px 0;
-	height:60px;
+	height:54px;
 	font-size:28px;
 	/*background:#273F56;*/
 	position:relative;
@@ -68,27 +68,26 @@ html, body {
     border: 1px solid #969B9E;
     border-radius: 8px 0 0  8px;
 }
+
 .comlogo{
-	margin-top:5px;
-	padding:0 30px;
-	height: 35px;
+    margin-top:5px;
+    padding:0 30px;
+    height: 35px;
 }
 
 /*Left TabMenu*/
 
 .dijitTabContainerLeft-tabs{
     padding: 50px 0 0 20px;
-    width:200px;
+    width:180px;
     border:0 solid #fff !important;
-
-
 }
 
 .dijitTabContainerLeft-tabs .dijitTab {
-    height: 60px;
-    margin-bottom: 5px !important;
+    height: 37px;
+    margin-bottom: 10px !important;
     margin-right: 10px;
-    padding:8px 0 10px 8px !important;
+    padding:12px 0 15px 8px !important;
     border: 0px solid #29BB9C;
     background-color:#2C3E50;
     font-family:"Microsoft Yahei";
@@ -137,12 +136,7 @@ html, body {
 
 /*LoginPage form*/
 .login{
-    /*border: 1px solid #759dc0;
-    -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);*/
     width:400px;
-    height:345px;
     border-radius: 5px 5px 0 0;
     outline: 0;
     border: 1px solid #C7C7C7;
@@ -156,63 +150,49 @@ html, body {
     margin-left:-200px;
     margin-top:-180px;
     background-color: #ECF0F1;
-    /*position:fixed;
-    left:50%;
-    top:50%;
-    margin-left:width/2;
-    margin-top:height/2;*/
-
 }
-.DialogTitleBar {
-
+.loginTitleBar {
     border-radius: 4px 4px 0 0;
     text-align: left;
     padding: 8px 50px;
-    height: 140px;
+    height: 114px;
     border-bottom: 1px solid #c2c2c2;
     background: #eee;
 }
-.DialogTitleBar h3{
+.loginTitleBar h3{
     text-align: center;
-    font-family:Microsoft Yahei;
     font-size: 18px;
     font-weight: bold;
 }
-.DialogPaneContent {
-
-    padding: 20px 0px !important;
+.loginPaneContent {
+    padding: 20px 0px 10px 0 !important;
     position: relative;
     width:398px;
-    height:198px;
 }
 
-.DialogPaneContent dl dt{
+.loginPaneContent dl dt{
     width:120px !important;
     display:inline-block;
 
 }
-.DialogPaneContent dl dt label{
+.loginPaneContent dl dt label{
+    margin-right: 5px;
+}
+.loginPaneContent dl dt label{
     padding:3px 0;
     display:inline-block;
     color:#222 !important;
     font-family:Microsoft Yahei;
 
 }
-.DialogPaneContent dl dd{
+.loginPaneContent dl dd{
     margin-left:120px !important;
 }
-.DialogPaneActionBar {
+.loginPaneActionBar {
     background-color: #efefef;
-    padding: 8px 5px 2px 7px;
+    padding: 12px 5px 2px 7px;
     text-align: right;
     border-top: 1px solid #fff;
-    height:55px;
-
-    /*  position: relative;
-      padding: 3px 5px 2px 7px;
-      border-top: 1px inset #E1E1E1;
-      background: #fafafa;
-      text-align: right;*/
 }
 
 .paneltitle{
@@ -239,6 +219,7 @@ html, body {
 ::-webkit-scrollbar {
     width: 14px;
     height: 14px;
+    background: #fff;
 }
 
 ::-webkit-scrollbar-track,
@@ -299,7 +280,7 @@ html, body {
     font-weight:lighter !important;
     padding:3px 0;
     display:inline-block;
-    color:#757575 !important;
+    color:#757575;
 }
 .userd dl dt label{
 
@@ -361,41 +342,6 @@ html, body {
     line-height: 20px;
 }
 
-/*RegPageg CSS*/
-.regcontent {
-    width: 960px;
-    margin: 0 auto;
-    text-align: left;
-    border: 1px solid #E0E0E0;
-    border-radius: 5px;
-    background-color: #FFF;
-    padding: 20px;
-}
-.regheader {
-    width: 960px;
-    height: 81px;
-    margin: 0 auto;
-    padding: 20px 0;
-    text-align: left;
-    position: relative;
-}
-.reglogo{
-    padding:0 5px;
-    height: 35px;
-}
-
-.regcontent-tit {
-    margin: -20px -20px 20px -20px;
-    padding: 8px 20px 3px 20px;
-    height: 36px;
-    background-position: 0 0;
-    background-color: #6495C6;
-    border: #5B88B8 1px solid;
-    border-radius: 3px 3px 0 0;
-    color:#fff;
-    font-size: 15px;
-    font-family:Microsoft Yahei;
-}
 
 /* FixDiv CSS*/
 .fixbottom{
@@ -411,9 +357,8 @@ html, body {
 .fixtop{
     position: fixed;
     left: 222px;
-    right:13px;
+    right:12px;
     top: 81px;
-    height: 41px;
     padding: 10px 30px;
     background-color: #ECF0F1;
     border-bottom: 1px solid #DDDDDD;
@@ -509,8 +454,6 @@ html, body {
     list-style: none;
     position: relative;
     float: left;
-    width: 139px;
-    height: 100px;
     margin-bottom: 14px;
     text-align: center;
 }
@@ -518,9 +461,9 @@ html, body {
 .applist li .icon {
     position: absolute;
     margin: 0 32px;
-    padding: 19px;
-    width:75px;
-    height:75px;
+    padding: 20px;
+    width:35px;
+    height:35px;
     cursor: pointer;
     border: 1px solid #4B84C2;
     color:#FFF;
@@ -710,7 +653,7 @@ html, body {
     display:inline-block;
     background: #29BB9C;
     width:178px;
-    height:33px;
+    height:19px;
     padding: 7px 10px;
     color:#fff;
     font-family:"Microsoft Yahei";
@@ -720,14 +663,23 @@ html, body {
     margin:0 !important;
 }
 
-/*demo page*/
-#demo{
-    height:110px;
+
+/*register&demo page*/
+#reg{
     width:900px;
     margin:0 auto;
     background: #BDC3C7;
 }
-#demowarp{
+#regHeader {
+    margin-top:30px !important;
+    height:60px;
+    width:900px;
+    margin:0 auto;
+    position:relative;
+    z-index:2;
+    background:#BDC3C7 ;
+}
+#regPage{
     width:900px;
     border-radius: 5px 5px 0 0;
     border: 1px solid #C7C7C7;
@@ -737,33 +689,40 @@ html, body {
     background: #fafafa;
     background-color: #ECF0F1;
     margin-top:10px;
-    padding:50px 0 50px 18px;
+    padding:10px 20px;
 }
-#demowarp ul li{
+#regPage .userd{
+    background: none;
+}
+#regPage dl{
+    margin-bottom: 25px !important;
+}
+#regPage ul li{
     margin-bottom: 30px !important;
 }
-#demowarp ul li .text{
+#regPage ul li .text{
     height:45px;
     background: #ECF0F1;
 
 }
-#header {
-    margin-top:30px !important;
-    height:70px;
-    width:900px;
-    margin:0 auto;
-    position:relative;
-    z-index:2;
-    background:#BDC3C7 ;
-}
-.sc .dijitDialogPaneContent {
-
+#regPage h4 {
+    margin: -10px -20px 20px -20px;
+    padding: 15px 20px 3px 20px;
+    height: 30px;
+    background-position: 0 0;
+    background-color: #6495C6;
+    border-radius: 5px 5px 0 0;
+    color:#fff;
+    font-size: 18px;
+    font-family:Microsoft Yahei;
 }
 
 /*.sc .dijitDialog {
     min-width: 275px !important;
     min-height: 140px !important;
 }*/
+
+/* 首页进度条*/
 .sc .dijitProgressBar {
     margin: 1px 0 1px 0;
     height: 10px;
@@ -778,7 +737,7 @@ html, body {
 
 .sc .dijitProgressBarFull {
     margin:1px 1px;
-    height: 6px;
+    height: 8px;
     border: 0px solid  #19BC9C;
     border-right-width: 1px;
 }
@@ -787,6 +746,17 @@ html, body {
     color: #000000;
 }
 
-.dl-horizontal dt label{
-    margin-right: 5px;
+
+.messageContainer {
+    height: 60px;
+    line-height: 30px;
+    padding: 5px 5px 0 5px;
+}
+.messageContainer .messageContent {
+    margin-left: 70px;
+    margin-top: -40px;
+    table-layout: fixed;
+    word-break: break-all;
+    overflow: hidden;
+    font-size: 20px;
 }
