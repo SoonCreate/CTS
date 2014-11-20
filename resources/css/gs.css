@@ -3130,7 +3130,7 @@ a.label:hover, a.label:focus, a.badge:hover, a.badge:focus{color: #fff;text-deco
     }
 	.comment-main{
         position:relative;
-        margin-left:64px;
+        /*margin-left:64px;*/
         border:1px solid #dedede;
         border-radius:2px;
     }

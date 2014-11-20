@@ -28,7 +28,7 @@
             <ul class="commentList">
             <?php foreach($contents as $c):?>
                 <li class="item cl" id="content_<?= $c['id']?>">
-                    <a href="#"><img width="48" height="48" class="comment-avatar" alt="" src="<?= base_url() ?>resources/images/avatar-default-S.gif"></a>
+
 
                     <div class="comment-main">
                 <?php
@@ -93,7 +93,7 @@
                 asyncCache : false,
                 url : url('order/log_data?id=<?=$id?>'),
                 pageSize : 10,
-                autoWidth : true,
+                autoWidth : false,
                 autoHeight : true,
                 style:"margin-left: 20px;"
 
