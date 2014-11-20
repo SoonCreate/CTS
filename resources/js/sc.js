@@ -272,7 +272,7 @@ function showMessage(message){
 function showMessageHelp(toaster){
     var data = toaster.remortData;
     if(data && data.help){
-        var header = "<h3>消息编号："+data.code+"</h3><hr/>";
+        var header = "<strong>消息编号："+data.code+"</strong><br/>";
         data.help = header + "<p>"+ data.help + "</p>";
         dojoConfirm(data.help,data.content,null,null,toaster.messageType);
     }
@@ -624,7 +624,6 @@ function toolbarAddButton(label,onclick,title){
                 if(title == undefined){
                     title = "";
                 }
-                var ts = new ToolbarSeparator();
                 var bt = new Button({
                     label : label,
                     onClick : function(){
@@ -634,9 +633,7 @@ function toolbarAddButton(label,onclick,title){
                     },
                     title : title
                 });
-                ts.startup();
                 bt.startup();
-                toolBar.addChild(ts);
                 toolBar.addChild(bt);
                 dojo.disconnect(handle);
             }

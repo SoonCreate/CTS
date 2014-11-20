@@ -59,8 +59,8 @@ function ci_translate_message($type,$line){
 
 //数据库操作成功
 function message_db_success(){
-    message('I','db','10');
-//    ci_translate_message('I','message_save_success');
+//    message('I','db','10');
+    ci_translate_message('I','message_save_success');
 }
 //没有权限
 function message_no_authority(){

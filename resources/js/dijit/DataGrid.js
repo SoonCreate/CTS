@@ -180,6 +180,10 @@ define(["dojo/_base/declare", "gridx/Grid",
                         }
                     });
                 }
+                //解决行尾部空白bug
+                if(structure){
+                    structure.push({ field : "", name : ""});
+                }
                 return structure;
             },
 
@@ -241,7 +245,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                     if(has("ie") < 9){
 
                     }else{
-                        domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","1");
+                        domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 2).node(),"opacity","1");
                     }
                 }
             },
@@ -251,7 +255,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                     if(has("ie") < 9){
 
                     }else{
-                        domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 1).node(),"opacity","0");
+                        domStyle.set(this.cell(arguments.rowIndex,this.columnCount() - 2).node(),"opacity","0");
                     }
                 }
             },
