@@ -428,15 +428,15 @@ function dojoConfirm(content,title,callback,noback,type){
                 switch(type){
                     case "E" :
                         //此处可以再渲染
-                        content =  "<div class='messageContainer'><img src='/cts/resources/images/error.gif' width='60px' height='60px'/>" +
+                        content =  "<div class='messageContainer text-danger'><i class='icon-remove-sign icon-5x'></i>" +
                         "<div class='messageContent'>" + content + "</div></div>";
                         break;
                     case "W" :
-                        content = "<div class='messageContainer'><img src='/cts/resources/images/warning.png' width='60px' height='60px'/>" +
+                        content = "<div class='messageContainer text-warning'><i class='icon-question-sign icon-5x'></i>" +
                         "<div class='messageContent'>" +content + "</div></div>";
                         break;
                     default :
-                        content =  "<div class='messageContainer'><img src='/cts/resources/images/info.png' width='60px' height='60px'/>" +
+                        content =  "<div class='messageContainer text-info'><i class='icon-exclamation-sign icon-5x'></i>" +
                             "<div class='messageContent'>" +content + "</div></div>";
                         break;
                 }
