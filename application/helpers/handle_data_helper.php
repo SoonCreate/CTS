@@ -18,7 +18,9 @@ function message($type,$class_code,$message_code,$args = array()){
         $data['type'] = $type;
         $data['code'] = $class_code.'('.$message_code.')';
         $data['content'] = $message['content'];
-        $data['help'] = $message['help'];
+//        $data['help'] = $message['help'];
+        $data['help'] = "我可能很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长
+        很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长";
         //处理内容
         if(count($args) > 0){
             $content = $message['content'];
