@@ -633,9 +633,7 @@ function toolbarAddButton(label,onclick,title){
                     },
                     title : title
                 });
-                ts.startup();
                 bt.startup();
-                toolBar.addChild(ts);
                 toolBar.addChild(bt);
                 dojo.disconnect(handle);
             }
