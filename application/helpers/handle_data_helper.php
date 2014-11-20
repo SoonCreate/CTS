@@ -18,9 +18,7 @@ function message($type,$class_code,$message_code,$args = array()){
         $data['type'] = $type;
         $data['code'] = $class_code.'('.$message_code.')';
         $data['content'] = $message['content'];
-//        $data['help'] = $message['help'];
-        $data['help'] = "我可能很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长
-        很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长";
+        $data['help'] = $message['help'];
         //处理内容
         if(count($args) > 0){
             $content = $message['content'];
@@ -61,8 +59,8 @@ function ci_translate_message($type,$line){
 
 //数据库操作成功
 function message_db_success(){
-    message('I','db','10');
-//    ci_translate_message('I','message_save_success');
+//    message('I','db','10');
+    ci_translate_message('I','message_save_success');
 }
 //没有权限
 function message_no_authority(){

@@ -56,7 +56,8 @@
                                 }
                                 value = value + '&nbsp;|&nbsp;<a href="#" onclick="goto(\'' + url('user/choose_roles?id='+rowId) + '\')"><?= label("choose_roles")?></a>'
                                 return value;
-                            } }
+                            } },
+                        {name:"",field:""}
                     ],
                     pageSize: pageSize,//发送到服务端的条目HTTP header : items=0-19
                     modules : [
