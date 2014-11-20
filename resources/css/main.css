@@ -348,7 +348,7 @@ html, body {
     position: fixed;
     left: 221px;
     right: 13px;
-    bottom: 13px;
+    bottom: 12px;
     box-shadow: 0 -3px 3px #ddd;
     background-color: #f6f6f6;
     padding: 8px 30px;
@@ -380,7 +380,7 @@ html, body {
 }
 .fixnavbar{
     position: fixed;
-    z-index:993;
+    z-index:888;
     top:30px;
     right: 15px;
     height:41px;
@@ -751,6 +751,7 @@ html, body {
     height: 60px;
     line-height: 30px;
     padding: 5px 5px 0 5px;
+    margin: 10px 50px;
 }
 .messageContainer .messageContent {
     margin-left: 70px;
@@ -758,5 +759,5 @@ html, body {
     table-layout: fixed;
     word-break: break-all;
     overflow: hidden;
-    font-size: 20px;
+    font-size: 16px;
 }

@@ -33,11 +33,11 @@
 
 </head>
 <body>
-<div id="demo">
-    <div id="header">
+<div id="reg">
+    <div id="regHeader">
         <div class="comlogo" style="padding-left:0px !important"><img src="<?= base_url() ?>resources/images/sclogo.png" style="height: 50px"/></div>
     </div>
-    <div id="demowarp" class="clearfix">
+    <div id="regPage" class="cl pt-50">
         <ul class="applist">
             <?php foreach($users as $u){?>
                 <li>
@@ -50,5 +50,5 @@
 
         </ul>
     </div>
-    </body>
+</body>
 </html>

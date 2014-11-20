@@ -422,7 +422,8 @@ function dojoConfirm(content,title,callback,noback,type){
                         "<div class='messageContent'>" +content + "</div></div>";
                         break;
                     default :
-                        content = "<div class='messageContent'>" +content + "</div>";
+                        content =  "<div class='messageContainer'><img src='/cts/resources/images/info.png' width='60px' height='60px'/>" +
+                            "<div class='messageContent'>" +content + "</div></div>";
                         break;
                 }
                 confirmDialog.set("content",content);

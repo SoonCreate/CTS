@@ -13,7 +13,7 @@
     };
 </script>
 <!-- 加载dojo -->
-<script type="text/javascript" src="//cdn.sooncreate.com/dojo/1.10.2/dojo/dojo.js"></script>
+<script type="text/javascript" src="/dojo/dojo/dojo.js"></script>
 
 <script type="text/javascript">
     //    history.forward();
@@ -24,12 +24,12 @@
     var $dom = new Object;
     var $dijit = new Object;
     require(["dojo/parser",
-            "dojo/dom",
-            "dojo/query",
-            "dijit/registry",
-            "dojo/ready",
-            "dojo/request",
-            "dojo/domReady!"],
+        "dojo/dom",
+        "dojo/query",
+        "dijit/registry",
+        "dojo/ready",
+        "dojo/request",
+        "dojo/domReady!"],
         function(parser,dom,query,registry,ready,request){
             ready(function(){
                 $ = query;
@@ -84,8 +84,8 @@
 </script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>
 
-<link rel="stylesheet" type="text/css" href="//cdn.sooncreate.com/dojo/1.10.2/dojo/resources/dojo.css" />
-<link rel="stylesheet" type="text/css" href="//cdn.sooncreate.com/dojo/1.10.2/dijit/themes/sc/sc.css" />
+<link rel="stylesheet" type="text/css" href="/dojo/dojo/resources/dojo.css" />
+<link rel="stylesheet" type="text/css" href="/dojo/dijit/themes/sc/sc.css" />
 
 <link rel="stylesheet" href="<?= base_url() ?>resources/css/main.css" />
 <link href="<?php echo base_url(); ?>resources/css/gs.css" rel="stylesheet">
@@ -96,8 +96,10 @@
 <!--[if IE 7]>
 <!--<link rel="stylesheet" href="resources/css/font-awesome-ie7.min.css">-->
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="//cdn.sooncreate.com/dojo/1.10.2/dojox/widget/Toaster/Toaster.css" >
+<link rel="stylesheet" type="text/css" href="/dojo/dojox/widget/Toaster/Toaster.css" >
+
 <link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
+<!--<link href="/dojo/gridx/resources/Gridx.css" rel="stylesheet">-->
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

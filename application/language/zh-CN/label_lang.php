@@ -5,6 +5,7 @@ $lang['label_complaint_track_system'] = "企业投诉闭环跟踪系统";
 $lang['label_administrator'] = '系统管理员';
 $lang['label_all_value'] = '包含所有值';
 $lang['label_system_unknow_error'] = '系统未知错误';
+$lang['label_who_you_are'] = '您是我们公司的';
 
 //动作
 $lang['label_need_select'] = "请选择";
