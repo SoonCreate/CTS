@@ -791,3 +791,27 @@ html, body {
     margin-left:5px;
     color: #555;
 }
+
+/*tool工具栏按钮优化*/
+.sc .dijitToolbar .dijitButton .dijitButtonNode {
+    border-width: 0;
+    padding: 3px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+    background-color: rgba(171, 214, 255, 0);
+    background-image: none;
+    border: 1px solid #CBCECF;
+    color:#2C3E50;
+
+}
+.sc .dijitToolbar .dijitButtonHover .dijitButtonNode {
+    border: 1px solid #1ABC9C;
+    background-color: #fff;
+    color:#1ABC9C;
+}
