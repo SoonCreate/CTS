@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= label('complaint_track_system')?></title>
+    <title><?= _config('logo_text') ?></title>
     <?php $this->load->view('_header') ?>
 </head>
 <body class="sc">
@@ -43,8 +43,8 @@
 <!--div class="row"-->
 <div class="login" >
     <div class="loginTitleBar">
-        <img src="<?=base_url()?>resources/images/logo.png" />
-        <h3><?= label('complaint_track_system')?></h3>
+        <img src="<?= base_url() ?>resources/images/logo.png" style="height: 35px"/>
+        <h3><?= _config('logo_text') ?></h3>
     </div>
     <div class="loginPaneContent container-fluid" >
         <form class="form-horizontal" id="userForm" method="post" action="<?= _url('user','login')?>" onsubmit="return cFormSubmit(this);" >

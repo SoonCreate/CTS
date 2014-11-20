@@ -14,7 +14,7 @@
          data-dojo-props="splitter:false, region:'top'">
         <div class="comLogo">
             <div class="comLogoImg"><img src="<?= base_url() ?>resources/images/logo.png" style="height: 35px"/></div>
-            <div class="comLogoText">SoonCreate企业闭环系统</div>
+            <div class="comLogoText"><?= _config('logo_text') ?></div>
         </div>
         <!--div class="headerline"></div-->
 

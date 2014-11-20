@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= label('complaint_track_system')?></title>
+    <title><?= _config('logo_text') ?></title>
     <?php $this->load->view('_header') ?>
 </head>
 <body class="sc">
 <div id="reg">
     <div id="regHeader">
-        <div class="comlogo" style="padding-left:0px !important"><img src="<?= base_url() ?>resources/images/sclogo.png" style="height: 50px"/></div>
+        <div class="comLogoImg"><img src="<?= base_url() ?>resources/images/logo.png" style="height: 35px"/></div>
+        <div class="comLogoText"><?= _config('logo_text') ?></div>
     </div>
 
     <div  id="regPage" class="cl" >

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2014 at 01:41 AM
+-- Generation Time: Nov 20, 2014 at 07:10 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -131,8 +131,8 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
 --
 
 INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `data_type`, `user_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'company_name', '公司名称', '浙江天正集团', 1, 'string', 0, NULL, NULL, 1415081460, 44),
-(2, 'logo_file', 'Logo文件路径', '1', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(1, 'logo_text', 'Logo标题', 'Sooncreate CTS', 1, 'string', 0, NULL, NULL, 1415081460, 44),
+(2, 'logo_file', 'Logo文件，高35px', 'resources/images/logo.png', 1, 'string', 0, NULL, NULL, 1416463221, 44),
 (3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, 'string', 0, NULL, NULL, NULL, NULL),
 (4, 'category_control', '投诉订单分类功能开关', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1414824394, 44),
 (5, 'all_values', '包含所有值', 'all', 0, 'string', 0, NULL, NULL, NULL, NULL),
@@ -790,7 +790,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=242 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=246 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -1037,7 +1037,11 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (238, 448, 0, '由  未知 变更为 administrator', 1, '订单 94  责任人变更', 94, 0, NULL, 1, 48, 1416443069, 1416443069, 48),
 (239, 448, 0, '由  未知 变更为 administrator', 1, '订单 94  责任人变更', 94, 44, NULL, 1, 48, 1416443069, 1416443069, 48),
 (240, 449, 0, '由  未知 变更为 administrator', 1, '订单 150  责任人变更', 150, 0, NULL, 1, 48, 1416443404, 1416443404, 48),
-(241, 449, 0, '由  未知 变更为 administrator', 1, '订单 150  责任人变更', 150, 44, NULL, 1, 48, 1416443404, 1416443404, 48);
+(241, 449, 0, '由  未知 变更为 administrator', 1, '订单 150  责任人变更', 150, 44, NULL, 1, 48, 1416443404, 1416443404, 48),
+(242, 450, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 116  责任人变更', 116, 66, NULL, 1, 48, 1416457525, 1416457525, 48),
+(243, 450, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 116  责任人变更', 116, 44, NULL, 1, 48, 1416457525, 1416457525, 48),
+(244, 451, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 111  责任人变更', 111, 66, NULL, 1, 48, 1416457631, 1416457631, 48),
+(245, 451, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 111  责任人变更', 111, 44, NULL, 1, 48, 1416457631, 1416457631, 48);
 
 -- --------------------------------------------------------
 
@@ -1241,19 +1245,19 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (101, 'vendor', 'closed', 'low', 'low', '10', '测试测试', 44, 0, 1413561600, '测试测试', '', '1', '', '', 0, 0, 1413562875, 44, 1413625258, 44),
 (102, 'vendor', 'closed', 'low', 'low', '10', '按省份范德萨', 44, 0, 1413561600, '按省份范德萨', '', '11', '', '', 0, 0, 1413563758, 44, 1413617064, 44),
 (103, 'vendor', 'confirmed', 'high', 'low', '10', 'a', NULL, 44, NULL, 'as', '', '1', '', '', 0, 0, 1413641795, 44, 1416442039, 48),
-(104, 'employee', 'released', 'high', 'low', '30', 'asfd', NULL, 0, NULL, 'asfd', '', '111', '', '', 0, 0, 1413641971, 44, 1413641971, 44),
+(104, 'employee', 'confirmed', 'high', 'low', '30', 'asfd', NULL, 0, NULL, 'asfd', '', '111', '', '', 0, 0, 1413641971, 44, 1416457675, 48),
 (105, 'customer', 'closed', 'low', 'low', '10', '演示客户投诉单', 67, 0, 1413648000, '陈某某', '', '13777777777', '', '', 0, 0, 1413690191, 45, 1413693685, 45),
 (106, 'vendor', 'closed', 'low', 'middle', '40', '服务人员骂人', 66, 0, 1413648000, '陈阵', '54432323', '1314243345', '32324342', '2343224322', 0, 0, 1413697975, 46, 1413700532, 66),
 (107, 'employee', 'confirmed', 'middle', 'middle', '30', '办公室有人吸烟', NULL, 0, NULL, '洪仙横', '', '1387777777', '', '天正', 0, 0, 1413698090, 47, 1413698863, 48),
 (108, 'vendor', 'allocated', 'low', 'low', '10', '测', 74, 66, NULL, '飞', '', '1', '', '', 0, 0, 1413699551, 69, 1415067407, 48),
 (109, 'vendor', 'allocated', 'low', 'low', '10', '测', 74, 66, NULL, '飞', '', '1', '', '', 0, 0, 1413699577, 69, 1415061785, 48),
 (110, 'vendor', 'allocated', 'low', 'low', '10', '测', 74, 66, NULL, '飞', '', '1', '', '', 0, 0, 1413699619, 69, 1414820118, 48),
-(111, 'vendor', 'confirmed', 'low', 'low', '10', '测', NULL, 66, NULL, '飞', '', '1', '', '', 0, 0, 1413699643, 69, 1414820060, 48),
+(111, 'vendor', 'confirmed', 'low', 'low', '10', '测', NULL, 44, NULL, '飞', '', '1', '', '', 0, 0, 1413699643, 69, 1416457631, 48),
 (112, 'vendor', 'confirmed', 'low', 'low', '10', '测', NULL, 0, NULL, '飞', '', '1', '', '', 0, 0, 1413699678, 69, 1414743865, 48),
 (113, 'vendor', 'closed', 'low', 'low', '10', '测', 74, 66, 1415070000, '飞', '', '1', '', '', 0, 3, 1413699714, 69, 1415069363, 66),
 (114, 'vendor', 'allocated', 'low', 'low', '10', '测', 66, 0, 1413734400, '飞', '', '1', '', '', 0, 0, 1413699726, 69, 1413700139, 48),
 (115, 'vendor', 'closed', 'low', 'low', '30', '供应商投诉测试shimhen1', 66, 0, 1413993600, '洪仙横', '0577-62888888', '13867777777', '乐清市建设中路12号', '速创科技合伙企业', 0, 0, 1413699736, 69, 1413700629, 66),
-(116, 'vendor', 'confirmed', 'high', 'high', '10', '跳闸', NULL, 66, NULL, '张三', '8888888888', '13777777777', '乐清市经济开发期纬8路', '浙江**有限公司', 0, 0, 1413699897, 69, 1413947804, 48),
+(116, 'vendor', 'confirmed', 'high', 'high', '10', '跳闸', NULL, 44, NULL, '张三', '8888888888', '13777777777', '乐清市经济开发期纬8路', '浙江**有限公司', 0, 0, 1413699897, 69, 1416457525, 48),
 (117, 'customer', 'confirmed', 'low', 'low', '20', '客户投诉测试1', NULL, 67, NULL, '客户1', '', '13877787678', '', '', 0, 0, 1413700212, 69, 1413946863, 48),
 (118, 'employee', 'confirmed', 'low', 'low', '30', '内部员工投诉测试1', NULL, 68, NULL, '内部1', '', '138787878787', '', '', 0, 0, 1413700252, 69, 1413946742, 48),
 (119, 'customer', 'confirmed', 'low', 'low', '10', '我是客户李四', NULL, 67, NULL, '李四', '0577-68873723', '139898989', 'ABC路88号', '速创科技', 0, 0, 1413702543, 45, 1413947710, 48),
@@ -1289,7 +1293,7 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (149, 'customer', 'closed', 'low', 'low', '20', 'asdfasd', 73, 67, 1414206000, '李四', '0577-68873723', '139898989', 'ABC路88号', '速创科技', 0, 2, 1414131122, 45, 1414821084, 67),
 (150, 'vendor', 'confirmed', 'low', 'low', '10', '新流程测试', NULL, 44, NULL, '123', '', '123', '', '', 0, 0, 1414819457, 46, 1416443692, 48),
 (151, 'customer', 'confirmed', 'low', 'low', '10', '客户新流程测试', NULL, 0, NULL, '李四', '0577-68873723', '139898989', 'ABC路88号', '速创科技', 0, 0, 1414819640, 45, 1414819655, 48),
-(152, 'customer', 'released', 'low', 'low', '10', 'asdf11', NULL, 0, NULL, '陈杨阳', '', '13777777777', '', '', 0, 0, 1415683824, 70, 1415683824, 70),
+(152, 'customer', 'confirmed', 'low', 'low', '10', 'asdf11', NULL, 0, NULL, '陈杨阳', '', '13777777777', '', '', 0, 0, 1415683824, 70, 1416458111, 48),
 (153, 'customer', 'allocated', 'low', 'low', '10', '22', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415684910, 70, 1415684921, 70),
 (154, 'customer', 'released', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685004, 70, 1415685004, 70),
 (155, 'customer', 'released', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685233, 70, 1415685233, 70),
@@ -1616,7 +1620,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_3` (`change_hash`),
   KEY `Index_2` (`order_id`,`log_type`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=450 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=454 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -2059,7 +2063,11 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (446, 97, 'leader_change', '44', '0', NULL, 1416442747, 1416442747, 48, 1416442747, 48),
 (447, 94, 'order_status', 'confirmed', 'released', NULL, 1416443069, 1416443069, 48, 1416443069, 48),
 (448, 94, 'leader_change', '44', '0', NULL, 1416443069, 1416443069, 48, 1416443069, 48),
-(449, 150, 'leader_change', '44', '0', NULL, 1416443404, 1416443404, 48, 1416443404, 48);
+(449, 150, 'leader_change', '44', '0', NULL, 1416443404, 1416443404, 48, 1416443404, 48),
+(450, 116, 'leader_change', '44', '66', NULL, 1416457525, 1416457525, 48, 1416457525, 48),
+(451, 111, 'leader_change', '44', '66', NULL, 1416457631, 1416457631, 48, 1416457631, 48),
+(452, 104, 'order_status', 'confirmed', 'released', NULL, 1416457675, 1416457675, 48, 1416457675, 48),
+(453, 152, 'order_status', 'confirmed', 'released', NULL, 1416458111, 1416458111, 48, 1416458111, 48);
 
 -- --------------------------------------------------------
 
@@ -3251,8 +3259,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('371dbcfa1862bfc2abcafb6ac8c9f794', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416443692, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"1368";s:3:"uid";i:48;s:2:"cm";s:2:"36";s:3:"mid";s:1:"6";s:3:"fid";s:2:"18";}'),
-('fe34eb4b6bfae115e173ff9ee3e3a1ba', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416441983, 'a:1:{s:9:"user_data";s:0:"";}');
+('7a4e0f2fb9604c69c9542f1b2ba33fea', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416463774, 'a:2:{s:9:"user_data";s:0:"";s:4:"code";s:4:"8377";}');
 
 -- --------------------------------------------------------
 
