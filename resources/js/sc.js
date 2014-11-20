@@ -260,8 +260,22 @@ function showMessage(message){
 
     var toaster = $dijit.byId("toaster");
     toaster.setContent(message["content"], messageType,5000);
+    if("help" in message){
+        toaster.remortData = message;
+    }
+
     toaster.show();
 
+}
+
+//显示message help
+function showMessageHelp(toaster){
+    var data = toaster.remortData;
+    if(data && data.help){
+        var header = "<h3>消息编号："+data.code+"</h3><hr/>";
+        data.help = header + "<p>"+ data.help + "</p>";
+        dojoConfirm(data.help,data.content,null,null,toaster.messageType);
+    }
 }
 
 function addFormAlertLine(lines){

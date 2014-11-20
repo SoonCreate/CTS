@@ -42,7 +42,7 @@
         </div>
     </div>
 </div>
-<div data-dojo-type="dojox/widget/Toaster" data-dojo-props="positionDirection:'tr-left'"
+<div data-dojo-type="dojox/widget/Toaster" data-dojo-props="positionDirection:'tr-left'" onSelect="showMessageHelp(this)"
      id="toaster">
 </div>
 <div class="fixnavbar">
