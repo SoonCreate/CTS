@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2014 at 03:21 AM
+-- Generation Time: Nov 20, 2014 at 01:41 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -599,6 +599,7 @@ CREATE TABLE IF NOT EXISTS `ct_messages_v` (
 ,`last_updated_by` int(11)
 ,`class_code` varchar(20)
 ,`class_desc` varchar(255)
+,`help` text
 );
 -- --------------------------------------------------------
 
@@ -789,7 +790,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=232 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=242 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -1026,7 +1027,17 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (228, 434, 0, '投诉单提交', 1, '投诉单 159 提交', 159, 72, NULL, 1, 70, 1415685446, 1415685446, 70),
 (229, 436, 0, '由  Unknown 变更为 质量经理测试账号', 1, '订单 159  责任人变更', 159, 0, NULL, 1, 70, 1415685447, 1415685447, 70),
 (230, 436, 0, '由  Unknown 变更为 质量经理测试账号', 1, '订单 159  责任人变更', 159, 67, NULL, 1, 70, 1415685447, 1415685447, 70),
-(231, 438, 0, '处理人从 Unknown 变成 客户投诉处理人', 1, '投诉单 159 处理人变更', 159, 73, NULL, 1, 70, 1415685448, 1415685448, 70);
+(231, 438, 0, '处理人从 Unknown 变成 客户投诉处理人', 1, '投诉单 159 处理人变更', 159, 73, NULL, 1, 70, 1415685448, 1415685448, 70),
+(232, 442, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 156  责任人变更', 156, 0, NULL, 1, 48, 1416288574, 1416288574, 48),
+(233, 442, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 156  责任人变更', 156, 67, NULL, 1, 48, 1416288575, 1416288575, 48),
+(234, 444, 0, '由  未知 变更为 administrator', 1, '订单 103  责任人变更', 103, 0, NULL, 1, 48, 1416442039, 1416442039, 48),
+(235, 444, 0, '由  未知 变更为 administrator', 1, '订单 103  责任人变更', 103, 44, NULL, 1, 48, 1416442039, 1416442039, 48),
+(236, 446, 0, '由  未知 变更为 administrator', 1, '订单 97  责任人变更', 97, 0, NULL, 1, 48, 1416442747, 1416442747, 48),
+(237, 446, 0, '由  未知 变更为 administrator', 1, '订单 97  责任人变更', 97, 44, NULL, 1, 48, 1416442747, 1416442747, 48),
+(238, 448, 0, '由  未知 变更为 administrator', 1, '订单 94  责任人变更', 94, 0, NULL, 1, 48, 1416443069, 1416443069, 48),
+(239, 448, 0, '由  未知 变更为 administrator', 1, '订单 94  责任人变更', 94, 44, NULL, 1, 48, 1416443069, 1416443069, 48),
+(240, 449, 0, '由  未知 变更为 administrator', 1, '订单 150  责任人变更', 150, 0, NULL, 1, 48, 1416443404, 1416443404, 48),
+(241, 449, 0, '由  未知 变更为 administrator', 1, '订单 150  责任人变更', 150, 44, NULL, 1, 48, 1416443404, 1416443404, 48);
 
 -- --------------------------------------------------------
 
@@ -1222,14 +1233,14 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (90, 'employee', 'closed', 'low', 'low', '30', 'asfd', 44, 0, 1413475200, 'adsf', '', '1', '', '', 0, 0, 1413547147, 44, 1413552345, 44),
 (92, 'employee', 'released', 'low', 'low', '30', 'asfd', NULL, 0, NULL, 'asfd', '', '111', '', '', 0, 0, 1413559395, 44, 1413559395, 44),
 (93, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, 0, NULL, 'a', '', '1', '', '', 0, 0, 1413559460, 44, 1413559460, 44),
-(94, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, 0, NULL, 'a', '', '1', '', '', 0, 0, 1413559491, 44, 1413559491, 44),
-(97, 'vendor', 'released', 'low', 'low', '10', 'a', NULL, 0, NULL, 'a', '', '1', '', '', 0, 0, 1413559897, 44, 1413559897, 44),
+(94, 'vendor', 'confirmed', 'low', 'low', '10', 'a', NULL, 44, NULL, 'a', '', '1', '', '', 0, 0, 1413559491, 44, 1416443354, 48),
+(97, 'vendor', 'confirmed', 'low', 'low', '10', 'a', NULL, 44, NULL, 'a', '', '1', '', '', 0, 0, 1413559897, 44, 1416442762, 48),
 (98, 'vendor', 'allocated', 'low', 'low', '10', 'a', 47, 0, 1413475200, 'a', '', '1', '', '', 0, 0, 1413559928, 44, 1413560089, 44),
 (99, 'employee', 'allocated', 'low', 'low', '30', 'a', 44, 0, 1413561600, 'a', '', '1', '', '', 0, 0, 1413560227, 44, 1413563855, 44),
 (100, 'vendor', 'closed', 'low', 'low', '10', '测试测试', 74, 66, 1415102400, '测试测试', '', '1', '', '', 0, 1, 1413562846, 44, 1415076277, 66),
 (101, 'vendor', 'closed', 'low', 'low', '10', '测试测试', 44, 0, 1413561600, '测试测试', '', '1', '', '', 0, 0, 1413562875, 44, 1413625258, 44),
 (102, 'vendor', 'closed', 'low', 'low', '10', '按省份范德萨', 44, 0, 1413561600, '按省份范德萨', '', '11', '', '', 0, 0, 1413563758, 44, 1413617064, 44),
-(103, 'vendor', 'released', 'high', 'low', '10', 'a', NULL, 0, NULL, 'as', '', '1', '', '', 0, 0, 1413641795, 44, 1413641795, 44),
+(103, 'vendor', 'confirmed', 'high', 'low', '10', 'a', NULL, 44, NULL, 'as', '', '1', '', '', 0, 0, 1413641795, 44, 1416442039, 48),
 (104, 'employee', 'released', 'high', 'low', '30', 'asfd', NULL, 0, NULL, 'asfd', '', '111', '', '', 0, 0, 1413641971, 44, 1413641971, 44),
 (105, 'customer', 'closed', 'low', 'low', '10', '演示客户投诉单', 67, 0, 1413648000, '陈某某', '', '13777777777', '', '', 0, 0, 1413690191, 45, 1413693685, 45),
 (106, 'vendor', 'closed', 'low', 'middle', '40', '服务人员骂人', 66, 0, 1413648000, '陈阵', '54432323', '1314243345', '32324342', '2343224322', 0, 0, 1413697975, 46, 1413700532, 66),
@@ -1276,15 +1287,15 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (147, 'customer', 'confirmed', 'low', 'low', '10', 'ASD', NULL, 0, NULL, '11', '', '11', '', '', 0, 0, 1414050787, 45, 1414050810, 48),
 (148, 'customer', 'confirmed', 'low', 'low', '10', 'sdf', NULL, 0, NULL, '李四', '0577-68873723', '139898989', 'ABC路88号', '速创科技', 0, 0, 1414120204, 45, 1414819838, 48),
 (149, 'customer', 'closed', 'low', 'low', '20', 'asdfasd', 73, 67, 1414206000, '李四', '0577-68873723', '139898989', 'ABC路88号', '速创科技', 0, 2, 1414131122, 45, 1414821084, 67),
-(150, 'vendor', 'confirmed', 'low', 'low', '10', '新流程测试', NULL, 0, NULL, '123', '', '123', '', '', 0, 0, 1414819457, 46, 1414819583, 48),
+(150, 'vendor', 'confirmed', 'low', 'low', '10', '新流程测试', NULL, 44, NULL, '123', '', '123', '', '', 0, 0, 1414819457, 46, 1416443692, 48),
 (151, 'customer', 'confirmed', 'low', 'low', '10', '客户新流程测试', NULL, 0, NULL, '李四', '0577-68873723', '139898989', 'ABC路88号', '速创科技', 0, 0, 1414819640, 45, 1414819655, 48),
 (152, 'customer', 'released', 'low', 'low', '10', 'asdf11', NULL, 0, NULL, '陈杨阳', '', '13777777777', '', '', 0, 0, 1415683824, 70, 1415683824, 70),
 (153, 'customer', 'allocated', 'low', 'low', '10', '22', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415684910, 70, 1415684921, 70),
 (154, 'customer', 'released', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685004, 70, 1415685004, 70),
 (155, 'customer', 'released', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685233, 70, 1415685233, 70),
-(156, 'customer', 'released', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685373, 70, 1415685373, 70),
-(157, 'customer', 'released', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685397, 70, 1415685397, 70),
-(158, 'customer', 'released', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685421, 70, 1415685421, 70),
+(156, 'customer', 'confirmed', 'low', 'low', '10', '22', NULL, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685373, 70, 1416288574, 48),
+(157, 'customer', 'confirmed', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685397, 70, 1416288414, 48),
+(158, 'customer', 'confirmed', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685421, 70, 1416288305, 48),
 (159, 'customer', 'allocated', 'low', 'low', '10', '22', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685446, 70, 1415685448, 70);
 
 -- --------------------------------------------------------
@@ -1605,7 +1616,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_3` (`change_hash`),
   KEY `Index_2` (`order_id`,`log_type`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=439 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=450 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -2037,7 +2048,18 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (435, 159, 'order_status', 'confirmed', 'released', NULL, 1415685446, 1415685446, 70, 1415685446, 70),
 (436, 159, 'leader_change', '67', '0', NULL, 1415685447, 1415685447, 70, 1415685447, 70),
 (437, 159, 'order_status', 'allocated', 'confirmed', NULL, 1415685448, 1415685448, 70, 1415685448, 70),
-(438, 159, 'manager_change', '73', NULL, NULL, 1415685448, 1415685448, 70, 1415685448, 70);
+(438, 159, 'manager_change', '73', NULL, NULL, 1415685448, 1415685448, 70, 1415685448, 70),
+(439, 158, 'order_status', 'confirmed', 'released', NULL, 1416288305, 1416288305, 48, 1416288305, 48),
+(440, 157, 'order_status', 'confirmed', 'released', NULL, 1416288414, 1416288414, 48, 1416288414, 48),
+(441, 156, 'order_status', 'confirmed', 'released', NULL, 1416288545, 1416288545, 48, 1416288545, 48),
+(442, 156, 'leader_change', '67', '0', NULL, 1416288574, 1416288574, 48, 1416288574, 48),
+(443, 103, 'order_status', 'confirmed', 'released', NULL, 1416442038, 1416442038, 48, 1416442038, 48),
+(444, 103, 'leader_change', '44', '0', NULL, 1416442039, 1416442039, 48, 1416442039, 48),
+(445, 97, 'order_status', 'confirmed', 'released', NULL, 1416442747, 1416442747, 48, 1416442747, 48),
+(446, 97, 'leader_change', '44', '0', NULL, 1416442747, 1416442747, 48, 1416442747, 48),
+(447, 94, 'order_status', 'confirmed', 'released', NULL, 1416443069, 1416443069, 48, 1416443069, 48),
+(448, 94, 'leader_change', '44', '0', NULL, 1416443069, 1416443069, 48, 1416443069, 48),
+(449, 150, 'leader_change', '44', '0', NULL, 1416443404, 1416443404, 48, 1416443404, 48);
 
 -- --------------------------------------------------------
 
@@ -3229,9 +3251,8 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('1e0484b5f773af0e2ec566649206adb6', '127.0.0.1', 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)', 1416273978, 'a:2:{s:9:"user_data";s:0:"";s:6:"output";a:1:{s:8:"location";s:10:"user/login";}}'),
-('7398a44353d596fbc07f3b36ddee3475', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416276983, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"9605";s:3:"uid";s:2:"44";s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}'),
-('f7732ef96d08a93bcc7cd0f5cc28217d', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416272675, 'a:2:{s:9:"user_data";s:0:"";s:6:"output";a:1:{s:8:"location";s:10:"user/login";}}');
+('371dbcfa1862bfc2abcafb6ac8c9f794', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416443692, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"1368";s:3:"uid";i:48;s:2:"cm";s:2:"36";s:3:"mid";s:1:"6";s:3:"fid";s:2:"18";}'),
+('fe34eb4b6bfae115e173ff9ee3e3a1ba', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416441983, 'a:1:{s:9:"user_data";s:0:"";}');
 
 -- --------------------------------------------------------
 
@@ -3722,7 +3743,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_messages_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_messages_v` AS select `m`.`id` AS `id`,`m`.`class_id` AS `class_id`,`m`.`message_code` AS `message_code`,`m`.`content` AS `content`,`m`.`creation_date` AS `creation_date`,`m`.`created_by` AS `created_by`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`mc`.`class_code` AS `class_code`,`mc`.`description` AS `class_desc` from (`ct_message_classes` `mc` join `ct_messages` `m`) where (`m`.`class_id` = `mc`.`id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_messages_v` AS select `m`.`id` AS `id`,`m`.`class_id` AS `class_id`,`m`.`message_code` AS `message_code`,`m`.`content` AS `content`,`m`.`creation_date` AS `creation_date`,`m`.`created_by` AS `created_by`,`m`.`last_update_date` AS `last_update_date`,`m`.`last_updated_by` AS `last_updated_by`,`mc`.`class_code` AS `class_code`,`mc`.`description` AS `class_desc`,`m`.`help` AS `help` from (`ct_message_classes` `mc` join `ct_messages` `m`) where (`m`.`class_id` = `mc`.`id`);
 
 -- --------------------------------------------------------
 

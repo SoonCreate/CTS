@@ -105,6 +105,9 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
                 timeout: 2000,
                 handleAs : "json"
             }).then(function(response){
+                //先清空
+                mes.innerHTML = "";
+
                 //处理消息
                 if("message" in response ){
                     var output = "";
@@ -115,26 +118,25 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
                         }
                     }
                     mes.innerHTML = output;
-                }
-
-                //处理跳转 登录成功后该处有中文提示，并将表单disabled, !未国际化-by GS
-                if("redirect" in response ){
-                    mes.innerHTML = "<a style='color:#000'>登录成功，正在加载...</a>";
-                    var logonpost = $dijit.byId("logonpost");
-                    var regpost = $dijit.byId("regpost");
-                    var username = $dijit.byId("username");
-                    var password = $dijit.byId("password");
-                    var code = $dijit.byId("code");
-                    logonpost.set("disabled","disabled");
-                    regpost.set("disabled","disabled");
-                    username.set("disabled","disabled");
-                    password.set("disabled","disabled");
-                    code.set("disabled","disabled");
-                    toUrl = response["redirect"]["url"];
-                    var downloadProgress = $dijit.byId("downloadProgress");
-                    downloadProgress.set("style","visibility:visible");
-                    perLoading();
-                    download();
+                }else{
+                    //处理跳转
+                    if("redirect" in response ){
+                        var logonpost = $dijit.byId("logonpost");
+                        var regpost = $dijit.byId("regpost");
+                        var username = $dijit.byId("username");
+                        var password = $dijit.byId("password");
+                        var code = $dijit.byId("code");
+                        logonpost.set("disabled","disabled");
+                        regpost.set("disabled","disabled");
+                        username.set("disabled","disabled");
+                        password.set("disabled","disabled");
+                        code.set("disabled","disabled");
+                        toUrl = response["redirect"]["url"];
+                        var downloadProgress = $dijit.byId("downloadProgress");
+                        downloadProgress.set("style","visibility:visible");
+                        perLoading();
+                        download();
+                    }
                 }
 
             },function(){
@@ -192,7 +194,7 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
             "gridx/allModules"
         ],function(ready){
             ready(function(){
-                i = 6;
+                i = 5;
             });
         });
     }

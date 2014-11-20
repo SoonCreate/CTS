@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= label('version')?></title>
+    <title><?= label('complaint_track_system')?></title>
     <?php $this->load->view('_header') ?>
 </head>
 <body class="sc">
@@ -12,14 +12,14 @@
 
     <div  id="regPage" class="cl" >
 
-        <h4>用户注册:</h4>
+        <h4><?= label('user_register')?></h4>
         <?= render_form_open('user','register')?>
         <div class="container-fluid userd">
             <?= render_form_input('username',true)?>
             <?= render_form_password('password',true)?>
             <?= render_form_password('repassword',true)?>
             <?= render_form_input('full_name',true)?>
-            <?= render_radio('user_type','您是我们公司的','vl_register_select')?>
+            <?= render_radio('user_type',label('who_you_are'),'vl_register_select')?>
             <dl class="row dl-horizontal">
                 <dt>&nbsp;</dt>
                 <dd>
