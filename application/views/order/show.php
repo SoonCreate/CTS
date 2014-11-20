@@ -93,7 +93,7 @@
                 asyncCache : false,
                 url : url('order/log_data?id=<?=$id?>'),
                 pageSize : 10,
-                autoWidth : false,
+                autoWidth : true,
                 autoHeight : true,
                 style:"margin-left: 20px;"
 
