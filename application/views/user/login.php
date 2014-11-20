@@ -43,7 +43,7 @@
 <!--div class="row"-->
 <div class="login" >
     <div class="loginTitleBar">
-        <img src="<?=base_url()?>resources/images/sclogo.png" />
+        <img src="<?=base_url()?>resources/images/logo.png" />
         <h3><?= label('complaint_track_system')?></h3>
     </div>
     <div class="loginPaneContent container-fluid" >

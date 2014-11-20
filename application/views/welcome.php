@@ -12,7 +12,10 @@
      data-dojo-props="gutters:false">
     <div data-dojo-type="dijit/layout/ContentPane" id="headerPane"
          data-dojo-props="splitter:false, region:'top'">
-        <div class="comlogo"><img src="<?= base_url() ?>resources/images/sclogo.png" style="height: 50px"/></div>
+        <div class="comLogo">
+            <div class="comLogoImg"><img src="<?= base_url() ?>resources/images/logo.png" style="height: 35px"/></div>
+            <div class="comLogoText">SoonCreate企业闭环系统</div>
+        </div>
         <!--div class="headerline"></div-->
 
     </div>

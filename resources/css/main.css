@@ -69,12 +69,23 @@ html, body {
     border-radius: 8px 0 0  8px;
 }
 
-.comlogo{
+.comLogo{
     margin-top:5px;
     padding:0 30px;
     height: 35px;
 }
-
+.comLogoImg{
+    width: 50px;
+    height: 35px;
+    float:left;
+}
+.comLogoText{
+    min-width:165px;
+    padding-top:6px;
+    float:left;
+    font-size: 25px;
+    font-weight: bolder;
+}
 /*Left TabMenu*/
 
 .dijitTabContainerLeft-tabs{
@@ -154,15 +165,20 @@ html, body {
 .loginTitleBar {
     border-radius: 4px 4px 0 0;
     text-align: left;
-    padding: 8px 50px;
-    height: 114px;
+    padding: 12px 50px;
+    min-height: 40px;
     border-bottom: 1px solid #c2c2c2;
     background: #eee;
 }
+.loginTitleBar img{
+    float:left;
+}
 .loginTitleBar h3{
+    margin: 12px 0 0 5px !important;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
+    float:left;
 }
 .loginPaneContent {
     padding: 20px 0px 10px 0 !important;
