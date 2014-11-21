@@ -6,14 +6,11 @@
 
 <div class="login" >
     <div class="loginTitleBar">
-        <h3>Error:</h3>
+        <h3>ERROR: <?= _v('heading') ?></h3>
     </div>
     <div class="loginPaneContent container-fluid" >
         <div class="errorContent">
-
-
-                        <span><?= _v('heading') ?></span>
-                        <p><?= _v('message')  ?></p>
+             <p><?= _v('message')  ?></p>
         </div>
     </div>
             <!--End Error Block-->
