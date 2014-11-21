@@ -161,6 +161,7 @@ html, body {
     margin-left:-200px;
     margin-top:-180px;
     background-color: #ECF0F1;
+    font-family:"Microsoft Yahei";
 }
 .loginTitleBar {
     border-radius: 4px 4px 0 0;
@@ -209,6 +210,13 @@ html, body {
     padding: 12px 5px 2px 7px;
     text-align: right;
     border-top: 1px solid #fff;
+}
+
+.errorContent{
+    min-height: 50px;
+    padding: 20px 20px 20px 50px;
+    font-size: 15px;
+    color:#777;
 }
 
 .paneltitle{
