@@ -94,7 +94,7 @@ function render_no_auth_error(){
     global $CI;
     $CI->load->model('message_model','message');
     $mm = new Message_model();
-    $message = $mm->find_by_view(array('class_code'=>'system','message_code'=>'20','language'=>env_language()));
+    $message = $mm->find_by_view(array('class_code'=>'system','message_code'=>'20'));
     if(!empty($message)){
         render_error($message['content']);
     }

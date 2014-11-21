@@ -2,6 +2,6 @@
 
 //不检查
 $config['login_no_check'] = array(
-    'user' => array('login','register','get_code','check_code','forget_password'),
+    'user' => array('login','register','get_code','check_code','forget_password','logout'),
     'welcome' => array('index','demo_env','demo')
 );

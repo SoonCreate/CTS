@@ -81,6 +81,17 @@ function dialog($url,$title,$closable = FALSE){
     set_sess('output',$output);
 }
 
+function confirm_dialog($content,$title = null,$callback = null,$cancel = null,$type = 'E'){
+    $output = _sess('output');
+    $dialog['content'] = $content;
+    $dialog['title'] = $title;
+    $dialog['callback'] = $callback;
+    $dialog['cancel'] = $cancel;
+    $dialog['type'] = $type;
+    $output['confirmDialog'] = $dialog;
+    set_sess('output',$output);
+}
+
 //输出验证form验证
 function validation_error(){
     if ( function_exists('form_error')) {;

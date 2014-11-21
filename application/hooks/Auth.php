@@ -14,8 +14,20 @@ class Auth {
         if(!(in_array($controller, array_keys($controllers)) && in_array($action,$controllers[$controller]))){
             //需要检查
             if(!_sess('uid')){
-                location_url('user/login');
-                die();
+                $login_url = _url('user','login');
+                $message  = label('need').'<a href="'.$login_url.'">'.label('re_login').'</a>';
+                $title = label('session_inactive');
+                $callback = 'redirect("'.$login_url.'")';
+                if($_POST){
+                    confirm_dialog($message,$title,$callback);
+                    die(json_encode(_sess('output')));
+                }else{
+                    $data['heading'] = $title;
+                    $data['message'] = $message;
+                    $data['callback'] = $callback;
+                    die($CI->load->view('error',$data,true));
+                }
+
             }
         }
     }

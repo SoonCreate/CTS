@@ -18,12 +18,7 @@
 //    'filepath' => 'hooks'
 //);
 
-$hook['post_controller_constructor'][] = array(
-    'class'    => 'Auth',
-    'function' => 'login_check',
-    'filename' => 'Auth.php',
-    'filepath' => 'hooks'
-);
+
 
 $hook['post_controller_constructor'][] = array(
     'class'    => 'Auth',
@@ -36,6 +31,14 @@ $hook['post_controller_constructor'][] = array(
     'class'    => 'SOutput',
     'function' => 'initial_output',
     'filename' => 'SOutput.php',
+    'filepath' => 'hooks'
+);
+
+//执行顺序是由下往上的
+$hook['post_controller_constructor'][] = array(
+    'class'    => 'Auth',
+    'function' => 'login_check',
+    'filename' => 'Auth.php',
     'filepath' => 'hooks'
 );
 

@@ -29,6 +29,7 @@ $lang['label_choose'] = "选择";
 $lang['label_allocate'] = "分配";
 $lang['label_manage'] = "管理";
 $lang['label_help'] = "帮助";
+$lang['label_need'] = "需要";
 
 
 $lang['label_notice_read_all'] = "全部标记成已读";
@@ -44,6 +45,8 @@ $lang['label_reason'] = "原因";
 $lang['label_login'] = "登录";
 $lang['label_register'] = "注册";
 $lang['label_logout'] = "退出";
+$lang['label_re_login'] = "重新登录";
+$lang['label_session_inactive'] = "会话失效";
 $lang['label_username'] = "用户名";
 $lang['label_password'] = "密码";
 $lang['label_code'] = "验证码";

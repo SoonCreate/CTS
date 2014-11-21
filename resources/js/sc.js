@@ -224,6 +224,15 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,target){
                         });
 
                 }
+
+                if("confirmDialog" in response){
+                    var data = response["confirmDialog"];
+                    dojoConfirm(data["content"],data["title"],function(){
+                        if(data["callback"]){
+                            eval(data["callback"]);
+                        }
+                    },data["cancel"],data["type"])
+                }
             }
 
         }else{
@@ -396,7 +405,7 @@ function fixDijitId(id){
 
 //效果同js原先的confirm
 //content ：弹出框内容 ； callback ： 确认后要执行的内容
-function dojoConfirm(content,title,callback,noback,type){
+function dojoConfirm(content,title,callback,cancel,type){
     require(["sckj/Dialog","dijit/form/Button"],
         function(Dialog,Button){
             //检查如果存在则销毁
@@ -466,8 +475,8 @@ function dojoConfirm(content,title,callback,noback,type){
             var cancelbutton = new Button({
                 label : "取消",
                 onClick : function(){
-                    if(noback){
-                        noback();
+                    if(cancel){
+                        cancel();
                     }
                     confirmDialog.hide();
                 }
