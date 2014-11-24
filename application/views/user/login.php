@@ -191,10 +191,21 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
             "dijit/layout/ScrollingTabController",
             "dijit/layout/TabController",
             "dijit/Menu",
-            "gridx/allModules"
+            "gridx/allModules",
+            "dojox/charting/Chart2D",
+            "dojox/charting/themes/Dollar",
+            // Retrieve the Legend, Tooltip, and MoveSlice classes
+            "dojox/charting/action2d/MoveSlice",
+            "dojox/charting/action2d/Highlight",
+            "dojox/charting/action2d/Tooltip",
+            "dojox/charting/widget/Legend",
+            //  We want to use Markers
+            "dojox/charting/plot2d/Markers",
+            "dojo/data/ItemFileWriteStore",
+            "dijit/Tooltip"
         ],function(ready){
             ready(function(){
-                i = 5;
+                i = 4;
             });
         });
     }
