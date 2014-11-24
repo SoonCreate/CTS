@@ -156,6 +156,8 @@ define(["dojo/_base/declare", "gridx/Grid",
                         name : oc["name"],
                         width : oc["width"],
                         dataType : oc["dataType"],
+                        sortable : false,
+                        editable : false,
                         style : style,
                         decorator : function(cellData, rowId, rowIndex){
                             var value = "";
@@ -182,7 +184,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                 }
                 //解决行尾部空白bug
                 if(structure){
-                    structure.push({ field : "", name : ""});
+                    structure.push({ field : "", name : "",sortable : false,editable : false});
                 }
                 return structure;
             },
