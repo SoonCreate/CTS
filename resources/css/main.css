@@ -565,30 +565,32 @@ html, body {
 .leftinput{
     border-radius: 4px 0 0 4px !important;
     margin-right: 0 !important;
-    height: 30px !important;
+    height: 19px;
+    /*height: 30px !important;
+    box-sizing:border-box;
+    -moz-box-sizing: border-box;*/
 }
 .midinput{
     border-radius: 0 !important;
     margin-left:-1px !important;
     margin-right:0 !important;
-    height: 30px !important;
+}
+.midinput tr{
+    height:17px !important;
 }
 .sc .rightbtn .dijitButtonNode{
     border-radius: 0 4px 4px 0 !important;
     margin-left: -1px !important;
-    height: 30px !important;
+    height: 19px;
 }
 .sc .midbtn .dijitButtonNode{
     border-radius: 0 !important;
     margin-left: -1px !important;
-    height:30px !important;
 }
 .sc .left .dijitButtonNode{
     border-radius: 4px 0 0 4px !important;
     margin-left: -1px !important;
-    height: 30px !important;
 }
-
 /**/
 .userd dl dd.contentContainer{
     display: block;
@@ -792,12 +794,16 @@ html, body {
     font-size:12px;
 }
 /* “...”控件 相关*/
-.dijitMoreButtonInner {
+
+.sc .dijitMoreButton .dijitArrowButtonInner {
+    background-image: url("../images/comboxIcon.png");
+    background-position: -126px 0;
+    background-repeat: no-repeat;
+    margin-top: 4px;
     width: 15px;
-    height: 15px;
-    margin-top:5px;
-    margin-left:5px;
-    color: #555;
+}
+.sc .dijitMoreButton .dijitDownArrowButtonHover .dijitArrowButtonInner {
+    background-position: -126px -18px;
 }
 
 /*tool工具栏按钮优化*/
