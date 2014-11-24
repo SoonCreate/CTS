@@ -155,7 +155,7 @@ class Order extends CI_Controller {
                 $this->db->distinct();
                 $this->db->select('contact,mobile_telephone,full_name,address,phone_number ');
                 $om->order_by('creation_date','DESC');
-                $os = $om->find_all_by(array('created_by'=>_sess('uid')));
+                $os = $om->find_all_by(array('created_by'=>_sess('uid'),'order_type'=>$order_type));
                 if(!empty($os)){
                     $data['contact_data'] = json_encode($os);
                 }
