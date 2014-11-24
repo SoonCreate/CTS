@@ -24,7 +24,7 @@ class Order_model extends MY_Model{
         $this->add_validate_255('phone_number','address','contact','full_name');
     }
 
-    function find_my_orders($order_type,$title,$status,$end = null,$start = 0){
+    function find_my_orders($order_type,$title,$status = null,$end = null,$start = 0){
         $this->load->model('auth_model');
         $om = new Order_model();
         $sm = new Status_model();
@@ -51,7 +51,7 @@ class Order_model extends MY_Model{
             if($title){
                 $this->db->like('title',$title);
             }
-            if($status){
+            if(!is_null($status)){
                 $this->db->where('status',$status) ;
             }
             $totalCnt = $om->count_by();

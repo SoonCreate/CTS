@@ -12,11 +12,14 @@ class Order extends CI_Controller {
 	public function index()
 	{
         $order_type = v('order_type');
+        $s['value'] = _config('all_values');
+        $s['label'] = label('all');
         if($order_type){
             $data['order_type'] = $order_type;
             $this->load->model('status_line_model');
             $sm = new Status_model();
             $data['status'] = $sm->options(default_value('status',$data['order_type']));
+            array_unshift($data['status'],$s);
             render($data);
         }else{
             $am = new Auth_model();
@@ -29,6 +32,7 @@ class Order extends CI_Controller {
                 $this->load->model('status_line_model');
                 $sm = new Status_model();
                 $data['status'] = $sm->options(default_value('status',$data['order_type']));
+                array_unshift($data['status'],$s);
                 render($data);
             }else{
                 render_error('您没有权限查看投诉单列表！');
@@ -53,7 +57,10 @@ class Order extends CI_Controller {
 
         $title = $this->input->get('title');
         $status = $this->input->get('status');
-
+        //所有状态
+        if($status == _config('all_values')){
+            $status = null;
+        }
         $output = $om->find_my_orders(v('order_type'),$title,$status,$end,$start);
 
         if(isset($_SERVER['HTTP_RANGE'])){

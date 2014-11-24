@@ -91,6 +91,7 @@ $lang['label_upload_file'] = "上传附件";
 $lang['label_attachment'] = "附件";
 $lang['label_comment_at'] = "发布于";
 $lang['label_log_type'] = "日志类型";
+$lang['label_operator'] = "操作人";
 $lang['label_operation_time'] = "操作时间";
 $lang['label_plan_complete_date'] = "计划完成时间";
 

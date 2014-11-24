@@ -58,8 +58,9 @@
                         structure : structure,
                         store : store,
                         id : "statusStatisticsGrid",
-                        style : "width : 420px;min-height:180px",
+                        style : "min-height:180px",
                         autoHeight : true,
+                        autoWidth : true,
                         onRowSelect : function(row){
                             mag.reset();
                             var rowIndex = row.index();
@@ -70,12 +71,10 @@
                                 if(i == rowIndex){
                                     //模拟鼠标over
                                     evt.type = "onmouseover";
-                                    toolTip.process(evt);
                                 }
                                 else{
                                     //去除其他的鼠标out
                                     evt.type = "onmouseout";
-//                                    toolTip.process({ type: "onmouseout"});
                                 }
                                 highLight.process(evt);
                                 mag.process(evt);
