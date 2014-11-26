@@ -542,10 +542,8 @@ function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,targe
                 if(valueSegment == undefined){
                     valueSegment = 'id';
                 }
-                console.info(ids);
                 if(valueSegment){
                     for(var i=0;i<ids.length;i++){
-                        console.info(grid.row(ids[i]));
                         //解决null的bug
                         if(grid.row(ids[i]) != null){
                             value.push(grid.row(ids[i]).item()[valueSegment]) ;
