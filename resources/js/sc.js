@@ -535,12 +535,22 @@ function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,targe
             }
 
             dojoConfirm(grid,title,function(){
+
                 var ids = grid.select.row.getSelected();
                 var value = [];
+                //默认值为id
+                if(valueSegment == undefined){
+                    valueSegment = 'id';
+                }
+                console.info(ids);
                 if(valueSegment){
                     for(var i=0;i<ids.length;i++){
-                        console.info(grid.row(ids[i]).item());
-                        value.push(grid.row(ids[i]).item()[valueSegment])
+                        console.info(grid.row(ids[i]));
+                        //解决null的bug
+                        if(grid.row(ids[i]) != null){
+                            value.push(grid.row(ids[i]).item()[valueSegment]) ;
+                        }
+
                     }
                 }
                 value = value.join();
