@@ -94,6 +94,7 @@ $lang['label_log_type'] = "日志类型";
 $lang['label_operator'] = "操作人";
 $lang['label_operation_time'] = "操作时间";
 $lang['label_plan_complete_date'] = "计划完成时间";
+$lang['label_order_pcd_change'] = "指定计划完成时间";
 
 //状态流
 $lang['label_step'] = "步骤";
@@ -128,6 +129,7 @@ $lang['label_label'] = "按钮标签";
 $lang['label_function_create'] = "功能创建";
 $lang['label_function_edit'] = "功能编辑";
 $lang['label_function_id'] = "功能编号";
+$lang['label_status_condition_group_create'] = "条件组创建";
 
 //模块
 $lang['label_module_name'] = "模块名称";
@@ -248,6 +250,8 @@ $lang['label_from_date'] = "时间从";
 $lang['label_to_date'] = "时间至";
 $lang['label_leader'] = "责任人（部门经理）";
 $lang['label_manager'] = "处理人";
+$lang['label_manager_id'] = "处理人";
+$lang['label_order_dispatcher'] = "选择处理人";
 $lang['label_release_to_confirm'] = "提交->确认";
 $lang['label_confirm_to_allocate'] = "确认->分配";
 $lang['label_allocate_to_done'] = "分配->解决";
