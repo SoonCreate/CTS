@@ -14,11 +14,6 @@
         });
     }
 
-    function _userNoticesRefreshSingleData(url){
-        refresh_notice_count();
-        goto(url);
-    }
-
     require(["dojo/ready","sckj/DataGrid"],function(ready,Grid){
         var grid ;
         ready(function(){
@@ -33,7 +28,7 @@
                     autoHeight : true,
                     style:"margin-left: 20px;",
                     onRowSelect : function(row){
-                        _userNoticesRefreshSingleData(url('user/notice_show?id='+row.id))
+                        goto(url('user/notice_show?id='+row.id))
                     }
                 },"myNoticeList");
 
