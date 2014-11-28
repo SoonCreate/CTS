@@ -573,11 +573,12 @@ function field_comment($table,$field){
 
 function field_list($table){
     if(_user_config('technical_name')){
+        //fix bug table_schema服务器版本区分大小写
         return lazy_get_data("select COLUMN_NAME as value,concat(COLUMN_NAME,' - ',COLUMN_COMMENT) as label from INFORMATION_SCHEMA.COLUMNS
-        where TABLE_SCHEMA = 'CTS' AND  table_name = '".$table."'");
+        where TABLE_SCHEMA = 'cts' AND  table_name = '".$table."'");
     }else{
         return lazy_get_data("select COLUMN_NAME as value,COLUMN_COMMENT as label from INFORMATION_SCHEMA.COLUMNS
-        where TABLE_SCHEMA = 'CTS' AND  table_name = '".$table."'");
+        where TABLE_SCHEMA = 'cts' AND  table_name = '".$table."'");
     }
 
 }

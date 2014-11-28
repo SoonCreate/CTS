@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
+-- version 4.1.4
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 20, 2014 at 07:10 AM
--- Server version: 5.5.27
--- PHP Version: 5.4.7
+-- Host: localhost
+-- Generation Time: 2014-11-28 22:23:38
+-- 服务器版本： 5.1.73
+-- PHP Version: 5.3.3
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_authobj_lines`
+-- 表的结构 `ct_authobj_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_authobj_lines` (
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `ct_authobj_lines` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象明细表' AUTO_INCREMENT=17 ;
 
 --
--- Dumping data for table `ct_authobj_lines`
+-- 转存表中的数据 `ct_authobj_lines`
 --
 
 INSERT INTO `ct_authobj_lines` (`id`, `object_id`, `valuelist_id`, `default_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -59,7 +59,7 @@ INSERT INTO `ct_authobj_lines` (`id`, `object_id`, `valuelist_id`, `default_valu
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_authobj_lines_v`
+-- 替换视图以便查看 `ct_authobj_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_authobj_lines_v` (
 `id` int(11)
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `ct_authobj_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_authority_objects`
+-- 表的结构 `ct_authority_objects`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
@@ -94,20 +94,20 @@ CREATE TABLE IF NOT EXISTS `ct_authority_objects` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象表' AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `ct_authority_objects`
+-- 转存表中的数据 `ct_authority_objects`
 --
 
 INSERT INTO `ct_authority_objects` (`id`, `object_name`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'category_control', '订单控制权限对象', NULL, NULL, 1413516417, 44),
-(2, 'only_mine_control', '只能查看自己的订单', 1412066866, -1, 1413853229, 44),
-(3, 'log_display_control', '订单日志类型显示控制', 1412928745, 44, 1412928745, 44),
+(1, 'category_control', '投诉单控制权限对象', NULL, NULL, 1413516417, 44),
+(2, 'only_mine_control', '只能查看自己的投诉单', 1412066866, -1, 1413853229, 44),
+(3, 'log_display_control', '投诉单日志类型显示控制', 1412928745, 44, 1412928745, 44),
 (4, 'log_display_fullname', '日志显示操作人', 1412937910, 44, 1413516478, 44),
 (5, 'meeting_control', '会议操作权限控制', 1413940749, 44, 1413940749, 44);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_configs`
+-- 表的结构 `ct_configs`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_configs` (
@@ -127,14 +127,14 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=45 ;
 
 --
--- Dumping data for table `ct_configs`
+-- 转存表中的数据 `ct_configs`
 --
 
 INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `editable_flag`, `data_type`, `user_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
 (1, 'logo_text', 'Logo标题', 'Sooncreate CTS', 1, 'string', 0, NULL, NULL, 1415081460, 44),
 (2, 'logo_file', 'Logo文件，高35px', 'resources/images/logo.png', 1, 'string', 0, NULL, NULL, 1416463221, 44),
 (3, 'upload_path', '文件上传路径。该路径必须是可写的，相对路径和绝对路径均可以。', 'resources/uploads', 0, 'string', 0, NULL, NULL, NULL, NULL),
-(4, 'category_control', '投诉订单分类功能开关', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1414824394, 44),
+(4, 'category_control', '投诉投诉单分类功能开关', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1417065899, 44),
 (5, 'all_values', '包含所有值', 'all', 0, 'string', 0, NULL, NULL, NULL, NULL),
 (6, 'alarm_period', '报警周期，每次报警的时间间隔，单位为小时', '24', 1, 'number', 0, NULL, NULL, NULL, NULL),
 (7, 'mail_protocol', 'mail, sendmail, or smtp 邮件发送协议', 'smtp', 1, 'string', 0, NULL, NULL, NULL, NULL),
@@ -164,7 +164,7 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (31, 'upload_max_filename', '文件名的最大长度。0为不限制。', '0', 1, 'number', 0, NULL, NULL, NULL, NULL),
 (32, 'upload_encrypt_name', '是否重命名文件。如果该参数为TRUE，上传的文件将被重命名为随机的加密字符串。当你想让文件上传者也不能区分自己上传的文件的文件名时，是非常有用的。当 overwrite 为 FALSE 时，此选项才起作用。', 'TRUE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
 (33, 'upload_remove_spaces', '参数为TRUE时，文件名中的空格将被替换为下划线。推荐使用。', 'TRUE', 1, 'boolean', 0, NULL, NULL, NULL, NULL),
-(34, 'status_for_lock', '在此状态下，订单被锁定，无法操作', 'closed', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(34, 'status_for_lock', '在此状态下，投诉单被锁定，无法操作', 'closed', 1, 'string', 0, NULL, NULL, NULL, NULL),
 (35, 'word_truncate', '文字截断默认长度', '100', 1, 'number', 0, NULL, NULL, NULL, NULL),
 (36, 'allow_register', '是否允许用户注册', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1414557033, 44),
 (37, 'feedback_star', '用户反馈的打分星数', '5', 1, 'number', 0, NULL, NULL, 1413693616, 44),
@@ -172,14 +172,14 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (39, 'pcd_change_times', '计划完成日期允许修改次数', '2', 1, 'number', 0, NULL, NULL, 1413960977, 44),
 (40, 'auto_leader', '如果责任人只有唯一人选，在投诉单确认时自动选择', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1414819602, 44),
 (41, 'auto_manager', '如果处理人只有唯一人选，在投诉单确认时自动选择', 'TRUE', 1, 'boolean', 0, NULL, NULL, 1414820098, 44),
-(42, 'allow_reopen', '是否允许关闭订单重新打开', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414032071, 44),
+(42, 'allow_reopen', '是否允许关闭投诉单重新打开', 'FALSE', 1, 'boolean', 0, NULL, NULL, 1414032071, 44),
 (43, 'receive_email', '是否接收邮件（默认为接收）', 'TRUE', 1, 'boolean', 1, NULL, NULL, NULL, NULL),
 (44, 'technical_name', '技术名词是否开启（默认为FALSE）', 'FALSE', 1, 'boolean', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_feedbacks`
+-- 表的结构 `ct_feedbacks`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_feedbacks` (
@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `ct_feedbacks` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单反馈表' AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `ct_feedbacks`
+-- 转存表中的数据 `ct_feedbacks`
 --
 
 INSERT INTO `ct_feedbacks` (`id`, `order_id`, `content`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -208,7 +208,7 @@ INSERT INTO `ct_feedbacks` (`id`, `order_id`, `content`, `created_by`, `creation
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_feedback_stars`
+-- 表的结构 `ct_feedback_stars`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_feedback_stars` (
@@ -226,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `ct_feedback_stars` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单反馈明细表' AUTO_INCREMENT=11 ;
 
 --
--- Dumping data for table `ct_feedback_stars`
+-- 转存表中的数据 `ct_feedback_stars`
 --
 
 INSERT INTO `ct_feedback_stars` (`id`, `feedback_id`, `feedback_type`, `stars`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `feedback_desc`) VALUES
@@ -244,7 +244,7 @@ INSERT INTO `ct_feedback_stars` (`id`, `feedback_id`, `feedback_type`, `stars`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_files`
+-- 表的结构 `ct_files`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_files` (
@@ -271,7 +271,7 @@ CREATE TABLE IF NOT EXISTS `ct_files` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='上传文件记录表' AUTO_INCREMENT=18 ;
 
 --
--- Dumping data for table `ct_files`
+-- 转存表中的数据 `ct_files`
 --
 
 INSERT INTO `ct_files` (`id`, `file_name`, `file_type`, `file_size`, `is_image`, `file_path`, `full_path`, `raw_name`, `orig_name`, `client_name`, `file_ext`, `image_width`, `image_height`, `image_type`, `image_size_str`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -296,7 +296,7 @@ INSERT INTO `ct_files` (`id`, `file_name`, `file_type`, `file_size`, `is_image`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_functions`
+-- 表的结构 `ct_functions`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_functions` (
@@ -318,11 +318,11 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=37 ;
 
 --
--- Dumping data for table `ct_functions`
+-- 转存表中的数据 `ct_functions`
 --
 
 INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, `action`, `help`, `render_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_flag`, `display_class`) VALUES
-(1, 'choose_create', '投诉订单创建', 'order', 'choose_create', NULL, 1, 1412060589, -1, 1413512538, 44, 1, 'icon-globe'),
+(1, 'choose_create', '投诉投诉单创建', 'order', 'choose_create', NULL, 1, 1412060589, -1, 1413512538, 44, 1, 'icon-globe'),
 (3, 'user_manage', '用户管理', 'user', 'index', NULL, 1, 1412147486, 44, 1416272247, 44, 1, 'icon-group'),
 (5, 'my_orders', '投诉管理', 'order', 'index', NULL, 1, 1413115571, 44, 1413115571, 44, 1, ''),
 (6, 'user_edit', '用户信息', 'user', 'user_edit', NULL, 1, 1413115703, 44, 1413115703, 44, 1, ''),
@@ -359,7 +359,7 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_function_objects`
+-- 表的结构 `ct_function_objects`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_function_objects` (
@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS `ct_function_objects` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='功能权限对象表' AUTO_INCREMENT=7 ;
 
 --
--- Dumping data for table `ct_function_objects`
+-- 转存表中的数据 `ct_function_objects`
 --
 
 INSERT INTO `ct_function_objects` (`id`, `function_id`, `object_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -386,7 +386,7 @@ INSERT INTO `ct_function_objects` (`id`, `function_id`, `object_id`, `created_by
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_function_objects_v`
+-- 替换视图以便查看 `ct_function_objects_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_function_objects_v` (
 `id` int(10) unsigned
@@ -402,7 +402,7 @@ CREATE TABLE IF NOT EXISTS `ct_function_objects_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_function_obj_lines`
+-- 表的结构 `ct_function_obj_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_function_obj_lines` (
@@ -419,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `ct_function_obj_lines` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='功能权限对象明细表' AUTO_INCREMENT=17 ;
 
 --
--- Dumping data for table `ct_function_obj_lines`
+-- 转存表中的数据 `ct_function_obj_lines`
 --
 
 INSERT INTO `ct_function_obj_lines` (`id`, `object_line_id`, `fun_object_id`, `default_value`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -437,7 +437,7 @@ INSERT INTO `ct_function_obj_lines` (`id`, `object_line_id`, `fun_object_id`, `d
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_function_obj_lines_v`
+-- 替换视图以便查看 `ct_function_obj_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_function_obj_lines_v` (
 `id` int(10) unsigned
@@ -459,7 +459,7 @@ CREATE TABLE IF NOT EXISTS `ct_function_obj_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_meetings`
+-- 表的结构 `ct_meetings`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_meetings` (
@@ -480,10 +480,10 @@ CREATE TABLE IF NOT EXISTS `ct_meetings` (
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   `inactive_flag` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '失效标识',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议信息表' AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议信息表' AUTO_INCREMENT=12 ;
 
 --
--- Dumping data for table `ct_meetings`
+-- 转存表中的数据 `ct_meetings`
 --
 
 INSERT INTO `ct_meetings` (`id`, `title`, `start_date`, `end_date`, `site`, `anchor`, `recorder`, `actor`, `discuss`, `cancel_reason`, `cancel_remark`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `inactive_flag`) VALUES
@@ -495,12 +495,14 @@ INSERT INTO `ct_meetings` (`id`, `title`, `start_date`, `end_date`, `site`, `anc
 (6, '会议三', 1413567900, 1413568800, '暗室逢灯', '暗室逢灯', '', '暗室逢灯', NULL, '20', 'asdf', 44, 1413616500, 1415071784, 74, 1),
 (7, '为了解决问题', 1414084200, 1414087800, '三楼会议室', '陈某某', '高某某', '部门全体人员', '会议决议如下', NULL, NULL, 73, 1414132468, 1415169356, 73, 0),
 (8, '开个会', 1415040300, 1415044800, 'asdf', 'asdf', 'asdf', 'asdf', 'asdf', NULL, NULL, 74, 1415069247, 1415069247, 74, 0),
-(9, '关于解决144投诉', 1416262260, 1416265860, '三楼会议室', '张经理', '陈某某', '全体员工', 'f', NULL, NULL, 44, 1416276843, 1416277187, 44, 0);
+(9, '关于解决144投诉', 1416262260, 1416265860, '三楼会议室', '张经理', '陈某某', '全体员工', 'f', NULL, NULL, 44, 1416276843, 1416277187, 44, 0),
+(10, '关于解决162投诉单的会议', 1417069800, 1417078800, '三楼会议室', '陈杨阳', '', '张三、李四', NULL, NULL, NULL, 73, 1417070046, 1417070046, 73, 0),
+(11, '处理163投诉', 1417133460, 1417140660, '三楼会议室', 'chenyangyang', '', '质量部相关人员', NULL, NULL, NULL, 73, 1417172550, 1417172687, 73, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_meeting_files`
+-- 表的结构 `ct_meeting_files`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
@@ -516,7 +518,7 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议文件记录表' AUTO_INCREMENT=5 ;
 
 --
--- Dumping data for table `ct_meeting_files`
+-- 转存表中的数据 `ct_meeting_files`
 --
 
 INSERT INTO `ct_meeting_files` (`id`, `meeting_id`, `file_id`, `description`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -528,7 +530,7 @@ INSERT INTO `ct_meeting_files` (`id`, `meeting_id`, `file_id`, `description`, `c
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_meeting_files_v`
+-- 替换视图以便查看 `ct_meeting_files_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_meeting_files_v` (
 `id` int(10) unsigned
@@ -556,7 +558,7 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_messages`
+-- 表的结构 `ct_messages`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_messages` (
@@ -574,7 +576,7 @@ CREATE TABLE IF NOT EXISTS `ct_messages` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息表' AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `ct_messages`
+-- 转存表中的数据 `ct_messages`
 --
 
 INSERT INTO `ct_messages` (`id`, `class_id`, `message_code`, `content`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -586,7 +588,7 @@ INSERT INTO `ct_messages` (`id`, `class_id`, `message_code`, `content`, `help`, 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_messages_v`
+-- 替换视图以便查看 `ct_messages_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_messages_v` (
 `id` int(11)
@@ -604,7 +606,7 @@ CREATE TABLE IF NOT EXISTS `ct_messages_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_message_classes`
+-- 表的结构 `ct_message_classes`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_message_classes` (
@@ -620,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `ct_message_classes` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统消息分类表' AUTO_INCREMENT=5 ;
 
 --
--- Dumping data for table `ct_message_classes`
+-- 转存表中的数据 `ct_message_classes`
 --
 
 INSERT INTO `ct_message_classes` (`id`, `class_code`, `description`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -630,7 +632,7 @@ INSERT INTO `ct_message_classes` (`id`, `class_code`, `description`, `creation_d
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_module_header`
+-- 表的结构 `ct_module_header`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_module_header` (
@@ -647,7 +649,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_header` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块信息表' AUTO_INCREMENT=9 ;
 
 --
--- Dumping data for table `ct_module_header`
+-- 转存表中的数据 `ct_module_header`
 --
 
 INSERT INTO `ct_module_header` (`id`, `module_name`, `description`, `sort`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `display_class`) VALUES
@@ -661,7 +663,7 @@ INSERT INTO `ct_module_header` (`id`, `module_name`, `description`, `sort`, `cre
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_module_lines`
+-- 表的结构 `ct_module_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_module_lines` (
@@ -677,7 +679,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=62 ;
 
 --
--- Dumping data for table `ct_module_lines`
+-- 转存表中的数据 `ct_module_lines`
 --
 
 INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -718,7 +720,7 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_module_lines_v`
+-- 替换视图以便查看 `ct_module_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_module_lines_v` (
 `id` int(11)
@@ -743,7 +745,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_module_line_objects_v`
+-- 替换视图以便查看 `ct_module_line_objects_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_module_line_objects_v` (
 `id` int(11)
@@ -771,7 +773,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_line_objects_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_notices`
+-- 表的结构 `ct_notices`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_notices` (
@@ -781,7 +783,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `content` text COMMENT '内容',
   `from_log` tinyint(1) NOT NULL DEFAULT '0' COMMENT '来自日志',
   `title` varchar(200) NOT NULL COMMENT '标题',
-  `order_id` int(11) DEFAULT NULL COMMENT '订单ID',
+  `order_id` int(11) DEFAULT NULL COMMENT '投诉单ID',
   `received_by` int(11) NOT NULL COMMENT '接收人',
   `direct_url` varchar(255) DEFAULT NULL COMMENT '直接跳转至URL',
   `with_manager` tinyint(4) NOT NULL DEFAULT '1',
@@ -790,268 +792,288 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `last_update_date` int(11) NOT NULL,
   `last_updated_by` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=246 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=266 ;
 
 --
--- Dumping data for table `ct_notices`
+-- 转存表中的数据 `ct_notices`
 --
 
 INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `title`, `order_id`, `received_by`, `direct_url`, `with_manager`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(1, 195, 1, '投诉单提交', 1, '投诉单 105 提交', 105, 48, NULL, 1, 45, 1413690191, 1416204824, 48),
+(1, 195, 0, '投诉单提交', 1, '投诉单 105 提交', 105, 48, NULL, 1, 45, 1413690191, 1416204824, 48),
 (2, 195, 0, '投诉单提交', 1, '投诉单 105 提交', 105, 72, NULL, 1, 45, 1413690191, 1413690191, 45),
-(3, 197, 1, '责任人从 未知 变成 质量经理测试账号', 1, '投诉单 105 责任人变更', 105, 67, NULL, 1, 48, 1413692963, 1413694252, 67),
-(4, 199, 1, '已确认 => 已分配', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 48, 1413692963, 1413694252, 67),
-(5, 200, 1, '已分配 => 已解决', 1, '投诉单 105状态更新', 105, 45, NULL, 1, 67, 1413693326, 1413693383, 45),
-(6, 201, 1, '已解决 => 已关闭', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 45, 1413693574, 1413694252, 67),
-(7, NULL, 1, NULL, 0, '关于投诉单105的反馈', 105, 45, 'http://localhost/cts/index.php/order/feedback?id=105', 0, 45, 1413693574, 1413693588, 45),
-(8, 202, 1, '已关闭 => 重新打开', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 45, 1413693681, 1413694252, 67),
-(9, 202, 1, '已关闭 => 重新打开', 1, '投诉单 105状态更新', 105, 48, NULL, 1, 45, 1413693681, 1416204824, 48),
+(3, 197, 0, '责任人从 未知 变成 质量经理测试账号', 1, '投诉单 105 责任人变更', 105, 67, NULL, 1, 48, 1413692963, 1413694252, 67),
+(4, 199, 0, '已确认 => 已分配', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 48, 1413692963, 1413694252, 67),
+(5, 200, 0, '已分配 => 已解决', 1, '投诉单 105状态更新', 105, 45, NULL, 1, 67, 1413693326, 1413693383, 45),
+(6, 201, 0, '已解决 => 已关闭', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 45, 1413693574, 1413694252, 67),
+(7, NULL, 0, NULL, 0, '关于投诉单105的反馈', 105, 45, 'http://localhost/cts/index.php/order/feedback?id=105', 0, 45, 1413693574, 1413693588, 45),
+(8, 202, 0, '已关闭 => 重新打开', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 45, 1413693681, 1413694252, 67),
+(9, 202, 0, '已关闭 => 重新打开', 1, '投诉单 105状态更新', 105, 48, NULL, 1, 45, 1413693681, 1416204824, 48),
 (10, 202, 0, '已关闭 => 重新打开', 1, '投诉单 105状态更新', 105, 72, NULL, 1, 45, 1413693681, 1413693681, 45),
-(11, 203, 1, '重新打开 => 已关闭', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 45, 1413693686, 1413694252, 67),
-(12, NULL, 1, NULL, 0, '关于投诉单105的反馈', 105, 45, 'http://localhost/cts/index.php/order/feedback?id=105', 0, 45, 1413693686, 1413703276, 45),
-(13, 204, 1, '投诉单提交', 1, '投诉单 106 提交', 106, 48, NULL, 1, 46, 1413697975, 1416204824, 48),
+(11, 203, 0, '重新打开 => 已关闭', 1, '投诉单 105状态更新', 105, 67, NULL, 1, 45, 1413693686, 1413694252, 67),
+(12, NULL, 0, NULL, 0, '关于投诉单105的反馈', 105, 45, 'http://localhost/cts/index.php/order/feedback?id=105', 0, 45, 1413693686, 1413703276, 45),
+(13, 204, 0, '投诉单提交', 1, '投诉单 106 提交', 106, 48, NULL, 1, 46, 1413697975, 1416204824, 48),
 (14, 204, 0, '投诉单提交', 1, '投诉单 106 提交', 106, 72, NULL, 1, 46, 1413697975, 1413697975, 46),
-(15, 205, 1, '投诉单提交', 1, '投诉单 107 提交', 107, 48, NULL, 1, 47, 1413698090, 1416204824, 48),
+(15, 205, 0, '投诉单提交', 1, '投诉单 107 提交', 107, 48, NULL, 1, 47, 1413698090, 1416204824, 48),
 (16, 205, 0, '投诉单提交', 1, '投诉单 107 提交', 107, 72, NULL, 1, 47, 1413698090, 1413698090, 47),
 (17, 208, 0, '已确认 => 已分配', 1, '投诉单 106状态更新', 106, 66, NULL, 1, 48, 1413699138, 1413699138, 48),
-(18, 210, 1, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 106 责任人变更', 106, 66, NULL, 1, 48, 1413699138, 1413699210, 66),
-(19, 211, 1, '已分配 => 已解决', 1, '投诉单 106状态更新', 106, 46, NULL, 1, 66, 1413699246, 1413700632, 46),
-(20, 212, 1, '投诉单提交', 1, '投诉单 108 提交', 108, 48, NULL, 1, 69, 1413699551, 1416204824, 48),
+(18, 210, 0, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 106 责任人变更', 106, 66, NULL, 1, 48, 1413699138, 1413699210, 66),
+(19, 211, 0, '已分配 => 已解决', 1, '投诉单 106状态更新', 106, 46, NULL, 1, 66, 1413699246, 1413700632, 46),
+(20, 212, 0, '投诉单提交', 1, '投诉单 108 提交', 108, 48, NULL, 1, 69, 1413699551, 1416204824, 48),
 (21, 212, 0, '投诉单提交', 1, '投诉单 108 提交', 108, 72, NULL, 1, 69, 1413699551, 1413699551, 69),
-(22, 213, 1, '投诉单提交', 1, '投诉单 109 提交', 109, 48, NULL, 1, 69, 1413699577, 1416204824, 48),
+(22, 213, 0, '投诉单提交', 1, '投诉单 109 提交', 109, 48, NULL, 1, 69, 1413699577, 1416204824, 48),
 (23, 213, 0, '投诉单提交', 1, '投诉单 109 提交', 109, 72, NULL, 1, 69, 1413699577, 1413699577, 69),
-(24, 214, 1, '投诉单提交', 1, '投诉单 110 提交', 110, 48, NULL, 1, 69, 1413699619, 1416204824, 48),
+(24, 214, 0, '投诉单提交', 1, '投诉单 110 提交', 110, 48, NULL, 1, 69, 1413699619, 1416204824, 48),
 (25, 214, 0, '投诉单提交', 1, '投诉单 110 提交', 110, 72, NULL, 1, 69, 1413699619, 1413699619, 69),
-(26, 215, 1, '投诉单提交', 1, '投诉单 111 提交', 111, 48, NULL, 1, 69, 1413699643, 1416204824, 48),
+(26, 215, 0, '投诉单提交', 1, '投诉单 111 提交', 111, 48, NULL, 1, 69, 1413699643, 1416204824, 48),
 (27, 215, 0, '投诉单提交', 1, '投诉单 111 提交', 111, 72, NULL, 1, 69, 1413699643, 1413699643, 69),
-(28, 216, 1, '投诉单提交', 1, '投诉单 112 提交', 112, 48, NULL, 1, 69, 1413699678, 1416204824, 48),
+(28, 216, 0, '投诉单提交', 1, '投诉单 112 提交', 112, 48, NULL, 1, 69, 1413699678, 1416204824, 48),
 (29, 216, 0, '投诉单提交', 1, '投诉单 112 提交', 112, 72, NULL, 1, 69, 1413699678, 1413699678, 69),
-(30, 217, 1, '投诉单提交', 1, '投诉单 113 提交', 113, 48, NULL, 1, 69, 1413699714, 1416204824, 48),
+(30, 217, 0, '投诉单提交', 1, '投诉单 113 提交', 113, 48, NULL, 1, 69, 1413699714, 1416204824, 48),
 (31, 217, 0, '投诉单提交', 1, '投诉单 113 提交', 113, 72, NULL, 1, 69, 1413699714, 1413699714, 69),
-(32, 218, 1, '投诉单提交', 1, '投诉单 114 提交', 114, 48, NULL, 1, 69, 1413699726, 1416204824, 48),
+(32, 218, 0, '投诉单提交', 1, '投诉单 114 提交', 114, 48, NULL, 1, 69, 1413699726, 1416204824, 48),
 (33, 218, 0, '投诉单提交', 1, '投诉单 114 提交', 114, 72, NULL, 1, 69, 1413699726, 1413699726, 69),
-(34, 219, 1, '投诉单提交', 1, '投诉单 115 提交', 115, 48, NULL, 1, 69, 1413699736, 1416204824, 48),
+(34, 219, 0, '投诉单提交', 1, '投诉单 115 提交', 115, 48, NULL, 1, 69, 1413699736, 1416204824, 48),
 (35, 219, 0, '投诉单提交', 1, '投诉单 115 提交', 115, 72, NULL, 1, 69, 1413699736, 1413699736, 69),
-(36, 220, 1, '投诉单提交', 1, '投诉单 116 提交', 116, 48, NULL, 1, 69, 1413699897, 1416204824, 48),
+(36, 220, 0, '投诉单提交', 1, '投诉单 116 提交', 116, 48, NULL, 1, 69, 1413699897, 1416204824, 48),
 (37, 220, 0, '投诉单提交', 1, '投诉单 116 提交', 116, 72, NULL, 1, 69, 1413699897, 1413699897, 69),
 (38, 222, 0, '已确认 => 已分配', 1, '投诉单 114状态更新', 114, 66, NULL, 1, 48, 1413700129, 1413700129, 48),
 (39, 224, 0, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 114 责任人变更', 114, 66, NULL, 1, 48, 1413700129, 1413700129, 48),
-(40, 226, 1, '投诉单提交', 1, '投诉单 117 提交', 117, 48, NULL, 1, 69, 1413700212, 1416204824, 48),
+(40, 226, 0, '投诉单提交', 1, '投诉单 117 提交', 117, 48, NULL, 1, 69, 1413700212, 1416204824, 48),
 (41, 226, 0, '投诉单提交', 1, '投诉单 117 提交', 117, 72, NULL, 1, 69, 1413700212, 1413700212, 69),
-(42, 227, 1, '投诉单提交', 1, '投诉单 118 提交', 118, 48, NULL, 1, 69, 1413700252, 1416204824, 48),
+(42, 227, 0, '投诉单提交', 1, '投诉单 118 提交', 118, 48, NULL, 1, 69, 1413700252, 1416204824, 48),
 (43, 227, 0, '投诉单提交', 1, '投诉单 118 提交', 118, 72, NULL, 1, 69, 1413700252, 1413700252, 69),
 (44, 229, 0, '已确认 => 已分配', 1, '投诉单 115状态更新', 115, 66, NULL, 1, 48, 1413700526, 1413700526, 48),
-(45, 231, 1, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 115 责任人变更', 115, 66, NULL, 1, 48, 1413700527, 1413701458, 66),
+(45, 231, 0, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 115 责任人变更', 115, 66, NULL, 1, 48, 1413700527, 1413701458, 66),
 (46, 232, 0, '已解决 => 已关闭', 1, '投诉单 106状态更新', 106, 66, NULL, 1, 66, 1413700532, 1413700532, 66),
-(47, NULL, 1, NULL, 0, '关于投诉单106的反馈', 106, 46, 'http://192.168.1.101/cts/index.php/order/feedback?id=106', 0, 66, 1413700532, 1413700632, 46),
+(47, NULL, 0, NULL, 0, '关于投诉单106的反馈', 106, 46, 'http://192.168.1.101/cts/index.php/order/feedback?id=106', 0, 66, 1413700532, 1413700632, 46),
 (48, 234, 0, '已分配 => 已解决', 1, '投诉单 115状态更新', 115, 69, NULL, 1, 66, 1413700621, 1413700621, 66),
-(49, 235, 1, '已解决 => 已关闭', 1, '投诉单 115状态更新', 115, 66, NULL, 1, 66, 1413700629, 1413700713, 66),
-(50, NULL, 1, NULL, 0, '关于投诉单115的反馈', 115, 69, 'http://192.168.1.101/cts/index.php/order/feedback?id=115', 0, 66, 1413700630, 1413700787, 69),
-(51, 236, 1, '投诉单提交', 1, '投诉单 119 提交', 119, 48, NULL, 1, 45, 1413702543, 1416204824, 48),
+(49, 235, 0, '已解决 => 已关闭', 1, '投诉单 115状态更新', 115, 66, NULL, 1, 66, 1413700629, 1413700713, 66),
+(50, NULL, 0, NULL, 0, '关于投诉单115的反馈', 115, 69, 'http://192.168.1.101/cts/index.php/order/feedback?id=115', 0, 66, 1413700630, 1413700787, 69),
+(51, 236, 0, '投诉单提交', 1, '投诉单 119 提交', 119, 48, NULL, 1, 45, 1413702543, 1416204824, 48),
 (52, 236, 0, '投诉单提交', 1, '投诉单 119 提交', 119, 72, NULL, 1, 45, 1413702543, 1413702543, 45),
-(53, 237, 1, '投诉单提交', 1, '投诉单 120 提交', 120, 48, NULL, 1, 46, 1413704181, 1416204824, 48),
+(53, 237, 0, '投诉单提交', 1, '投诉单 120 提交', 120, 48, NULL, 1, 46, 1413704181, 1416204824, 48),
 (54, 237, 0, '投诉单提交', 1, '投诉单 120 提交', 120, 72, NULL, 1, 46, 1413704181, 1413704181, 46),
 (55, 239, 0, '已确认 => 已分配', 1, '投诉单 120状态更新', 120, 66, NULL, 1, 48, 1413704210, 1413704210, 48),
-(56, 241, 1, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 120 责任人变更', 120, 66, NULL, 1, 48, 1413704210, 1413859816, 66),
-(57, 244, 1, '投诉单提交', 1, '投诉单 121 提交', 121, 48, NULL, 1, 45, 1413705930, 1416204824, 48),
+(56, 241, 0, '责任人从 未知 变成 采购经理测试账号', 1, '投诉单 120 责任人变更', 120, 66, NULL, 1, 48, 1413704210, 1413859816, 66),
+(57, 244, 0, '投诉单提交', 1, '投诉单 121 提交', 121, 48, NULL, 1, 45, 1413705930, 1416204824, 48),
 (58, 244, 0, '投诉单提交', 1, '投诉单 121 提交', 121, 72, NULL, 1, 45, 1413705930, 1413705930, 45),
 (59, 246, 0, '已确认 => 已分配', 1, '投诉单 121状态更新', 121, 67, NULL, 1, 48, 1413706335, 1413706335, 48),
-(60, 248, 1, '责任人从 未知 变成 质量经理测试账号', 1, '投诉单 121 责任人变更', 121, 67, NULL, 1, 48, 1413706335, 1413706410, 67),
-(61, 250, 1, '已分配 => 已解决', 1, '投诉单 121状态更新', 121, 45, NULL, 1, 67, 1413706843, 1413706863, 45),
+(60, 248, 0, '责任人从 未知 变成 质量经理测试账号', 1, '投诉单 121 责任人变更', 121, 67, NULL, 1, 48, 1413706335, 1413706410, 67),
+(61, 250, 0, '已分配 => 已解决', 1, '投诉单 121状态更新', 121, 45, NULL, 1, 67, 1413706843, 1413706863, 45),
 (62, 251, 0, '已解决 => 已关闭', 1, '投诉单 121状态更新', 121, 67, NULL, 1, 45, 1413707410, 1413707410, 45),
-(63, NULL, 1, NULL, 0, '关于投诉单121的反馈', 121, 45, 'http://localhost/cts/index.php/order/feedback?id=121', 0, 45, 1413707410, 1413858044, 45),
-(64, 256, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 116  责任人变更', 116, 0, NULL, 1, 48, 1413947791, 1413947791, 48),
-(65, 256, 1, '由  未知 变更为 采购经理测试账号', 1, '订单 116  责任人变更', 116, 66, NULL, 1, 48, 1413947791, 1413947834, 66),
-(66, 257, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 113  责任人变更', 113, 0, NULL, 1, 48, 1413952050, 1413952050, 48),
-(67, 257, 1, '由  未知 变更为 采购经理测试账号', 1, '订单 113  责任人变更', 113, 66, NULL, 1, 48, 1413952050, 1413953342, 66),
-(68, 260, 1, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 113 处理人变更', 113, 74, NULL, 1, 48, 1413952051, 1413960759, 74),
-(69, 262, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 122  责任人变更', 122, 0, NULL, 1, 48, 1413952680, 1413952680, 48),
-(70, 262, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 122  责任人变更', 122, 67, NULL, 1, 48, 1413952680, 1413952680, 48),
-(71, 265, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 122 处理人变更', 122, 73, NULL, 1, 48, 1413952681, 1414385625, 73),
-(72, 269, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 123  责任人变更', 123, 0, NULL, 1, 48, 1413953611, 1413953611, 48),
-(73, 269, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 123  责任人变更', 123, 67, NULL, 1, 48, 1413953611, 1413953703, 67),
-(74, 269, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 123  责任人变更', 123, 73, NULL, 1, 48, 1413953611, 1414385625, 73),
-(75, 271, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 123 处理人变更', 123, 73, NULL, 1, 48, 1413953611, 1414385625, 73),
-(76, 273, 1, '投诉单提交', 1, '投诉单 125 提交', 125, 48, NULL, 1, 45, 1413953983, 1416204824, 48),
+(63, NULL, 0, NULL, 0, '关于投诉单121的反馈', 121, 45, 'http://localhost/cts/index.php/order/feedback?id=121', 0, 45, 1413707410, 1413858044, 45),
+(64, 256, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 116  责任人变更', 116, 0, NULL, 1, 48, 1413947791, 1413947791, 48),
+(65, 256, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 116  责任人变更', 116, 66, NULL, 1, 48, 1413947791, 1413947834, 66),
+(66, 257, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 113  责任人变更', 113, 0, NULL, 1, 48, 1413952050, 1413952050, 48),
+(67, 257, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 113  责任人变更', 113, 66, NULL, 1, 48, 1413952050, 1413953342, 66),
+(68, 260, 0, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 113 处理人变更', 113, 74, NULL, 1, 48, 1413952051, 1413960759, 74),
+(69, 262, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 122  责任人变更', 122, 0, NULL, 1, 48, 1413952680, 1413952680, 48),
+(70, 262, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 122  责任人变更', 122, 67, NULL, 1, 48, 1413952680, 1413952680, 48),
+(71, 265, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 122 处理人变更', 122, 73, NULL, 1, 48, 1413952681, 1414385625, 73),
+(72, 269, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 123  责任人变更', 123, 0, NULL, 1, 48, 1413953611, 1413953611, 48),
+(73, 269, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 123  责任人变更', 123, 67, NULL, 1, 48, 1413953611, 1413953703, 67),
+(74, 269, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 123  责任人变更', 123, 73, NULL, 1, 48, 1413953611, 1414385625, 73),
+(75, 271, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 123 处理人变更', 123, 73, NULL, 1, 48, 1413953611, 1414385625, 73),
+(76, 273, 0, '投诉单提交', 1, '投诉单 125 提交', 125, 48, NULL, 1, 45, 1413953983, 1416204824, 48),
 (77, 273, 0, '投诉单提交', 1, '投诉单 125 提交', 125, 72, NULL, 1, 45, 1413953983, 1413953983, 45),
-(78, 275, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 125  责任人变更', 125, 0, NULL, 1, 48, 1413954057, 1413954057, 48),
-(79, 275, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 125  责任人变更', 125, 67, NULL, 1, 48, 1413954057, 1413954057, 48),
-(80, 275, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 125  责任人变更', 125, 73, NULL, 1, 48, 1413954057, 1414385625, 73),
-(81, 277, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 125 处理人变更', 125, 73, NULL, 1, 48, 1413954057, 1414385625, 73),
-(82, 283, 1, '投诉单提交', 1, '投诉单 126 提交', 126, 48, NULL, 1, 70, 1413963519, 1416204824, 48),
+(78, 275, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 125  责任人变更', 125, 0, NULL, 1, 48, 1413954057, 1413954057, 48),
+(79, 275, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 125  责任人变更', 125, 67, NULL, 1, 48, 1413954057, 1413954057, 48),
+(80, 275, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 125  责任人变更', 125, 73, NULL, 1, 48, 1413954057, 1414385625, 73),
+(81, 277, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 125 处理人变更', 125, 73, NULL, 1, 48, 1413954057, 1414385625, 73),
+(82, 283, 0, '投诉单提交', 1, '投诉单 126 提交', 126, 48, NULL, 1, 70, 1413963519, 1416204824, 48),
 (83, 283, 0, '投诉单提交', 1, '投诉单 126 提交', 126, 72, NULL, 1, 70, 1413963519, 1413963519, 70),
-(84, 285, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 126  责任人变更', 126, 0, NULL, 1, 70, 1413963521, 1413963521, 70),
-(85, 285, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 126  责任人变更', 126, 67, NULL, 1, 70, 1413963521, 1413963521, 70),
-(86, 285, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 126  责任人变更', 126, 73, NULL, 1, 70, 1413963521, 1414385625, 73),
-(87, 287, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 126 处理人变更', 126, 73, NULL, 1, 70, 1413963521, 1414385625, 73),
-(88, 288, 1, '投诉单提交', 1, '投诉单 127 提交', 127, 48, NULL, 1, 70, 1413963526, 1416204824, 48),
+(84, 285, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 126  责任人变更', 126, 0, NULL, 1, 70, 1413963521, 1413963521, 70),
+(85, 285, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 126  责任人变更', 126, 67, NULL, 1, 70, 1413963521, 1413963521, 70),
+(86, 285, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 126  责任人变更', 126, 73, NULL, 1, 70, 1413963521, 1414385625, 73),
+(87, 287, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 126 处理人变更', 126, 73, NULL, 1, 70, 1413963521, 1414385625, 73),
+(88, 288, 0, '投诉单提交', 1, '投诉单 127 提交', 127, 48, NULL, 1, 70, 1413963526, 1416204824, 48),
 (89, 288, 0, '投诉单提交', 1, '投诉单 127 提交', 127, 72, NULL, 1, 70, 1413963526, 1413963526, 70),
-(90, 290, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 127  责任人变更', 127, 0, NULL, 1, 70, 1413963529, 1413963529, 70),
-(91, 290, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 127  责任人变更', 127, 67, NULL, 1, 70, 1413963529, 1413963529, 70),
-(92, 290, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 127  责任人变更', 127, 73, NULL, 1, 70, 1413963529, 1414385625, 73),
-(93, 292, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 127 处理人变更', 127, 73, NULL, 1, 70, 1413963529, 1414385625, 73),
-(94, 293, 1, '投诉单提交', 1, '投诉单 128 提交', 128, 48, NULL, 1, 70, 1413963584, 1416204824, 48),
+(90, 290, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 127  责任人变更', 127, 0, NULL, 1, 70, 1413963529, 1413963529, 70),
+(91, 290, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 127  责任人变更', 127, 67, NULL, 1, 70, 1413963529, 1413963529, 70),
+(92, 290, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 127  责任人变更', 127, 73, NULL, 1, 70, 1413963529, 1414385625, 73),
+(93, 292, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 127 处理人变更', 127, 73, NULL, 1, 70, 1413963529, 1414385625, 73),
+(94, 293, 0, '投诉单提交', 1, '投诉单 128 提交', 128, 48, NULL, 1, 70, 1413963584, 1416204824, 48),
 (95, 293, 0, '投诉单提交', 1, '投诉单 128 提交', 128, 72, NULL, 1, 70, 1413963584, 1413963584, 70),
-(96, 295, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 128  责任人变更', 128, 0, NULL, 1, 70, 1413963586, 1413963586, 70),
-(97, 295, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 128  责任人变更', 128, 67, NULL, 1, 70, 1413963586, 1413963586, 70),
-(98, 295, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 128  责任人变更', 128, 73, NULL, 1, 70, 1413963586, 1414385625, 73),
-(99, 297, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 128 处理人变更', 128, 73, NULL, 1, 70, 1413963586, 1414385625, 73),
-(100, 298, 1, '投诉单提交', 1, '投诉单 129 提交', 129, 48, NULL, 1, 70, 1413963626, 1416204824, 48),
+(96, 295, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 128  责任人变更', 128, 0, NULL, 1, 70, 1413963586, 1413963586, 70),
+(97, 295, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 128  责任人变更', 128, 67, NULL, 1, 70, 1413963586, 1413963586, 70),
+(98, 295, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 128  责任人变更', 128, 73, NULL, 1, 70, 1413963586, 1414385625, 73),
+(99, 297, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 128 处理人变更', 128, 73, NULL, 1, 70, 1413963586, 1414385625, 73),
+(100, 298, 0, '投诉单提交', 1, '投诉单 129 提交', 129, 48, NULL, 1, 70, 1413963626, 1416204824, 48),
 (101, 298, 0, '投诉单提交', 1, '投诉单 129 提交', 129, 72, NULL, 1, 70, 1413963626, 1413963626, 70),
-(102, 300, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 129  责任人变更', 129, 0, NULL, 1, 70, 1413963628, 1413963628, 70),
-(103, 300, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 129  责任人变更', 129, 67, NULL, 1, 70, 1413963628, 1413963628, 70),
-(104, 300, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 129  责任人变更', 129, 73, NULL, 1, 70, 1413963628, 1414385625, 73),
-(105, 302, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 129 处理人变更', 129, 73, NULL, 1, 70, 1413963628, 1414385625, 73),
-(106, 303, 1, '投诉单提交', 1, '投诉单 130 提交', 130, 48, NULL, 1, 70, 1413963633, 1416204824, 48),
+(102, 300, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 129  责任人变更', 129, 0, NULL, 1, 70, 1413963628, 1413963628, 70),
+(103, 300, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 129  责任人变更', 129, 67, NULL, 1, 70, 1413963628, 1413963628, 70),
+(104, 300, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 129  责任人变更', 129, 73, NULL, 1, 70, 1413963628, 1414385625, 73),
+(105, 302, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 129 处理人变更', 129, 73, NULL, 1, 70, 1413963628, 1414385625, 73),
+(106, 303, 0, '投诉单提交', 1, '投诉单 130 提交', 130, 48, NULL, 1, 70, 1413963633, 1416204824, 48),
 (107, 303, 0, '投诉单提交', 1, '投诉单 130 提交', 130, 72, NULL, 1, 70, 1413963633, 1413963633, 70),
-(108, 304, 1, '投诉单提交', 1, '投诉单 131 提交', 131, 48, NULL, 1, 70, 1413963994, 1416204824, 48),
+(108, 304, 0, '投诉单提交', 1, '投诉单 131 提交', 131, 48, NULL, 1, 70, 1413963994, 1416204824, 48),
 (109, 304, 0, '投诉单提交', 1, '投诉单 131 提交', 131, 72, NULL, 1, 70, 1413963994, 1413963994, 70),
-(110, 306, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 131  责任人变更', 131, 0, NULL, 1, 70, 1413963995, 1413963995, 70),
-(111, 306, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 131  责任人变更', 131, 67, NULL, 1, 70, 1413963995, 1413963995, 70),
-(112, 308, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 131 处理人变更', 131, 73, NULL, 1, 70, 1413963996, 1414385625, 73),
-(113, 309, 1, '投诉单提交', 1, '投诉单 132 提交', 132, 48, NULL, 1, 70, 1413964193, 1416204824, 48),
+(110, 306, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 131  责任人变更', 131, 0, NULL, 1, 70, 1413963995, 1413963995, 70),
+(111, 306, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 131  责任人变更', 131, 67, NULL, 1, 70, 1413963995, 1413963995, 70),
+(112, 308, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 131 处理人变更', 131, 73, NULL, 1, 70, 1413963996, 1414385625, 73),
+(113, 309, 0, '投诉单提交', 1, '投诉单 132 提交', 132, 48, NULL, 1, 70, 1413964193, 1416204824, 48),
 (114, 309, 0, '投诉单提交', 1, '投诉单 132 提交', 132, 72, NULL, 1, 70, 1413964193, 1413964193, 70),
-(115, 311, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 132  责任人变更', 132, 0, NULL, 1, 70, 1413964194, 1413964194, 70),
-(116, 311, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 132  责任人变更', 132, 67, NULL, 1, 70, 1413964194, 1413964194, 70),
-(117, 313, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 132 处理人变更', 132, 73, NULL, 1, 70, 1413964195, 1414385625, 73),
-(118, 314, 1, '投诉单提交', 1, '投诉单 133 提交', 133, 48, NULL, 1, 70, 1413964856, 1416204824, 48),
+(115, 311, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 132  责任人变更', 132, 0, NULL, 1, 70, 1413964194, 1413964194, 70),
+(116, 311, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 132  责任人变更', 132, 67, NULL, 1, 70, 1413964194, 1413964194, 70),
+(117, 313, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 132 处理人变更', 132, 73, NULL, 1, 70, 1413964195, 1414385625, 73),
+(118, 314, 0, '投诉单提交', 1, '投诉单 133 提交', 133, 48, NULL, 1, 70, 1413964856, 1416204824, 48),
 (119, 314, 0, '投诉单提交', 1, '投诉单 133 提交', 133, 72, NULL, 1, 70, 1413964856, 1413964856, 70),
-(120, 316, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 133  责任人变更', 133, 0, NULL, 1, 70, 1413964857, 1413964857, 70),
-(121, 316, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 133  责任人变更', 133, 67, NULL, 1, 70, 1413964857, 1413964857, 70),
-(122, 318, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 133 处理人变更', 133, 73, NULL, 1, 70, 1413964858, 1414385625, 73),
-(123, 319, 1, '投诉单提交', 1, '投诉单 134 提交', 134, 48, NULL, 1, 70, 1413964919, 1416204824, 48),
+(120, 316, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 133  责任人变更', 133, 0, NULL, 1, 70, 1413964857, 1413964857, 70),
+(121, 316, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 133  责任人变更', 133, 67, NULL, 1, 70, 1413964857, 1413964857, 70),
+(122, 318, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 133 处理人变更', 133, 73, NULL, 1, 70, 1413964858, 1414385625, 73),
+(123, 319, 0, '投诉单提交', 1, '投诉单 134 提交', 134, 48, NULL, 1, 70, 1413964919, 1416204824, 48),
 (124, 319, 0, '投诉单提交', 1, '投诉单 134 提交', 134, 72, NULL, 1, 70, 1413964919, 1413964919, 70),
-(125, 321, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 134  责任人变更', 134, 0, NULL, 1, 70, 1413964920, 1413964920, 70),
-(126, 321, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 134  责任人变更', 134, 67, NULL, 1, 70, 1413964920, 1413964920, 70),
-(127, 323, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 134 处理人变更', 134, 73, NULL, 1, 70, 1413964921, 1414385625, 73),
-(128, 324, 1, '投诉单提交', 1, '投诉单 135 提交', 135, 48, NULL, 1, 70, 1413965184, 1416204824, 48),
+(125, 321, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 134  责任人变更', 134, 0, NULL, 1, 70, 1413964920, 1413964920, 70),
+(126, 321, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 134  责任人变更', 134, 67, NULL, 1, 70, 1413964920, 1413964920, 70),
+(127, 323, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 134 处理人变更', 134, 73, NULL, 1, 70, 1413964921, 1414385625, 73),
+(128, 324, 0, '投诉单提交', 1, '投诉单 135 提交', 135, 48, NULL, 1, 70, 1413965184, 1416204824, 48),
 (129, 324, 0, '投诉单提交', 1, '投诉单 135 提交', 135, 72, NULL, 1, 70, 1413965184, 1413965184, 70),
-(130, 326, 1, '投诉单提交', 1, '投诉单 136 提交', 136, 48, NULL, 1, 70, 1413965551, 1416204824, 48),
+(130, 326, 0, '投诉单提交', 1, '投诉单 136 提交', 136, 48, NULL, 1, 70, 1413965551, 1416204824, 48),
 (131, 326, 0, '投诉单提交', 1, '投诉单 136 提交', 136, 72, NULL, 1, 70, 1413965551, 1413965551, 70),
-(132, 328, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 136  责任人变更', 136, 0, NULL, 1, 70, 1413965552, 1413965552, 70),
-(133, 328, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 136  责任人变更', 136, 67, NULL, 1, 70, 1413965552, 1413965552, 70),
-(134, 329, 1, '投诉单提交', 1, '投诉单 137 提交', 137, 48, NULL, 1, 70, 1413965788, 1416204824, 48),
+(132, 328, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 136  责任人变更', 136, 0, NULL, 1, 70, 1413965552, 1413965552, 70),
+(133, 328, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 136  责任人变更', 136, 67, NULL, 1, 70, 1413965552, 1413965552, 70),
+(134, 329, 0, '投诉单提交', 1, '投诉单 137 提交', 137, 48, NULL, 1, 70, 1413965788, 1416204824, 48),
 (135, 329, 0, '投诉单提交', 1, '投诉单 137 提交', 137, 72, NULL, 1, 70, 1413965788, 1413965788, 70),
-(136, 331, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 137  责任人变更', 137, 0, NULL, 1, 70, 1413965789, 1413965789, 70),
-(137, 331, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 137  责任人变更', 137, 67, NULL, 1, 70, 1413965789, 1413965789, 70),
-(138, 333, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 137 处理人变更', 137, 73, NULL, 1, 70, 1413965790, 1414385625, 73),
-(139, 334, 1, '投诉单提交', 1, '投诉单 138 提交', 138, 48, NULL, 1, 70, 1413965796, 1416204824, 48),
+(136, 331, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 137  责任人变更', 137, 0, NULL, 1, 70, 1413965789, 1413965789, 70),
+(137, 331, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 137  责任人变更', 137, 67, NULL, 1, 70, 1413965789, 1413965789, 70),
+(138, 333, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 137 处理人变更', 137, 73, NULL, 1, 70, 1413965790, 1414385625, 73),
+(139, 334, 0, '投诉单提交', 1, '投诉单 138 提交', 138, 48, NULL, 1, 70, 1413965796, 1416204824, 48),
 (140, 334, 0, '投诉单提交', 1, '投诉单 138 提交', 138, 72, NULL, 1, 70, 1413965796, 1413965796, 70),
-(141, 336, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 138  责任人变更', 138, 0, NULL, 1, 70, 1413965797, 1413965797, 70),
-(142, 336, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 138  责任人变更', 138, 67, NULL, 1, 70, 1413965797, 1413965797, 70),
-(143, 338, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 138 处理人变更', 138, 73, NULL, 1, 70, 1413965798, 1414385625, 73),
-(144, 339, 1, '投诉单提交', 1, '投诉单 139 提交', 139, 48, NULL, 1, 70, 1413965830, 1416204824, 48),
+(141, 336, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 138  责任人变更', 138, 0, NULL, 1, 70, 1413965797, 1413965797, 70),
+(142, 336, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 138  责任人变更', 138, 67, NULL, 1, 70, 1413965797, 1413965797, 70),
+(143, 338, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 138 处理人变更', 138, 73, NULL, 1, 70, 1413965798, 1414385625, 73),
+(144, 339, 0, '投诉单提交', 1, '投诉单 139 提交', 139, 48, NULL, 1, 70, 1413965830, 1416204824, 48),
 (145, 339, 0, '投诉单提交', 1, '投诉单 139 提交', 139, 72, NULL, 1, 70, 1413965830, 1413965830, 70),
-(146, 341, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 139  责任人变更', 139, 0, NULL, 1, 70, 1413965831, 1413965831, 70),
-(147, 341, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 139  责任人变更', 139, 67, NULL, 1, 70, 1413965831, 1413965831, 70),
-(148, 342, 1, '投诉单提交', 1, '投诉单 140 提交', 140, 48, NULL, 1, 70, 1413965875, 1416204824, 48),
+(146, 341, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 139  责任人变更', 139, 0, NULL, 1, 70, 1413965831, 1413965831, 70),
+(147, 341, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 139  责任人变更', 139, 67, NULL, 1, 70, 1413965831, 1413965831, 70),
+(148, 342, 0, '投诉单提交', 1, '投诉单 140 提交', 140, 48, NULL, 1, 70, 1413965875, 1416204824, 48),
 (149, 342, 0, '投诉单提交', 1, '投诉单 140 提交', 140, 72, NULL, 1, 70, 1413965875, 1413965875, 70),
-(150, 344, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 140  责任人变更', 140, 0, NULL, 1, 70, 1413965876, 1413965876, 70),
-(151, 344, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 140  责任人变更', 140, 67, NULL, 1, 70, 1413965876, 1413965876, 70),
-(152, 345, 1, '投诉单提交', 1, '投诉单 141 提交', 141, 48, NULL, 1, 70, 1413965895, 1416204824, 48),
+(150, 344, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 140  责任人变更', 140, 0, NULL, 1, 70, 1413965876, 1413965876, 70),
+(151, 344, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 140  责任人变更', 140, 67, NULL, 1, 70, 1413965876, 1413965876, 70),
+(152, 345, 0, '投诉单提交', 1, '投诉单 141 提交', 141, 48, NULL, 1, 70, 1413965895, 1416204824, 48),
 (153, 345, 0, '投诉单提交', 1, '投诉单 141 提交', 141, 72, NULL, 1, 70, 1413965895, 1413965895, 70),
-(154, 347, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 141  责任人变更', 141, 0, NULL, 1, 70, 1413965896, 1413965896, 70),
-(155, 347, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 141  责任人变更', 141, 67, NULL, 1, 70, 1413965896, 1413965896, 70),
-(156, 349, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 141 处理人变更', 141, 73, NULL, 1, 70, 1413965897, 1414385625, 73),
-(157, 350, 1, '投诉单提交', 1, '投诉单 142 提交', 142, 48, NULL, 1, 45, 1414023602, 1416204824, 48),
+(154, 347, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 141  责任人变更', 141, 0, NULL, 1, 70, 1413965896, 1413965896, 70),
+(155, 347, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 141  责任人变更', 141, 67, NULL, 1, 70, 1413965896, 1413965896, 70),
+(156, 349, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 141 处理人变更', 141, 73, NULL, 1, 70, 1413965897, 1414385625, 73),
+(157, 350, 0, '投诉单提交', 1, '投诉单 142 提交', 142, 48, NULL, 1, 45, 1414023602, 1416204824, 48),
 (158, 350, 0, '投诉单提交', 1, '投诉单 142 提交', 142, 72, NULL, 1, 45, 1414023602, 1414023602, 45),
-(159, 352, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 142  责任人变更', 142, 0, NULL, 1, 48, 1414023622, 1414023622, 48),
-(160, 352, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 142  责任人变更', 142, 67, NULL, 1, 48, 1414023622, 1414023622, 48),
-(161, 354, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 142 处理人变更', 142, 73, NULL, 1, 48, 1414023622, 1414385625, 73),
-(162, 355, 1, '投诉单提交', 1, '投诉单 143 提交', 143, 48, NULL, 1, 70, 1414023982, 1416204824, 48),
+(159, 352, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 142  责任人变更', 142, 0, NULL, 1, 48, 1414023622, 1414023622, 48),
+(160, 352, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 142  责任人变更', 142, 67, NULL, 1, 48, 1414023622, 1414023622, 48),
+(161, 354, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 142 处理人变更', 142, 73, NULL, 1, 48, 1414023622, 1414385625, 73),
+(162, 355, 0, '投诉单提交', 1, '投诉单 143 提交', 143, 48, NULL, 1, 70, 1414023982, 1416204824, 48),
 (163, 355, 0, '投诉单提交', 1, '投诉单 143 提交', 143, 72, NULL, 1, 70, 1414023982, 1414023982, 70),
-(164, 357, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 143  责任人变更', 143, 0, NULL, 1, 70, 1414023983, 1414023983, 70),
-(165, 357, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 143  责任人变更', 143, 67, NULL, 1, 70, 1414023983, 1414049717, 67),
-(166, 359, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 143 处理人变更', 143, 73, NULL, 1, 70, 1414023984, 1414385625, 73),
-(167, 360, 1, '投诉单提交', 1, '投诉单 144 提交', 144, 48, NULL, 1, 71, 1414024058, 1416204824, 48),
+(164, 357, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 143  责任人变更', 143, 0, NULL, 1, 70, 1414023983, 1414023983, 70),
+(165, 357, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 143  责任人变更', 143, 67, NULL, 1, 70, 1414023983, 1414049717, 67),
+(166, 359, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 143 处理人变更', 143, 73, NULL, 1, 70, 1414023984, 1414385625, 73),
+(167, 360, 0, '投诉单提交', 1, '投诉单 144 提交', 144, 48, NULL, 1, 71, 1414024058, 1416204824, 48),
 (168, 360, 0, '投诉单提交', 1, '投诉单 144 提交', 144, 72, NULL, 1, 71, 1414024058, 1414024058, 71),
-(169, 362, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 144  责任人变更', 144, 0, NULL, 1, 71, 1414024059, 1414024059, 71),
-(170, 362, 1, '由  未知 变更为 采购经理测试账号', 1, '订单 144  责任人变更', 144, 66, NULL, 1, 71, 1414024059, 1414460333, 66),
-(171, 364, 1, '投诉单提交', 1, '投诉单 145 提交', 145, 48, NULL, 1, 70, 1414024378, 1416204824, 48),
+(169, 362, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 144  责任人变更', 144, 0, NULL, 1, 71, 1414024059, 1414024059, 71),
+(170, 362, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 144  责任人变更', 144, 66, NULL, 1, 71, 1414024059, 1414460333, 66),
+(171, 364, 0, '投诉单提交', 1, '投诉单 145 提交', 145, 48, NULL, 1, 70, 1414024378, 1416204824, 48),
 (172, 364, 0, '投诉单提交', 1, '投诉单 145 提交', 145, 72, NULL, 1, 70, 1414024378, 1414024378, 70),
-(173, 367, 1, '投诉单提交', 1, '投诉单 146 提交', 146, 48, NULL, 1, 47, 1414049889, 1416204824, 48),
+(173, 367, 0, '投诉单提交', 1, '投诉单 146 提交', 146, 48, NULL, 1, 47, 1414049889, 1416204824, 48),
 (174, 367, 0, '投诉单提交', 1, '投诉单 146 提交', 146, 72, NULL, 1, 47, 1414049889, 1414049889, 47),
-(175, 368, 1, '投诉单提交', 1, '投诉单 147 提交', 147, 48, NULL, 1, 45, 1414050787, 1416204824, 48),
+(175, 368, 0, '投诉单提交', 1, '投诉单 147 提交', 147, 48, NULL, 1, 45, 1414050787, 1416204824, 48),
 (176, 368, 0, '投诉单提交', 1, '投诉单 147 提交', 147, 72, NULL, 1, 45, 1414050787, 1414050787, 45),
-(177, 370, 1, '投诉单提交', 1, '投诉单 148 提交', 148, 48, NULL, 1, 45, 1414120205, 1416204824, 48),
+(177, 370, 0, '投诉单提交', 1, '投诉单 148 提交', 148, 48, NULL, 1, 45, 1414120205, 1416204824, 48),
 (178, 370, 0, '投诉单提交', 1, '投诉单 148 提交', 148, 72, NULL, 1, 45, 1414120205, 1414120205, 45),
-(179, 371, 1, '投诉单提交', 1, '投诉单 149 提交', 149, 48, NULL, 1, 45, 1414131122, 1416204824, 48),
+(179, 371, 0, '投诉单提交', 1, '投诉单 149 提交', 149, 48, NULL, 1, 45, 1414131122, 1416204824, 48),
 (180, 371, 0, '投诉单提交', 1, '投诉单 149 提交', 149, 72, NULL, 1, 45, 1414131122, 1414131122, 45),
-(181, 373, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 149  责任人变更', 149, 0, NULL, 1, 48, 1414131148, 1414131148, 48),
-(182, 373, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 149  责任人变更', 149, 67, NULL, 1, 48, 1414131148, 1414131163, 67),
-(183, 375, 1, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 149 处理人变更', 149, 73, NULL, 1, 67, 1414131264, 1414385625, 73),
+(181, 373, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 149  责任人变更', 149, 0, NULL, 1, 48, 1414131148, 1414131148, 48),
+(182, 373, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 149  责任人变更', 149, 67, NULL, 1, 48, 1414131148, 1414131163, 67),
+(183, 375, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 149 处理人变更', 149, 73, NULL, 1, 67, 1414131264, 1414385625, 73),
 (184, 379, 0, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 144 处理人变更', 144, 74, NULL, 1, 66, 1414460151, 1414460151, 66),
-(185, 381, 1, '已解决 => 已关闭', 1, '投诉单 144状态更新', 144, 74, 'order/feedback?id=144', 1, 66, 1414460189, 1414460413, 74),
-(186, 384, 1, '投诉单提交', 1, '投诉单 150 提交', 150, 48, NULL, 1, 46, 1414819457, 1416204824, 48),
+(185, 381, 0, '已解决 => 已关闭', 1, '投诉单 144状态更新', 144, 74, 'order/feedback?id=144', 1, 66, 1414460189, 1414460413, 74),
+(186, 384, 0, '投诉单提交', 1, '投诉单 150 提交', 150, 48, NULL, 1, 46, 1414819457, 1416204824, 48),
 (187, 384, 0, '投诉单提交', 1, '投诉单 150 提交', 150, 72, NULL, 1, 46, 1414819457, 1414819457, 46),
-(188, 386, 1, '投诉单提交', 1, '投诉单 151 提交', 151, 48, NULL, 1, 45, 1414819640, 1416204824, 48),
+(188, 386, 0, '投诉单提交', 1, '投诉单 151 提交', 151, 48, NULL, 1, 45, 1414819640, 1416204824, 48),
 (189, 386, 0, '投诉单提交', 1, '投诉单 151 提交', 151, 72, NULL, 1, 45, 1414819640, 1414819640, 45),
-(190, 391, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 124  责任人变更', 124, 0, NULL, 1, 48, 1414820034, 1414820034, 48),
-(191, 391, 1, '由  未知 变更为 质量经理测试账号', 1, '订单 124  责任人变更', 124, 67, NULL, 1, 48, 1414820034, 1414821213, 67),
-(192, 393, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 111  责任人变更', 111, 0, NULL, 1, 48, 1414820060, 1414820060, 48),
-(193, 393, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 111  责任人变更', 111, 66, NULL, 1, 48, 1414820060, 1414820060, 48),
-(194, 395, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 110  责任人变更', 110, 0, NULL, 1, 48, 1414820117, 1414820117, 48),
-(195, 395, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 110  责任人变更', 110, 66, NULL, 1, 48, 1414820117, 1414820117, 48),
+(190, 391, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 124  责任人变更', 124, 0, NULL, 1, 48, 1414820034, 1414820034, 48),
+(191, 391, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 124  责任人变更', 124, 67, NULL, 1, 48, 1414820034, 1414821213, 67),
+(192, 393, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 111  责任人变更', 111, 0, NULL, 1, 48, 1414820060, 1414820060, 48),
+(193, 393, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 111  责任人变更', 111, 66, NULL, 1, 48, 1414820060, 1414820060, 48),
+(194, 395, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 110  责任人变更', 110, 0, NULL, 1, 48, 1414820117, 1414820117, 48),
+(195, 395, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 110  责任人变更', 110, 66, NULL, 1, 48, 1414820117, 1414820117, 48),
 (196, 397, 0, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 110 处理人变更', 110, 74, NULL, 1, 48, 1414820118, 1414820118, 48),
 (197, 402, 0, '已解决 => 已关闭', 1, '投诉单 149状态更新', 149, 73, NULL, 1, 67, 1414821084, 1414821084, 67),
 (198, 404, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 124 处理人变更', 124, 73, NULL, 1, 67, 1414821241, 1414821241, 67),
-(199, 406, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 109  责任人变更', 109, 0, NULL, 1, 48, 1415061784, 1415061784, 48),
-(200, 406, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 109  责任人变更', 109, 66, NULL, 1, 48, 1415061784, 1415061784, 48),
+(199, 406, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 109  责任人变更', 109, 0, NULL, 1, 48, 1415061784, 1415061784, 48),
+(200, 406, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 109  责任人变更', 109, 66, NULL, 1, 48, 1415061784, 1415061784, 48),
 (201, 408, 0, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 109 处理人变更', 109, 74, NULL, 1, 48, 1415061785, 1415061785, 48),
-(202, 410, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 108  责任人变更', 108, 0, NULL, 1, 48, 1415067406, 1415067406, 48),
-(203, 410, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 108  责任人变更', 108, 66, NULL, 1, 48, 1415067406, 1415067406, 48),
+(202, 410, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 108  责任人变更', 108, 0, NULL, 1, 48, 1415067406, 1415067406, 48),
+(203, 410, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 108  责任人变更', 108, 66, NULL, 1, 48, 1415067406, 1415067406, 48),
 (204, 412, 0, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 108 处理人变更', 108, 74, NULL, 1, 48, 1415067407, 1415067407, 48),
 (205, 415, 0, '已解决 => 已关闭', 1, '投诉单 113状态更新', 113, 74, NULL, 1, 66, 1415069363, 1415069363, 66),
-(206, 417, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 100  责任人变更', 100, 0, NULL, 1, 48, 1415071290, 1415071290, 48),
-(207, 417, 0, '由  未知 变更为 采购经理测试账号', 1, '订单 100  责任人变更', 100, 66, NULL, 1, 48, 1415071290, 1415071290, 48),
+(206, 417, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 100  责任人变更', 100, 0, NULL, 1, 48, 1415071290, 1415071290, 48),
+(207, 417, 0, '由  未知 变更为 采购经理测试账号', 1, '投诉单 100  责任人变更', 100, 66, NULL, 1, 48, 1415071290, 1415071290, 48),
 (208, 419, 0, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 100 处理人变更', 100, 74, NULL, 1, 48, 1415071291, 1415071291, 48),
 (209, 422, 0, '已解决 => 已关闭', 1, '投诉单 100状态更新', 100, 74, NULL, 1, 66, 1415076277, 1415076277, 66),
-(210, 423, 1, '投诉单提交', 1, '投诉单 152 提交', 152, 48, NULL, 1, 70, 1415683824, 1416204824, 48),
+(210, 423, 0, '投诉单提交', 1, '投诉单 152 提交', 152, 48, NULL, 1, 70, 1415683824, 1416204824, 48),
 (211, 423, 0, '投诉单提交', 1, '投诉单 152 提交', 152, 72, NULL, 1, 70, 1415683824, 1415683824, 70),
-(212, 424, 1, '投诉单提交', 1, '投诉单 153 提交', 153, 48, NULL, 1, 70, 1415684910, 1416204824, 48),
+(212, 424, 0, '投诉单提交', 1, '投诉单 153 提交', 153, 48, NULL, 1, 70, 1415684910, 1416204824, 48),
 (213, 424, 0, '投诉单提交', 1, '投诉单 153 提交', 153, 72, NULL, 1, 70, 1415684910, 1415684910, 70),
-(214, 426, 0, '由  Unknown 变更为 质量经理测试账号', 1, '订单 153  责任人变更', 153, 0, NULL, 1, 70, 1415684920, 1415684920, 70),
-(215, 426, 0, '由  Unknown 变更为 质量经理测试账号', 1, '订单 153  责任人变更', 153, 67, NULL, 1, 70, 1415684920, 1415684920, 70),
+(214, 426, 0, '由  Unknown 变更为 质量经理测试账号', 1, '投诉单 153  责任人变更', 153, 0, NULL, 1, 70, 1415684920, 1415684920, 70),
+(215, 426, 0, '由  Unknown 变更为 质量经理测试账号', 1, '投诉单 153  责任人变更', 153, 67, NULL, 1, 70, 1415684920, 1415684920, 70),
 (216, 428, 0, '处理人从 Unknown 变成 客户投诉处理人', 1, '投诉单 153 处理人变更', 153, 73, NULL, 1, 70, 1415684921, 1415684921, 70),
-(217, 429, 1, '投诉单提交', 1, '投诉单 154 提交', 154, 48, NULL, 1, 70, 1415685004, 1416204824, 48),
+(217, 429, 0, '投诉单提交', 1, '投诉单 154 提交', 154, 48, NULL, 1, 70, 1415685004, 1416204824, 48),
 (218, 429, 0, '投诉单提交', 1, '投诉单 154 提交', 154, 72, NULL, 1, 70, 1415685004, 1415685004, 70),
-(219, 430, 1, '投诉单提交', 1, '投诉单 155 提交', 155, 48, NULL, 1, 70, 1415685233, 1416204824, 48),
+(219, 430, 0, '投诉单提交', 1, '投诉单 155 提交', 155, 48, NULL, 1, 70, 1415685233, 1416204824, 48),
 (220, 430, 0, '投诉单提交', 1, '投诉单 155 提交', 155, 72, NULL, 1, 70, 1415685233, 1415685233, 70),
-(221, 431, 1, '投诉单提交', 1, '投诉单 156 提交', 156, 48, NULL, 1, 70, 1415685373, 1416204824, 48),
+(221, 431, 0, '投诉单提交', 1, '投诉单 156 提交', 156, 48, NULL, 1, 70, 1415685373, 1416204824, 48),
 (222, 431, 0, '投诉单提交', 1, '投诉单 156 提交', 156, 72, NULL, 1, 70, 1415685373, 1415685373, 70),
-(223, 432, 1, '投诉单提交', 1, '投诉单 157 提交', 157, 48, NULL, 1, 70, 1415685397, 1416204824, 48),
+(223, 432, 0, '投诉单提交', 1, '投诉单 157 提交', 157, 48, NULL, 1, 70, 1415685397, 1416204824, 48),
 (224, 432, 0, '投诉单提交', 1, '投诉单 157 提交', 157, 72, NULL, 1, 70, 1415685397, 1415685397, 70),
-(225, 433, 1, '投诉单提交', 1, '投诉单 158 提交', 158, 48, NULL, 1, 70, 1415685422, 1416204824, 48),
+(225, 433, 0, '投诉单提交', 1, '投诉单 158 提交', 158, 48, NULL, 1, 70, 1415685422, 1416204824, 48),
 (226, 433, 0, '投诉单提交', 1, '投诉单 158 提交', 158, 72, NULL, 1, 70, 1415685422, 1415685422, 70),
-(227, 434, 1, '投诉单提交', 1, '投诉单 159 提交', 159, 48, NULL, 1, 70, 1415685446, 1416204824, 48),
+(227, 434, 0, '投诉单提交', 1, '投诉单 159 提交', 159, 48, NULL, 1, 70, 1415685446, 1416204824, 48),
 (228, 434, 0, '投诉单提交', 1, '投诉单 159 提交', 159, 72, NULL, 1, 70, 1415685446, 1415685446, 70),
-(229, 436, 0, '由  Unknown 变更为 质量经理测试账号', 1, '订单 159  责任人变更', 159, 0, NULL, 1, 70, 1415685447, 1415685447, 70),
-(230, 436, 0, '由  Unknown 变更为 质量经理测试账号', 1, '订单 159  责任人变更', 159, 67, NULL, 1, 70, 1415685447, 1415685447, 70),
+(229, 436, 0, '由  Unknown 变更为 质量经理测试账号', 1, '投诉单 159  责任人变更', 159, 0, NULL, 1, 70, 1415685447, 1415685447, 70),
+(230, 436, 0, '由  Unknown 变更为 质量经理测试账号', 1, '投诉单 159  责任人变更', 159, 67, NULL, 1, 70, 1415685447, 1415685447, 70),
 (231, 438, 0, '处理人从 Unknown 变成 客户投诉处理人', 1, '投诉单 159 处理人变更', 159, 73, NULL, 1, 70, 1415685448, 1415685448, 70),
-(232, 442, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 156  责任人变更', 156, 0, NULL, 1, 48, 1416288574, 1416288574, 48),
-(233, 442, 0, '由  未知 变更为 质量经理测试账号', 1, '订单 156  责任人变更', 156, 67, NULL, 1, 48, 1416288575, 1416288575, 48),
-(234, 444, 0, '由  未知 变更为 administrator', 1, '订单 103  责任人变更', 103, 0, NULL, 1, 48, 1416442039, 1416442039, 48),
-(235, 444, 0, '由  未知 变更为 administrator', 1, '订单 103  责任人变更', 103, 44, NULL, 1, 48, 1416442039, 1416442039, 48),
-(236, 446, 0, '由  未知 变更为 administrator', 1, '订单 97  责任人变更', 97, 0, NULL, 1, 48, 1416442747, 1416442747, 48),
-(237, 446, 0, '由  未知 变更为 administrator', 1, '订单 97  责任人变更', 97, 44, NULL, 1, 48, 1416442747, 1416442747, 48),
-(238, 448, 0, '由  未知 变更为 administrator', 1, '订单 94  责任人变更', 94, 0, NULL, 1, 48, 1416443069, 1416443069, 48),
-(239, 448, 0, '由  未知 变更为 administrator', 1, '订单 94  责任人变更', 94, 44, NULL, 1, 48, 1416443069, 1416443069, 48),
-(240, 449, 0, '由  未知 变更为 administrator', 1, '订单 150  责任人变更', 150, 0, NULL, 1, 48, 1416443404, 1416443404, 48),
-(241, 449, 0, '由  未知 变更为 administrator', 1, '订单 150  责任人变更', 150, 44, NULL, 1, 48, 1416443404, 1416443404, 48),
-(242, 450, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 116  责任人变更', 116, 66, NULL, 1, 48, 1416457525, 1416457525, 48),
-(243, 450, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 116  责任人变更', 116, 44, NULL, 1, 48, 1416457525, 1416457525, 48),
-(244, 451, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 111  责任人变更', 111, 66, NULL, 1, 48, 1416457631, 1416457631, 48),
-(245, 451, 0, '由  采购经理测试账号 变更为 administrator', 1, '订单 111  责任人变更', 111, 44, NULL, 1, 48, 1416457631, 1416457631, 48);
+(232, 442, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 156  责任人变更', 156, 0, NULL, 1, 48, 1416288574, 1416288574, 48),
+(233, 442, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 156  责任人变更', 156, 67, NULL, 1, 48, 1416288575, 1416288575, 48),
+(234, 444, 0, '由  未知 变更为 administrator', 1, '投诉单 103  责任人变更', 103, 0, NULL, 1, 48, 1416442039, 1416442039, 48),
+(235, 444, 0, '由  未知 变更为 administrator', 1, '投诉单 103  责任人变更', 103, 44, NULL, 1, 48, 1416442039, 1417182601, 44),
+(236, 446, 0, '由  未知 变更为 administrator', 1, '投诉单 97  责任人变更', 97, 0, NULL, 1, 48, 1416442747, 1416442747, 48),
+(237, 446, 0, '由  未知 变更为 administrator', 1, '投诉单 97  责任人变更', 97, 44, NULL, 1, 48, 1416442747, 1417182587, 44),
+(238, 448, 0, '由  未知 变更为 administrator', 1, '投诉单 94  责任人变更', 94, 0, NULL, 1, 48, 1416443069, 1416443069, 48),
+(239, 448, 0, '由  未知 变更为 administrator', 1, '投诉单 94  责任人变更', 94, 44, NULL, 1, 48, 1416443069, 1417182582, 44),
+(240, 449, 0, '由  未知 变更为 administrator', 1, '投诉单 150  责任人变更', 150, 0, NULL, 1, 48, 1416443404, 1416443404, 48),
+(241, 449, 0, '由  未知 变更为 administrator', 1, '投诉单 150  责任人变更', 150, 44, NULL, 1, 48, 1416443404, 1417182574, 44),
+(242, 450, 0, '由  采购经理测试账号 变更为 administrator', 1, '投诉单 116  责任人变更', 116, 66, NULL, 1, 48, 1416457525, 1416457525, 48),
+(243, 450, 1, '由  采购经理测试账号 变更为 administrator', 1, '投诉单 116  责任人变更', 116, 44, NULL, 1, 48, 1416457525, 1417182912, 44),
+(244, 451, 0, '由  采购经理测试账号 变更为 administrator', 1, '投诉单 111  责任人变更', 111, 66, NULL, 1, 48, 1416457631, 1416457631, 48),
+(245, 451, 1, '由  采购经理测试账号 变更为 administrator', 1, '投诉单 111  责任人变更', 111, 44, NULL, 1, 48, 1416457631, 1417182851, 44),
+(246, 454, 0, '投诉单提交', 1, '投诉单 160 提交', 160, 48, NULL, 1, 69, 1416874564, 1416874564, 69),
+(247, 454, 0, '投诉单提交', 1, '投诉单 160 提交', 160, 72, NULL, 1, 69, 1416874564, 1416874564, 69),
+(248, 456, 0, '由  未知 变更为 超级管理员', 1, '投诉单 160  责任人变更', 160, 0, NULL, 1, 69, 1416874565, 1416874565, 69),
+(249, 456, 1, '由  未知 变更为 超级管理员', 1, '投诉单 160  责任人变更', 160, 44, NULL, 1, 69, 1416874565, 1417182846, 44),
+(250, 457, 0, '投诉单提交', 1, '投诉单 161 提交', 161, 48, NULL, 1, 69, 1416981175, 1416981175, 69),
+(251, 457, 0, '投诉单提交', 1, '投诉单 161 提交', 161, 72, NULL, 1, 69, 1416981175, 1416981175, 69),
+(252, 459, 0, '由  未知 变更为 超级管理员', 1, '投诉单 161  责任人变更', 161, 0, NULL, 1, 69, 1416981176, 1416981176, 69),
+(253, 459, 1, '由  未知 变更为 超级管理员', 1, '投诉单 161  责任人变更', 161, 44, NULL, 1, 69, 1416981176, 1417182842, 44),
+(254, 460, 0, '投诉单提交', 1, '投诉单 162 提交', 162, 48, NULL, 1, 45, 1417066013, 1417066423, 48),
+(255, 460, 0, '投诉单提交', 1, '投诉单 162 提交', 162, 72, NULL, 1, 45, 1417066013, 1417066013, 45),
+(256, 462, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 162  责任人变更', 162, 0, NULL, 1, 48, 1417066788, 1417066788, 48),
+(257, 462, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 162  责任人变更', 162, 67, NULL, 1, 48, 1417066788, 1417067085, 67),
+(258, 464, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 162 处理人变更', 162, 73, NULL, 1, 67, 1417069463, 1417069612, 73),
+(259, 467, 0, '已解决 => 已关闭', 1, '投诉单 162状态更新', 162, 73, NULL, 1, 45, 1417072288, 1417072288, 45),
+(260, 468, 0, '投诉单提交', 1, '投诉单 163 提交', 163, 48, NULL, 1, 45, 1417172128, 1417172198, 48),
+(261, 468, 0, '投诉单提交', 1, '投诉单 163 提交', 163, 72, NULL, 1, 45, 1417172128, 1417172128, 45),
+(262, 470, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 163  责任人变更', 163, 0, NULL, 1, 48, 1417172234, 1417172234, 48),
+(263, 470, 0, '由  未知 变更为 质量经理测试账号', 1, '投诉单 163  责任人变更', 163, 67, NULL, 1, 48, 1417172234, 1417172284, 67),
+(264, 472, 0, '处理人从 未知 变成 客户投诉处理人', 1, '投诉单 163 处理人变更', 163, 73, NULL, 1, 67, 1417172309, 1417172363, 73),
+(265, 475, 0, '已解决 => 已关闭', 1, '投诉单 163状态更新', 163, 73, NULL, 1, 45, 1417172882, 1417172882, 45);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_notice_rules`
+-- 表的结构 `ct_notice_rules`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_notice_rules` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `log_type_id` int(11) NOT NULL COMMENT '订单日志类型',
+  `log_type_id` int(11) NOT NULL COMMENT '投诉单日志类型',
   `description` varchar(255) NOT NULL,
   `order_type` varchar(255) NOT NULL DEFAULT 'all' COMMENT '父值集',
   `notice_created_by` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '创建者',
@@ -1071,7 +1093,7 @@ CREATE TABLE IF NOT EXISTS `ct_notice_rules` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='通知规则信息' AUTO_INCREMENT=16 ;
 
 --
--- Dumping data for table `ct_notice_rules`
+-- 转存表中的数据 `ct_notice_rules`
 --
 
 INSERT INTO `ct_notice_rules` (`id`, `log_type_id`, `description`, `order_type`, `notice_created_by`, `notice_manager`, `notice_leader`, `when_new_value`, `when_old_value`, `default_role_id`, `inactive_flag`, `function_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -1087,7 +1109,7 @@ INSERT INTO `ct_notice_rules` (`id`, `log_type_id`, `description`, `order_type`,
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_notice_rules_v`
+-- 替换视图以便查看 `ct_notice_rules_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_notice_rules_v` (
 `id` int(10) unsigned
@@ -1118,13 +1140,13 @@ CREATE TABLE IF NOT EXISTS `ct_notice_rules_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_orders`
+-- 表的结构 `ct_orders`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_type` varchar(20) NOT NULL COMMENT '订单类型',
-  `status` varchar(20) NOT NULL COMMENT '订单状态',
+  `order_type` varchar(20) NOT NULL COMMENT '投诉单类型',
+  `status` varchar(20) NOT NULL COMMENT '投诉单状态',
   `severity` varchar(20) NOT NULL COMMENT '严重程度',
   `frequency` varchar(20) NOT NULL COMMENT '发生频率',
   `category` varchar(20) DEFAULT NULL COMMENT '分类',
@@ -1146,10 +1168,10 @@ CREATE TABLE IF NOT EXISTS `ct_orders` (
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_type`,`status`,`manager_id`) USING BTREE,
   KEY `Index_3` (`created_by`,`creation_date`,`status`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=160 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单信息表' AUTO_INCREMENT=164 ;
 
 --
--- Dumping data for table `ct_orders`
+-- 转存表中的数据 `ct_orders`
 --
 
 INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, `category`, `title`, `manager_id`, `leader_id`, `plan_complete_date`, `contact`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `warning_times`, `pcd_change_times`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -1300,17 +1322,21 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (156, 'customer', 'confirmed', 'low', 'low', '10', '22', NULL, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685373, 70, 1416288574, 48),
 (157, 'customer', 'confirmed', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685397, 70, 1416288414, 48),
 (158, 'customer', 'confirmed', 'low', 'low', '10', '22', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685421, 70, 1416288305, 48),
-(159, 'customer', 'allocated', 'low', 'low', '10', '22', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685446, 70, 1415685448, 70);
+(159, 'customer', 'allocated', 'low', 'low', '10', '22', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1415685446, 70, 1415685448, 70),
+(160, 'vendor', 'confirmed', 'middle', 'middle', '10', '速创问题根据', NULL, 44, NULL, '仙', '0577-62888888', '13867777777', '乐清市建设中路12号', '速创科技合伙企业', 0, 0, 1416874564, 69, 1416874565, 69),
+(161, 'vendor', 'confirmed', 'low', 'low', '10', '12', NULL, 44, NULL, '张三', '8888888888', '13777777777', '乐清市经济开发期纬8路', '浙江**有限公司', 0, 0, 1416981175, 69, 1416981176, 69),
+(162, 'customer', 'closed', 'middle', 'middle', '10', '质量问题', 73, 67, 1417165200, '陈某某', '', '13777777777', '', '', 0, 1, 1417066013, 45, 1417072288, 45),
+(163, 'customer', 'closed', 'high', 'low', '10', 'xxx质量有问题', 73, 67, 1417251600, '陈某某', '', '13777777777', '', '', 0, 1, 1417172128, 45, 1417172882, 45);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_order_addfiles`
+-- 表的结构 `ct_order_addfiles`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_order_addfiles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `order_id` int(11) NOT NULL COMMENT '投诉单ID',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
   `last_update_date` int(11) DEFAULT NULL,
@@ -1322,7 +1348,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单附件表' AUTO_INCREMENT=11 ;
 
 --
--- Dumping data for table `ct_order_addfiles`
+-- 转存表中的数据 `ct_order_addfiles`
 --
 
 INSERT INTO `ct_order_addfiles` (`id`, `order_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `file_id`, `description`) VALUES
@@ -1340,7 +1366,7 @@ INSERT INTO `ct_order_addfiles` (`id`, `order_id`, `created_by`, `creation_date`
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_order_addfiles_v`
+-- 替换视图以便查看 `ct_order_addfiles_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_order_addfiles_v` (
 `id` int(11)
@@ -1358,22 +1384,22 @@ CREATE TABLE IF NOT EXISTS `ct_order_addfiles_v` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_order_category_vl`
+-- 替换视图以便查看 `ct_order_category_vl`
 --
 CREATE TABLE IF NOT EXISTS `ct_order_category_vl` (
-`segment_desc` text
+`segment_desc` longtext
 ,`segment_value` varchar(255)
 ,`id` int(11)
 );
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_order_contents`
+-- 表的结构 `ct_order_contents`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `order_id` int(11) NOT NULL COMMENT '投诉单ID',
   `content` text NOT NULL COMMENT '内容',
   `created_by` int(11) NOT NULL,
   `creation_date` int(11) NOT NULL,
@@ -1381,19 +1407,19 @@ CREATE TABLE IF NOT EXISTS `ct_order_contents` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=219 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单内容及回复表' AUTO_INCREMENT=226 ;
 
 --
--- Dumping data for table `ct_order_contents`
+-- 转存表中的数据 `ct_order_contents`
 --
 
 INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(1, 1, '供应商投诉订单测试', 44, 1412058395, 1412058395, -1),
-(2, 2, '供应商投诉订单测试', 44, 1412058525, 1412058525, 44),
-(3, 3, '供应商投诉订单测试', 44, 1412058552, 1412058552, 44),
-(4, 4, '供应商投诉订单测试', 44, 1412058587, 1412058587, 44),
-(5, 5, '供应商投诉订单测试', 44, 1412058603, 1412058603, 44),
-(6, 6, '供应商投诉订单测试', 44, 1412058653, 1412058653, 44),
+(1, 1, '供应商投诉投诉单测试', 44, 1412058395, 1412058395, -1),
+(2, 2, '供应商投诉投诉单测试', 44, 1412058525, 1412058525, 44),
+(3, 3, '供应商投诉投诉单测试', 44, 1412058552, 1412058552, 44),
+(4, 4, '供应商投诉投诉单测试', 44, 1412058587, 1412058587, 44),
+(5, 5, '供应商投诉投诉单测试', 44, 1412058603, 1412058603, 44),
+(6, 6, '供应商投诉投诉单测试', 44, 1412058653, 1412058653, 44),
 (7, 7, 'asdf', 44, 1412058707, 1412058707, 44),
 (8, 8, '阿三地方', 44, 1412059034, 1412059034, 44),
 (9, 9, '阿三地方', 44, 1412059093, 1412059093, 44),
@@ -1597,17 +1623,24 @@ INSERT INTO `ct_order_contents` (`id`, `order_id`, `content`, `created_by`, `cre
 (215, 156, '22', 70, 1415685373, 1415685373, 70),
 (216, 157, '22', 70, 1415685397, 1415685397, 70),
 (217, 158, '22', 70, 1415685421, 1415685421, 70),
-(218, 159, '22', 70, 1415685446, 1415685446, 70);
+(218, 159, '22', 70, 1415685446, 1415685446, 70),
+(219, 160, '速创问题根据1速创问题根据2', 69, 1416874564, 1416874564, 69),
+(220, 161, '123', 69, 1416981175, 1416981175, 69),
+(221, 116, '123', 69, 1416992759, 1416992759, 69),
+(222, 161, 'ok', 44, 1416992847, 1416992847, 44),
+(223, 161, '123', 44, 1416992856, 1416992856, 44),
+(224, 162, '质量问题', 45, 1417066013, 1417066013, 45),
+(225, 163, '质量太烂了', 45, 1417172128, 1417172128, 45);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_order_logs`
+-- 表的结构 `ct_order_logs`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `order_id` int(11) NOT NULL COMMENT '投诉单ID',
   `log_type` varchar(20) NOT NULL COMMENT '日志类型',
   `new_value` varchar(255) NOT NULL COMMENT '新值',
   `old_value` varchar(255) DEFAULT NULL COMMENT '旧值',
@@ -1620,10 +1653,10 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_3` (`change_hash`),
   KEY `Index_2` (`order_id`,`log_type`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=454 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=476 ;
 
 --
--- Dumping data for table `ct_order_logs`
+-- 转存表中的数据 `ct_order_logs`
 --
 
 INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_value`, `reason`, `change_hash`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -2067,12 +2100,34 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (450, 116, 'leader_change', '44', '66', NULL, 1416457525, 1416457525, 48, 1416457525, 48),
 (451, 111, 'leader_change', '44', '66', NULL, 1416457631, 1416457631, 48, 1416457631, 48),
 (452, 104, 'order_status', 'confirmed', 'released', NULL, 1416457675, 1416457675, 48, 1416457675, 48),
-(453, 152, 'order_status', 'confirmed', 'released', NULL, 1416458111, 1416458111, 48, 1416458111, 48);
+(453, 152, 'order_status', 'confirmed', 'released', NULL, 1416458111, 1416458111, 48, 1416458111, 48),
+(454, 160, 'order_status_new', 'released', '', NULL, 1416874564, 1416874564, 69, 1416874564, 69),
+(455, 160, 'order_status', 'confirmed', 'released', NULL, 1416874564, 1416874564, 69, 1416874564, 69),
+(456, 160, 'leader_change', '44', '0', NULL, 1416874565, 1416874565, 69, 1416874565, 69),
+(457, 161, 'order_status_new', 'released', '', NULL, 1416981175, 1416981175, 69, 1416981175, 69),
+(458, 161, 'order_status', 'confirmed', 'released', NULL, 1416981175, 1416981175, 69, 1416981175, 69),
+(459, 161, 'leader_change', '44', '0', NULL, 1416981176, 1416981176, 69, 1416981176, 69),
+(460, 162, 'order_status_new', 'released', '', NULL, 1417066013, 1417066013, 45, 1417066013, 45),
+(461, 162, 'order_status', 'confirmed', 'released', NULL, 1417066658, 1417066658, 48, 1417066658, 48),
+(462, 162, 'leader_change', '67', '0', NULL, 1417066788, 1417066788, 48, 1417066788, 48),
+(463, 162, 'order_status', 'allocated', 'confirmed', NULL, 1417069463, 1417069463, 67, 1417069463, 67),
+(464, 162, 'manager_change', '73', NULL, NULL, 1417069463, 1417069463, 67, 1417069463, 67),
+(465, 162, 'pcd_update', '1417165200', NULL, NULL, 1417069838, 1417069838, 73, 1417069838, 73),
+(466, 162, 'order_status', 'done', 'allocated', NULL, 1417070136, 1417070136, 73, 1417070136, 73),
+(467, 162, 'order_status', 'closed', 'done', NULL, 1417072288, 1417072288, 45, 1417072288, 45),
+(468, 163, 'order_status_new', 'released', '', NULL, 1417172128, 1417172128, 45, 1417172128, 45),
+(469, 163, 'order_status', 'confirmed', 'released', NULL, 1417172212, 1417172212, 48, 1417172212, 48),
+(470, 163, 'leader_change', '67', '0', NULL, 1417172234, 1417172234, 48, 1417172234, 48),
+(471, 163, 'order_status', 'allocated', 'confirmed', NULL, 1417172309, 1417172309, 67, 1417172309, 67),
+(472, 163, 'manager_change', '73', NULL, NULL, 1417172309, 1417172309, 67, 1417172309, 67),
+(473, 163, 'pcd_update', '1417251600', NULL, NULL, 1417172424, 1417172424, 73, 1417172424, 73),
+(474, 163, 'order_status', 'done', 'allocated', NULL, 1417172703, 1417172703, 73, 1417172703, 73),
+(475, 163, 'order_status', 'closed', 'done', NULL, 1417172882, 1417172882, 45, 1417172882, 45);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_order_logs_v`
+-- 替换视图以便查看 `ct_order_logs_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_order_logs_v` (
 `id` int(11)
@@ -2097,7 +2152,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_order_log_types`
+-- 表的结构 `ct_order_log_types`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_order_log_types` (
@@ -2118,7 +2173,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_log_types` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志类型表' AUTO_INCREMENT=11 ;
 
 --
--- Dumping data for table `ct_order_log_types`
+-- 转存表中的数据 `ct_order_log_types`
 --
 
 INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `content`, `need_reason_flag`, `field_name`, `dll_type`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `field_valuelist_id`) VALUES
@@ -2126,17 +2181,17 @@ INSERT INTO `ct_order_log_types` (`id`, `log_type`, `description`, `title`, `con
 (5, 'pcd_update', '计划完成时间更新', '投诉单 &order_id 计划完成日期变更', '计划完成时间变更从&old_value 改为 &new_value ', 1, 'plan_complete_date', 'update', 44, 1412408774, 1413563517, 44, 0),
 (8, 'order_status', '状态更新', '投诉单 &order_id状态更新', '&old_value => &new_value', 0, 'status', 'update', 44, 1413558149, 1413876183, 44, 0),
 (9, 'order_status_new', '投诉单提交', '投诉单 &order_id 提交', '投诉单提交', 0, 'status', 'insert', 44, 1413558239, 1413876189, 44, 0),
-(10, 'leader_change', '责任人（部门经理）变更', '订单 &order_id  责任人变更', '由  &old_value 变更为 &new_value', 1, 'leader_id', 'update', 44, 1413946243, 1413946243, 44, 17);
+(10, 'leader_change', '责任人（部门经理）变更', '投诉单 &order_id  责任人变更', '由  &old_value 变更为 &new_value', 1, 'leader_id', 'update', 44, 1413946243, 1417077464, 44, 17);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_order_meetings`
+-- 表的结构 `ct_order_meetings`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
+  `order_id` int(10) unsigned NOT NULL COMMENT '投诉单ID',
   `meeting_id` int(10) unsigned NOT NULL COMMENT '会议ID',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
@@ -2144,10 +2199,10 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `last_updated_by` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=15 ;
 
 --
--- Dumping data for table `ct_order_meetings`
+-- 转存表中的数据 `ct_order_meetings`
 --
 
 INSERT INTO `ct_order_meetings` (`id`, `order_id`, `meeting_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -2160,12 +2215,15 @@ INSERT INTO `ct_order_meetings` (`id`, `order_id`, `meeting_id`, `created_by`, `
 (8, 100, 6, 44, 1413616500, 1413616500, 44),
 (9, 149, 7, 73, 1414132468, 1414132468, 73),
 (10, 113, 8, 74, 1415069247, 1415069247, 74),
-(11, 144, 9, 44, 1416276843, 1416276843, 44);
+(11, 144, 9, 44, 1416276843, 1416276843, 44),
+(12, 162, 10, 73, 1417070046, 1417070046, 73),
+(13, 159, 11, 73, 1417172550, 1417172550, 73),
+(14, 163, 11, 73, 1417172550, 1417172550, 73);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_order_meetings_v`
+-- 替换视图以便查看 `ct_order_meetings_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_order_meetings_v` (
 `id` int(10) unsigned
@@ -2190,17 +2248,17 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings_v` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_order_status_vl`
+-- 替换视图以便查看 `ct_order_status_vl`
 --
 CREATE TABLE IF NOT EXISTS `ct_order_status_vl` (
-`label` text
+`label` longtext
 ,`value` varchar(255)
 ,`id` int(11)
 );
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_roles`
+-- 表的结构 `ct_roles`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_roles` (
@@ -2216,7 +2274,7 @@ CREATE TABLE IF NOT EXISTS `ct_roles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统角色信息表' AUTO_INCREMENT=18 ;
 
 --
--- Dumping data for table `ct_roles`
+-- 转存表中的数据 `ct_roles`
 --
 
 INSERT INTO `ct_roles` (`id`, `role_name`, `description`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -2239,7 +2297,7 @@ INSERT INTO `ct_roles` (`id`, `role_name`, `description`, `created_by`, `creatio
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_role_module_lines`
+-- 表的结构 `ct_role_module_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
@@ -2254,7 +2312,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=215 ;
 
 --
--- Dumping data for table `ct_role_module_lines`
+-- 转存表中的数据 `ct_role_module_lines`
 --
 
 INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -2405,7 +2463,6 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (191, 5, 53, 1415068548, 44, 1415068548, 44),
 (192, 5, 56, 1415068548, 44, 1415068548, 44),
 (193, 6, 53, 1415068569, 44, 1415068569, 44),
-(194, 6, 56, 1415068569, 44, 1415068569, 44),
 (195, 7, 53, 1415068590, 44, 1415068590, 44),
 (196, 7, 56, 1415068590, 44, 1415068590, 44),
 (197, 4, 56, 1415068631, 44, 1415068631, 44),
@@ -2430,7 +2487,7 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_role_module_lines_v`
+-- 替换视图以便查看 `ct_role_module_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_role_module_lines_v` (
 `role_module_line_id` int(11)
@@ -2457,7 +2514,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_role_profiles`
+-- 表的结构 `ct_role_profiles`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
@@ -2474,7 +2531,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限表' AUTO_INCREMENT=158 ;
 
 --
--- Dumping data for table `ct_role_profiles`
+-- 转存表中的数据 `ct_role_profiles`
 --
 
 INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `module_line_id`) VALUES
@@ -2554,7 +2611,7 @@ INSERT INTO `ct_role_profiles` (`id`, `role_id`, `object_id`, `creation_date`, `
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_role_profiles_v`
+-- 替换视图以便查看 `ct_role_profiles_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_role_profiles_v` (
 `id` int(11)
@@ -2570,7 +2627,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profiles_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_role_profile_lines`
+-- 表的结构 `ct_role_profile_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
@@ -2587,7 +2644,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应权限明细表' AUTO_INCREMENT=274 ;
 
 --
--- Dumping data for table `ct_role_profile_lines`
+-- 转存表中的数据 `ct_role_profile_lines`
 --
 
 INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -2628,7 +2685,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 (142, 94, 8, 'TRUE', 1413687234, 44, 1413687234, 44),
 (143, 94, 11, 'all', 1413687234, 44, 1413687234, 44),
 (144, 95, 3, 'customer', 1413687331, 44, 1413687331, 44),
-(145, 95, 4, 'allocated,closed', 1413687331, 44, 1414821072, 44),
+(145, 95, 4, 'allocated', 1413687331, 44, 1417172796, 44),
 (146, 95, 5, 'all', 1413687331, 44, 1413687331, 44),
 (148, 97, 7, 'all', 1413687335, 44, 1413687335, 44),
 (149, 98, 8, 'TRUE', 1413687338, 44, 1413687338, 44),
@@ -2744,7 +2801,7 @@ INSERT INTO `ct_role_profile_lines` (`id`, `profile_id`, `object_line_id`, `auth
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_role_profile_lines_v`
+-- 替换视图以便查看 `ct_role_profile_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_role_profile_lines_v` (
 `role_id` int(11)
@@ -2765,7 +2822,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_profile_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_status_authobjects`
+-- 表的结构 `ct_status_authobjects`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
@@ -2777,10 +2834,10 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobjects` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='权限对象验证' AUTO_INCREMENT=23 ;
 
 --
--- Dumping data for table `ct_status_authobjects`
+-- 转存表中的数据 `ct_status_authobjects`
 --
 
 INSERT INTO `ct_status_authobjects` (`id`, `group_id`, `object_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -2798,12 +2855,15 @@ INSERT INTO `ct_status_authobjects` (`id`, `group_id`, `object_id`, `created_by`
 (16, 14, 1, 44, 1416197503, 1416197503, 44),
 (17, 13, 1, 44, 1416197531, 1416197531, 44),
 (18, 15, 1, 44, 1416197599, 1416197599, 44),
-(19, 16, 1, 44, 1416197656, 1416197656, 44);
+(19, 16, 1, 44, 1416197656, 1416197656, 44),
+(20, 17, 1, 44, 1417069174, 1417069174, 44),
+(21, 18, 1, 44, 1417069325, 1417069325, 44),
+(22, 19, 1, 44, 1417069401, 1417069401, 44);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_status_authobjects_v`
+-- 替换视图以便查看 `ct_status_authobjects_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_status_authobjects_v` (
 `id` int(10) unsigned
@@ -2819,7 +2879,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobjects_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_status_authobj_lines`
+-- 表的结构 `ct_status_authobj_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
@@ -2832,10 +2892,10 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行权限对象值' AUTO_INCREMENT=64 ;
 
 --
--- Dumping data for table `ct_status_authobj_lines`
+-- 转存表中的数据 `ct_status_authobj_lines`
 --
 
 INSERT INTO `ct_status_authobj_lines` (`id`, `status_obj_id`, `authobj_line_id`, `auth_value`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -2883,12 +2943,21 @@ INSERT INTO `ct_status_authobj_lines` (`id`, `status_obj_id`, `authobj_line_id`,
 (51, 18, 3, 'employee', 44, 1416197599, 1416197617, 44),
 (52, 19, 4, 'reopen', 44, 1416197656, 1416197665, 44),
 (53, 19, 5, 'all', 44, 1416197656, 1416197656, 44),
-(54, 19, 3, 'employee', 44, 1416197656, 1416197671, 44);
+(54, 19, 3, 'employee', 44, 1416197656, 1416197671, 44),
+(55, 20, 4, 'allocated', 44, 1417069174, 1417069186, 44),
+(56, 20, 5, 'all', 44, 1417069174, 1417069174, 44),
+(57, 20, 3, 'vendor', 44, 1417069174, 1417069196, 44),
+(58, 21, 4, 'allocated', 44, 1417069325, 1417069346, 44),
+(59, 21, 5, 'all', 44, 1417069325, 1417069325, 44),
+(60, 21, 3, 'customer', 44, 1417069325, 1417069325, 44),
+(61, 22, 4, 'allocated', 44, 1417069401, 1417069410, 44),
+(62, 22, 5, 'all', 44, 1417069401, 1417069401, 44),
+(63, 22, 3, 'employee', 44, 1417069401, 1417069416, 44);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_status_authobj_lines_v`
+-- 替换视图以便查看 `ct_status_authobj_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines_v` (
 `id` int(10) unsigned
@@ -2909,7 +2978,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_authobj_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_status_conditions`
+-- 表的结构 `ct_status_conditions`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
@@ -2924,39 +2993,42 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions` (
   `last_updated_by` int(11) DEFAULT NULL,
   `group_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流转条件表' AUTO_INCREMENT=32 ;
 
 --
--- Dumping data for table `ct_status_conditions`
+-- 转存表中的数据 `ct_status_conditions`
 --
 
 INSERT INTO `ct_status_conditions` (`id`, `and_or`, `field_name`, `operation`, `target_value`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `group_id`) VALUES
 (2, 'AND', 'status', 'EQ', 'released', 44, 1414731289, 1415001573, 44, 2),
-(4, 'AND', 'leader_id', 'NE', 'null', 44, 1414731536, 1414731576, 44, 3),
-(5, 'AND', 'manager_id', 'NE', 'null', 44, 1414731591, 1414731591, 44, 3),
 (7, 'AND', 'status', 'EQ', 'confirmed', 44, 1414829103, 1415061862, 44, 3),
 (8, 'AND', 'status', 'EQ', 'allocated', 44, 1415062091, 1415062091, 44, 4),
 (9, 'AND', 'status', 'EQ', 'done', 44, 1415062134, 1415062134, 44, 5),
 (10, 'AND', 'status', 'EQ', 'closed', 44, 1415062209, 1415062209, 44, 6),
 (11, 'AND', 'status', 'EQ', 'released', 44, 1415234089, 1415234089, 44, 7),
 (12, 'AND', 'status', 'EQ', 'confirmed', 44, 1415234221, 1415234221, 44, 8),
-(13, 'AND', 'manager_id', 'NE', 'null', 44, 1415234235, 1415234235, 44, 8),
 (14, 'AND', 'leader_id', 'NE', 'null', 44, 1415234250, 1415234250, 44, 8),
 (15, 'AND', 'status', 'EQ', 'allocated', 44, 1415234313, 1415234313, 44, 9),
 (16, 'AND', 'status', 'EQ', 'done', 44, 1415234379, 1415234379, 44, 10),
 (17, 'AND', 'status', 'EQ', 'closed', 44, 1415234451, 1415234451, 44, 11),
 (18, 'AND', 'status', 'EQ', 'released', 44, 1416197256, 1416197256, 44, 12),
 (19, 'AND', 'manager_id', 'NE', 'null', 44, 1416197399, 1416197399, 44, 13),
-(20, 'AND', 'leader_id', 'NE', 'null', 44, 1416197417, 1416197417, 44, 13),
 (21, 'AND', 'status', 'EQ', 'confirmed', 44, 1416197431, 1416197431, 44, 13),
 (22, 'AND', 'status', 'EQ', 'allocated', 44, 1416197491, 1416197491, 44, 14),
 (23, 'AND', 'status', 'EQ', 'done', 44, 1416197587, 1416197587, 44, 15),
-(24, 'AND', 'status', 'EQ', 'closed', 44, 1416197649, 1416197649, 44, 16);
+(24, 'AND', 'status', 'EQ', 'closed', 44, 1416197649, 1416197649, 44, 16),
+(25, 'AND', 'leader_id', 'NE', 'null', 44, 1417069028, 1417069028, 44, 3),
+(26, 'AND', 'status', 'EQ', 'allocated', 44, 1417069232, 1417069232, 44, 17),
+(27, 'AND', 'manager_id', 'NE', 'null', 44, 1417069254, 1417069254, 44, 17),
+(28, 'AND', 'status', 'EQ', 'allocated', 44, 1417069360, 1417069360, 44, 18),
+(29, 'AND', 'leader_id', 'NE', 'null', 44, 1417069370, 1417069370, 44, 18),
+(30, 'AND', 'status', 'EQ', 'allocated', 44, 1417069426, 1417069426, 44, 19),
+(31, 'AND', 'manager_id', 'NE', 'null', 44, 1417069440, 1417069440, 44, 19);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_status_conditions_v`
+-- 替换视图以便查看 `ct_status_conditions_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_status_conditions_v` (
 `id` int(10) unsigned
@@ -2975,7 +3047,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_conditions_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_status_condition_groups`
+-- 表的结构 `ct_status_condition_groups`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_status_condition_groups` (
@@ -2987,10 +3059,10 @@ CREATE TABLE IF NOT EXISTS `ct_status_condition_groups` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流条件组' AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态流条件组' AUTO_INCREMENT=20 ;
 
 --
--- Dumping data for table `ct_status_condition_groups`
+-- 转存表中的数据 `ct_status_condition_groups`
 --
 
 INSERT INTO `ct_status_condition_groups` (`id`, `group_name`, `status_line_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -3008,12 +3080,15 @@ INSERT INTO `ct_status_condition_groups` (`id`, `group_name`, `status_line_id`, 
 (13, '默认条件组', 21, 44, 1416197366, 1416197366, 44),
 (14, '默认条件组', 22, 44, 1416197480, 1416197480, 44),
 (15, '默认条件组', 23, 44, 1416197576, 1416197576, 44),
-(16, '默认条件组', 24, 44, 1416197637, 1416197637, 44);
+(16, '默认条件组', 24, 44, 1416197637, 1416197637, 44),
+(17, '重复分配', 9, 44, 1417069167, 1417069167, 44),
+(18, '重复分配', 15, 44, 1417069320, 1417069320, 44),
+(19, '重复分配', 21, 44, 1417069397, 1417069397, 44);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_status_functions`
+-- 表的结构 `ct_status_functions`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_status_functions` (
@@ -3030,7 +3105,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=30 ;
 
 --
--- Dumping data for table `ct_status_functions`
+-- 转存表中的数据 `ct_status_functions`
 --
 
 INSERT INTO `ct_status_functions` (`id`, `status_line_id`, `function_id`, `sort`, `label`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
@@ -3062,7 +3137,7 @@ INSERT INTO `ct_status_functions` (`id`, `status_line_id`, `function_id`, `sort`
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_status_functions_v`
+-- 替换视图以便查看 `ct_status_functions_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_status_functions_v` (
 `id` int(10) unsigned
@@ -3084,7 +3159,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_status_header`
+-- 表的结构 `ct_status_header`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_status_header` (
@@ -3101,11 +3176,11 @@ CREATE TABLE IF NOT EXISTS `ct_status_header` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态表' AUTO_INCREMENT=5 ;
 
 --
--- Dumping data for table `ct_status_header`
+-- 转存表中的数据 `ct_status_header`
 --
 
 INSERT INTO `ct_status_header` (`id`, `status_code`, `description`, `sys_order_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
-(1, 'order_status', '投诉订单状态', 1, NULL, NULL, 1414738471, 44),
+(1, 'order_status', '投诉投诉单状态', 1, NULL, NULL, 1414738471, 44),
 (2, 'vendor_status', '供应商投诉单状态流', 1, 1414117801, 44, 1414117801, 44),
 (3, 'customer_status', '客户投诉单状态流', 1, 1414117834, 44, 1414117834, 44),
 (4, 'employee_status', '内部投诉单状态流', 1, 1414117866, 44, 1414117866, 44);
@@ -3113,7 +3188,7 @@ INSERT INTO `ct_status_header` (`id`, `status_code`, `description`, `sys_order_i
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_status_header_v`
+-- 替换视图以便查看 `ct_status_header_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_status_header_v` (
 `id` int(11)
@@ -3131,7 +3206,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_header_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_status_lines`
+-- 表的结构 `ct_status_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_status_lines` (
@@ -3156,7 +3231,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统状态步骤表' AUTO_INCREMENT=26 ;
 
 --
--- Dumping data for table `ct_status_lines`
+-- 转存表中的数据 `ct_status_lines`
 --
 
 INSERT INTO `ct_status_lines` (`id`, `status_id`, `step`, `step_value`, `step_desc`, `next_steps`, `callback_step`, `initial_flag`, `auto_ending_flag`, `inactive_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `default_next_step`, `last_step_flag`) VALUES
@@ -3188,7 +3263,7 @@ INSERT INTO `ct_status_lines` (`id`, `status_id`, `step`, `step_value`, `step_de
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_status_lines_v`
+-- 替换视图以便查看 `ct_status_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 `id` int(11)
@@ -3215,7 +3290,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_system_orders`
+-- 表的结构 `ct_system_orders`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_system_orders` (
@@ -3232,7 +3307,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_orders` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统单据表' AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `ct_system_orders`
+-- 转存表中的数据 `ct_system_orders`
 --
 
 INSERT INTO `ct_system_orders` (`id`, `table_name`, `order_name`, `description`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -3241,7 +3316,7 @@ INSERT INTO `ct_system_orders` (`id`, `table_name`, `order_name`, `description`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_system_sessions`
+-- 表的结构 `ct_system_sessions`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
@@ -3255,26 +3330,26 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `ct_system_sessions`
+-- 转存表中的数据 `ct_system_sessions`
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('7a4e0f2fb9604c69c9542f1b2ba33fea', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1416463774, 'a:2:{s:9:"user_data";s:0:"";s:4:"code";s:4:"8377";}');
+('0d8c0db0851e74044320618ee10ddd61', '61.155.222.147', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1417182904, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"1747";s:3:"uid";s:2:"44";s:2:"cm";s:2:"40";s:3:"mid";s:1:"3";s:3:"fid";s:2:"10";}');
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_tables_vl`
+-- 替换视图以便查看 `ct_tables_vl`
 --
 CREATE TABLE IF NOT EXISTS `ct_tables_vl` (
 `value` varchar(64)
-,`label` varchar(2048)
+,`label` varchar(80)
 ,`id` varchar(64)
 );
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_users`
+-- 表的结构 `ct_users`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_users` (
@@ -3302,11 +3377,11 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统用户信息表' AUTO_INCREMENT=76 ;
 
 --
--- Dumping data for table `ct_users`
+-- 转存表中的数据 `ct_users`
 --
 
 INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`, `phone_number`, `mobile_telephone`, `address`, `full_name`, `inactive_flag`, `email_flag`, `sms_flag`, `initial_pass_flag`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(44, 'administrator', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '超级管理员', 'yacole@qq.com', '13777777777', '13989775601', '乐清柳市镇', 'administrator', 0, 1, 0, 1, -1, 1412039595, 1415771971, 44),
+(44, 'administrator', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '超级管理员', 'yacole@qq.com', '13777777777', '13989775601', '乐清柳市镇', '超级管理员', 0, 1, 0, 1, -1, 1412039595, 1416797887, 44),
 (45, 'reporter_customer', 'fbeae417c84f2bf1121ab58c55105b4247c8e069', 'male', '客户测试账号', '', '', '', '', '客户测试账号', 0, 0, 0, 1, 44, 1412229944, 1413633221, 44),
 (46, 'reporter_vendor', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '供应商测试账号', '', '', '', '', '供应商测试账号', 0, 0, 0, 1, 44, 1412230134, 1415692472, 44),
 (47, 'reporter_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '内部员工测试账号', '', '', '', '', '内部员工测试账号', 0, 0, 0, 1, 44, 1412230196, 1413633237, 44),
@@ -3325,7 +3400,7 @@ INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`,
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_user_auth_v`
+-- 替换视图以便查看 `ct_user_auth_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_user_auth_v` (
 `role_id` int(11)
@@ -3354,7 +3429,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_auth_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_user_configs`
+-- 表的结构 `ct_user_configs`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_user_configs` (
@@ -3370,17 +3445,17 @@ CREATE TABLE IF NOT EXISTS `ct_user_configs` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `ct_user_configs`
+-- 转存表中的数据 `ct_user_configs`
 --
 
 INSERT INTO `ct_user_configs` (`id`, `config_id`, `config_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `user_id`) VALUES
 (1, 43, 'TRUE', 1414645437, 44, 1414645444, 44, 44),
-(2, 44, 'TRUE', 1414716375, 44, 1414812593, 44, 44);
+(2, 44, 'FALSE', 1414716375, 44, 1417072480, 44, 44);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_user_configs_v`
+-- 替换视图以便查看 `ct_user_configs_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_user_configs_v` (
 `id` int(11)
@@ -3400,7 +3475,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_configs_v` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_user_functions_v`
+-- 替换视图以便查看 `ct_user_functions_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_user_functions_v` (
 `role_module_line_id` int(11)
@@ -3428,7 +3503,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_functions_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_user_roles`
+-- 表的结构 `ct_user_roles`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_user_roles` (
@@ -3444,7 +3519,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=82 ;
 
 --
--- Dumping data for table `ct_user_roles`
+-- 转存表中的数据 `ct_user_roles`
 --
 
 INSERT INTO `ct_user_roles` (`id`, `user_id`, `role_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -3471,7 +3546,7 @@ INSERT INTO `ct_user_roles` (`id`, `user_id`, `role_id`, `creation_date`, `creat
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_user_roles_v`
+-- 替换视图以便查看 `ct_user_roles_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_user_roles_v` (
 `id` int(11)
@@ -3500,7 +3575,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles_v` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_valuelist_header`
+-- 表的结构 `ct_valuelist_header`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
@@ -3523,7 +3598,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=35 ;
 
 --
--- Dumping data for table `ct_valuelist_header`
+-- 转存表中的数据 `ct_valuelist_header`
 --
 
 INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `object_flag`, `label_fieldname`, `value_fieldname`, `source_view`, `condition`, `parent_id`, `editable_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -3537,7 +3612,7 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (9, 'ao_order_type', '投诉单类型权限对象', 1, 'segment_desc', 'segment_value', 'ct_valuelist_vl', 'valuelist_name = ''vl_order_type''', NULL, 1, NULL, NULL, NULL, NULL),
 (10, 'default_role', '投诉单类型默认角色', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
 (11, 'ao_true_or_false', '权限对象选择是/否', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(12, 'default_category', '订单默认的分类（在分类未开启时）', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
+(12, 'default_category', '投诉单默认的分类（在分类未开启时）', 0, NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL),
 (14, 'vl_dll_type', '数据库dll操作类型', 0, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (15, 'vl_valuelist', '值集列表', 1, 'label', 'value', 'ct_valuelist_header_vl', '', NULL, 1, NULL, NULL, NULL, NULL),
 (16, 'vl_order_status', '投诉单状态', 1, 'label', 'value', 'ct_order_status_vl', '', NULL, 1, NULL, NULL, 1413873207, 44),
@@ -3562,7 +3637,7 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_valuelist_header_vl`
+-- 替换视图以便查看 `ct_valuelist_header_vl`
 --
 CREATE TABLE IF NOT EXISTS `ct_valuelist_header_vl` (
 `value` int(11)
@@ -3572,7 +3647,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header_vl` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_valuelist_lines`
+-- 表的结构 `ct_valuelist_lines`
 --
 
 CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
@@ -3594,7 +3669,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=78 ;
 
 --
--- Dumping data for table `ct_valuelist_lines`
+-- 转存表中的数据 `ct_valuelist_lines`
 --
 
 INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_value`, `segment_desc`, `inactive_flag`, `sort`, `parent_segment_value`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
@@ -3670,7 +3745,7 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_valuelist_lines_v`
+-- 替换视图以便查看 `ct_valuelist_lines_v`
 --
 CREATE TABLE IF NOT EXISTS `ct_valuelist_lines_v` (
 `valuelist_name` varchar(20)
@@ -3697,7 +3772,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines_v` (
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ct_valuelist_vl`
+-- 替换视图以便查看 `ct_valuelist_vl`
 --
 CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 `valuelist_name` varchar(20)
@@ -3710,7 +3785,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_authobj_lines_v`
+-- 视图结构 `ct_authobj_lines_v`
 --
 DROP TABLE IF EXISTS `ct_authobj_lines_v`;
 
@@ -3719,7 +3794,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_function_objects_v`
+-- 视图结构 `ct_function_objects_v`
 --
 DROP TABLE IF EXISTS `ct_function_objects_v`;
 
@@ -3728,7 +3803,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_function_obj_lines_v`
+-- 视图结构 `ct_function_obj_lines_v`
 --
 DROP TABLE IF EXISTS `ct_function_obj_lines_v`;
 
@@ -3737,7 +3812,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_meeting_files_v`
+-- 视图结构 `ct_meeting_files_v`
 --
 DROP TABLE IF EXISTS `ct_meeting_files_v`;
 
@@ -3746,7 +3821,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_messages_v`
+-- 视图结构 `ct_messages_v`
 --
 DROP TABLE IF EXISTS `ct_messages_v`;
 
@@ -3755,7 +3830,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_module_lines_v`
+-- 视图结构 `ct_module_lines_v`
 --
 DROP TABLE IF EXISTS `ct_module_lines_v`;
 
@@ -3764,7 +3839,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_module_line_objects_v`
+-- 视图结构 `ct_module_line_objects_v`
 --
 DROP TABLE IF EXISTS `ct_module_line_objects_v`;
 
@@ -3773,7 +3848,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_notice_rules_v`
+-- 视图结构 `ct_notice_rules_v`
 --
 DROP TABLE IF EXISTS `ct_notice_rules_v`;
 
@@ -3782,7 +3857,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_order_addfiles_v`
+-- 视图结构 `ct_order_addfiles_v`
 --
 DROP TABLE IF EXISTS `ct_order_addfiles_v`;
 
@@ -3791,7 +3866,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_order_category_vl`
+-- 视图结构 `ct_order_category_vl`
 --
 DROP TABLE IF EXISTS `ct_order_category_vl`;
 
@@ -3800,7 +3875,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_order_logs_v`
+-- 视图结构 `ct_order_logs_v`
 --
 DROP TABLE IF EXISTS `ct_order_logs_v`;
 
@@ -3809,7 +3884,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_order_meetings_v`
+-- 视图结构 `ct_order_meetings_v`
 --
 DROP TABLE IF EXISTS `ct_order_meetings_v`;
 
@@ -3818,7 +3893,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_order_status_vl`
+-- 视图结构 `ct_order_status_vl`
 --
 DROP TABLE IF EXISTS `ct_order_status_vl`;
 
@@ -3827,7 +3902,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_role_module_lines_v`
+-- 视图结构 `ct_role_module_lines_v`
 --
 DROP TABLE IF EXISTS `ct_role_module_lines_v`;
 
@@ -3836,7 +3911,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_role_profiles_v`
+-- 视图结构 `ct_role_profiles_v`
 --
 DROP TABLE IF EXISTS `ct_role_profiles_v`;
 
@@ -3845,7 +3920,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_role_profile_lines_v`
+-- 视图结构 `ct_role_profile_lines_v`
 --
 DROP TABLE IF EXISTS `ct_role_profile_lines_v`;
 
@@ -3854,7 +3929,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_status_authobjects_v`
+-- 视图结构 `ct_status_authobjects_v`
 --
 DROP TABLE IF EXISTS `ct_status_authobjects_v`;
 
@@ -3863,7 +3938,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_status_authobj_lines_v`
+-- 视图结构 `ct_status_authobj_lines_v`
 --
 DROP TABLE IF EXISTS `ct_status_authobj_lines_v`;
 
@@ -3872,7 +3947,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_status_conditions_v`
+-- 视图结构 `ct_status_conditions_v`
 --
 DROP TABLE IF EXISTS `ct_status_conditions_v`;
 
@@ -3881,7 +3956,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_status_functions_v`
+-- 视图结构 `ct_status_functions_v`
 --
 DROP TABLE IF EXISTS `ct_status_functions_v`;
 
@@ -3890,7 +3965,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_status_header_v`
+-- 视图结构 `ct_status_header_v`
 --
 DROP TABLE IF EXISTS `ct_status_header_v`;
 
@@ -3899,7 +3974,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_status_lines_v`
+-- 视图结构 `ct_status_lines_v`
 --
 DROP TABLE IF EXISTS `ct_status_lines_v`;
 
@@ -3908,16 +3983,16 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_tables_vl`
+-- 视图结构 `ct_tables_vl`
 --
 DROP TABLE IF EXISTS `ct_tables_vl`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_tables_vl` AS select `information_schema`.`tables`.`TABLE_NAME` AS `value`,`information_schema`.`tables`.`TABLE_COMMENT` AS `label`,`information_schema`.`tables`.`TABLE_NAME` AS `id` from `information_schema`.`tables` where (`information_schema`.`tables`.`TABLE_SCHEMA` = 'cts');
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_tables_vl` AS select `tables`.`TABLE_NAME` AS `value`,`tables`.`TABLE_COMMENT` AS `label`,`tables`.`TABLE_NAME` AS `id` from `information_schema`.`tables` where (`tables`.`TABLE_SCHEMA` = 'cts');
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_user_auth_v`
+-- 视图结构 `ct_user_auth_v`
 --
 DROP TABLE IF EXISTS `ct_user_auth_v`;
 
@@ -3926,7 +4001,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_user_configs_v`
+-- 视图结构 `ct_user_configs_v`
 --
 DROP TABLE IF EXISTS `ct_user_configs_v`;
 
@@ -3935,7 +4010,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_user_functions_v`
+-- 视图结构 `ct_user_functions_v`
 --
 DROP TABLE IF EXISTS `ct_user_functions_v`;
 
@@ -3944,7 +4019,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_user_roles_v`
+-- 视图结构 `ct_user_roles_v`
 --
 DROP TABLE IF EXISTS `ct_user_roles_v`;
 
@@ -3953,7 +4028,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_valuelist_header_vl`
+-- 视图结构 `ct_valuelist_header_vl`
 --
 DROP TABLE IF EXISTS `ct_valuelist_header_vl`;
 
@@ -3962,7 +4037,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_valuelist_lines_v`
+-- 视图结构 `ct_valuelist_lines_v`
 --
 DROP TABLE IF EXISTS `ct_valuelist_lines_v`;
 
@@ -3971,7 +4046,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
--- Structure for view `ct_valuelist_vl`
+-- 视图结构 `ct_valuelist_vl`
 --
 DROP TABLE IF EXISTS `ct_valuelist_vl`;
 

@@ -537,8 +537,9 @@ class Order_model extends MY_Model{
     }
 
     function field_list(){
+        //fix CTS to cts
         return lazy_get_data("select COLUMN_NAME as value,COLUMN_COMMENT as label from INFORMATION_SCHEMA.COLUMNS
-        where TABLE_SCHEMA = 'CTS' AND  table_name = 'CT_ORDERS'
+        where TABLE_SCHEMA = 'cts' AND  table_name = 'ct_orders'
         and COLUMN_NAME not in ('id','created_by','creation_date','last_updated_by','last_update_date')");
     }
 

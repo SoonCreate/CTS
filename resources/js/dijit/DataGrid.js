@@ -200,7 +200,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                 //delete this.model.store;
                 this.model.setStore(store);
                 this.body.refresh();
-                this._setSelected();
+                this._setSelected(store);
             },
 
             refreshByUrl : function (url) {
@@ -266,7 +266,7 @@ define(["dojo/_base/declare", "gridx/Grid",
 
             },
             //设置初始选择项目
-            _setSelected : function () {
+            _setSelected : function (store) {
                 if(this.targetDijit){
                     var value = this.targetDijit.getValue();
                     value = value.split(',');
@@ -278,7 +278,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                     }else{
                         var valueSegment = this.valueSegment;
                         var grid = this;
-                        this.store.fetch({
+                        store.fetch({
                             onItem : function(item){
                                 if(in_array(item[valueSegment].toString(),value)){
                                     grid.select.row.selectById(item["id"].toString());
