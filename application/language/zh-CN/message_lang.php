@@ -5,6 +5,7 @@ $lang['message_must_login'] = "无权访问此页面，请先登陆！";
 $lang['message_wrong_url'] = "错误的请求，此页面访问无效！";
 $lang['message_no_admin'] = "权限不够，请勿操作其他人数据！";
 $lang['message_no_authority'] = "权限不足，请联系系统管理员！";
+$lang['message_can_not_do_next'] = "无法完成当前操作，状态流验证错误，可能是没有权限或没有满足条件，请联系管理员！";
 $lang['message_register_success'] = "恭喜你，注册成功！请尝试登陆";
 
 //数据操作

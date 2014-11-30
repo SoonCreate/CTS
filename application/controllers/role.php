@@ -137,6 +137,7 @@ class Role extends CI_Controller {
                     if ($this->db->trans_status() === FALSE) {
                         message_db_failure();
                     }else{
+                        go_back();
                         message_db_success();
                     }
                 }else{

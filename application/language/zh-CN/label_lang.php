@@ -269,6 +269,7 @@ $lang['label_allocate_users'] = "分配用户";
 $lang['label_choose_functions'] = "选择功能";
 $lang['label_auth_object'] = "权限对象";
 $lang['label_role_name'] = "角色名称";
+$lang['label_role_from'] = "复制角色";
 
 //名词
 $lang['label_functions'] = "功能";

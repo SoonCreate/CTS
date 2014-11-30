@@ -156,6 +156,8 @@ class Order_model extends MY_Model{
             }else{
                 message_db_failure();
             }
+        }else{
+            ci_translate_message('E','message_can_not_do_next');
         }
     }
 
