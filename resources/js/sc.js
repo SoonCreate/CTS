@@ -529,7 +529,10 @@ function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,targe
             //单选双击获取值
             if(!selectRowMultiple){
                 grid.connect(grid, 'onRowDblClick', function(row){
-                    target.set("value",grid.select.row.getSelected().join());
+                    if(valueSegment == undefined){
+                        valueSegment = 'id';
+                    }
+                    target.set("value",grid.row(grid.select.row.getSelected()).item()[valueSegment]);
                     closeDialog();
                 });
             }

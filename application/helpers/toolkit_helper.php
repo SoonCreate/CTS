@@ -60,10 +60,10 @@ function full_name($id,$only_me = FALSE,$render_me = TRUE){
         if(is_null($id)){
             return label('unknown');
         }else{
-            if($id == _sess('uid') && $render_me){
-                return label('me');
-            }else{
-                if($only_me){
+//            if($id == _sess('uid') && $render_me){
+//                return label('me');
+//            }else{
+                if($only_me && $id != _sess('uid')){
                     return "对方";
                 }else{
                     global $CI;
@@ -81,7 +81,7 @@ function full_name($id,$only_me = FALSE,$render_me = TRUE){
 
                     }
                 }
-            }
+//            }
         }
 
     }
