@@ -20,12 +20,12 @@
 
 
 
-$hook['post_controller_constructor'][] = array(
-    'class'    => 'Auth',
-    'function' => 'function_check',
-    'filename' => 'Auth.php',
-    'filepath' => 'hooks'
-);
+//$hook['post_controller_constructor'][] = array(
+//    'class'    => 'Auth',
+//    'function' => 'function_check',
+//    'filename' => 'Auth.php',
+//    'filepath' => 'hooks'
+//);
 
 $hook['post_controller_constructor'][] = array(
     'class'    => 'SOutput',
@@ -35,12 +35,12 @@ $hook['post_controller_constructor'][] = array(
 );
 
 //执行顺序是由下往上的
-$hook['post_controller_constructor'][] = array(
-    'class'    => 'Auth',
-    'function' => 'login_check',
-    'filename' => 'Auth.php',
-    'filepath' => 'hooks'
-);
+//$hook['post_controller_constructor'][] = array(
+//    'class'    => 'Auth',
+//    'function' => 'login_check',
+//    'filename' => 'Auth.php',
+//    'filepath' => 'hooks'
+//);
 
 //在你的控制器完全运行之后调用.
 $hook['post_controller'] = array(

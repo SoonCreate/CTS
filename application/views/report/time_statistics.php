@@ -10,15 +10,17 @@
 </dl>
 <?= render_form_datetextbox('from_date',true,array(),false,render_form_timebox('from_time',true,'01','00')) ?>
 <?= render_form_datetextbox('to_date',true,array(),false,render_form_timebox('to_time',true,'01','00')) ?>
+<?= render_form_hidden('export_flag')?>
 <?= render_submit_button()?>
+<?= render_button('export','_exportData')?>
 <?= render_form_close() ?>
 
 <h3 id="gridTitle"></h3>
 <div id="timeStatisticsTopGrid"></div>
 
 <script type="text/javascript">
-    require(["dojo/ready", "sckj/DataGrid" ],
-        function(ready,DataGrid){
+    require(["dojo/ready", "sckj/DataGrid" ,"dojo/dom-form","dojo/request/iframe"],
+        function(ready,DataGrid,domForm,iframe){
             var topGrid;
             ready(function(){
                 topGrid = new DataGrid({
@@ -37,6 +39,32 @@
             });
             _refreshData = function(data){
                 topGrid.refreshByData(data);
+            };
+
+            //导出excel
+            _exportData = function(){
+                var object = $dom.byId("report_time_statistics_data");
+                $ajax.post(url("report/time_statistics_validate"), {
+                    data: domForm.toObject(object),
+                    timeout: 10000,
+                    handleAs : "json"
+                }).then(function(response){
+                    clearCurrentStatus(object);
+                    handleResponse(response,null,null, function () {
+                        iframe(url("report/time_statistics_export"),{
+                            data: domForm.toObject(object),
+                            timeout: 10000,
+                            handleAs : "json"
+                        }).then(function(response){
+
+                        },function(e){
+                            console.info(e);
+                        });
+                    });
+                },function(e){
+                    showMessage({type : 'E',content : "请求出现未知出错，请联系管理员！"});
+                    console.log(e);
+                });
             };
 
             //快捷设置日期
