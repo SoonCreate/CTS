@@ -286,6 +286,7 @@ class User extends CI_Controller {
         }else{
             if($_POST){
                 $ids = v('roles');
+                $ids = explode(',',v('lines'));
                 $data['user_id'] = $user['id'];
                 $this->db->trans_start();
                 if($ids === FALSE){
@@ -311,24 +312,38 @@ class User extends CI_Controller {
                     message_db_success();
                 }
             }else{
-                $user_id = $user['id'];
-                $this->load->model('role_model');
-                $r = new Role_model();
-                $roles = $r->find_all();
-                for($i=0;$i<count($roles) ;$i++){
-                    $user_role = $ur->find_by(array('user_id'=>$user_id,'role_id'=>$roles[$i]['id']));
-                    if(!empty($user_role)){
-                        $roles[$i]['checked'] = 1;
-                    }else{
-                        $roles[$i]['checked'] = 0;
-                    }
-                }
-                $data['roles'] = $roles;
-                $data['user_id'] = $user_id;
-                render($data);
+                render();
             }
         }
 
+    }
+
+    //角色选择grid
+    function role_data(){
+        $um = new User_model();
+        $user = $um->find(v('user_id'));
+        if(empty($user)){
+            show_404();
+        }else{
+            $this->load->model('role_model');
+            $this->load->model('user_role_model');
+            $urm = new User_role_model();
+            $rm = new Role_model();
+            $roles = $rm->find_all();
+            $seleceds = array();
+            foreach($roles as $role){
+                $line = $urm->find_by(array('role_id'=>$role['id'],'user_id'=>$user['id']));
+                if(!empty($line)){
+                    array_push($seleceds,$role['id']);
+                }
+            }
+            $data['items'] = $roles;
+            $data['selected'] = $seleceds;
+        }
+        $data["identifier"] = 'id';
+        $data["label"] = 'description';
+        $data["structure"] = build_structure('role_name','description');
+        echo json_encode($data);
     }
 
     function forget_password(){
