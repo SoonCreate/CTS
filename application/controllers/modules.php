@@ -85,7 +85,8 @@ class Modules extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $ids = v('functions');
+//                $ids = v('functions');
+                $ids = explode(',',v('lines'));
                 $data['module_id'] = v('module_id');
                 $data['sort'] = v('sort');
                 if($ids === FALSE){
@@ -106,25 +107,40 @@ class Modules extends CI_Controller {
                 if ($this->db->trans_status() === FALSE) {
                     message_db_failure();
                 }else{
+                    go_back();
                     message_db_success();
                 }
             }else{
-                $this->load->model('function_model');
-                $fn = new Function_model();
-                $fns = $fn->find_all();
-                for($i=0;$i<count($fns) ;$i++){
-                    $line = $ml->find_by(array('module_id'=>$m['id'],'function_id'=>$fns[$i]['id']));
-                    if(!empty($line)){
-                        $fns[$i]['checked'] = 'checked';
-                    }else{
-                        $fns[$i]['checked'] = '';
-                    }
-                }
-                $data['functions'] = _format($fns);
-                $data['module_id'] = $m['id'];
-                render($data);
+                render();
             }
         }
+    }
+
+    function function_data(){
+        $mm = new Module_model();
+        $module = $mm->find(v('module_id'));
+        if(empty($module)){
+            show_404();
+        }else{
+            $this->load->model('module_line_model');
+            $this->load->model('function_model');
+            $fm = new Function_model();
+            $ml = new Module_line_model();
+            $fns = _format($fm->find_all());
+            $seleceds = array();
+            for($i=0;$i<count($fns) ;$i++){
+                $line = $ml->find_by(array('module_id'=>$module['id'],'function_id'=>$fns[$i]['id']));
+                if(!empty($line)){
+                    array_push($seleceds,$fns[$i]['id']);
+                }
+            }
+            $data['items'] = $fns;
+            $data['selected'] = $seleceds;
+        }
+        $data["identifier"] = 'id';
+        $data["label"] = 'description';
+        $data["structure"] = build_structure('function_name','description','creation_date','sort');
+        echo json_encode($data);
     }
 
     function has_roles(){

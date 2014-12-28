@@ -98,7 +98,8 @@ class Functions extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $ids = v('modules');
+//                $ids = v('modules');
+                $ids = explode(',',v('lines'));;
                 $data['function_id'] = v('id');
                 $data['sort'] = v('sort');
                 $this->db->trans_start();
@@ -125,22 +126,39 @@ class Functions extends CI_Controller {
                     message_db_success();
                 }
             }else{
-                $this->load->model('module_model');
-                $m = new Module_model();
-                $ms = $m->find_all();
-                for($i=0;$i<count($ms) ;$i++){
-                    $line = $ml->find_by(array('module_id'=>$ms[$i]['id'],'function_id'=>v('id')));
-                    if(!empty($line)){
-                        $ms[$i]['checked'] = 'checked';
-                    }else{
-                        $ms[$i]['checked'] = '';
-                    }
-                }
-                $data['modules'] = _format($ms);
-                render($data);
+                render();
             }
         }
 
+    }
+
+    //用于显示grid
+    function module_data(){
+        $fm = new Function_model();
+        $fn = $fm->find(v('function_id'));
+        if(empty($fn)){
+            show_404();
+        }else{
+            $this->load->model('module_model');
+            $this->load->model('module_line_model');
+            $ml = new Module_line_model();
+            $m = new Module_model();
+            $m->order_by('sort');
+            $ms = $m->find_all();
+            $seleceds = array();
+            for($i=0;$i<count($ms) ;$i++){
+                $line = $ml->find_by(array('module_id'=>$ms[$i]['id'],'function_id'=>$fn['id']));
+                if(!empty($line)){
+                    array_push($seleceds,$ms[$i]['id']);
+                }
+            }
+            $data['items'] = $ms;
+            $data['selected'] = $seleceds;
+        }
+        $data["identifier"] = 'id';
+        $data["label"] = 'description';
+        $data["structure"] = build_structure('module_name','description','creation_date','sort');
+        echo json_encode($data);
     }
 
     function objects(){
