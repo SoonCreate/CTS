@@ -65,6 +65,21 @@ class User extends CI_Controller {
             $this->load->view('user/login');
         }
     }
+
+    //第三方登录
+    function third_part_login(){
+        $username = v('username');
+        $password = sha1(v('password'));
+        $um = new User_model();
+        $user = $um->find_by(array('username'=>$username,'password'=>$password,'inactive_flag'=>0));
+        if(empty($user)){
+            redirect('user/login');
+        }else{
+            set_sess('uid',$user['id']);
+            redirect('welcome/app_index');
+        }
+    }
+
 /*by GS*/
     function validate_username(){
         $username = $_GET['username'];

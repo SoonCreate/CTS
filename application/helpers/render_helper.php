@@ -35,7 +35,12 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 
 function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
     $g = url_goto($url);
-    return '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$g['url'].'\',\''.$g['module_id'].'\','.$noRender.');">'.$label.'</a>';
+    if(isset($g['blank_flag']) && $g['blank_flag']){
+        return '<a href="'.$g['url'].'" title="'.$title.'" class="'.$class.'" target="_blank">'.$label.'</a>';
+    }else{
+        return '<a href="#" title="'.$title.'" class="'.$class.'" onclick="goto(\''.$g['url'].'\',\''.$g['module_id'].'\','.$noRender.');">'.$label.'</a>';
+    }
+
 }
 
 function url_goto($url){
@@ -54,6 +59,8 @@ function url_goto($url){
         $cml = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action,'module_id'=>_sess('mid')));
         if(!empty($cml)){
             $params['cm'] = $cml['id'];
+            //是否为打开新窗口
+            $g['blank_flag'] = $cml['blank_flag'];
         }else{
             //如果当前连接不属于当前模块，随意获取某一mid
             $mls = $mlm->find_all_by_view(array('controller'=>$controller,'action'=>$action));
@@ -61,6 +68,7 @@ function url_goto($url){
                 $ml = $mls[0];
                 $params['cm'] = $ml['id'];
                 $module_id = $ml['module_id'];
+                $g['blank_flag'] = $ml['blank_flag'];
             }
         }
         $link = _url($controller,$action,$params);

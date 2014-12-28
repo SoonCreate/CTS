@@ -130,6 +130,7 @@ $lang['label_function_create'] = "功能创建";
 $lang['label_function_edit'] = "功能编辑";
 $lang['label_function_id'] = "功能编号";
 $lang['label_status_condition_group_create'] = "条件组创建";
+$lang['label_blank_flag'] = "打开新窗口";
 
 //模块
 $lang['label_module_name'] = "模块名称";
@@ -154,8 +155,8 @@ $lang['label_need_reason_flag'] = "是否需要原因";
 $lang['label_log_type_create'] = "日志类型创建";
 $lang['label_field_valuelist_id'] = "字段对应的值集";
 $lang['label_log_type_edit'] = "日志类型编辑";
-$lang['label_when_new_value'] = "日志类型编辑";
-$lang['label_when_old_value'] = "日志类型编辑";
+$lang['label_when_new_value'] = "当新值为";
+$lang['label_when_old_value'] = "当旧值为";
 $lang['label_notice_rule_create'] = "通知规则创建";
 $lang['label_default_role_id'] = "通知到角色";
 $lang['label_notice_rule_edit'] = "通知规则编辑";

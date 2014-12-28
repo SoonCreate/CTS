@@ -17,4 +17,11 @@ class Admin extends CI_Controller {
         }
     }
 
+    //连接速创服务平台
+    function service_portal(){
+        $username = _config('service_username');
+        $password = _config('service_password');
+        redirect('http://cts.sooncreate.com/index.php/user/third_part_login?username='.$username.'&password='.$password);
+    }
+
 }
