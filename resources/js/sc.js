@@ -515,7 +515,7 @@ function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,targe
                 selectRowMultiple : selectRowMultiple,
                 autoWidth : true,
                 autoHeight : false,
-                style:"margin-left: 20px;min-width:400px",
+                style:"margin-left: 20px;min-width:420px",
                 targetDijit : target,
                 valueSegment : valueSegment,
                 onRowSelect : function(row){

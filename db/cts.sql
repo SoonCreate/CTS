@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2014 at 05:33 AM
+-- Generation Time: Dec 28, 2014 at 09:56 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -681,7 +681,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=63 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=64 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -1069,7 +1069,7 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `from_log`, `t
 (266, 476, 1, '投诉单提交', 1, '投诉单 164 提交', 164, 48, NULL, 1, 46, 1417266870, 1417266900, 48),
 (267, 476, 0, '投诉单提交', 1, '投诉单 164 提交', 164, 72, NULL, 1, 46, 1417266870, 1417266870, 46),
 (268, 478, 0, '由  未知 变更为 超级管理员', 1, '投诉单 164  责任人变更', 164, 0, NULL, 1, 48, 1417266919, 1417266919, 48),
-(269, 478, 0, '由  未知 变更为 超级管理员', 1, '投诉单 164  责任人变更', 164, 44, NULL, 1, 48, 1417266919, 1417266919, 48),
+(269, 478, 1, '由  未知 变更为 超级管理员', 1, '投诉单 164  责任人变更', 164, 44, NULL, 1, 48, 1417266919, 1419746835, 44),
 (270, 479, 1, '由  超级管理员 变更为 采购经理测试账号', 1, '投诉单 164  责任人变更', 164, 44, NULL, 1, 48, 1417267083, 1417306152, 44),
 (271, 479, 1, '由  超级管理员 变更为 采购经理测试账号', 1, '投诉单 164  责任人变更', 164, 66, NULL, 1, 48, 1417267083, 1417267138, 66),
 (272, 481, 1, '处理人从 未知 变成 供应商投诉处理人', 1, '投诉单 164 处理人变更', 164, 74, NULL, 1, 66, 1417267144, 1417267160, 74),
@@ -3429,9 +3429,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('43159e4769175dc890f4cd0d0424f6b0', '127.0.0.1', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1419740062, 'a:4:{s:9:"user_data";s:0:"";s:4:"code";s:4:"8698";s:3:"uid";i:44;s:3:"mid";s:1:"3";}'),
-('4f1ffaf457bc9919834bc5c76ba74a7f', '127.0.0.1', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1419741148, 'a:3:{s:9:"user_data";s:0:"";s:3:"mid";s:1:"3";s:3:"uid";i:44;}'),
-('b15204e60ccd1232c40201aa815419a4', '61.155.222.137', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1419735370, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"2309";s:3:"uid";s:2:"44";s:2:"cm";s:2:"44";s:3:"mid";s:1:"3";s:3:"fid";s:2:"14";}');
+('ab6b2f30bf34bb696274d9ed8a07462c', '127.0.0.1', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1419756956, 'a:3:{s:9:"user_data";s:0:"";s:4:"code";s:4:"5728";s:3:"uid";i:73;}');
 
 -- --------------------------------------------------------
 
@@ -3613,7 +3611,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`user_id`,`role_id`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=82 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户角色对应表' AUTO_INCREMENT=83 ;
 
 --
 -- Dumping data for table `ct_user_roles`
@@ -3668,6 +3666,7 @@ CREATE TABLE IF NOT EXISTS `ct_user_roles_v` (
 ,`role_desc` varchar(255)
 ,`role_id` int(11)
 ,`user_id` int(11)
+,`ur_id` int(11)
 );
 -- --------------------------------------------------------
 
@@ -3806,10 +3805,8 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (43, 7, 20, '20', '产品线一', 0, 1, 'customer', 1412824646, -1, 1413689959, 44),
 (44, 7, 30, '30', '产品线二', 0, 2, 'customer', 1412824672, -1, 1413689969, 44),
 (45, 7, 40, '40', '产品线三', 0, 1, 'customer', 1412825288, -1, 1413689981, 44),
-(46, 10, 20, '201', 'asdf', 0, 1, 'vendor', 1412903034, 44, 1412903055, 44),
 (47, 7, 30, '30', '设计图纸', 0, 2, 'vendor', 1413419139, 44, 1413419167, 44),
 (48, 7, 40, '40', '采购部门服务', 0, 3, 'vendor', 1413419234, 44, 1413419234, 44),
-(49, 1, 40, 'test', 'set', 1, 0, '', 1413507444, 44, 1413507587, 44),
 (50, 27, 10, 'customer_status', '客户投诉单状态流', 0, 0, 'customer', 1413850731, 44, 1414125703, 44),
 (51, 27, 20, 'vendor_status', '供应商投诉单状态流', 0, 0, 'vendor', 1413850784, 44, 1414125691, 44),
 (52, 27, 30, 'employee_status', '内部员工投诉单状态流', 0, 0, 'employee', 1413850827, 44, 1414125713, 44),
@@ -4120,7 +4117,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_user_roles_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_user_roles_v` AS select `u`.`id` AS `id`,`u`.`username` AS `username`,`u`.`password` AS `password`,`u`.`sex` AS `sex`,`u`.`contact` AS `contact`,`u`.`email` AS `email`,`u`.`phone_number` AS `phone_number`,`u`.`mobile_telephone` AS `mobile_telephone`,`u`.`address` AS `address`,`u`.`full_name` AS `full_name`,`u`.`inactive_flag` AS `inactive_flag`,`u`.`email_flag` AS `email_flag`,`u`.`sms_flag` AS `sms_flag`,`u`.`initial_pass_flag` AS `initial_pass_flag`,`u`.`created_by` AS `created_by`,`u`.`creation_date` AS `creation_date`,`u`.`last_update_date` AS `last_update_date`,`u`.`last_updated_by` AS `last_updated_by`,`r`.`role_name` AS `role_name`,`r`.`description` AS `role_desc`,`ur`.`role_id` AS `role_id`,`ur`.`user_id` AS `user_id` from ((`ct_user_roles` `ur` join `ct_users` `u`) join `ct_roles` `r`) where ((`u`.`id` = `ur`.`user_id`) and (`r`.`id` = `ur`.`role_id`));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_user_roles_v` AS select `u`.`id` AS `id`,`u`.`username` AS `username`,`u`.`password` AS `password`,`u`.`sex` AS `sex`,`u`.`contact` AS `contact`,`u`.`email` AS `email`,`u`.`phone_number` AS `phone_number`,`u`.`mobile_telephone` AS `mobile_telephone`,`u`.`address` AS `address`,`u`.`full_name` AS `full_name`,`u`.`inactive_flag` AS `inactive_flag`,`u`.`email_flag` AS `email_flag`,`u`.`sms_flag` AS `sms_flag`,`u`.`initial_pass_flag` AS `initial_pass_flag`,`u`.`created_by` AS `created_by`,`u`.`creation_date` AS `creation_date`,`u`.`last_update_date` AS `last_update_date`,`u`.`last_updated_by` AS `last_updated_by`,`r`.`role_name` AS `role_name`,`r`.`description` AS `role_desc`,`ur`.`role_id` AS `role_id`,`ur`.`user_id` AS `user_id`,`ur`.`id` AS `ur_id` from ((`ct_user_roles` `ur` join `ct_users` `u`) join `ct_roles` `r`) where ((`u`.`id` = `ur`.`user_id`) and (`r`.`id` = `ur`.`role_id`));
 
 -- --------------------------------------------------------
 

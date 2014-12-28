@@ -68,6 +68,7 @@ class Order_meeting extends CI_Controller {
                 }else{
                     $data['start_date'] = date('Y-m-d');
                     $data['end_date'] = date('Y-m-d');
+                    $data['anchor'] = full_name(_sess('uid'));
                     render_view('order_meeting/create',$data);
                 }
 
@@ -163,6 +164,40 @@ class Order_meeting extends CI_Controller {
                 $this->load->view('upload_file');
             }
         }
+    }
+
+    function user_search(){
+        $this->load->view('order_meeting/user_search');
+    }
+
+    //根据角色查询用户
+    function user_search_data(){
+        $this->load->model('role_model');
+        $this->load->model('user_role_model');
+        $rm = new Role_model();
+        $urm = new User_role_model();
+        $roles = $rm->find_all();
+        $data['items'] = array();
+        foreach($roles as $role){
+            $row['id'] = 'role_'.$role['id'];
+            $row['description'] = '角色： ' . $role['description'];
+            $row['type'] = 'role';
+            $users = $urm->find_all_by_view(array('role_id'=>$role['id']));
+            if(!empty($users)){
+                $row['children'] = array();
+                foreach($users as $user){
+                    $sub_row['id'] = 'user_'.$user['ur_id'];
+                    $sub_row['description'] = $user['full_name'];
+                    $sub_row['type'] = 'user';
+                    array_push($row['children'],$sub_row);
+                }
+            }
+            array_push($data['items'],$row);
+        }
+        $data["identifier"] = 'id';
+        $data["label"] = 'description';
+//        $data["structure"] = build_structure('full_name');
+        echo json_encode($data);
     }
 
     private function _save(){

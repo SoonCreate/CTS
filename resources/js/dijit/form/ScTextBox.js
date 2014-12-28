@@ -54,7 +54,7 @@ define(["dojo/_base/declare", "dijit/form/ValidationTextBox",
             this.inherited(arguments);
 
             //如果设置
-            if(this.vlDialogOptions.valuelistName || this.gridDialogOptions.dataUrl){
+            if(this.vlDialogOptions.valuelistName || this.gridDialogOptions.dataUrl || this.hasButton){
                 var keyboardEventNode = this.focusNode || this.domNode;
                 this.own(
                     on(this._buttonNode, touch.press, lang.hitch(this, "_onMouseDown")),
