@@ -5,4 +5,3 @@
 <?= render_form_input('mobile_telephone')?>
 <?= render_form_input('phone_number')?>
 <?= render_form_input('address')?>
-<?= render_single_checkbox('email_flag',1);?>

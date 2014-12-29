@@ -382,6 +382,8 @@ function refresh_env(mid){
         wso.cm = $env.cm;
         console.log("current module line id : "+ $env.cm +" mid : "+ $env.mid + " fid : " + $env.fid );
     }
+    //如果性能过差，可以考虑注释
+    refresh_notice_count();
     //console.info(dijitObject('toolbar'));
 }
 

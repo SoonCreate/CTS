@@ -1,6 +1,3 @@
-<div class="row paneltitle">
-    <h3>会议纪要</h3>
-</div>
 <div class="container-fluid userd">
     <dl class="row dl-horizontal"><dt>状态 :</dt><dd><?= _v('status')?></dd></dl>
     <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd><?= _v('title')?></dd></dl>

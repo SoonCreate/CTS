@@ -419,6 +419,25 @@ function is_order_locked($status){
     }
 }
 
+//发送消息、通知、短信、邮件
+function send_message($user_id,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
+    global $CI;
+    $CI->load->model('user_model');
+    $um = new User_model();
+    $receive_email = _user_config('receive_email',$user_id);
+    if($receive_email){
+        $user = $um->find_by(array('id'=>$user_id,'inactive_flag'=>0));
+        if(!empty($user) && !is_null($user['email']) && $user['email'] != ''){
+            return send_mail($user['email'],$subject,$message,$from,$cc,$bcc) && send_sms();
+        }else{
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+
+
 //邮件发送方法
 function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     global $CI;
@@ -475,9 +494,17 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     $email->subject($subject);
     $email->message($message);
     //暂停发送，正是上线启用
-//    $email->send();
+//    return $email->send();
+    return true;
 //    echo $email->print_debugger();
 
+    //后续短信发送加入点：
+
+}
+
+//短信发送
+function send_sms(){
+    return true;
 }
 
 function load_upload_config(){

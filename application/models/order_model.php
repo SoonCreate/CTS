@@ -398,14 +398,8 @@ class Order_model extends MY_Model{
                 $notices = $nm->find_all_by(array('log_id' =>$log['id'],'from_log'=>1));
                 if(!empty($notices)){
                     foreach($notices as $n){
-                        $receive_email = _user_config('receive_email',$n['received_by']);
-                        if($receive_email){
-                            $user = $um->find_by(array('id'=>$n['received_by'],'inactive_flag'=>0));
-                            if(!empty($user) && !is_null($user['email']) && $user['email'] != ''){
-                                $content = $this->load->view('notice_mail',$n,true);
-                                send_mail($user['email'],$n['title'],$content);
-                            }
-                        }
+                        $content = $this->load->view('notice_mail',$n,true);
+                        send_message($n['received_by'],$n['title'],$content);
                     }
                 }
             }

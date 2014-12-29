@@ -88,8 +88,9 @@ class Order_meeting extends CI_Controller {
                 $omm = new Order_meeting_model();
                 $ids = $omm->find_order_ids($meeting['id']);
                 $meeting['order_id'] = join(',',$ids);
-                $meeting['start_date'] = date('Y-m-d H:m:s',$meeting['start_date']);
-                $meeting['end_date'] = date('Y-m-d H:m:s',$meeting['end_date']);
+                $meeting['start_date'] = date('Y-m-d H:i:s',$meeting['start_date']);
+                $meeting['end_date'] = date('Y-m-d H:i:s',$meeting['end_date']);
+
                 $meeting['start_time'] = 'T'.substr($meeting['start_date'],11,9);
                 $meeting['start_date'] = substr($meeting['start_date'],0,10);
                 $meeting['end_time'] = 'T'.substr($meeting['end_date'],11,9);
@@ -198,6 +199,57 @@ class Order_meeting extends CI_Controller {
         $data["label"] = 'description';
 //        $data["structure"] = build_structure('full_name');
         echo json_encode($data);
+    }
+
+    //提醒参与者
+    function notice_actor(){
+        $mm = new Meeting_model();
+        $m = $mm->find(v('id'));
+        if(empty($m) || $m['inactive_flag']){
+            show_404();
+        }else{
+            $this->load->model('user_model');
+            $um = new User_model();
+            $full_names = explode(',',$m['actor']);
+            //通知人数统计
+            $success = 0;
+            $failure = 0;
+            foreach($full_names as $full_name){
+                $user = $um->find_by(array('full_name'=>$full_name));
+                if(!empty($user)){
+                    //站内短信
+                    $this->load->model('notice_model');
+                    $nm = new Notice_model();
+
+                    $omm = new Order_meeting_model();
+                    $omfm = new Meeting_file_model();
+                    $m['orders'] = $omm->find_all_by_view(array('id'=>$m['id']));
+                    $m['files'] = $omfm->find_all_by_view(array('meeting_id'=>$m['id']));
+                    $m = $this->_meeting_status($m);
+
+                    $notice['received_by'] = $user['id'];
+                    $notice['title'] = '会议通知：'.$m['title'];
+                    $notice['content'] = $this->load->view('order_meeting/show',_format_row($m),true);
+
+                    $nm->insert($notice);
+
+                    if(send_message($user['id'],$notice['title'],$notice['content'])){
+                        $success = $success + 1;
+                    }else{
+                        $failure = $failure + 1;
+                        custz_message('W','['.$full_name.'] 发送失败！');
+                    }
+                }else{
+                    custz_message('W','['.$full_name.'] 用户不存在！');
+                    $failure = $failure + 1;
+                }
+            }
+            $type = 'I';
+            if($failure > 0){
+                $type = 'W';
+            }
+            custz_message($type,'已成功通知 ['.$success.'] 位 . 未通知 ['.$failure.'] 位');
+        }
     }
 
     private function _save(){

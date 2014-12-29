@@ -7,7 +7,7 @@
 <dl class="row dl-horizontal">
     <dt><?= render_label('actor')?></dt>
     <dd><input name="actor" data-dojo-type="sckj/form/ScTextBox" trim="true"
-               data-dojo-props = "hasButton:true,_onClick:_onActorClick"  required/></dd>
+               data-dojo-props = "hasButton:true,_onClick:_onActorClick"  required value="<?= _v('actor')?>"/></dd>
     <dd></dd>
 </dl>
 <?= render_form_textarea('discuss') ?>

@@ -30,7 +30,10 @@
                         &nbsp;|&nbsp;
                         <?php if(_v('can_cancel')){
                                 echo  render_link(array('order_meeting','cancel',array('id'=>$o['id'])),label('cancel'));}?>
-                <?php endif;
+                <?php endif;?>
+                    &nbsp;|&nbsp;
+                <?php
+                    echo  render_link(array('order_meeting','notice_actor',array('id'=>$o['id'])),label('notice_actor'),null,null,true);
                 endif;?>
             </td>
 
