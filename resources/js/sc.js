@@ -349,7 +349,7 @@ function renderValidError(lines,target){
                     target = currentWso().domNode;
                 }
                 //object.displayMessage("gogo");
-                var nodes = $("#error_"+fixDijitId(key),target);
+                var nodes = $("div#error_"+fixDijitId(key),target);
                 for(var y=0;y<nodes.length;y++){
                     nodes[y].innerHTML = lines[i][key];
                 }
@@ -380,7 +380,7 @@ function refresh_env(mid){
         $env.mid = mid;
         var wso = currentWso();
         wso.cm = $env.cm;
-        console.log("current module line id : "+ $env.cm +" mid : "+ $env.mid + " fid " + $env.fid );
+        console.log("current module line id : "+ $env.cm +" mid : "+ $env.mid + " fid : " + $env.fid );
     }
     //console.info(dijitObject('toolbar'));
 }
@@ -397,6 +397,9 @@ function fixDijitId(id){
         if($env.mid == undefined){
             $env.cm = "";
             $env.mid = "";
+        }
+        if($env.cm == undefined){
+            $env.cm = "";
         }
         rtId =  id + "_" + $env.cm + "_" + $env.mid ;
     }
@@ -619,7 +622,11 @@ function dijitObject(id){
     //return $dijit.byId(fixDijitId(id));
     //fix 频繁切换后获取对象失败
     var wso = currentWso();
-    return $dijit.byId(id + "_" + wso.cm + "_" + wso.mid);
+    if(wso){
+        return $dijit.byId(id + "_" + wso.cm + "_" + wso.mid);
+    }else{
+        return $dijit.byId(id + "_" + $env.cm + "_" + $env.mid);
+    }
 }
 
 //刷新未读消息数量:后续等待优化，采用ajax长轮询

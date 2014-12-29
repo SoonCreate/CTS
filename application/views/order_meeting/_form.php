@@ -10,7 +10,6 @@
                data-dojo-props = "hasButton:true,_onClick:_onActorClick"  required/></dd>
     <dd></dd>
 </dl>
-<?= render_form_hidden('actor_ids') ?>
 <?= render_form_textarea('discuss') ?>
 <?= render_form_input_data('order_id',_url('order_meeting','choose_orders_data',array('id'=>_v('order_id'))),true,false,true,true)?>
 <?= render_button_group()?>
@@ -54,25 +53,33 @@
                     structure : [{field : "description",name: "条目",width : "400px"}]
                 });
                 grid.startup();
+
+                var actorTextBox = dijitObject('actor');
+
+                //初始化选择
+                var value = actorTextBox.getValue().split(",");
+                var items = store._arrayOfAllItems;
+                for(var a = 0;a < items.length;a++){
+                    if(in_array(items[a]["description"].toString(),value)){
+                        grid.select.row.selectById(items[a]["id"].toString());
+                    }
+                }
+
                 dojoConfirm(grid,'参与者',function(){
-                    var actorTextBox = dijitObject('actor');
                     var full_names = [];
                     var ids = grid.select.row.getSelected();
-                    var userIds = [];
                     for(var i = 0 ;i < ids.length ; i++){
                         //获取名称
                         if(ids[i].indexOf("user_") == 0){
-                            //隐藏id
-                            userIds.push(ids[i]);
-                            var rowData = grid.row(ids[i]).data();
-                            console.info(rowData);
-                            full_names.push(rowData["description"]);
+                            var rowData = grid.row(ids[i]).rawData();
+                            var desc = rowData["description"];
+                            //排除重复项
+                            if(!in_array(desc,full_names)){
+                                full_names.push(desc);
+                            }
                         }
                     }
-                    //排除重复项
-                    dijitObject("actor").set("value",full_names.join());
-
-                    $dom.byId("actor_ids").value = userIds.join();
+                    actorTextBox.set("value",full_names.join());
                 });
             });
 

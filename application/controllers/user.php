@@ -168,10 +168,14 @@ class User extends CI_Controller {
             if(!v('email_flag')){
                 $_POST['email_flag'] = 0;
             }
-            if($o->update(_sess('uid'),$_POST)){
-                message_db_success();
-            }else{
-                validation_error();
+            //验证唯一性
+            $fn_check = $this->_full_name_check(_sess('uid'),v('full_name'));
+            if($fn_check){
+                if($o->update(_sess('uid'),$_POST)){
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
             }
         }else{
             $data = $o->find(_sess('uid'));
@@ -188,11 +192,15 @@ class User extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                if($um->update($user['id'],$_POST)){
-                    go_back();
-                    message_db_success();
-                }else{
-                    validation_error();
+                //验证唯一性
+                $fn_check = $this->_full_name_check($user['id'],v('full_name'));
+                if($fn_check){
+                    if($um->update($user['id'],$_POST)){
+                        go_back();
+                        message_db_success();
+                    }else{
+                        validation_error();
+                    }
                 }
             }else{
                 $data = $user;
@@ -546,6 +554,22 @@ class User extends CI_Controller {
         }
         imagepng($im);
         imagedestroy($im);
+    }
+
+    function _full_name_check($id,$full_name){
+        $um = new User_model();
+        $user = $um->find($id);
+        if($user['full_name'] == $full_name){
+            return true;
+        }else{
+            $u = $um->find_by(array('full_name'=>$full_name));
+            if(empty($u)){
+                return true;
+            }else{
+                add_validation_error('full_name','已被他人使用，建议在后方加数字用于区分！');
+                return false;
+            }
+        }
     }
 
 

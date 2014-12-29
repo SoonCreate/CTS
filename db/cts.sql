@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2014 at 09:56 AM
+-- Generation Time: Dec 29, 2014 at 05:47 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -318,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `blank_flag` tinyint(3) unsigned NOT NULL COMMENT '打开新页面',
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=39 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -358,7 +358,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (34, 'translator', '多语言翻译', 'translator', 'index', NULL, 1, 1415753917, 44, 1416274937, 44, 1, 'icon-exchange', 0),
 (35, 'status_statistics', '投诉单统计', 'report', 'status_statistics', NULL, 0, 1415843162, 44, 1415843162, 44, 1, '', 0),
 (36, 'time_statistics', '耗时统计', 'report', 'time_statistics', NULL, 0, 1415853121, 44, 1415853121, 44, 1, '', 0),
-(37, 'service_portal', '速创服务平台', 'admin', 'service_portal', NULL, 0, 1419738688, 44, 1419738688, 44, 1, 'icon-th-large', 1);
+(37, 'service_portal', '速创服务平台', 'admin', 'service_portal', NULL, 0, 1419738688, 44, 1419738688, 44, 1, 'icon-th-large', 1),
+(38, 'order_meeting_create', '召开会议', 'order_meeting', 'create', NULL, 1, 1419817232, 44, 1419817232, 44, 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -3429,7 +3430,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('ab6b2f30bf34bb696274d9ed8a07462c', '127.0.0.1', 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1419756956, 'a:3:{s:9:"user_data";s:0:"";s:4:"code";s:4:"5728";s:3:"uid";i:73;}');
+('55c4c3157c12632abc13a4e8c557d95a', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', 1419828244, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"3635";s:3:"mid";s:1:"3";s:2:"cm";s:2:"14";s:3:"fid";s:1:"3";s:3:"uid";i:44;}');
 
 -- --------------------------------------------------------
 
@@ -3468,6 +3469,7 @@ CREATE TABLE IF NOT EXISTS `ct_users` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`username`),
+  UNIQUE KEY `Index_4` (`full_name`),
   KEY `Index_3` (`username`,`password`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统用户信息表' AUTO_INCREMENT=76 ;
 
@@ -3488,7 +3490,7 @@ INSERT INTO `ct_users` (`id`, `username`, `password`, `sex`, `contact`, `email`,
 (70, 'recorder_customer', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '客户投诉记录人员', 'yacole@sooncreate.com', NULL, NULL, NULL, '客户投诉记录人员', 0, 0, 0, 1, 44, 1413633537, 1413633537, 44),
 (71, 'recorder_vendor', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '供应商投诉记录人员', NULL, NULL, NULL, NULL, '供应商投诉记录人员', 0, 0, 0, 1, 44, 1413633576, 1413633576, 44),
 (72, 'recorder_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '内部投诉记录人员', NULL, NULL, NULL, NULL, '内部投诉记录人员', 0, 0, 0, 1, 44, 1413633592, 1413633592, 44),
-(73, 'manager_customer', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '', '', '', '', '', '客户投诉处理人', 0, 0, 0, 1, 44, 1413944283, 1414650995, 73),
+(73, 'manager_customer', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', '', '', '', '', '', '客户投诉处理人', 0, 0, 0, 1, 44, 1413944283, 1419827921, 73),
 (74, 'manager_vendor', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '供应商投诉处理人', 0, 0, 0, 1, 44, 1413944310, 1413944310, 44),
 (75, 'manager_employee', '7c4a8d09ca3762af61e59520943dc26494f8941b', 'male', NULL, NULL, NULL, NULL, NULL, '内部投诉处理人', 0, 0, 0, 1, 44, 1413944328, 1414816959, 44);
 
