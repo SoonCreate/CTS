@@ -377,11 +377,14 @@ class User extends CI_Controller {
         $nm->order_by('id','desc');
         $nm->limit($end+1,$start);
         $notices = $nm->find_all_by(array('received_by' => _sess('uid')));
+        for($i=0;$i<count($notices);$i++){
+            $notices[$i]['notice_type'] = get_label('vl_notice_type',$notices[$i]['notice_type']);
+        }
         $totalCnt = $nm->count_by(array('received_by' => _sess('uid')));
 
         $data["identifier"] = 'id';
         $data["label"] = 'title';
-        $data['items'] = _format($notices);
+        $data['items'] = _format($notices,true);
         $output = $data;
 
         if(isset($_SERVER['HTTP_RANGE'])){
@@ -394,7 +397,11 @@ class User extends CI_Controller {
     function notice_structure(){
         $structure = array();
         array_push($structure,_blank_structure());
+        array_push($structure,_structure('notice_type',null,'100px'));
         array_push($structure,_structure('title',null,'300px'));
+        if(check_auth('log_display_fullname',array('ao_true_or_false'=>'TRUE'))) {
+            array_push($structure,_structure('created_by',label('from'),'160px'));
+        }
         array_push($structure,_structure('creation_date',null,'160px'));
         echo json_encode($structure);
     }
@@ -413,7 +420,7 @@ class User extends CI_Controller {
             if($n['direct_url']){
                 redirect($n['direct_url']);
             }else{
-                render($n);
+                render(_format_row($n,true));
             }
 
         }

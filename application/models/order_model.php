@@ -281,7 +281,8 @@ class Order_model extends MY_Model{
 
                                             $log_v = $olm->find_by_view(array('id'=>$id));
                                             $n['log_id'] = $id;
-                                            $n['from_log'] = 1;
+                                            //类型为日志转换
+                                            $n['notice_type'] = 'log';
 //                            $n['received_by'] = _sess('uid');
 //                            $n['with_manager'] = 1;
                                             $n['title'] = $this->_format_log($log_v,$order['order_type'],$t['title'],true);
@@ -395,7 +396,7 @@ class Order_model extends MY_Model{
         $logs = $olm->find_all_by(array('change_hash'=>$change_hash));
         if(!empty($logs)){
             foreach($logs as $log){
-                $notices = $nm->find_all_by(array('log_id' =>$log['id'],'from_log'=>1));
+                $notices = $nm->find_all_by(array('log_id' =>$log['id'],'notice_type'=>'log'));
                 if(!empty($notices)){
                     foreach($notices as $n){
                         $content = $this->load->view('notice_mail',$n,true);

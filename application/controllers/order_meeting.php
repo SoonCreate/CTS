@@ -228,12 +228,13 @@ class Order_meeting extends CI_Controller {
                     $m = $this->_meeting_status($m);
 
                     $notice['received_by'] = $user['id'];
-                    $notice['title'] = '会议通知：'.$m['title'];
+                    $notice['notice_type'] = 'meeting';
+                    $notice['title'] = $m['title'];
                     $notice['content'] = $this->load->view('order_meeting/show',_format_row($m),true);
 
                     $nm->insert($notice);
 
-                    if(send_message($user['id'],$notice['title'],$notice['content'])){
+                    if(send_message($user['id'],get_label('vl_notice_type',$notice['notice_type']).'：' .$notice['title'],$notice['content'])){
                         $success = $success + 1;
                     }else{
                         $failure = $failure + 1;
