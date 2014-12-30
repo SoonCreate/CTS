@@ -32,11 +32,12 @@ $lang['label_help'] = "帮助";
 $lang['label_need'] = "需要";
 $lang['label_from'] = "来自";
 $lang['label_to'] = "收信方";
+$lang['label_all'] = "所有";
 
 
 $lang['label_notice_read_all'] = "全部标记成已读";
 $lang['label_notice'] = "提醒";
-$lang['label_notice_type'] = "类型";
+$lang['label_notice_type'] = "通知类型";
 $lang['label_email_flag'] = "接收邮件";
 $lang['label_go_to_order'] = "打开投诉单";
 $lang['label_order_number'] = "投诉单号";

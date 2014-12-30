@@ -379,6 +379,7 @@ class User extends CI_Controller {
         $notices = $nm->find_all_by(array('received_by' => _sess('uid')));
         for($i=0;$i<count($notices);$i++){
             $notices[$i]['notice_type'] = get_label('vl_notice_type',$notices[$i]['notice_type']);
+            $notices[$i]['read'] = $notices[$i]['read_flag'];
         }
         $totalCnt = $nm->count_by(array('received_by' => _sess('uid')));
 

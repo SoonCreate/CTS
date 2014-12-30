@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2014 at 08:14 AM
+-- Generation Time: Dec 30, 2014 at 08:44 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -806,7 +806,7 @@ CREATE TABLE IF NOT EXISTS `ct_notices` (
   `notice_type` varchar(45) NOT NULL DEFAULT 'log',
   PRIMARY KEY (`id`),
   KEY `Index_2` (`creation_date`,`received_by`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=375 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户通知信息表' AUTO_INCREMENT=376 ;
 
 --
 -- Dumping data for table `ct_notices`
@@ -1183,7 +1183,8 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `title`, `orde
 (371, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 44, NULL, 1, 73, 1419922269, 1419922269, 73, 'meeting'),
 (372, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 73, NULL, 1, 73, 1419922269, 1419922269, 73, 'meeting'),
 (373, NULL, 1, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 44, NULL, 1, 73, 1419922430, 1419922909, 44, 'meeting'),
-(374, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 73, NULL, 1, 73, 1419922430, 1419922430, 73, 'meeting');
+(374, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 73, NULL, 1, 73, 1419922430, 1419922430, 73, 'meeting'),
+(375, 514, 1, '已分配 => 已解决', '投诉单 133状态更新', 133, 70, NULL, 1, 73, 1419925147, 1419925447, 70, 'log');
 
 -- --------------------------------------------------------
 
@@ -1196,6 +1197,7 @@ CREATE TABLE IF NOT EXISTS `ct_notice_rules` (
   `log_type_id` int(11) NOT NULL COMMENT '投诉单日志类型',
   `description` varchar(255) NOT NULL,
   `order_type` varchar(255) NOT NULL DEFAULT 'all' COMMENT '父值集',
+  `notice_type` varchar(45) NOT NULL DEFAULT 'log' COMMENT '通知类型',
   `notice_created_by` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '创建者',
   `notice_manager` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '通知到处理人',
   `notice_leader` tinyint(1) NOT NULL DEFAULT '0' COMMENT '通知到责任人',
@@ -1216,15 +1218,15 @@ CREATE TABLE IF NOT EXISTS `ct_notice_rules` (
 -- Dumping data for table `ct_notice_rules`
 --
 
-INSERT INTO `ct_notice_rules` (`id`, `log_type_id`, `description`, `order_type`, `notice_created_by`, `notice_manager`, `notice_leader`, `when_new_value`, `when_old_value`, `default_role_id`, `inactive_flag`, `function_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(8, 9, '投诉单提交', 'all', 0, 0, 0, 'released', 'all', 2, 0, NULL, 44, 1413559614, 1413953922, 44),
-(9, 4, '责任人更新', 'all', 0, 1, 0, 'all', 'all', 0, 0, NULL, 44, 1413562630, 1413875787, 44),
-(10, 8, '分配', 'all', 0, 1, 0, 'allocated', 'confirmed', 0, 0, 0, 44, 1413562672, 1419737049, 44),
-(11, 8, '已解决', 'all', 1, 0, 0, 'done', 'allocated', 0, 0, 0, 44, 1413562687, 1419737052, 44),
-(12, 8, '已关闭', 'all', 0, 1, 0, 'closed', 'all', 0, 0, 0, 44, 1413562732, 1419737054, 44),
-(13, 8, '重新打开', 'all', 0, 1, 0, 'reopen', 'closed', 2, 0, 0, 44, 1413562799, 1419737056, 44),
-(14, 10, '责任人（部门经理）变更', 'all', 0, 1, 1, 'all', 'all', 0, 0, NULL, 44, 1413946540, 1413946540, 44),
-(15, 8, '通知到创建者填写反馈信息', 'all', 0, 0, 0, 'closed', 'done', 0, 0, 24, 44, 1414460762, 1419737059, 44);
+INSERT INTO `ct_notice_rules` (`id`, `log_type_id`, `description`, `order_type`, `notice_type`, `notice_created_by`, `notice_manager`, `notice_leader`, `when_new_value`, `when_old_value`, `default_role_id`, `inactive_flag`, `function_id`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
+(8, 9, '投诉单提交', 'all', 'log', 0, 0, 0, 'released', 'all', 2, 0, NULL, 44, 1413559614, 1413953922, 44),
+(9, 4, '责任人更新', 'all', 'log', 0, 1, 0, 'all', 'all', 0, 0, NULL, 44, 1413562630, 1413875787, 44),
+(10, 8, '分配', 'all', 'log', 0, 1, 0, 'allocated', 'confirmed', 0, 0, 0, 44, 1413562672, 1419737049, 44),
+(11, 8, '已解决', 'all', 'log', 1, 0, 0, 'done', 'allocated', 0, 0, 0, 44, 1413562687, 1419737052, 44),
+(12, 8, '已关闭', 'all', 'log', 0, 1, 0, 'closed', 'all', 0, 0, 0, 44, 1413562732, 1419737054, 44),
+(13, 8, '重新打开', 'all', 'log', 0, 1, 0, 'reopen', 'closed', 2, 0, 0, 44, 1413562799, 1419737056, 44),
+(14, 10, '责任人（部门经理）变更', 'all', 'log', 0, 1, 1, 'all', 'all', 0, 0, NULL, 44, 1413946540, 1413946540, 44),
+(15, 8, '通知到创建者填写反馈信息', 'all', 'feedback', 0, 0, 0, 'closed', 'done', 0, 0, 24, 44, 1414460762, 1419924769, 44);
 
 -- --------------------------------------------------------
 
@@ -1256,6 +1258,7 @@ CREATE TABLE IF NOT EXISTS `ct_notice_rules_v` (
 ,`field_name` varchar(100)
 ,`dll_type` varchar(20)
 ,`field_valuelist_id` int(10) unsigned
+,`notice_type` varchar(45)
 );
 -- --------------------------------------------------------
 
@@ -1416,7 +1419,7 @@ INSERT INTO `ct_orders` (`id`, `order_type`, `status`, `severity`, `frequency`, 
 (130, 'customer', 'confirmed', 'low', 'low', '10', '测试自动确认', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413963633, 70, 1414819891, 48),
 (131, 'customer', 'allocated', 'low', 'low', '10', '测试自动确认', 73, 67, 1414858500, '陈杨阳', '', '111', '', '', 0, 3, 1413963994, 70, 1414820384, 73),
 (132, 'customer', 'allocated', 'low', 'low', '10', '测试自动确认并自动选择责任人', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413964193, 70, 1413964195, 70),
-(133, 'customer', 'allocated', 'low', 'low', '10', '测试自动确认并自动选择责任人', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413964856, 70, 1413964858, 70),
+(133, 'customer', 'done', 'low', 'low', '10', '测试自动确认并自动选择责任人', 73, 67, 1419948000, '陈杨阳', '', '111', '', '', 0, 1, 1413964856, 70, 1419925147, 73),
 (134, 'customer', 'done', 'low', 'low', '10', '测试自动确认并自动选择责任人', 73, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413964919, 70, 1419737083, 73),
 (135, 'customer', 'confirmed', 'low', 'low', '10', '测试自动确认并自动选择责任人', NULL, 0, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413965184, 70, 1413965184, 70),
 (136, 'customer', 'confirmed', 'low', 'low', '10', '士大夫阿三东帆', NULL, 67, NULL, '陈杨阳', '', '111', '', '', 0, 0, 1413965551, 70, 1413965552, 70),
@@ -1786,7 +1789,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_logs` (
   PRIMARY KEY (`id`),
   KEY `Index_3` (`change_hash`),
   KEY `Index_2` (`order_id`,`log_type`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=513 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单日志记录表' AUTO_INCREMENT=515 ;
 
 --
 -- Dumping data for table `ct_order_logs`
@@ -2292,7 +2295,9 @@ INSERT INTO `ct_order_logs` (`id`, `order_id`, `log_type`, `new_value`, `old_val
 (509, 137, 'order_status', 'done', 'allocated', NULL, 1419736702, 1419736702, 73, 1419736702, 73),
 (510, 134, 'order_status', 'done', 'allocated', NULL, 1419737083, 1419737083, 73, 1419737083, 73),
 (511, 156, 'order_status', 'allocated', 'confirmed', NULL, 1419836573, 1419836573, 67, 1419836573, 67),
-(512, 156, 'manager_change', '44', NULL, NULL, 1419836573, 1419836573, 67, 1419836573, 67);
+(512, 156, 'manager_change', '44', NULL, NULL, 1419836573, 1419836573, 67, 1419836573, 67),
+(513, 133, 'pcd_update', '1419948000', NULL, NULL, 1419925144, 1419925144, 73, 1419925144, 73),
+(514, 133, 'order_status', 'done', 'allocated', NULL, 1419925147, 1419925147, 73, 1419925147, 73);
 
 -- --------------------------------------------------------
 
@@ -3529,8 +3534,9 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
 ('0fed3a336e390dff1f0ae0c12f58109f', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1419919753, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"1853";s:2:"cm";s:2:"39";s:3:"mid";s:1:"3";s:3:"fid";s:1:"9";s:3:"uid";i:44;}'),
+('5bd32d5c97204e48f0f2be27da804531', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1419925438, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"6001";s:2:"cm";s:2:"38";s:3:"mid";s:1:"7";s:3:"fid";s:2:"20";s:3:"uid";i:70;}'),
 ('7b825d63af4126d1e6ee09e9902670d8', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1419922401, 'a:6:{s:9:"user_data";s:0:"";s:2:"cm";s:2:"24";s:3:"mid";s:1:"7";s:3:"fid";s:1:"7";s:4:"code";s:4:"3681";s:3:"uid";i:67;}'),
-('e0598aac52c5dfa0dbc05e0fc503d2b1', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1419923438, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"0748";s:2:"cm";s:2:"38";s:3:"mid";s:1:"7";s:3:"fid";s:2:"20";s:3:"uid";i:44;}');
+('c8d7d71627ddd8c005392753e49cbcc1', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1419924587, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"0748";s:2:"cm";s:2:"44";s:3:"mid";s:1:"3";s:3:"fid";s:2:"14";s:3:"uid";i:44;}');
 
 -- --------------------------------------------------------
 
@@ -4053,7 +4059,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `ct_notice_rules_v`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_notice_rules_v` AS select `nr`.`id` AS `id`,`nr`.`log_type_id` AS `log_type_id`,`nr`.`description` AS `description`,`nr`.`order_type` AS `order_type`,`nr`.`notice_created_by` AS `notice_created_by`,`nr`.`notice_manager` AS `notice_manager`,`nr`.`notice_leader` AS `notice_leader`,`nr`.`when_new_value` AS `when_new_value`,`nr`.`when_old_value` AS `when_old_value`,`nr`.`default_role_id` AS `default_role_id`,`nr`.`inactive_flag` AS `inactive_flag`,`nr`.`function_id` AS `function_id`,`nr`.`created_by` AS `created_by`,`nr`.`creation_date` AS `creation_date`,`nr`.`last_update_date` AS `last_update_date`,`nr`.`last_updated_by` AS `last_updated_by`,`olt`.`log_type` AS `log_type`,`olt`.`description` AS `log_type_desc`,`olt`.`title` AS `title`,`olt`.`content` AS `content`,`olt`.`need_reason_flag` AS `need_reason_flag`,`olt`.`field_name` AS `field_name`,`olt`.`dll_type` AS `dll_type`,`olt`.`field_valuelist_id` AS `field_valuelist_id` from (`ct_notice_rules` `nr` join `ct_order_log_types` `olt`) where (`olt`.`id` = `nr`.`log_type_id`);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_notice_rules_v` AS select `nr`.`id` AS `id`,`nr`.`log_type_id` AS `log_type_id`,`nr`.`description` AS `description`,`nr`.`order_type` AS `order_type`,`nr`.`notice_created_by` AS `notice_created_by`,`nr`.`notice_manager` AS `notice_manager`,`nr`.`notice_leader` AS `notice_leader`,`nr`.`when_new_value` AS `when_new_value`,`nr`.`when_old_value` AS `when_old_value`,`nr`.`default_role_id` AS `default_role_id`,`nr`.`inactive_flag` AS `inactive_flag`,`nr`.`function_id` AS `function_id`,`nr`.`created_by` AS `created_by`,`nr`.`creation_date` AS `creation_date`,`nr`.`last_update_date` AS `last_update_date`,`nr`.`last_updated_by` AS `last_updated_by`,`olt`.`log_type` AS `log_type`,`olt`.`description` AS `log_type_desc`,`olt`.`title` AS `title`,`olt`.`content` AS `content`,`olt`.`need_reason_flag` AS `need_reason_flag`,`olt`.`field_name` AS `field_name`,`olt`.`dll_type` AS `dll_type`,`olt`.`field_valuelist_id` AS `field_valuelist_id`,`nr`.`notice_type` AS `notice_type` from (`ct_notice_rules` `nr` join `ct_order_log_types` `olt`) where (`olt`.`id` = `nr`.`log_type_id`);
 
 -- --------------------------------------------------------
 

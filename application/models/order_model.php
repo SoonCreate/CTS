@@ -282,7 +282,7 @@ class Order_model extends MY_Model{
                                             $log_v = $olm->find_by_view(array('id'=>$id));
                                             $n['log_id'] = $id;
                                             //类型为日志转换
-                                            $n['notice_type'] = 'log';
+                                            $n['notice_type'] = $rule['notice_type'];
 //                            $n['received_by'] = _sess('uid');
 //                            $n['with_manager'] = 1;
                                             $n['title'] = $this->_format_log($log_v,$order['order_type'],$t['title'],true);

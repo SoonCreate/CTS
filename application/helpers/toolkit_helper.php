@@ -155,16 +155,21 @@ function get_value($valuelist_name,$label){
 }
 
 function get_label($valuelist_name,$value,$parent_segment_value = null){
-    $options = get_options($valuelist_name,$parent_segment_value);
-    $label = label('unknown');
-    if(count($options) > 0){
-        for($i=0;$i<count($options);$i++){
-            if($options[$i]["value"] == $value){
-                $label = $options[$i]["label"];
-                break;
+    if($value == _config('all_values')){
+        $label = label('all');
+    }else{
+        $options = get_options($valuelist_name,$parent_segment_value);
+        $label = label('unknown');
+        if(count($options) > 0){
+            for($i=0;$i<count($options);$i++){
+                if($options[$i]["value"] == $value){
+                    $label = $options[$i]["label"];
+                    break;
+                }
             }
         }
     }
+
     return $label;
 }
 

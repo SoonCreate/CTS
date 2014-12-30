@@ -35,7 +35,7 @@
                 grid.connect(grid.body, 'onAfterRow', function(row){
                     //参数为row，通过row.node()获取node并修改样式
                     var data = row.rawData();
-                    if(data["read_flag"] == "0"){
+                    if(data["read"] == "0"){
                         row.node().style.fontWeight = "bold";
                     }
 
