@@ -238,7 +238,7 @@ function _user_config($config_name,$user_id = null){
     $CI->load->model('user_config_model');
     $ucm = new User_config_model();
     $value = "";
-    $row = $ucm->config($config_name,$user_id = null);
+    $row = $ucm->config($config_name,$user_id);
     if(!empty($row)){
         switch($row['data_type']){
             case 'string';
@@ -424,17 +424,16 @@ function send_message($user_id,$subject,$message,$from = NULL,$cc = NULL,$bcc = 
     global $CI;
     $CI->load->model('user_model');
     $um = new User_model();
-    $receive_email = _user_config('receive_email',$user_id);
-    if($receive_email){
-        $user = $um->find_by(array('id'=>$user_id,'inactive_flag'=>0));
-        if(!empty($user) && !is_null($user['email']) && $user['email'] != ''){
-            return send_mail($user['email'],$subject,$message,$from,$cc,$bcc) && send_sms();
-        }else{
-            return false;
-        }
-    }else{
-        return false;
+    $user = $um->find_by(array('id'=> $user_id,'inactive_flag'=> 0));
+    $send_mail = true;
+    $send_sms = true;
+    if(!empty($user) && !is_null($user['email']) && $user['email'] != '' && _user_config('receive_email',$user_id)){
+        $send_mail = send_mail($user['email'],$subject,$message,$from,$cc,$bcc);
     }
+    if(!empty($user) && !is_null($user['mobile_telephone']) && $user['mobile_telephone'] != '' && _user_config('receive_sms',$user_id)){
+        $send_sms = send_sms($user['mobile_telephone'],$subject.' '._trim($message));
+    }
+    return $send_mail && $send_sms;
 }
 
 
@@ -498,13 +497,83 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
     return true;
 //    echo $email->print_debugger();
 
-    //后续短信发送加入点：
-
 }
 
-//短信发送
-function send_sms(){
-    return true;
+//信息机短信发送
+function send_sms($tel_number,$msg){
+    $pass = true;
+    $msg_tmp = preg_replace('/[^\x{4e00}-\x{9fa5}]/u', '', $msg);;
+    //判断长度:总数不能大于1000，中文字不能大于666
+    if(mb_strlen($msg) >= 1000 || mb_strlen($msg_tmp) > 666){
+        custz_message('E','短信字数不能超过1000个，其中汉字不能超过666个');
+        $pass = false;
+    }
+
+    $sms_number = _config('sms_number');
+    $sms_ip = _config('sms_ip');
+    $sms_account = _config('sms_account');
+
+    if($sms_account == "" || $sms_ip == "" || $sms_number == ""){
+        custz_message('E','未设置短信发送参数，请联系管理员');
+        $pass = false;
+    }
+
+    if($pass){
+        try {
+            //这种方式有bug：SoapFault exception: [soap:Client] Not enough message parts were received for the operation.
+            //            $client = new SoapClient("http://111.1.15.163/webservice/services/sendmsg?WSDL");
+            $client = new SoapClient(null,array('location'=>'http://'.$sms_ip.'/webservice/services/sendmsg','uri'=>'http://'.$sms_ip.'/'));
+            $code = intval(substr($tel_number,-4,4)) * 3 + 1111;
+            $message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
+                "<infos>" .
+                "<info>" .
+                "<msg_id><![CDATA[-1]]></msg_id>" .
+                "<password><![CDATA[" . $code . "]]></password>" .
+                "<src_tele_num><![CDATA[".$sms_number."]]></src_tele_num>" .
+                "<dest_tele_num><![CDATA[".$tel_number."]]></dest_tele_num>" .
+                "<msg><![CDATA[".$msg."]]></msg>" .
+                "</info>" . "</infos>";
+            $arrResult = $client->sendmsg($sms_account,$message);
+            $p = xml_parser_create();
+            xml_parse_into_struct($p, $arrResult, $vals, $index);
+            xml_parser_free($p);
+            $state = $vals[$index['STATE'][0]]['value'];
+            if($state < 0){
+                $pass = false;
+            }
+            switch($state){
+                case 0 :
+                    //提交成功
+                    break;
+                case -1 :
+                    //企业帐号错误;
+                    break;
+                case -2 :
+                    //验证码格式错误
+                    break;
+                case -3 :
+                    //接入号即服务代码错误
+                    break;
+                case -4 :
+                    //手机号码错误
+                    break;
+                case -5 :
+                    //消息为空
+                    break;
+                case -6 :
+                    //消息太长：不允许超出1000个字（包括中英文），实测不能超过666个中文字
+                    break;
+                case -7 :
+                    //验证码不匹配
+                    break;
+            }
+        } catch (SOAPFault $e) {
+            $pass = false;
+            error_log($e) ;
+        }
+    }
+
+    return $pass;
 }
 
 function load_upload_config(){

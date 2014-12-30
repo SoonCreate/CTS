@@ -203,6 +203,7 @@ $lang['label_done'] = "已解决";
 $lang['label_ready'] = "等待开始";
 $lang['label_canceled'] = "取消";
 $lang['label_running'] = "正在进行";
+$lang['label_finished'] = "已结束";
 $lang['label_closed'] = "结束";
 $lang['label_show'] = "查看";
 $lang['label_file'] = "文件";

@@ -237,10 +237,10 @@ class Order_meeting extends CI_Controller {
                         $success = $success + 1;
                     }else{
                         $failure = $failure + 1;
-                        custz_message('W','['.$full_name.'] 发送失败！');
+                        custz_message('E','['.$full_name.'] 发送失败！');
                     }
                 }else{
-                    custz_message('W','['.$full_name.'] 用户不存在！');
+                    custz_message('E','['.$full_name.'] 用户不存在！');
                     $failure = $failure + 1;
                 }
             }
@@ -344,7 +344,7 @@ class Order_meeting extends CI_Controller {
             }
 
             if($object['end_date'] < time()){
-                $object['status'] = label('done');
+                $object['status'] = label('finished');
             }
 
             if($object['end_date'] < time() && $object['discuss']){
