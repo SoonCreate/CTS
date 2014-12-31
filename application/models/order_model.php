@@ -390,7 +390,6 @@ class Order_model extends MY_Model{
     function send_mails_by_change_hash($change_hash){
         //判断是否同时通过邮件收取通知
         $this->load->model('user_model');
-        $um = new User_model();
         $olm = new Order_log_model();
         $nm = new Notice_model();
         $logs = $olm->find_all_by(array('change_hash'=>$change_hash));
@@ -400,7 +399,7 @@ class Order_model extends MY_Model{
                 if(!empty($notices)){
                     foreach($notices as $n){
                         $content = $this->load->view('notice_mail',$n,true);
-                        send_message($n['received_by'],$n['title'],$content);
+                        send_message($n['received_by'],$n['title'],$content,$n['id']);
                     }
                 }
             }

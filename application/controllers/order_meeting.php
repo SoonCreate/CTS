@@ -232,9 +232,9 @@ class Order_meeting extends CI_Controller {
                     $notice['title'] = $m['title'];
                     $notice['content'] = $this->load->view('order_meeting/show',_format_row($m),true);
 
-                    $nm->insert($notice);
+                    $notice_id = $nm->insert($notice);
 
-                    if(send_message($user['id'],get_label('vl_notice_type',$notice['notice_type']).'：' .$notice['title'],$notice['content'])){
+                    if(send_message($user['id'],get_label('vl_notice_type',$notice['notice_type']).'：' .$notice['title'],$notice['content'],$notice_id)){
                         $success = $success + 1;
                     }else{
                         $failure = $failure + 1;

@@ -425,7 +425,7 @@ function is_order_locked($status){
 }
 
 //发送消息、通知、短信、邮件
-function send_message($user_id,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
+function send_message($user_id,$subject,$message,$notice_id = null){
     global $CI;
     $CI->load->model('user_model');
     $um = new User_model();
@@ -433,17 +433,17 @@ function send_message($user_id,$subject,$message,$from = NULL,$cc = NULL,$bcc = 
     $send_mail = true;
     $send_sms = true;
     if(!empty($user) && !is_null($user['email']) && $user['email'] != '' && _user_config('receive_email',$user_id)){
-        $send_mail = send_mail($user['email'],$subject,$message,$from,$cc,$bcc);
+        $send_mail = send_mail($user['email'],$subject,$message,null,null,null,null,$notice_id);
     }
     if(!empty($user) && !is_null($user['mobile_telephone']) && $user['mobile_telephone'] != '' && _user_config('receive_sms',$user_id)){
-        $send_sms = send_sms($user['mobile_telephone'],$subject.' '._trim($message));
+        $send_sms = send_sms($user['mobile_telephone'],$subject.' '._trim($message),$notice_id);
     }
     return $send_mail && $send_sms;
 }
 
 
 //邮件发送方法
-function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
+function send_mail($to,$subject,$message,$attach = array(),$from = NULL,$cc = NULL,$bcc = NULL,$notice_id = NULL){
     global $CI;
     $config['protocol']     = _config('mail_protocol');
     if(strcasecmp($config['protocol'], 'sendmail') == 0){
@@ -497,20 +497,50 @@ function send_mail($to,$subject,$message,$from = NULL,$cc = NULL,$bcc = NULL){
 
     $email->subject($subject);
     $email->message($message);
+    //附件
+    if(is_array($attach) && count($attach) > 0 ){
+        foreach($attach as $a){
+            $this->email->attach($a);
+        }
+    }
+
     //暂停发送，正是上线启用
-    return $email->send();
+    $pass = $email->send();
+
+    //插入日志
+    $CI->load->model('email_log_model');
+    $elm = new Email_log_model();
+    $data['notice_id'] = $notice_id;
+    $data['send_to'] = $to;
+    $data['subject'] = $subject;
+    $data['content'] = $message;
+    $data['send_cc'] = $cc;
+    $data['send_bcc'] = $bcc;
+
+    if(is_array($attach) && count($attach) > 0 ){
+        $data['attach'] = implode(',',$attach);
+    }
+
+    if(!$pass){
+        $data['reason'] = implode(',',$email->_debug_msg);
+    }
+    $elm->insert($data);
+
+    return $pass;
 //    return true;
 //    echo $email->print_debugger();
 
 }
 
 //信息机短信发送
-function send_sms($tel_number,$msg){
+function send_sms($tel_number,$msg,$notice_id = null){
+    global $CI;
+    $error_message = array();
     $pass = true;
     $msg_tmp = preg_replace('/[^\x{4e00}-\x{9fa5}]/u', '', $msg);;
     //判断长度:总数不能大于1000，中文字不能大于666
     if(mb_strlen($msg) >= 1000 || mb_strlen($msg_tmp) > 666){
-        custz_message('E','短信字数不能超过1000个，其中汉字不能超过666个');
+        array_push($error_message,_text('sms_too_long'));
         $pass = false;
     }
 
@@ -519,7 +549,7 @@ function send_sms($tel_number,$msg){
     $sms_account = _config('sms_account');
 
     if($sms_account == "" || $sms_ip == "" || $sms_number == ""){
-        custz_message('E','未设置短信发送参数，请联系管理员');
+        array_push($error_message,_text('sms_no_config'));
         $pass = false;
     }
 
@@ -552,31 +582,50 @@ function send_sms($tel_number,$msg){
                     break;
                 case -1 :
                     //企业帐号错误;
+                    array_push($error_message,_text('sms_account_wrong'));
                     break;
                 case -2 :
                     //验证码格式错误
+                    array_push($error_message,_text('sms_code_type_wrong'));
                     break;
                 case -3 :
                     //接入号即服务代码错误
+                    array_push($error_message,_text('sms_service_number_wrong'));
                     break;
                 case -4 :
                     //手机号码错误
+                    array_push($error_message,_text('sms_phone_number_wrong'));
                     break;
                 case -5 :
                     //消息为空
+                    array_push($error_message,_text('sms_blank_content'));
                     break;
                 case -6 :
                     //消息太长：不允许超出1000个字（包括中英文），实测不能超过666个中文字
+                    array_push($error_message,_text('sms_too_long'));
                     break;
                 case -7 :
                     //验证码不匹配
+                    array_push($error_message,_text('sms_code_wrong'));
                     break;
             }
         } catch (SOAPFault $e) {
             $pass = false;
+            array_push($error_message,$e);
             error_log($e) ;
         }
     }
+
+    //插入日志
+    $CI->load->model('sms_log_model');
+    $slm = new Sms_log_model();
+    $data['notice_id'] = $notice_id;
+    $data['send_to'] = $tel_number;
+    $data['content'] = $msg;
+    if(!$pass){
+        $data['reason'] = implode(',',$error_message);
+    }
+    $slm->insert($data);
 
     return $pass;
 }
