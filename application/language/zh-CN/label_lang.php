@@ -109,6 +109,13 @@ $lang['label_operation_time'] = "操作时间";
 $lang['label_plan_complete_date'] = "计划完成时间";
 $lang['label_order_pcd_change'] = "指定计划完成时间";
 
+//反馈
+$lang['label_stars'] = "评分";
+$lang['label_feedback_type'] = "评分类型";
+$lang['label_feedback_desc'] = "描述";
+$lang['label_please_score_for_this_service'] = "请为本次服务打分";
+$lang['label_content_plus'] = "补充";
+
 //状态流
 $lang['label_step'] = "步骤";
 $lang['label_status_code'] = "状态码";

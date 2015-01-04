@@ -505,7 +505,7 @@ class Order extends CI_Controller {
 
     //用户反馈
     function feedback(){
-        if(_config('feedback')){
+        if(_config('feedback_control')){
             $om = new Order_model();
             $order = $om->find(v('id'));
             if(empty($order)){
@@ -546,6 +546,7 @@ class Order extends CI_Controller {
                             }else{
                                 //判断是否存在
                                 $line = $ofm->find_by(array('order_id'=>v('id')));
+                                $total_starts = _config('feedback_star');
                                 if(empty($line)){
                                     //创建
                                     $vlm->order_by('sort');
@@ -558,6 +559,7 @@ class Order extends CI_Controller {
                                         $s['feedback_id'] = $feedback_id;
                                         $s['feedback_type'] = $star['segment_value'];
                                         $s['feedback_desc'] = $star['segment_desc'];
+                                        $s['total_stars'] = $total_starts;
                                         $s['stars'] = v('star_'.$star['segment_value']);
                                         $fsm->insert($s);
                                     }

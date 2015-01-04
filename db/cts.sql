@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2015 at 04:23 AM
+-- Generation Time: Jan 04, 2015 at 06:20 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `ct_configs`
@@ -180,7 +180,8 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (47, 'receive_sms', '接收短信消息（默认不收取）', 'FALSE', 1, 'boolean', 1, NULL, NULL, NULL, NULL),
 (48, 'sms_ip', '信息机webservise地址IP', '', 1, 'string', 0, NULL, NULL, NULL, NULL),
 (49, 'sms_number', '短信发送号码', '', 1, 'string', 0, NULL, NULL, NULL, NULL),
-(50, 'sms_account', '短信企业账号', '', 1, 'string', 0, NULL, NULL, NULL, NULL);
+(50, 'sms_account', '短信企业账号', '', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(51, 'auto_feedback', '投诉单关闭后，自动反馈时间（小时）', '24', 1, 'number', 0, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -238,19 +239,62 @@ CREATE TABLE IF NOT EXISTS `ct_feedbacks` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单反馈表' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单反馈表' AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `ct_feedbacks`
 --
 
 INSERT INTO `ct_feedbacks` (`id`, `order_id`, `content`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`) VALUES
-(1, 101, '反馈测试1', 44, 1413625271, 1413626197, 44),
-(2, 102, '', 44, 1413632623, 1413632623, 44),
-(3, 105, '意见还是有的', 45, 1413693648, 1413693648, 45),
-(4, 106, 'nice nice nice nice nice nice', 46, 1413700624, 1413700624, 46),
-(5, 115, '测试评分~~~~处理速度很快。', 69, 1413701044, 1413701078, 69);
+(1, 100, NULL, 44, 1420346762, 1420346762, 44),
+(2, 101, NULL, 44, 1420346762, 1420346762, 44),
+(3, 102, NULL, 44, 1420346762, 1420346762, 44),
+(4, 105, NULL, 44, 1420346762, 1420346762, 44),
+(5, 106, NULL, 44, 1420346762, 1420346762, 44),
+(6, 113, NULL, 44, 1420346762, 1420346762, 44),
+(7, 115, NULL, 44, 1420346762, 1420346762, 44),
+(8, 120, NULL, 44, 1420346762, 1420346762, 44),
+(9, 121, NULL, 44, 1420346762, 1420346762, 44),
+(10, 142, NULL, 44, 1420346762, 1420346762, 44),
+(11, 144, NULL, 44, 1420346762, 1420346762, 44),
+(12, 149, NULL, 44, 1420346762, 1420346762, 44),
+(13, 162, NULL, 44, 1420346762, 1420346762, 44),
+(14, 163, NULL, 44, 1420346762, 1420346762, 44),
+(15, 164, NULL, 44, 1420346762, 1420346762, 44),
+(16, 165, NULL, 44, 1420346762, 1420346762, 44),
+(17, 166, NULL, 44, 1420346762, 1420346762, 44),
+(18, 167, NULL, 44, 1420346762, 1420346762, 44),
+(19, 168, '', 44, 1420346762, 1420348602, 45);
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_feedback_orders_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_feedback_orders_v` (
+`id` int(11)
+,`order_type` varchar(20)
+,`status` varchar(20)
+,`severity` varchar(20)
+,`frequency` varchar(20)
+,`category` varchar(20)
+,`title` varchar(100)
+,`manager_id` int(11)
+,`leader_id` int(11)
+,`plan_complete_date` int(11)
+,`contact` varchar(255)
+,`phone_number` varchar(255)
+,`mobile_telephone` varchar(255)
+,`address` varchar(255)
+,`full_name` varchar(255)
+,`warning_times` int(11)
+,`pcd_change_times` int(11)
+,`creation_date` int(11)
+,`created_by` int(11)
+,`last_update_date` int(11)
+,`last_updated_by` int(11)
+,`feedback_id` int(11)
+);
 -- --------------------------------------------------------
 
 --
@@ -267,25 +311,54 @@ CREATE TABLE IF NOT EXISTS `ct_feedback_stars` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   `feedback_desc` varchar(255) NOT NULL COMMENT '类型描述',
+  `total_stars` int(10) unsigned NOT NULL DEFAULT '5' COMMENT '总打分',
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`feedback_id`,`feedback_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单反馈明细表' AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单反馈明细表' AUTO_INCREMENT=39 ;
 
 --
 -- Dumping data for table `ct_feedback_stars`
 --
 
-INSERT INTO `ct_feedback_stars` (`id`, `feedback_id`, `feedback_type`, `stars`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `feedback_desc`) VALUES
-(1, 1, '10', 3, 44, 1413625271, 1413626197, 44, '响应速度'),
-(2, 1, '20', 5, 44, 1413625271, 1413626197, 44, '服务态度'),
-(3, 2, '10', 5, 44, 1413632623, 1413632623, 44, '响应速度'),
-(4, 2, '20', 5, 44, 1413632623, 1413632623, 44, '服务态度'),
-(5, 3, '10', 4, 45, 1413693648, 1413693648, 45, '响应速度'),
-(6, 3, '20', 4, 45, 1413693648, 1413693648, 45, '服务态度'),
-(7, 4, '10', 5, 46, 1413700624, 1413700624, 46, '响应速度'),
-(8, 4, '20', 5, 46, 1413700624, 1413700624, 46, '服务态度'),
-(9, 5, '10', 5, 69, 1413701044, 1413701078, 69, '响应速度'),
-(10, 5, '20', 3, 69, 1413701044, 1413701078, 69, '服务态度');
+INSERT INTO `ct_feedback_stars` (`id`, `feedback_id`, `feedback_type`, `stars`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `feedback_desc`, `total_stars`) VALUES
+(1, 1, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(2, 1, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(3, 2, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(4, 2, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(5, 3, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(6, 3, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(7, 4, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(8, 4, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(9, 5, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(10, 5, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(11, 6, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(12, 6, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(13, 7, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(14, 7, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(15, 8, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(16, 8, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(17, 9, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(18, 9, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(19, 10, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(20, 10, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(21, 11, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(22, 11, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(23, 12, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(24, 12, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(25, 13, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(26, 13, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(27, 14, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(28, 14, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(29, 15, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(30, 15, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(31, 16, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(32, 16, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(33, 17, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(34, 17, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(35, 18, '10', 5, 44, 1420346762, 1420346762, 44, '响应速度', 5),
+(36, 18, '20', 5, 44, 1420346762, 1420346762, 44, '服务态度', 5),
+(37, 19, '10', 5, 44, 1420346762, 1420348602, 45, '响应速度', 5),
+(38, 19, '20', 5, 44, 1420346762, 1420348602, 45, '服务态度', 5);
 
 -- --------------------------------------------------------
 
@@ -2541,7 +2614,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=237 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=241 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -2718,7 +2791,11 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (233, 1, 56, 1417268457, 44, 1417268457, 44),
 (234, 3, 56, 1417268474, 44, 1417268474, 44),
 (235, 8, 62, 1419740094, -1, 1419740094, -1),
-(236, 8, 63, 1420334884, 44, 1420334884, 44);
+(236, 8, 63, 1420334884, 44, 1420334884, 44),
+(237, 8, 50, 1420347003, 44, 1420347003, 44),
+(238, 1, 50, 1420347155, 44, 1420347155, 44),
+(239, 3, 50, 1420347170, 44, 1420347170, 44),
+(240, 4, 50, 1420347179, 44, 1420347179, 44);
 
 -- --------------------------------------------------------
 
@@ -3385,7 +3462,7 @@ CREATE TABLE IF NOT EXISTS `ct_status_functions` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='状态行对应的功能' AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `ct_status_functions`
@@ -3415,7 +3492,10 @@ INSERT INTO `ct_status_functions` (`id`, `status_line_id`, `function_id`, `sort`
 (26, 21, 30, 6, '问题已解决', 44, 1416197781, 1416197791, 44),
 (27, 21, 29, 0, '计划完成日期', 44, 1416197806, 1416197806, 44),
 (28, 22, 31, 0, '投诉单关闭', 44, 1416197826, 1416197826, 44),
-(29, 23, 32, 0, '重新打开', 44, 1416197845, 1416197845, 44);
+(29, 23, 32, 0, '重新打开', 44, 1416197845, 1416197845, 44),
+(30, 11, 24, 1, '评分反馈', 44, 1420346904, 1420346904, 44),
+(31, 17, 24, 1, '评分反馈', 44, 1420346958, 1420346958, 44),
+(32, 23, 24, 1, '评分反馈', 44, 1420346985, 1420346985, 44);
 
 -- --------------------------------------------------------
 
@@ -3617,6 +3697,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
+('1206d46069ec323aa21265c5b6d1cef0', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420348417, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"4080";s:2:"cm";s:2:"36";s:3:"mid";s:1:"6";s:3:"fid";s:2:"18";s:3:"uid";i:45;}'),
 ('6a51fe9ecdb46b2db372993139238fbb', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420341785, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}');
 
 -- --------------------------------------------------------
@@ -4083,6 +4164,15 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 DROP TABLE IF EXISTS `ct_authobj_lines_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_authobj_lines_v` AS select `l`.`id` AS `id`,`l`.`object_id` AS `object_id`,`l`.`valuelist_id` AS `valuelist_id`,`l`.`default_value` AS `default_value`,`l`.`creation_date` AS `creation_date`,`l`.`created_by` AS `created_by`,`l`.`last_update_date` AS `last_update_date`,`l`.`last_updated_by` AS `last_updated_by`,`h`.`object_name` AS `object_name`,`h`.`description` AS `object_desc`,`vl`.`valuelist_name` AS `auth_item_name`,`vl`.`description` AS `auth_item_desc` from ((`ct_authority_objects` `h` join `ct_authobj_lines` `l`) join `ct_valuelist_header` `vl`) where ((`l`.`object_id` = `h`.`id`) and (`vl`.`id` = `l`.`valuelist_id`));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_feedback_orders_v`
+--
+DROP TABLE IF EXISTS `ct_feedback_orders_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_feedback_orders_v` AS select `o`.`id` AS `id`,`o`.`order_type` AS `order_type`,`o`.`status` AS `status`,`o`.`severity` AS `severity`,`o`.`frequency` AS `frequency`,`o`.`category` AS `category`,`o`.`title` AS `title`,`o`.`manager_id` AS `manager_id`,`o`.`leader_id` AS `leader_id`,`o`.`plan_complete_date` AS `plan_complete_date`,`o`.`contact` AS `contact`,`o`.`phone_number` AS `phone_number`,`o`.`mobile_telephone` AS `mobile_telephone`,`o`.`address` AS `address`,`o`.`full_name` AS `full_name`,`o`.`warning_times` AS `warning_times`,`o`.`pcd_change_times` AS `pcd_change_times`,`o`.`creation_date` AS `creation_date`,`o`.`created_by` AS `created_by`,`o`.`last_update_date` AS `last_update_date`,`o`.`last_updated_by` AS `last_updated_by`,`f`.`id` AS `feedback_id` from (`ct_orders` `o` left join `ct_feedbacks` `f` on((`f`.`order_id` = `o`.`id`)));
 
 -- --------------------------------------------------------
 
