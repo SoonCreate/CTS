@@ -36,6 +36,8 @@ $lang['label_all'] = "所有";
 
 
 $lang['label_notice_read_all'] = "全部标记成已读";
+$lang['label_read_flag'] = "已读";
+$lang['label_message_type'] = "通知记录类型";
 $lang['label_notice'] = "提醒";
 $lang['label_notice_type'] = "通知类型";
 $lang['label_email_flag'] = "接收邮件";
@@ -44,6 +46,13 @@ $lang['label_order_number'] = "投诉单号";
 $lang['label_order_logs'] = "日志记录";
 $lang['label_need_reason'] = "需要填写原因";
 $lang['label_reason'] = "原因";
+$lang['label_error_reason'] = "错误原因";
+$lang['label_send_date'] = "发送时间";
+$lang['label_subject'] = "标题";
+$lang['label_send_cc'] = "抄送";
+$lang['label_send_bcc'] = "密送";
+$lang['label_attach'] = "附件";
+$lang['label_send_flag'] = "状态";
 
 //首页
 $lang['label_login'] = "登录";

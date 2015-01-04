@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 31, 2014 at 08:53 AM
+-- Generation Time: Jan 04, 2015 at 04:23 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -362,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `blank_flag` tinyint(3) unsigned NOT NULL COMMENT '打开新页面',
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -403,7 +403,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (35, 'status_statistics', '投诉单统计', 'report', 'status_statistics', NULL, 0, 1415843162, 44, 1415843162, 44, 1, '', 0),
 (36, 'time_statistics', '耗时统计', 'report', 'time_statistics', NULL, 0, 1415853121, 44, 1415853121, 44, 1, '', 0),
 (37, 'service_portal', '速创服务平台', 'admin', 'service_portal', NULL, 0, 1419738688, 44, 1419738688, 44, 1, 'icon-th-large', 1),
-(38, 'order_meeting_create', '召开会议', 'order_meeting', 'create', NULL, 1, 1419817232, 44, 1419817232, 44, 0, '', 0);
+(38, 'order_meeting_create', '召开会议', 'order_meeting', 'create', NULL, 1, 1419817232, 44, 1419817232, 44, 0, '', 0),
+(39, 'notice_list', '通知记录', 'notice', 'index', NULL, 1, 1420334853, 44, 1420334853, 44, 1, 'icon-envelope', 0);
 
 -- --------------------------------------------------------
 
@@ -727,7 +728,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=63 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=64 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -767,7 +768,8 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (59, 3, 34, 0, 1415753963, 44, 1415753963, 44),
 (60, 8, 35, 0, 1415843209, 44, 1415843209, 44),
 (61, 8, 36, 0, 1415853160, 44, 1415853160, 44),
-(62, 3, 37, 0, 1419739172, 44, 1419739172, 44);
+(62, 3, 37, 0, 1419739172, 44, 1419739172, 44),
+(63, 3, 39, 0, 1420334862, 44, 1420334862, 44);
 
 -- --------------------------------------------------------
 
@@ -2539,7 +2541,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=236 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=237 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -2715,7 +2717,8 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (214, 8, 47, 1415950201, 44, 1415950201, 44),
 (233, 1, 56, 1417268457, 44, 1417268457, 44),
 (234, 3, 56, 1417268474, 44, 1417268474, 44),
-(235, 8, 62, 1419740094, -1, 1419740094, -1);
+(235, 8, 62, 1419740094, -1, 1419740094, -1),
+(236, 8, 63, 1420334884, 44, 1420334884, 44);
 
 -- --------------------------------------------------------
 
@@ -3614,7 +3617,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('02fdf48fa3ce14e66efd283828ffde55', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420012369, 'a:5:{s:9:"user_data";s:0:"";s:2:"cm";s:2:"49";s:3:"mid";s:1:"4";s:3:"fid";s:2:"25";s:3:"uid";i:44;}');
+('6a51fe9ecdb46b2db372993139238fbb', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420341785, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}');
 
 -- --------------------------------------------------------
 
@@ -3878,7 +3881,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -3916,7 +3919,8 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (32, 'vl_operations', '运算公式', 0, NULL, NULL, NULL, NULL, 0, 1, 1414633095, 44, 1414633095, 44),
 (33, 'vl_authority_objects', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1414720433, 44, 1414720433, 44),
 (34, 'vl_sys_orders', '系统单据列表', 1, 'order_name', 'id', 'ct_system_orders', '', NULL, 1, 1414738213, 44, 1414738213, 44),
-(35, 'vl_notice_type', '消息类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1419919159, 44, 1419919159, 44);
+(35, 'vl_notice_type', '消息类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1419919159, 44, 1419919159, 44),
+(36, 'vl_message_type', '通知记录类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420335008, 44, 1420335008, 44);
 
 -- --------------------------------------------------------
 
@@ -3950,7 +3954,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=81 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=85 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -4025,7 +4029,11 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (77, 32, 140, 'NOT_LIKE', '部分不等于', 0, 13, '', 1414633702, 44, 1414633702, 44),
 (78, 35, 10, 'log', '变更提醒', 0, 0, '', 1419919412, 44, 1419921322, 44),
 (79, 35, 20, 'meeting', '会议通知', 0, 0, '', 1419919427, 44, 1419921256, 44),
-(80, 35, 30, 'feedback', '反馈', 0, 0, '', 1419919449, 44, 1419921305, 44);
+(80, 35, 30, 'feedback', '反馈', 0, 0, '', 1419919449, 44, 1419921305, 44),
+(81, 36, 10, 'notice', '站内提醒', 0, 0, '', 1420335045, 44, 1420335045, 44),
+(82, 36, 20, 'email', '电子邮件', 0, 0, '', 1420335063, 44, 1420335089, 44),
+(83, 36, 30, 'sms', '手机短信', 0, 0, '', 1420335077, 44, 1420335077, 44),
+(84, 35, 40, 'pcd_warning', '计划超时警告', 0, 0, '', 1420341762, 44, 1420341762, 44);
 
 -- --------------------------------------------------------
 
