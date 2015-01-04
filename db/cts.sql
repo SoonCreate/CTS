@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2015 at 06:20 AM
+-- Generation Time: Jan 04, 2015 at 09:27 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -197,10 +197,10 @@ CREATE TABLE IF NOT EXISTS `ct_email_logs` (
   `content` text NOT NULL COMMENT '内容',
   `send_cc` varchar(255) DEFAULT NULL COMMENT '抄送',
   `send_bcc` varchar(255) DEFAULT NULL COMMENT '密送',
-  `created_by` int(10) unsigned NOT NULL,
-  `creation_date` int(10) unsigned NOT NULL,
-  `last_updated_by` int(10) unsigned NOT NULL,
-  `last_update_date` int(10) unsigned NOT NULL,
+  `created_by` int(10) NOT NULL,
+  `creation_date` int(10) NOT NULL,
+  `last_updated_by` int(10) NOT NULL,
+  `last_update_date` int(10) NOT NULL,
   `reason` text COMMENT '报错原因',
   `attach` text COMMENT '附件',
   PRIMARY KEY (`id`),
@@ -582,6 +582,91 @@ CREATE TABLE IF NOT EXISTS `ct_function_obj_lines_v` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ct_jobs`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_jobs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `job_name` varchar(45) NOT NULL COMMENT '作业名称',
+  `description` varchar(45) NOT NULL COMMENT '作业描述',
+  `output_type` varchar(45) NOT NULL COMMENT '输出类型',
+  `period_flag` int(10) unsigned NOT NULL COMMENT '周期标识',
+  `period_value` varchar(45) NOT NULL COMMENT '周期值',
+  `period_type` varchar(45) NOT NULL COMMENT '周期类型',
+  `first_exec_date` int(10) unsigned NOT NULL COMMENT '第一次运行日期',
+  `inactive_date` int(10) unsigned DEFAULT NULL COMMENT '失效日期',
+  `next_exec_date` int(10) unsigned DEFAULT NULL COMMENT '下一次运行时间',
+  `creation_date` int(10) DEFAULT NULL,
+  `created_by` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
+  `sendto_list` text COMMENT '邮件发送的用户ID列表',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `JOBS_U01` (`job_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业表' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_job_histories`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_job_histories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `job_id` int(10) unsigned NOT NULL COMMENT '后台作业ID',
+  `status` varchar(45) NOT NULL COMMENT '状态',
+  `experience_date` int(10) unsigned DEFAULT NULL COMMENT '持续时间 单位秒',
+  `start_date` int(10) unsigned DEFAULT NULL COMMENT '开始日期',
+  `end_date` int(10) unsigned DEFAULT NULL COMMENT '结束日期',
+  `creation_date` int(10) DEFAULT NULL,
+  `created_by` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业历史表' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_job_outputs`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_job_outputs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `history_id` int(10) unsigned NOT NULL,
+  `log` longtext NOT NULL,
+  `output` longtext NOT NULL,
+  `creation_date` int(10) DEFAULT NULL,
+  `created_by` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
+  `output_type` varchar(45) NOT NULL COMMENT '输出类型',
+  PRIMARY KEY (`id`),
+  KEY `job_output_N01` (`history_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业输出表' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_job_steps`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_job_steps` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `job_id` int(10) unsigned NOT NULL COMMENT '后台作业',
+  `step` varchar(45) NOT NULL COMMENT '步骤',
+  `function_id` int(10) unsigned NOT NULL COMMENT '程序',
+  `variant_id` int(10) unsigned NOT NULL COMMENT '变式',
+  `creation_date` int(10) DEFAULT NULL,
+  `created_by` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业步骤表' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ct_meetings`
 --
 
@@ -598,9 +683,9 @@ CREATE TABLE IF NOT EXISTS `ct_meetings` (
   `cancel_reason` varchar(20) DEFAULT NULL COMMENT '取消原因',
   `cancel_remark` text COMMENT '备注',
   `created_by` int(11) DEFAULT NULL,
-  `creation_date` int(10) unsigned DEFAULT NULL,
-  `last_update_date` int(10) unsigned DEFAULT NULL,
-  `last_updated_by` int(10) unsigned DEFAULT NULL,
+  `creation_date` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
   `inactive_flag` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '失效标识',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议信息表' AUTO_INCREMENT=14 ;
@@ -635,10 +720,10 @@ CREATE TABLE IF NOT EXISTS `ct_meeting_files` (
   `meeting_id` int(10) unsigned NOT NULL,
   `file_id` int(10) unsigned NOT NULL,
   `description` varchar(255) NOT NULL COMMENT '文件描述',
-  `created_by` int(10) unsigned DEFAULT NULL,
-  `creation_date` int(10) unsigned DEFAULT NULL,
-  `last_update_date` int(10) unsigned DEFAULT NULL,
-  `last_updated_by` int(10) unsigned DEFAULT NULL,
+  `created_by` int(10) DEFAULT NULL,
+  `creation_date` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议文件记录表' AUTO_INCREMENT=5 ;
 
@@ -2498,8 +2583,8 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `meeting_id` int(10) unsigned NOT NULL COMMENT '会议ID',
   `created_by` int(11) DEFAULT NULL,
   `creation_date` int(11) DEFAULT NULL,
-  `last_update_date` int(10) unsigned DEFAULT NULL,
-  `last_updated_by` int(10) unsigned DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=17 ;
@@ -2543,9 +2628,9 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings_v` (
 ,`cancel_reason` varchar(20)
 ,`cancel_remark` text
 ,`created_by` int(11)
-,`creation_date` int(10) unsigned
-,`last_update_date` int(10) unsigned
-,`last_updated_by` int(10) unsigned
+,`creation_date` int(10)
+,`last_update_date` int(10)
+,`last_updated_by` int(10)
 ,`inactive_flag` int(10) unsigned
 ,`order_id` int(10) unsigned
 ,`order_title` varchar(100)
@@ -3142,10 +3227,10 @@ CREATE TABLE IF NOT EXISTS `ct_sms_logs` (
   `send_to` varchar(45) NOT NULL,
   `content` text NOT NULL,
   `notice_id` int(10) unsigned DEFAULT NULL,
-  `created_by` int(10) unsigned NOT NULL,
-  `creation_date` int(10) unsigned NOT NULL,
-  `last_updated_by` int(10) unsigned NOT NULL,
-  `last_update_date` int(10) unsigned NOT NULL,
+  `created_by` int(10) NOT NULL,
+  `creation_date` int(10) NOT NULL,
+  `last_updated_by` int(10) NOT NULL,
+  `last_update_date` int(10) NOT NULL,
   `reason` text COMMENT '报错原因',
   PRIMARY KEY (`id`),
   KEY `Index_2` (`created_by`,`creation_date`)
@@ -3697,8 +3782,10 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
+('053973b4ff4053972018eaa965ead0a3', '0.0.0.0', '0', 1420359949, 'a:1:{s:9:"user_data";s:0:"";}'),
 ('1206d46069ec323aa21265c5b6d1cef0', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420348417, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"4080";s:2:"cm";s:2:"36";s:3:"mid";s:1:"6";s:3:"fid";s:2:"18";s:3:"uid";i:45;}'),
-('6a51fe9ecdb46b2db372993139238fbb', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420341785, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}');
+('6a51fe9ecdb46b2db372993139238fbb', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420341785, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}'),
+('8a01cd140f194159efa9aa3ea1561375', '0.0.0.0', '0', 1420359870, 'a:1:{s:9:"user_data";s:0:"";}');
 
 -- --------------------------------------------------------
 
@@ -4156,6 +4243,28 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 ,`segment_desc` varchar(255)
 ,`id` int(11)
 );
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_variants`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_variants` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `function_id` int(10) unsigned NOT NULL,
+  `params` varchar(500) NOT NULL COMMENT '参数字符串',
+  `variant_name` varchar(45) NOT NULL COMMENT '变式名',
+  `description` varchar(100) NOT NULL COMMENT '描述',
+  `backgroud_flag` tinyint(1) DEFAULT NULL COMMENT '只用于后台',
+  `share_flag` tinyint(1) DEFAULT NULL COMMENT '共享标识',
+  `creation_date` int(10) DEFAULT NULL,
+  `created_by` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `variants_U01` (`function_id`,`variant_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='程序变式表' AUTO_INCREMENT=1 ;
+
 -- --------------------------------------------------------
 
 --
