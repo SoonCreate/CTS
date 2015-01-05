@@ -5,14 +5,14 @@
 
 <script type="text/javascript">
 
-    require(["dojo/ready","sckj/DataGrid"],function(ready,Grid){
+    require(["sckj/DataGrid"],function(Grid){
         var grid ;
-        var input = dijitObject('message_type');
         var message_type = "";
-        if(input != undefined){
-            message_type = input.getValue();
-        }
-        ready(function(){
+        onWsoLoad(function(){
+            var input = dijitObject('message_type');
+            if(input != undefined){
+                message_type = input.getValue();
+            }
             $ajax.get(url("notice/structure",{message_type : message_type}),{handleAs:"json"}).then(function(structure){
                 grid = new Grid({
                     asyncCache : true,

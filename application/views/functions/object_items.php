@@ -1,9 +1,9 @@
 <table class="table">
     <thead>
-        <th>项目名</th>
-        <th>项目描述</th>
-        <th>默认值</th>
-        <th>操作</th>
+        <th><?= label('item_name')?></th>
+        <th><?= label('description')?></th>
+        <th><?= label('default_value')?></th>
+        <th><?= label('operation')?></th>
     </thead>
     <?php foreach($items as $o):?>
     <tr>

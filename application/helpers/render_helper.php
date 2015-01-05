@@ -155,7 +155,7 @@ function render_radio($name,$label = null,$valuelist_name,$parent_segment_value 
     return $echo;
 }
 
-function render_single_checkbox($name,$value,$label = null,$checked = FALSE,$id = null){
+function render_single_checkbox($name,$value,$label = null,$checked = FALSE,$id = null,$attributes = array()){
     $echo = '';
     $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name,false,$label).'</dt>';
     $echo = $echo .'<dd><input name="'.$name.'" ';
@@ -170,6 +170,10 @@ function render_single_checkbox($name,$value,$label = null,$checked = FALSE,$id 
         if(_v($name) == $value){
             $echo = $echo . ' checked ';
         }
+    }
+
+    foreach($attributes as $key=>$value){
+        $echo = $echo. $key.' = '.'"'.$value.'"';
     }
 
     $echo = $echo .' />';

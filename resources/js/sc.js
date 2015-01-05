@@ -646,29 +646,38 @@ function refresh_notice_count(n){
 //工具栏加入功能按钮
 function toolbarAddButton(label,onclick,title){
     require(["dijit/ToolbarSeparator","sckj/form/Button"], function (ToolbarSeparator,Button) {
-        var handle = dojo.connect(currentWso(),"onLoad",function(){
+        onWsoLoad(function() {
             //在工具栏添加一个功能按钮
             var toolBar = dijitObject('toolbar');
-            if(toolBar){
-                if(title == undefined){
+            if (toolBar) {
+                if (title == undefined) {
                     title = "";
                 }
                 var bt = new Button({
-                    label : label,
-                    onClick : function(){
-                        if(onclick){
+                    label: label,
+                    onClick: function () {
+                        if (onclick) {
                             onclick();
                         }
                     },
-                    title : title
+                    title: title
                 });
                 bt.startup();
                 toolBar.addChild(bt);
-                dojo.disconnect(handle);
             }
         });
     });
 
+}
+
+//在完全加载时运行
+function onWsoLoad(fn){
+    if(fn){
+        var handle = dojo.connect(currentWso(),"onLoad",function(){
+                fn();
+                dojo.disconnect(handle);
+        });
+    }
 }
 
 //添加链接跳转

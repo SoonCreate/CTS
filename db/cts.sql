@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 04, 2015 at 09:27 AM
+-- Generation Time: Jan 05, 2015 at 08:44 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -579,6 +579,28 @@ CREATE TABLE IF NOT EXISTS `ct_function_obj_lines_v` (
 ,`auth_item_name` varchar(20)
 ,`auth_item_desc` varchar(255)
 );
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ct_function_variants`
+--
+
+CREATE TABLE IF NOT EXISTS `ct_function_variants` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `function_id` int(10) unsigned NOT NULL,
+  `variant_name` varchar(45) NOT NULL COMMENT '变式名',
+  `description` varchar(100) NOT NULL COMMENT '描述',
+  `background_flag` tinyint(1) DEFAULT '0' COMMENT '只用于后台',
+  `share_flag` tinyint(1) DEFAULT '0' COMMENT '共享标识',
+  `creation_date` int(10) DEFAULT NULL,
+  `created_by` int(10) DEFAULT NULL,
+  `last_update_date` int(10) DEFAULT NULL,
+  `last_updated_by` int(10) DEFAULT NULL,
+  `method` varchar(45) NOT NULL COMMENT 'POST/GET',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `variants_U01` (`function_id`,`variant_name`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='程序变式表' AUTO_INCREMENT=5 ;
+
 -- --------------------------------------------------------
 
 --
@@ -3782,10 +3804,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('053973b4ff4053972018eaa965ead0a3', '0.0.0.0', '0', 1420359949, 'a:1:{s:9:"user_data";s:0:"";}'),
-('1206d46069ec323aa21265c5b6d1cef0', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420348417, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"4080";s:2:"cm";s:2:"36";s:3:"mid";s:1:"6";s:3:"fid";s:2:"18";s:3:"uid";i:45;}'),
-('6a51fe9ecdb46b2db372993139238fbb', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420341785, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}'),
-('8a01cd140f194159efa9aa3ea1561375', '0.0.0.0', '0', 1420359870, 'a:1:{s:9:"user_data";s:0:"";}');
+('16a74beb18092ff367b7b5bb1107ed82', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420443795, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"1031";s:3:"uid";i:44;s:2:"cm";s:2:"61";s:3:"mid";s:1:"8";s:3:"fid";s:2:"36";}');
 
 -- --------------------------------------------------------
 
@@ -4049,7 +4068,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=39 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -4088,7 +4107,9 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (33, 'vl_authority_objects', '权限对象值集', 1, 'description', 'id', 'ct_authority_objects', '', NULL, 1, 1414720433, 44, 1414720433, 44),
 (34, 'vl_sys_orders', '系统单据列表', 1, 'order_name', 'id', 'ct_system_orders', '', NULL, 1, 1414738213, 44, 1414738213, 44),
 (35, 'vl_notice_type', '消息类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1419919159, 44, 1419919159, 44),
-(36, 'vl_message_type', '通知记录类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420335008, 44, 1420335008, 44);
+(36, 'vl_message_type', '通知记录类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420335008, 44, 1420335008, 44),
+(37, 'vl_data_type', '数据类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420417809, 44, 1420417809, 44),
+(38, 'vl_variant_method', '变式传输模式', 0, NULL, NULL, NULL, NULL, 0, 1, 1420422170, 44, 1420422170, 44);
 
 -- --------------------------------------------------------
 
@@ -4122,7 +4143,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=85 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=93 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -4201,7 +4222,15 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (81, 36, 10, 'notice', '站内提醒', 0, 0, '', 1420335045, 44, 1420335045, 44),
 (82, 36, 20, 'email', '电子邮件', 0, 0, '', 1420335063, 44, 1420335089, 44),
 (83, 36, 30, 'sms', '手机短信', 0, 0, '', 1420335077, 44, 1420335077, 44),
-(84, 35, 40, 'pcd_warning', '计划超时警告', 0, 0, '', 1420341762, 44, 1420341762, 44);
+(84, 35, 40, 'pcd_warning', '计划超时警告', 0, 0, '', 1420341762, 44, 1420341762, 44),
+(85, 37, 10, 'string', '字符串', 0, 0, '', 1420417824, 44, 1420417824, 44),
+(86, 37, 20, 'number', '数字', 0, 1, '', 1420417890, 44, 1420417890, 44),
+(87, 37, 30, 'boolean', 'TRUE/FALSE（是/否）', 0, 2, '', 1420417917, 44, 1420443461, 44),
+(88, 37, 40, 'date', '日期（年-月-日）', 0, 3, '', 1420417958, 44, 1420417958, 44),
+(89, 37, 50, 'datetime', '时间（年-月-日 时:分:秒）', 0, 4, '', 1420418012, 44, 1420418012, 44),
+(90, 38, 10, 'POST', 'POST', 0, 0, '', 1420422185, 44, 1420422185, 44),
+(91, 38, 20, 'GET', 'GET', 0, 1, '', 1420422204, 44, 1420422204, 44),
+(92, 37, 60, 'time', '时分秒', 0, 3, '', 1420441898, 44, 1420441911, 44);
 
 -- --------------------------------------------------------
 
@@ -4246,25 +4275,47 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_vl` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ct_variants`
+-- Table structure for table `ct_variant_lines`
 --
 
-CREATE TABLE IF NOT EXISTS `ct_variants` (
+CREATE TABLE IF NOT EXISTS `ct_variant_lines` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `function_id` int(10) unsigned NOT NULL,
-  `params` varchar(500) NOT NULL COMMENT '参数字符串',
-  `variant_name` varchar(45) NOT NULL COMMENT '变式名',
-  `description` varchar(100) NOT NULL COMMENT '描述',
-  `backgroud_flag` tinyint(1) DEFAULT NULL COMMENT '只用于后台',
-  `share_flag` tinyint(1) DEFAULT NULL COMMENT '共享标识',
-  `creation_date` int(10) DEFAULT NULL,
-  `created_by` int(10) DEFAULT NULL,
-  `last_update_date` int(10) DEFAULT NULL,
-  `last_updated_by` int(10) DEFAULT NULL,
+  `variant_id` int(10) unsigned NOT NULL,
+  `segment_name` varchar(45) NOT NULL,
+  `segment_value` varchar(255) NOT NULL,
+  `data_type` varchar(45) NOT NULL COMMENT '数据类型',
+  `now_flag` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否为现在时间',
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `creation_date` int(10) unsigned DEFAULT NULL,
+  `last_updated_by` int(10) unsigned DEFAULT NULL,
+  `last_update_date` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `variants_U01` (`function_id`,`variant_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='程序变式表' AUTO_INCREMENT=1 ;
+  KEY `Index_2` (`variant_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='变式参数列表' AUTO_INCREMENT=3 ;
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_variant_lines_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_variant_lines_v` (
+`id` int(10) unsigned
+,`variant_id` int(10) unsigned
+,`segment_name` varchar(45)
+,`segment_value` varchar(255)
+,`data_type` varchar(45)
+,`now_flag` tinyint(3) unsigned
+,`created_by` int(10) unsigned
+,`creation_date` int(10) unsigned
+,`last_updated_by` int(10) unsigned
+,`last_update_date` int(10) unsigned
+,`function_id` int(10) unsigned
+,`variant_name` varchar(45)
+,`description` varchar(100)
+,`background_flag` tinyint(1)
+,`share_flag` tinyint(1)
+,`method` varchar(45)
+);
 -- --------------------------------------------------------
 
 --
@@ -4543,6 +4594,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_valuelist_vl`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_valuelist_vl` AS select `h`.`valuelist_name` AS `valuelist_name`,`h`.`description` AS `valuelist_desc`,`l`.`segment` AS `segment`,`l`.`segment_value` AS `segment_value`,`l`.`segment_desc` AS `segment_desc`,`l`.`id` AS `id` from (`ct_valuelist_header` `h` join `ct_valuelist_lines` `l`) where ((`l`.`valuelist_id` = `h`.`id`) and (`l`.`inactive_flag` = 0));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_variant_lines_v`
+--
+DROP TABLE IF EXISTS `ct_variant_lines_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_variant_lines_v` AS select `l`.`id` AS `id`,`l`.`variant_id` AS `variant_id`,`l`.`segment_name` AS `segment_name`,`l`.`segment_value` AS `segment_value`,`l`.`data_type` AS `data_type`,`l`.`now_flag` AS `now_flag`,`l`.`created_by` AS `created_by`,`l`.`creation_date` AS `creation_date`,`l`.`last_updated_by` AS `last_updated_by`,`l`.`last_update_date` AS `last_update_date`,`h`.`function_id` AS `function_id`,`h`.`variant_name` AS `variant_name`,`h`.`description` AS `description`,`h`.`background_flag` AS `background_flag`,`h`.`share_flag` AS `share_flag`,`h`.`method` AS `method` from (`ct_function_variants` `h` join `ct_variant_lines` `l`) where (`h`.`id` = `l`.`variant_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

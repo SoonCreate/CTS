@@ -47,7 +47,7 @@ function custz_message($type,$content){
 
 //数据库操作返回消息
 function message_db_failure(){
-    ci_translate_message('I','message_save_failure');
+    ci_translate_message('E','message_save_failure');
 }
 
 //ci中配置的多语言环境消息

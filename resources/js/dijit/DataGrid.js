@@ -51,8 +51,12 @@ define(["dojo/_base/declare", "gridx/Grid",
                         args.id = fixDijitId(args.id);
                     }
                 }
-
-                args.modules = [ColumnResizer,VirtualVScroller,TouchVScroller];
+                if(args.modules == undefined){
+                    args.modules = [];
+                }
+                args.modules.push(ColumnResizer);
+                args.modules.push(VirtualVScroller);
+                args.modules.push(TouchVScroller);
                 ////是否启用分页
                 if(args.pageSize != undefined || args.pagination){
                     args.modules.push(Pagination);

@@ -267,5 +267,166 @@ class Functions extends CI_Controller {
         }
     }
 
+    //参数变式
+    function variants(){
+        $fm = new Function_model();
+        $fn = $fm->find(v('id'));
+        if(empty($fn)){
+            show_404();
+        }else{
+            $this->load->model('variant_model');
+            $vm = new Variant_model();
+            $data['objects'] = _format($vm->find_my_variants($fn['id']),true);
+            render($data);
+        }
 
+    }
+
+    function variant_create(){
+        if($_POST){
+            if($this->_check_variant_name(v('variant_name'),v('function_name'))){
+                $this->load->model('variant_model');
+                $vm = new Variant_model();
+                $_POST['share_flag'] = v('share_flag');
+                $_POST['background_flag'] = v('background_flag');
+                $variant_id = $vm->insert(_data('variant_name','description','method','function_id','share_flag','background_flag'));
+                if($variant_id){
+                    redirect_to('functions','variant_items',array('variant_id'=>$variant_id));
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }
+        }else{
+            render();
+        }
+    }
+
+    function variant_edit(){
+        $this->load->model('variant_model');
+        $vm = new Variant_model();
+        $v = $vm->find(v('id'));
+        if(empty($v)){
+            show_404();
+        }else{
+            if($_POST){
+                $_POST['share_flag'] = v('share_flag');
+                $_POST['background_flag'] = v('background_flag');
+                if($vm->update($v['id'],_data('variant_name','description','method','share_flag','background_flag'))){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render($v);
+            }
+        }
+    }
+
+    function variant_destroy(){
+        $this->load->model('variant_model');
+        $vm = new Variant_model();
+        $v = $vm->find(v('id'));
+        if(empty($v)){
+            show_404();
+        }else{
+            $this->load->model('variant_line_model');
+            $vlm = new Variant_line_model();
+            $this->db->trans_start();
+            $vlm->delete_by(array('variant_id'=>$v['id']));
+            $vm->delete($v['id']);
+            $this->db->trans_complete();
+            if($this->db->trans_status() === FALSE){
+                message_db_failure();
+            }else{
+                message_db_success();
+            }
+        }
+    }
+
+    function variant_items(){
+        $this->load->model('variant_model');
+        $vm = new Variant_model();
+        $v = $vm->find(v('variant_id'));
+        if(empty($v)){
+            show_404();
+        }else{
+            $this->load->model('variant_line_model');
+            $vlm = new Variant_line_model();
+            $data['objects'] = _format($vlm->find_all_by(array('variant_id'=>$v['id'])),true);
+            render($data);
+        }
+    }
+
+    function variant_item_create(){
+        $this->load->model('variant_model');
+        $vm = new Variant_model();
+        $v = $vm->find(v('variant_id'));
+        if(empty($v)){
+            show_404();
+        }else{
+            if($_POST){
+                $this->load->model('variant_line_model');
+                $vlm = new Variant_line_model();
+                $_POST['now_flag'] = v('now_flag');
+                if($vlm->insert($_POST)){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render();
+            }
+        }
+    }
+
+    function variant_item_edit(){
+        $this->load->model('variant_line_model');
+        $vlm = new Variant_line_model();
+        $line = $vlm->find(v('id'));
+        if(empty($line)){
+            show_404();
+        }else{
+            if($_POST){
+                $_POST['now_flag'] = v('now_flag');
+                if($vlm->update($line['id'],$_POST)){
+                    go_back();
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+            }else{
+                render($line);
+            }
+        }
+    }
+
+    function variant_item_destroy(){
+        $this->load->model('variant_line_model');
+        $vlm = new Variant_line_model();
+        $line = $vlm->find(v('id'));
+        if(empty($line)){
+            show_404();
+        }else{
+            if($vlm->delete($line['id'])){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
+        }
+    }
+
+    private function _check_variant_name($variant_name,$function_id){
+        $this->load->model('variant_model');
+        $vm = new Variant_model();
+        $v = $vm->find_by(array('variant_name'=>$variant_name,'function_id'=>$function_id));
+        if(empty($v)){
+            return true;
+        }else{
+            add_validation_error('variant_name',label('variant_name').' 已存在');
+            return false;
+        }
+    }
 }

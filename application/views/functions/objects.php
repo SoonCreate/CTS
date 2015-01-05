@@ -1,13 +1,11 @@
 <table class="table">
     <thead>
-    <th>id</th>
-    <th>权限对象名</th>
-    <th>描述</th>
-    <th>操作</th>
+    <th><?= label('object_name')?></th>
+    <th><?= label('description')?></th>
+    <th><?= label('operation')?></th>
     </thead>
     <?php foreach($objects as $o):?>
         <tr>
-            <td><?= $o['id']?></td>
             <td><?= $o['object_name']?></td>
             <td><?= $o['description']?></td>
             <td>

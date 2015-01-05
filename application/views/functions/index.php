@@ -2,7 +2,10 @@
 <script type="text/javascript">
     toolBarAddLinkButton("<?= label('function_create') ?>",url('functions/create'));
 
-    require(["dojo/ready","sckj/DataGrid"], function(ready,Grid){
+    require(["dojo/ready","sckj/DataGrid",
+        "gridx/modules/Filter",
+        "gridx/modules/filter/QuickFilter"
+    ], function(ready,Grid,Filter,QuickFilter){
         ready(function(){
         var grid = new Grid({
             asyncCache : false,
@@ -25,9 +28,11 @@
                     {url : "functions/edit",label: "<?= label('edit')?>"},
                     {url : "functions/destroy",label: "<?= label('destroy')?>",noRender: true},
                     {url : "functions/allocate_modules",label: "<?= label('allocate_modules')?>"},
+                    {url : "functions/variants",label: "<?= label('variant')?>"},
                     {url : "functions/objects",label: "<?= label('objects')?>"}
                 ]
             },
+            modules : [Filter,QuickFilter],
             pageSize : 10,
             autoWidth : false,
             autoHeight : true,

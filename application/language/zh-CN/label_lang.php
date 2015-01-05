@@ -33,6 +33,9 @@ $lang['label_need'] = "需要";
 $lang['label_from'] = "来自";
 $lang['label_to'] = "收信方";
 $lang['label_all'] = "所有";
+$lang['label_owner'] = "所有者";
+$lang['label_segment_name'] = "段名";
+$lang['label_export'] = "Excel导出";
 
 
 $lang['label_notice_read_all'] = "全部标记成已读";
@@ -297,6 +300,17 @@ $lang['label_role_from'] = "复制角色";
 //名词
 $lang['label_functions'] = "功能";
 $lang['label_function'] = "功能";
+$lang['label_variant'] = "变式";
+$lang['label_variant_name'] = "变式名称";
+$lang['label_variant_create'] = "变式创建";
+$lang['label_variant_edit'] = "变式修改";
+$lang['label_parameter_name'] = "参数名称";
+$lang['label_data_type'] = "数据类型";
+$lang['label_now_flag'] = "默认当前时间";
+$lang['label_variant_item_create'] = "变式项目创建";
+$lang['label_share_flag'] = "共享";
+$lang['label_background_flag'] = "后台任务使用";
+$lang['label_method'] = "传输方式";
 $lang['label_condition'] = "条件";
 $lang['label_function_name'] = "功能名称";
 $lang['label_controller'] = "控制器";
