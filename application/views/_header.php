@@ -83,6 +83,7 @@
     <?php endif; ?>
 </script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>resources/js/toolkit.js"></script>
 
 <link rel="stylesheet" type="text/css" href="<?= base_url() ?>/../../dojo/dojo/resources/dojo.css" />
 <link rel="stylesheet" type="text/css" href="<?= base_url() ?>/../../dojo/dijit/themes/sc/sc.css" />

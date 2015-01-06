@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2015 at 08:44 AM
+-- Generation Time: Jan 06, 2015 at 08:54 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -435,7 +435,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `blank_flag` tinyint(3) unsigned NOT NULL COMMENT '打开新页面',
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -477,7 +477,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (36, 'time_statistics', '耗时统计', 'report', 'time_statistics', NULL, 0, 1415853121, 44, 1415853121, 44, 1, '', 0),
 (37, 'service_portal', '速创服务平台', 'admin', 'service_portal', NULL, 0, 1419738688, 44, 1419738688, 44, 1, 'icon-th-large', 1),
 (38, 'order_meeting_create', '召开会议', 'order_meeting', 'create', NULL, 1, 1419817232, 44, 1419817232, 44, 0, '', 0),
-(39, 'notice_list', '通知记录', 'notice', 'index', NULL, 1, 1420334853, 44, 1420334853, 44, 1, 'icon-envelope', 0);
+(39, 'notice_list', '通知记录', 'notice', 'index', NULL, 1, 1420334853, 44, 1420334853, 44, 1, 'icon-envelope', 0),
+(40, 'job_manage', '后台作业', 'job', 'index', NULL, 1, 1420519231, 44, 1420519231, 44, 1, 'icon-flag', 0);
 
 -- --------------------------------------------------------
 
@@ -599,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `ct_function_variants` (
   `method` varchar(45) NOT NULL COMMENT 'POST/GET',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `variants_U01` (`function_id`,`variant_name`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='程序变式表' AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='程序变式表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -613,8 +614,8 @@ CREATE TABLE IF NOT EXISTS `ct_jobs` (
   `description` varchar(45) NOT NULL COMMENT '作业描述',
   `output_type` varchar(45) NOT NULL COMMENT '输出类型',
   `period_flag` int(10) unsigned NOT NULL COMMENT '周期标识',
-  `period_value` varchar(45) NOT NULL COMMENT '周期值',
-  `period_type` varchar(45) NOT NULL COMMENT '周期类型',
+  `period_value` varchar(45) DEFAULT NULL COMMENT '周期值',
+  `period_type` varchar(45) DEFAULT NULL COMMENT '周期类型',
   `first_exec_date` int(10) unsigned NOT NULL COMMENT '第一次运行日期',
   `inactive_date` int(10) unsigned DEFAULT NULL COMMENT '失效日期',
   `next_exec_date` int(10) unsigned DEFAULT NULL COMMENT '下一次运行时间',
@@ -656,8 +657,8 @@ CREATE TABLE IF NOT EXISTS `ct_job_histories` (
 CREATE TABLE IF NOT EXISTS `ct_job_outputs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `history_id` int(10) unsigned NOT NULL,
-  `log` longtext NOT NULL,
-  `output` longtext NOT NULL,
+  `log` longtext,
+  `output` longtext,
   `creation_date` int(10) DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
   `last_update_date` int(10) DEFAULT NULL,
@@ -678,7 +679,7 @@ CREATE TABLE IF NOT EXISTS `ct_job_steps` (
   `job_id` int(10) unsigned NOT NULL COMMENT '后台作业',
   `step` varchar(45) NOT NULL COMMENT '步骤',
   `function_id` int(10) unsigned NOT NULL COMMENT '程序',
-  `variant_id` int(10) unsigned NOT NULL COMMENT '变式',
+  `variant_id` int(10) unsigned DEFAULT NULL COMMENT '变式',
   `creation_date` int(10) DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
   `last_update_date` int(10) DEFAULT NULL,
@@ -908,7 +909,7 @@ CREATE TABLE IF NOT EXISTS `ct_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=64 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统模块明细表' AUTO_INCREMENT=65 ;
 
 --
 -- Dumping data for table `ct_module_lines`
@@ -949,7 +950,8 @@ INSERT INTO `ct_module_lines` (`id`, `module_id`, `function_id`, `sort`, `creati
 (60, 8, 35, 0, 1415843209, 44, 1415843209, 44),
 (61, 8, 36, 0, 1415853160, 44, 1415853160, 44),
 (62, 3, 37, 0, 1419739172, 44, 1419739172, 44),
-(63, 3, 39, 0, 1420334862, 44, 1420334862, 44);
+(63, 3, 39, 0, 1420334862, 44, 1420334862, 44),
+(64, 3, 40, 0, 1420519242, 44, 1420519242, 44);
 
 -- --------------------------------------------------------
 
@@ -1418,7 +1420,7 @@ INSERT INTO `ct_notices` (`id`, `log_id`, `read_flag`, `content`, `title`, `orde
 (383, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 44, NULL, 1, 73, 1420012075, 1420012075, 73, 'meeting'),
 (384, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 44, NULL, 1, 73, 1420012099, 1420012099, 73, 'meeting'),
 (385, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 73, NULL, 1, 73, 1420012100, 1420012100, 73, 'meeting'),
-(386, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 44, NULL, 1, 73, 1420012179, 1420012179, 73, 'meeting'),
+(386, NULL, 1, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 44, NULL, 1, 73, 1420012179, 1420506715, 44, 'meeting'),
 (387, NULL, 0, '<div class="container-fluid userd">\r\n    <dl class="row dl-horizontal"><dt>状态 :</dt><dd>已结束</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议主题 : </dt><dd>啊收到了房价</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>开始时间 : </dt><dd>2014-12-29 16:12:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>结束时间 : </dt><dd>2014-12-30 02:00:00</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议地点 : </dt><dd>三楼会议室</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>主持人 : </dt><dd>客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>记录人 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>参与者 : </dt><dd>超级管理员,客户投诉处理人</dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议决议 : </dt><dd></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>处理投诉单 :</dt><dd><a href="#" title="质量问题" class="" onclick="goto(''http://localhost/cts/index.php/order/show?id=168&cm=36'',''6'',false);">168</a></dd></dl>\r\n    <dl class="row dl-horizontal"><dt>会议相关文件：</dt><dd></dd></dl>\r\n\r\n</div>\r\n', '啊收到了房价', NULL, 73, NULL, 1, 73, 1420012180, 1420012180, 73, 'meeting');
 
 -- --------------------------------------------------------
@@ -2721,7 +2723,7 @@ CREATE TABLE IF NOT EXISTS `ct_role_module_lines` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=241 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='角色对应功能表' AUTO_INCREMENT=242 ;
 
 --
 -- Dumping data for table `ct_role_module_lines`
@@ -2902,7 +2904,8 @@ INSERT INTO `ct_role_module_lines` (`id`, `role_id`, `module_line_id`, `creation
 (237, 8, 50, 1420347003, 44, 1420347003, 44),
 (238, 1, 50, 1420347155, 44, 1420347155, 44),
 (239, 3, 50, 1420347170, 44, 1420347170, 44),
-(240, 4, 50, 1420347179, 44, 1420347179, 44);
+(240, 4, 50, 1420347179, 44, 1420347179, 44),
+(241, 8, 64, 1420519261, 44, 1420519261, 44);
 
 -- --------------------------------------------------------
 
@@ -3804,7 +3807,9 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('16a74beb18092ff367b7b5bb1107ed82', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420443795, 'a:6:{s:9:"user_data";s:0:"";s:4:"code";s:4:"1031";s:3:"uid";i:44;s:2:"cm";s:2:"61";s:3:"mid";s:1:"8";s:3:"fid";s:2:"36";}');
+('a812ae5c83b7503ed48f18f95cf497d4', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420524191, 'a:6:{s:9:"user_data";s:0:"";s:3:"uid";s:2:"44";s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";s:4:"code";s:4:"6715";}'),
+('dd8ce968009dd778da3348f377480920', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420530248, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}'),
+('e36c59d9e9143479a27cc1059cdc89b2', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420530249, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"64";s:3:"mid";s:1:"3";s:3:"fid";s:2:"40";}');
 
 -- --------------------------------------------------------
 
@@ -4068,7 +4073,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -4109,7 +4114,8 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (35, 'vl_notice_type', '消息类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1419919159, 44, 1419919159, 44),
 (36, 'vl_message_type', '通知记录类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420335008, 44, 1420335008, 44),
 (37, 'vl_data_type', '数据类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420417809, 44, 1420417809, 44),
-(38, 'vl_variant_method', '变式传输模式', 0, NULL, NULL, NULL, NULL, 0, 1, 1420422170, 44, 1420422170, 44);
+(38, 'vl_variant_method', '变式传输模式', 0, NULL, NULL, NULL, NULL, 0, 1, 1420422170, 44, 1420422170, 44),
+(39, 'vl_output_type', '输出类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420519670, 44, 1420519670, 44);
 
 -- --------------------------------------------------------
 
@@ -4143,7 +4149,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=93 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=97 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -4230,7 +4236,11 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (89, 37, 50, 'datetime', '时间（年-月-日 时:分:秒）', 0, 4, '', 1420418012, 44, 1420418012, 44),
 (90, 38, 10, 'POST', 'POST', 0, 0, '', 1420422185, 44, 1420422185, 44),
 (91, 38, 20, 'GET', 'GET', 0, 1, '', 1420422204, 44, 1420422204, 44),
-(92, 37, 60, 'time', '时分秒', 0, 3, '', 1420441898, 44, 1420441911, 44);
+(92, 37, 60, 'time', '时分秒', 0, 3, '', 1420441898, 44, 1420441911, 44),
+(93, 39, 10, 'txt', '文本', 0, 0, '', 1420519697, 44, 1420519697, 44),
+(94, 39, 20, 'xlsx', 'Excel', 0, 1, '', 1420519740, 44, 1420519758, 44),
+(95, 39, 30, 'pdf', 'PDF', 1, 2, '', 1420519755, 44, 1420519755, 44),
+(96, 39, 40, 'doc', 'Word', 1, 3, '', 1420519789, 44, 1420519789, 44);
 
 -- --------------------------------------------------------
 
@@ -4291,7 +4301,7 @@ CREATE TABLE IF NOT EXISTS `ct_variant_lines` (
   `last_update_date` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Index_2` (`variant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='变式参数列表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='变式参数列表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

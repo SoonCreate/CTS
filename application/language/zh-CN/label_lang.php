@@ -297,6 +297,14 @@ $lang['label_auth_object'] = "权限对象";
 $lang['label_role_name'] = "角色名称";
 $lang['label_role_from'] = "复制角色";
 
+//作业
+$lang['label_job_name'] = "作业名称";
+$lang['label_job_create'] = "作业创建";
+$lang['label_period_flag'] = "周期标识";
+$lang['label_output_type'] = "输出类型";
+$lang['label_first_exec_date'] = "第一次运行时间";
+$lang['label_next_exec_date'] = "下次运行时间";
+
 //名词
 $lang['label_functions'] = "功能";
 $lang['label_function'] = "功能";
@@ -332,6 +340,7 @@ $lang['label_desc'] = "描述";
 $lang['label_profile'] = "权限配置";
 $lang['label_item'] = "项目";
 $lang['label_items'] = "项目";
+$lang['label_item_manage'] = "项目";
 $lang['label_id'] = "编号";
 $lang['label_type'] = "类型";
 $lang['label_log'] = "日志";

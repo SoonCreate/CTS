@@ -2,8 +2,27 @@
 
 class Job extends CI_Controller {
 
-    function create(){
+    function __construct(){
+        parent::__construct();
+        header('Content-Type: text/html; charset=utf-8');
+        $this->load->model('job_model');
+        $this->load->model('job_step_model');
+        $this->load->model('job_history_model');
+        $this->load->model('job_output_model');
+    }
 
+    function index(){
+        $jm = new Job_model();
+        $data['objects'] = _format($jm->find_all(),true);
+        render($data);
+    }
+
+    function create(){
+        if($_POST){
+
+        }else{
+            render();
+        }
     }
 
     function edit(){

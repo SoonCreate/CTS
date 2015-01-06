@@ -376,6 +376,9 @@ function render_form_timebox($name,$required = FALSE,$h = '00',$m = '15',$s = '0
     }
     return $echo.'/>';
 }
+function render_form_dateTimeBox($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
+
+}
 
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE,$remark = ""){
     $echo = '';
