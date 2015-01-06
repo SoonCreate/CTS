@@ -32,14 +32,11 @@
                         $label = label($m['module_name']);
                     }
                     ?>
-                    <div data-dojo-type="dojox/layout/ContentPane" id="<?= 'module_'. $m['module_id']?>"
+                    <div data-dojo-type="sckj/layout/Wso" id="<?= 'module_'. $m['module_id']?>"
                          mid = "<?= $m['module_id'] ?>"
-                         cm = ""
                          title="<?= $label ?>"
                          iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
-                         data-dojo-props=" href:'<?= $m['url']?>'"
-                         onLoad = "refresh_env(<?= $m['module_id']?>);"
-                         onShow = "onModuleShow(<?= $m['module_id']?>);"></div>
+                         data-dojo-props=" href:'<?= $m['url']?>'"></div>
              <?php  endforeach;?>
             <?php endif;?>
         </div>

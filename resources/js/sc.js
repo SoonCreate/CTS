@@ -287,6 +287,7 @@ function showMessageHelp(toaster){
     }
 }
 
+//未使用，备用。主要用于在表单抬头提示验证信息
 function addFormAlertLine(lines){
     require(["dojo/dom-construct","dojo/dom-style"],
         function(domConstruct,domStyle){
@@ -300,6 +301,20 @@ function addFormAlertLine(lines){
             domStyle.set(o,"display","block");
             //回到锚点
             location.hash="#"+ o.id;
+        });
+}
+
+//当前的form错误提示区域
+function currentAlertPane(){
+    return  $dom.byId($env.cm+"_formalert");
+}
+
+function formAlertclose(){
+    require(["dojo/dom-style"],
+        function(domStyle){
+            var o = currentAlertPane();
+            clearFormAlertLine();
+            domStyle.set(o,"display","none");
         });
 }
 
@@ -319,20 +334,6 @@ function clearFormAlertLine(){
             }
         });
     return ul;
-}
-
-//当前的form错误提示区域
-function currentAlertPane(){
-    return  $dom.byId($env.cm+"_formalert");
-}
-
-function formAlertclose(){
-    require(["dojo/dom-style"],
-        function(domStyle){
-            var o = currentAlertPane();
-            clearFormAlertLine();
-            domStyle.set(o,"display","none");
-    });
 }
 
 function renderValidError(lines,target){
@@ -358,37 +359,6 @@ function renderValidError(lines,target){
 
     }
 
-}
-
-//没有定义好环境，则刷新
-function refresh_env(mid){
-    //预加载，加载后动画
-    require(["dojo/_base/fx", "dojo/dom-style"], function(baseFx,domStyle){
-        if($dom.byId("preloader")){
-            baseFx.fadeOut({  //Get rid of the loader once parsing is done
-                node: "preloader"
-                //,
-                //onEnd: function() {
-                //    domStyle.set("preloader","display","none");
-                //}
-            }).play();
-        }
-    });
-    if($env){
-        //$(".preloader").style("display","none")
-        //console.info($dijit.byId('mainTabContainer'));
-        $env.mid = mid;
-        var wso = currentWso();
-        wso.cm = $env.cm;
-        console.log("current module line id : "+ $env.cm +" mid : "+ $env.mid + " fid : " + $env.fid );
-    }
-    //如果性能过差，可以考虑注释
-    //refresh_notice_count();
-    //console.info(dijitObject('toolbar'));
-}
-
-function onModuleShow(mid){
-    $env.mid = mid;
 }
 
 //用于控件的唯一性标识
