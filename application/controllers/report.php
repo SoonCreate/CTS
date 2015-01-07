@@ -66,7 +66,7 @@ class Report extends CI_Controller {
 
     //验证表单
     function time_statistics_validate(){
-        validate_required('from_date','from_time','to_date','to_time');
+        validate_required('from_date','to_date');
     }
 
     function time_statistics_export(){
@@ -125,11 +125,13 @@ class Report extends CI_Controller {
 
     private function _time_data(){
         $data = null;
-        if(validate_required('from_date','from_time','to_date','to_time')){
+//        if(validate_required('from_date','from_time','to_date','to_time')){
+        if(validate_required('from_date','to_date')){
             //格式化提交的日期
-            $start_date = strtotime(str_replace('T',' ',$_POST['from_date'] . $_POST['from_time']));
-            $end_date = strtotime(str_replace('T',' ',$_POST['to_date'] . $_POST['to_time']));
-
+//            $start_date = strtotime(str_replace('T',' ',$_POST['from_date'] . $_POST['from_time']));
+//            $end_date = strtotime(str_replace('T',' ',$_POST['to_date'] . $_POST['to_time']));
+            $start_date = strtotime(v('from_date'));
+            $end_date = strtotime(v('to_date'));
             if($start_date >= $end_date ){
                 add_validation_error('from_date','开始日期大于结束日期！') ;
             }else{

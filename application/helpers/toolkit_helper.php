@@ -768,3 +768,12 @@ function build_structure(){
     }
     return $structure;
 }
+
+//开始时间
+function default_start_date(){
+    return date('Y-m-d').' '._config('time_begin');
+}
+
+function default_end_date(){
+    return date('Y-m-d').' '._config('time_end');
+}

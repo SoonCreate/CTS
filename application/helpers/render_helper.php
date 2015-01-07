@@ -377,7 +377,25 @@ function render_form_timebox($name,$required = FALSE,$h = '00',$m = '15',$s = '0
     return $echo.'/>';
 }
 function render_form_dateTimeBox($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
+    $echo = '';
+    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
+    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTimeTextBox" trim="true" ';
+    if($required){
+        $echo = $echo. ' required ';
+    }
 
+    if($disabled){
+        $echo = $echo. ' disabled ';
+    }
+
+    foreach($attributes as $key=>$value){
+        $echo = $echo. $key.' = '.'"'.$value.'"';
+    }
+
+    $echo = $echo. '/>';
+
+    $echo = $echo.render_form_error($name).'</dd></dl>';
+    return $echo;
 }
 
 function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE,$remark = ""){

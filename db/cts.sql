@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2015 at 08:54 AM
+-- Generation Time: Jan 07, 2015 at 05:29 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `ct_configs` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `config_name` (`config_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=52 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置表' AUTO_INCREMENT=54 ;
 
 --
 -- Dumping data for table `ct_configs`
@@ -181,7 +181,9 @@ INSERT INTO `ct_configs` (`id`, `config_name`, `description`, `config_value`, `e
 (48, 'sms_ip', '信息机webservise地址IP', '', 1, 'string', 0, NULL, NULL, NULL, NULL),
 (49, 'sms_number', '短信发送号码', '', 1, 'string', 0, NULL, NULL, NULL, NULL),
 (50, 'sms_account', '短信企业账号', '', 1, 'string', 0, NULL, NULL, NULL, NULL),
-(51, 'auto_feedback', '投诉单关闭后，自动反馈时间（小时）', '24', 1, 'number', 0, NULL, NULL, NULL, NULL);
+(51, 'auto_feedback', '投诉单关闭后，自动反馈时间（小时）', '24', 1, 'number', 0, NULL, NULL, NULL, NULL),
+(52, 'time_begin', '界面默认时间从（上班时间）', '08:00:00', 1, 'string', 0, NULL, NULL, NULL, NULL),
+(53, 'time_end', '界面默认时间至（下班时间）', '17:00:00', 1, 'string', 0, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -711,7 +713,7 @@ CREATE TABLE IF NOT EXISTS `ct_meetings` (
   `last_updated_by` int(10) DEFAULT NULL,
   `inactive_flag` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '失效标识',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议信息表' AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='会议信息表' AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `ct_meetings`
@@ -730,7 +732,8 @@ INSERT INTO `ct_meetings` (`id`, `title`, `start_date`, `end_date`, `site`, `anc
 (10, '关于解决162投诉单的会议', 1417069800, 1417078800, '三楼会议室', '陈杨阳', '', '张三、李四', NULL, NULL, NULL, 73, 1417070046, 1417070046, 73, 0),
 (11, '处理163投诉', 1417133460, 1417140660, '三楼会议室', 'chenyangyang', '', '质量部相关人员', NULL, NULL, NULL, 73, 1417172550, 1417172687, 73, 0),
 (12, '阿斯顿飞洒', 1419580800, 1419584400, '五楼会议室', '陈杨阳', '', '全体人员', NULL, '10', '阿斯蒂芬', 73, 1419559559, 1419559581, 73, 1),
-(13, '啊收到了房价', 1419840720, 1419876000, '三楼会议室', '客户投诉处理人', '', '超级管理员,客户投诉处理人', NULL, NULL, NULL, 73, 1419829946, 1419835531, 73, 0);
+(13, '啊收到了房价', 1419840720, 1419876000, '三楼会议室', '客户投诉处理人', '', '超级管理员,客户投诉处理人', NULL, NULL, NULL, 73, 1419829946, 1419835531, 73, 0),
+(14, 'asfasdf', 1420588800, 1420591500, 'asdf', '客户投诉处理人', '', '超级管理员', NULL, NULL, NULL, 73, 1420601373, 1420601445, 73, 0);
 
 -- --------------------------------------------------------
 
@@ -2611,7 +2614,7 @@ CREATE TABLE IF NOT EXISTS `ct_order_meetings` (
   `last_updated_by` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`order_id`,`meeting_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='投诉单会议记录表' AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `ct_order_meetings`
@@ -2632,7 +2635,8 @@ INSERT INTO `ct_order_meetings` (`id`, `order_id`, `meeting_id`, `created_by`, `
 (13, 159, 11, 73, 1417172550, 1417172550, 73),
 (14, 163, 11, 73, 1417172550, 1417172550, 73),
 (15, 168, 12, 73, 1419559559, 1419559559, 73),
-(16, 168, 13, 73, 1419829946, 1419829946, 73);
+(16, 168, 13, 73, 1419829946, 1419829946, 73),
+(17, 168, 14, 73, 1420601373, 1420601373, 73);
 
 -- --------------------------------------------------------
 
@@ -3807,9 +3811,7 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('a812ae5c83b7503ed48f18f95cf497d4', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420524191, 'a:6:{s:9:"user_data";s:0:"";s:3:"uid";s:2:"44";s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";s:4:"code";s:4:"6715";}'),
-('dd8ce968009dd778da3348f377480920', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420530248, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"22";s:3:"mid";s:1:"6";s:3:"fid";s:1:"5";}'),
-('e36c59d9e9143479a27cc1059cdc89b2', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420530249, 'a:5:{s:9:"user_data";s:0:"";s:3:"uid";i:44;s:2:"cm";s:2:"64";s:3:"mid";s:1:"3";s:3:"fid";s:2:"40";}');
+('b172c25b964cb455bf7442e4b927f898', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420604818, 'a:5:{s:9:"user_data";s:0:"";s:2:"cm";s:2:"61";s:3:"mid";s:1:"8";s:3:"fid";s:2:"36";s:3:"uid";i:44;}');
 
 -- --------------------------------------------------------
 

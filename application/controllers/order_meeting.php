@@ -66,8 +66,8 @@ class Order_meeting extends CI_Controller {
                 if(!check_meeting_auth($order['order_type'],$order['category'],'create')){
                     render_no_auth_error();
                 }else{
-                    $data['start_date'] = date('Y-m-d');
-                    $data['end_date'] = date('Y-m-d');
+                    $data['start_date'] = default_start_date();
+                    $data['end_date'] = default_end_date();
                     $data['anchor'] = full_name(_sess('uid'));
                     render_view('order_meeting/create',$data);
                 }
@@ -91,10 +91,10 @@ class Order_meeting extends CI_Controller {
                 $meeting['start_date'] = date('Y-m-d H:i:s',$meeting['start_date']);
                 $meeting['end_date'] = date('Y-m-d H:i:s',$meeting['end_date']);
 
-                $meeting['start_time'] = 'T'.substr($meeting['start_date'],11,9);
-                $meeting['start_date'] = substr($meeting['start_date'],0,10);
-                $meeting['end_time'] = 'T'.substr($meeting['end_date'],11,9);
-                $meeting['end_date'] = substr($meeting['end_date'],0,10);
+//                $meeting['start_time'] = 'T'.substr($meeting['start_date'],11,9);
+//                $meeting['start_date'] = substr($meeting['start_date'],0,10);
+//                $meeting['end_time'] = 'T'.substr($meeting['end_date'],11,9);
+//                $meeting['end_date'] = substr($meeting['end_date'],0,10);
 
                 render($meeting);
             }
@@ -259,8 +259,8 @@ class Order_meeting extends CI_Controller {
         $_POST['discuss'] = tpost('discuss');
 
         //格式化提交的日期
-        $_POST['start_date'] = str_replace('T',' ',$_POST['start_date'] . $_POST['start_time']);
-        $_POST['end_date'] = str_replace('T',' ',$_POST['end_date'] . $_POST['end_time']);
+//        $_POST['start_date'] = str_replace('T',' ',$_POST['start_date'] . $_POST['start_time']);
+//        $_POST['end_date'] = str_replace('T',' ',$_POST['end_date'] . $_POST['end_time']);
 
         $_POST['start_date'] = strtotime(v('start_date'));
         $_POST['end_date'] = strtotime(v('end_date'));
@@ -272,6 +272,7 @@ class Order_meeting extends CI_Controller {
         }
 
         if($_POST['start_date'] >= $_POST['end_date'] ){
+            $p = false;
             add_validation_error('start_date','开始日期大于结束日期！') ;
         }
 

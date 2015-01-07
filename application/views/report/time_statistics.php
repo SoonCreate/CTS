@@ -8,8 +8,8 @@
         <?= render_button('this_year','_setDateTime(3)')?>
     </dd>
 </dl>
-<?= render_form_datetextbox('from_date',true,array(),false,render_form_timebox('from_time',true,'01','00')) ?>
-<?= render_form_datetextbox('to_date',true,array(),false,render_form_timebox('to_time',true,'01','00')) ?>
+<?= render_form_dateTimeBox('from_date',true)?>
+<?= render_form_dateTimeBox('to_date',true)?>
 <?= render_form_hidden('export_flag')?>
 <?= render_submit_button()?>
 <?= render_button('export','_exportData')?>
@@ -70,12 +70,12 @@
             //快捷设置日期
             _setDateTime = function(t){
                 var from_date = dijitObject("from_date");
-                var from_time = dijitObject("from_time");
+//                var from_time = dijitObject("from_time");
                 var to_date = dijitObject("to_date");
-                var to_time = dijitObject("to_time");
+//                var to_time = dijitObject("to_time");
                 var myDate = new Date();
-                var f_time = "T00:00:00";
-                var t_time = "T23:59:59";
+                var f_time = "00:00:00";
+                var t_time = "23:59:59";
                 var year = myDate.getFullYear();
                 var month = myDate.getMonth() + 1;
                 var f_date,t_date;
@@ -102,10 +102,10 @@
                         t_date = year + "-12-31";
                         break;
                 }
-                from_date.set("value",f_date);
-                to_date.set("value",t_date);
-                from_time.set("value",f_time);
-                to_time.set("value",t_time);
+                from_date.set("value",f_date + " " + f_time);
+                to_date.set("value",t_date + " " + t_time);
+//                from_time.set("value",f_time);
+//                to_time.set("value",t_time);
             };
         });
 </script>

@@ -1,13 +1,15 @@
 <?= render_form_input('title',TRUE);?>
-<?= render_form_datetextbox('start_date',TRUE,array(),false,render_form_timebox('start_time'));?>
-<?= render_form_datetextbox('end_date',TRUE,array(),false,render_form_timebox('end_time'));?>
+<?= render_form_dateTimeBox('start_date',true)?>
+<?= render_form_dateTimeBox('end_date',true)?>
 <?= render_form_input('site',TRUE);?>
 <?= render_form_input('anchor',TRUE);?>
 <?= render_form_input('recorder');?>
 <dl class="row dl-horizontal">
-    <dt><?= render_label('actor')?></dt>
+    <dt><?= render_label('actor',true)?></dt>
     <dd><input name="actor" data-dojo-type="sckj/form/ScTextBox" trim="true"
-               data-dojo-props = "hasButton:true,_onClick:_onActorClick"  required value="<?= _v('actor')?>"/></dd>
+               data-dojo-props = "hasButton:true,_onClick:_onActorClick"  required value="<?= _v('actor')?>"/>
+        <?= render_form_error('actor')?>
+    </dd>
     <dd></dd>
 </dl>
 <?= render_form_textarea('discuss') ?>

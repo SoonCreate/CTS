@@ -85,6 +85,10 @@ define(["dojo/_base/declare",
                 this.dateTextBox.set("value",date);
                 this.timeTextBox.set("value",date);
             }
+            if(attr == "state"){
+                this.dateTextBox.set(attr, value);
+                this.timeTextBox.set(attr, value);
+            }
             this.inherited(arguments);
         }
     });
