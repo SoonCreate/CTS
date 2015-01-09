@@ -18,7 +18,7 @@ class Job_step_model extends MY_Model{
 
     private function _validate(){
         $this->clear_validate();
-        $this->add_validate('step','required|min_length[5]|max_length[45]|alpha_dash');
+        $this->add_validate('step','required');
     }
 
 }

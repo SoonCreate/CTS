@@ -151,7 +151,8 @@ $lang['label_condition_edit'] = "条件编辑";
 $lang['label_label'] = "按钮标签";
 $lang['label_function_create'] = "功能创建";
 $lang['label_function_edit'] = "功能编辑";
-$lang['label_function_id'] = "功能编号";
+$lang['label_function_id'] = "功能";
+$lang['label_variant_id'] = "变式";
 $lang['label_status_condition_group_create'] = "条件组创建";
 $lang['label_blank_flag'] = "打开新窗口";
 
@@ -197,6 +198,7 @@ $lang['label_object_create'] = "权限对象创建";
 
 //值集
 $lang['label_valuelist'] = "值集";
+$lang['label_from_table'] = "来自表/视图";
 $lang['label_valuelist_id'] = "值集编号";
 $lang['label_segment'] = "段";
 $lang['label_segment_value'] = "段值";
@@ -243,7 +245,7 @@ $lang['label_browser'] = "浏览器";
 $lang['label_mobile'] = "手机型号";
 $lang['label_ip_address'] = "IP地址";
 $lang['label_module_desc'] = "模块";
-$lang['label_function_desc'] = "功能";
+$lang['label_function_desc'] = "功能描述";
 $lang['label_last_activity'] = "登录时间";
 
 $lang['label_config'] = "配置";
@@ -300,10 +302,15 @@ $lang['label_role_from'] = "复制角色";
 //作业
 $lang['label_job_name'] = "作业名称";
 $lang['label_job_create'] = "作业创建";
+$lang['label_job_edit'] = "作业编辑";
+$lang['label_history'] = "运行记录";
 $lang['label_period_flag'] = "周期标识";
 $lang['label_output_type'] = "输出类型";
 $lang['label_first_exec_date'] = "第一次运行时间";
 $lang['label_next_exec_date'] = "下次运行时间";
+$lang['label_inactive_date'] = "失效时间";
+$lang['label_period_type'] = "周期";
+$lang['label_period_value'] = "值";
 
 //名词
 $lang['label_functions'] = "功能";

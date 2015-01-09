@@ -147,3 +147,12 @@ function word_truncate($srt,$finish = null)
     }
     return word_substr($srt,$finish);
 }
+
+//时间字符串转时间戳，空则为null
+function sc_strtotime($str){
+    if($str){
+        return strtotime($str);
+    }else{
+        return null;
+    }
+}

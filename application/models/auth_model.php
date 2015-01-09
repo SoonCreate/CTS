@@ -7,6 +7,7 @@ class Auth_model extends MY_Model{
         $this->load->model('status_model','status');
         $this->load->model('order_model','order');
         $this->load->model('valuelist_model');
+        $this->load->model('module_line_model');
         $this->load->model('role_module_line_model');
         $this->load->model('function_model');
         $this->load->model('user_role_model');
@@ -36,24 +37,30 @@ class Auth_model extends MY_Model{
     //检查是否有运行当前功能的权限
     function check_function_auth($function_name){
         //检查该功能是否在系统中注册，如果未注册则不参与权限验证
-        $fm = new Function_model();
-        $fn = $fm->find_by(array('function_name'=>$function_name));
+        //2015.1.9修改成被注册到module中的才参与权限验证
+//        $fm = new Function_model();
+//        $fn = $fm->find_by(array('function_name'=>$function_name));
+        $mlm = new Module_line_model();
+        $fn = $mlm->find_by_view(array('function_name'=>$function_name));
         if(empty($fn)){
             return true;
         }else{
-            return $this->_check_function_auth($fn['id']);
+            return $this->_check_function_auth($fn['function_id']);
         }
 
     }
 
     function check_function_auth_by_router($controller,$action){
         //检查该功能是否在系统中注册，如果未注册则不参与权限验证
-        $fm = new Function_model();
-        $fn = $fm->find_by(array('controller'=>$controller,'action'=>$action));
+        //2015.1.9修改成被注册到module中的才参与权限验证
+//        $fm = new Function_model();
+//        $fn = $fm->find_by(array('controller'=>$controller,'action'=>$action));
+        $mlm = new Module_line_model();
+        $fn = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action));
         if(empty($fn)){
             return true;
         }else {
-            return $this->_check_function_auth($fn['id']);
+            return $this->_check_function_auth($fn['function_id']);
         }
     }
 

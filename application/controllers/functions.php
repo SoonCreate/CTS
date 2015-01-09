@@ -282,6 +282,25 @@ class Functions extends CI_Controller {
 
     }
 
+    //获取某个功能的参数列表；参数bg为后台标志
+    function variant_options(){
+        $data = array();
+        $this->load->model('variant_model');
+        $vm = new Variant_model();
+        $vs = $vm->find_all_by(array('function_id'=>v('id'),'background_flag'=>v('bg')));
+        foreach($vs as $v){
+            $d['value'] = $v['id'];
+                        if(_user_config('technical_name')){
+                $d['label'] = $v['variant_name'] . ' - '. $v['description'];
+            }else{
+                $d['label'] = $v['description'];
+            }
+            array_push($data,$d);
+        }
+
+        echo json_encode($data);
+    }
+
     function variant_create(){
         if($_POST){
             if($this->_check_variant_name(v('variant_name'),v('function_name'))){

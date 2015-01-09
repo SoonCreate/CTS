@@ -23,9 +23,11 @@
             <td>
                 <?= render_link(array('job','edit',array('id'=>$o['id'])),label('edit'))?>
                 &nbsp;|&nbsp;
-                <?= render_link(array('job','steps',array('id'=>$o['id'])),label('step'),null,null,true)?>
+                <?= render_link(array('job','steps',array('job_id'=>$o['id'])),label('step'))?>
                 &nbsp;|&nbsp;
-                <?= render_link(array('job','histories',array('id'=>$o['id'])),label('history'))?>
+                <?= render_link(array('job','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
+                &nbsp;|&nbsp;
+                <?= render_link(array('job','histories',array('job_id'=>$o['id'])),label('history'))?>
             </td>
 
         </tr>

@@ -20,6 +20,7 @@ class Job_model extends MY_Model{
         $this->add_validate('description','required|max_length[255]');
         $this->add_validate('output_type','required');
         $this->add_validate('first_exec_date','required');
+        $this->add_validate('period_value','is_numeric');
     }
 
 }

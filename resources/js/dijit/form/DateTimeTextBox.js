@@ -73,8 +73,13 @@ define(["dojo/_base/declare",
         _fixValue : function(){
             var date = this.dateTextBox.focusNode.value;
             var time = this.timeTextBox.focusNode.value;
-            this.focusNode.value = date + " " + time;
-            this._set("value",this.focusNode.value);
+            if(date && time){
+                this.focusNode.value = date + " " + time;
+                this._set("value",this.focusNode.value);
+            }else{
+                this.focusNode.value = "";
+                this._set("value","")
+            }
         },
 
         _set : function(attr, value){
