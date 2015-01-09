@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2015 at 05:29 AM
+-- Generation Time: Jan 09, 2015 at 09:24 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -437,7 +437,7 @@ CREATE TABLE IF NOT EXISTS `ct_functions` (
   `blank_flag` tinyint(3) unsigned NOT NULL COMMENT '打开新页面',
   PRIMARY KEY (`id`),
   UNIQUE KEY `function_name` (`function_name`,`display_flag`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统功能信息表' AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `ct_functions`
@@ -480,7 +480,8 @@ INSERT INTO `ct_functions` (`id`, `function_name`, `description`, `controller`, 
 (37, 'service_portal', '速创服务平台', 'admin', 'service_portal', NULL, 0, 1419738688, 44, 1419738688, 44, 1, 'icon-th-large', 1),
 (38, 'order_meeting_create', '召开会议', 'order_meeting', 'create', NULL, 1, 1419817232, 44, 1419817232, 44, 0, '', 0),
 (39, 'notice_list', '通知记录', 'notice', 'index', NULL, 1, 1420334853, 44, 1420334853, 44, 1, 'icon-envelope', 0),
-(40, 'job_manage', '后台作业', 'job', 'index', NULL, 1, 1420519231, 44, 1420519231, 44, 1, 'icon-flag', 0);
+(40, 'job_manage', '后台作业', 'job', 'index', NULL, 1, 1420519231, 44, 1420519231, 44, 1, 'icon-flag', 0),
+(41, 'auto_feedback_job', '反馈自动打分', 'order', 'auto_feedback_job', NULL, 0, 1420780932, 44, 1420780932, 44, 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -602,7 +603,15 @@ CREATE TABLE IF NOT EXISTS `ct_function_variants` (
   `method` varchar(45) NOT NULL COMMENT 'POST/GET',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `variants_U01` (`function_id`,`variant_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='程序变式表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='程序变式表' AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ct_function_variants`
+--
+
+INSERT INTO `ct_function_variants` (`id`, `function_id`, `variant_name`, `description`, `background_flag`, `share_flag`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `method`) VALUES
+(1, 35, 'asdfasdf', 'asdf', 1, 0, 1420778895, 44, 1420778929, 44, 'POST'),
+(2, 35, 'asdfaaaa', 'asdfasdf', 1, 0, 1420779631, 44, 1420779631, 44, 'POST');
 
 -- --------------------------------------------------------
 
@@ -616,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `ct_jobs` (
   `description` varchar(45) NOT NULL COMMENT '作业描述',
   `output_type` varchar(45) NOT NULL COMMENT '输出类型',
   `period_flag` int(10) unsigned NOT NULL COMMENT '周期标识',
-  `period_value` varchar(45) DEFAULT NULL COMMENT '周期值',
+  `period_value` int(10) unsigned DEFAULT NULL COMMENT '周期值',
   `period_type` varchar(45) DEFAULT NULL COMMENT '周期类型',
   `first_exec_date` int(10) unsigned NOT NULL COMMENT '第一次运行日期',
   `inactive_date` int(10) unsigned DEFAULT NULL COMMENT '失效日期',
@@ -628,7 +637,14 @@ CREATE TABLE IF NOT EXISTS `ct_jobs` (
   `sendto_list` text COMMENT '邮件发送的用户ID列表',
   PRIMARY KEY (`id`),
   UNIQUE KEY `JOBS_U01` (`job_name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台作业表' AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `ct_jobs`
+--
+
+INSERT INTO `ct_jobs` (`id`, `job_name`, `description`, `output_type`, `period_flag`, `period_value`, `period_type`, `first_exec_date`, `inactive_date`, `next_exec_date`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `sendto_list`) VALUES
+(3, 'auto_feedback_job', '自动反馈投诉单打满分', 'txt', 1, 1, 'hour', 1420781264, NULL, NULL, 1420781014, 44, 1420781014, 44, NULL);
 
 -- --------------------------------------------------------
 
@@ -648,7 +664,26 @@ CREATE TABLE IF NOT EXISTS `ct_job_histories` (
   `last_update_date` int(10) DEFAULT NULL,
   `last_updated_by` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业历史表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台作业历史表' AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `ct_job_histories`
+--
+
+INSERT INTO `ct_job_histories` (`id`, `job_id`, `status`, `experience_date`, `start_date`, `end_date`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(1, 3, 'running', NULL, 1420788293, 1420788293, 1420788293, -1, 1420788293, -1),
+(2, 3, 'finished', NULL, 1420789039, 1420789040, 1420789039, -1, 1420789040, -1),
+(3, 3, 'finished', NULL, 1420789078, 1420789078, 1420789078, -1, 1420789078, -1),
+(4, 3, 'finished', NULL, 1420789161, 1420789162, 1420789161, -1, 1420789162, -1),
+(5, 3, 'finished', NULL, 1420790056, 1420790057, 1420790056, -1, 1420790057, -1),
+(6, 3, 'running', NULL, 1420790463, NULL, 1420790463, -1, 1420790463, -1),
+(7, 3, 'running', NULL, 1420791056, NULL, 1420791056, -1, 1420791056, -1),
+(8, 3, 'finished', NULL, 1420791286, 1420791287, 1420791286, -1, 1420791287, -1),
+(9, 3, 'finished', NULL, 1420791298, 1420791298, 1420791298, -1, 1420791298, -1),
+(10, 3, 'finished', NULL, 1420791336, 1420791336, 1420791336, -1, 1420791336, -1),
+(11, 3, 'finished', NULL, 1420791376, 1420791376, 1420791376, -1, 1420791376, -1),
+(12, 3, 'finished', NULL, 1420791541, 1420791541, 1420791541, -1, 1420791541, -1),
+(13, 3, 'running', NULL, 1420791820, NULL, 1420791820, -1, 1420791820, -1);
 
 -- --------------------------------------------------------
 
@@ -668,7 +703,26 @@ CREATE TABLE IF NOT EXISTS `ct_job_outputs` (
   `output_type` varchar(45) NOT NULL COMMENT '输出类型',
   PRIMARY KEY (`id`),
   KEY `job_output_N01` (`history_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业输出表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台作业输出表' AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `ct_job_outputs`
+--
+
+INSERT INTO `ct_job_outputs` (`id`, `history_id`, `log`, `output`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `output_type`) VALUES
+(1, 3, '2015-01-09 15:24:53  Job start...\\n2015-01-09 15:24:53  Step1开始运行...\\n2015-01-09 15:24:53  Step info :2,3,1,41,0,1420788284,44,1420788284,44,auto_feedback_job,反馈自动打分,order,auto_feedback_job,,,\\n2015-01-09 15:24:53  Step1运行结束\\n', NULL, 1420788293, -1, 1420789078, -1, 'txt'),
+(2, 3, '2015-01-09 15:37:20  Job start...\\n2015-01-09 15:37:20  Step1开始运行...\\n2015-01-09 15:37:20  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 15:37:20  Step1运行结束\\n', NULL, 1420789040, -1, 1420789078, -1, 'txt'),
+(3, 3, '2015-01-09 15:37:58  Job start...\\n2015-01-09 15:37:58  Step1开始运行...\\n2015-01-09 15:37:58  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 15:37:58  Step1运行结束\\n', NULL, 1420789078, -1, 1420789078, -1, 'txt'),
+(4, 4, '2015-01-09 15:39:21  Job start...\\n2015-01-09 15:39:21  Step1开始运行...\\n2015-01-09 15:39:21  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 15:39:22  Step1运行结束\\n', NULL, 1420789161, -1, 1420789162, -1, 'txt'),
+(5, 5, '2015-01-09 15:54:16  Job start...\\n2015-01-09 15:54:17  Step1开始运行...\\n2015-01-09 15:54:17  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 15:54:17  Step1运行结束\\n', NULL, 1420790056, -1, 1420790057, -1, 'txt'),
+(6, 6, '2015-01-09 16:01:03  Job start...\\n2015-01-09 16:01:03  Step1开始运行...\\n2015-01-09 16:01:03  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n', NULL, 1420790463, -1, 1420790463, -1, 'txt'),
+(7, 7, '2015-01-09 16:10:56  Job start...\\n2015-01-09 16:10:56  Step1开始运行...\\n2015-01-09 16:10:56  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n', NULL, 1420791056, -1, 1420791056, -1, 'txt'),
+(8, 8, '2015-01-09 16:14:46  Job start...\\n2015-01-09 16:14:46  Step1开始运行...\\n2015-01-09 16:14:46  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 16:14:46  Step1运行结束\\n', NULL, 1420791286, -1, 1420791287, -1, 'txt'),
+(9, 9, '2015-01-09 16:14:58  Job start...\\n2015-01-09 16:14:58  Step1开始运行...\\n2015-01-09 16:14:58  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 16:14:58  Step1运行结束\\n', NULL, 1420791298, -1, 1420791298, -1, 'txt'),
+(10, 10, '2015-01-09 16:15:36  Job start...\\n2015-01-09 16:15:36  Step1开始运行...\\n2015-01-09 16:15:36  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 16:15:36  Step1运行结束\\n', NULL, 1420791336, -1, 1420791336, -1, 'txt'),
+(11, 11, '2015-01-09 16:16:16  Job start...\\n2015-01-09 16:16:16  Step1开始运行...\\n2015-01-09 16:16:16  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 16:16:16  Step1运行结束\\n', NULL, 1420791376, -1, 1420791376, -1, 'txt'),
+(12, 12, '2015-01-09 16:19:01  Job start...\\n2015-01-09 16:19:01  Step1开始运行...\\n2015-01-09 16:19:01  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n2015-01-09 16:19:01  Step1运行结束\\n', NULL, 1420791541, -1, 1420791541, -1, 'txt'),
+(13, 13, '2015-01-09 16:23:40  Job start...\\n2015-01-09 16:23:40  Step1开始运行...\\n2015-01-09 16:23:40  Step info :{"id":"2","job_id":"3","step":"1","function_id":"41","variant_id":"0","creation_date":"1420788284","created_by":"44","last_update_date":"1420788284","last_updated_by":"44","function_name":"auto_feedback_job","function_desc":"\\u53cd\\u9988\\u81ea\\u52a8\\u6253\\u5206","controller":"order","action":"auto_feedback_job","variant_name":null,"variant_desc":null,"method":null}\\n', NULL, 1420791820, -1, 1420791820, -1, 'txt');
 
 -- --------------------------------------------------------
 
@@ -687,8 +741,38 @@ CREATE TABLE IF NOT EXISTS `ct_job_steps` (
   `last_update_date` int(10) DEFAULT NULL,
   `last_updated_by` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台作业步骤表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='后台作业步骤表' AUTO_INCREMENT=3 ;
 
+--
+-- Dumping data for table `ct_job_steps`
+--
+
+INSERT INTO `ct_job_steps` (`id`, `job_id`, `step`, `function_id`, `variant_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`) VALUES
+(2, 3, '1', 41, 0, 1420788284, 44, 1420788284, 44);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ct_job_steps_v`
+--
+CREATE TABLE IF NOT EXISTS `ct_job_steps_v` (
+`id` int(10) unsigned
+,`job_id` int(10) unsigned
+,`step` varchar(45)
+,`function_id` int(10) unsigned
+,`variant_id` int(10) unsigned
+,`creation_date` int(10)
+,`created_by` int(10)
+,`last_update_date` int(10)
+,`last_updated_by` int(10)
+,`function_name` varchar(100)
+,`function_desc` varchar(255)
+,`controller` varchar(255)
+,`action` varchar(255)
+,`variant_name` varchar(45)
+,`variant_desc` varchar(100)
+,`method` varchar(45)
+);
 -- --------------------------------------------------------
 
 --
@@ -3811,7 +3895,10 @@ CREATE TABLE IF NOT EXISTS `ct_system_sessions` (
 --
 
 INSERT INTO `ct_system_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('b172c25b964cb455bf7442e4b927f898', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420604818, 'a:5:{s:9:"user_data";s:0:"";s:2:"cm";s:2:"61";s:3:"mid";s:1:"8";s:3:"fid";s:2:"36";s:3:"uid";i:44;}');
+('36abdaeb45d513619fec54649648941c', '0.0.0.0', '0', 1420787856, 'a:1:{s:9:"user_data";s:0:"";}'),
+('490e543c488311f02d2ed47fa59e5c38', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420791056, 'a:5:{s:9:"user_data";s:0:"";s:2:"cm";s:2:"64";s:3:"mid";s:1:"3";s:3:"fid";s:2:"40";s:3:"uid";i:-1;}'),
+('72a43a8f377fa4fceb811bdc63c14308', '0.0.0.0', '0', 1420788129, 'a:1:{s:9:"user_data";s:0:"";}'),
+('cdd8dcd3800f0af3e1d704b296989be0', '::1', 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36', 1420791540, 'a:2:{s:9:"user_data";s:0:"";s:3:"uid";i:-1;}');
 
 -- --------------------------------------------------------
 
@@ -4075,7 +4162,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `last_updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `Index_2` (`valuelist_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集信息表' AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `ct_valuelist_header`
@@ -4117,7 +4204,9 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (36, 'vl_message_type', '通知记录类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420335008, 44, 1420335008, 44),
 (37, 'vl_data_type', '数据类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420417809, 44, 1420417809, 44),
 (38, 'vl_variant_method', '变式传输模式', 0, NULL, NULL, NULL, NULL, 0, 1, 1420422170, 44, 1420422170, 44),
-(39, 'vl_output_type', '输出类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420519670, 44, 1420519670, 44);
+(39, 'vl_output_type', '输出类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420519670, 44, 1420519670, 44),
+(40, 'vl_period_type', '周期类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420765721, 44, 1420765721, 44),
+(41, 'vl_job_status', '后台作业状态', 0, NULL, NULL, NULL, NULL, 0, 1, 1420785456, 44, 1420785456, 44);
 
 -- --------------------------------------------------------
 
@@ -4151,7 +4240,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_vl_line_01` (`valuelist_id`,`segment`,`parent_segment_value`) USING BTREE,
   KEY `Index_3` (`valuelist_id`,`parent_segment_value`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=97 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='值集明细表' AUTO_INCREMENT=104 ;
 
 --
 -- Dumping data for table `ct_valuelist_lines`
@@ -4242,7 +4331,14 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (93, 39, 10, 'txt', '文本', 0, 0, '', 1420519697, 44, 1420519697, 44),
 (94, 39, 20, 'xlsx', 'Excel', 0, 1, '', 1420519740, 44, 1420519758, 44),
 (95, 39, 30, 'pdf', 'PDF', 1, 2, '', 1420519755, 44, 1420519755, 44),
-(96, 39, 40, 'doc', 'Word', 1, 3, '', 1420519789, 44, 1420519789, 44);
+(96, 39, 40, 'doc', 'Word', 1, 3, '', 1420519789, 44, 1420519789, 44),
+(97, 40, 10, 'minute', '分钟', 0, 0, '', 1420765759, 44, 1420765759, 44),
+(98, 40, 20, 'hour', '小时', 0, 1, '', 1420765773, 44, 1420765773, 44),
+(99, 40, 30, 'day', '日', 0, 2, '', 1420765789, 44, 1420765789, 44),
+(100, 40, 40, 'month', '月', 0, 3, '', 1420765839, 44, 1420765839, 44),
+(101, 41, 10, 'running', '运行中', 0, 0, '', 1420785551, 44, 1420785551, 44),
+(102, 41, 20, 'finished', '已完成', 0, 1, '', 1420785631, 44, 1420785631, 44),
+(103, 41, 30, 'canceled', '已取消', 0, 2, '', 1420785657, 44, 1420785657, 44);
 
 -- --------------------------------------------------------
 
@@ -4363,6 +4459,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `ct_function_obj_lines_v`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_function_obj_lines_v` AS select `fol`.`id` AS `id`,`fol`.`object_line_id` AS `object_line_id`,`fol`.`fun_object_id` AS `fun_object_id`,`fol`.`default_value` AS `default_value`,`fol`.`created_by` AS `created_by`,`fol`.`creation_date` AS `creation_date`,`fol`.`last_update_date` AS `last_update_date`,`fol`.`last_updated_by` AS `last_updated_by`,`fo`.`function_id` AS `function_id`,`fo`.`object_id` AS `object_id`,`fo`.`object_name` AS `object_name`,`fo`.`description` AS `object_desc`,`al`.`valuelist_id` AS `valuelist_id`,`al`.`auth_item_name` AS `auth_item_name`,`al`.`auth_item_desc` AS `auth_item_desc` from ((`ct_function_obj_lines` `fol` join `ct_function_objects_v` `fo`) join `ct_authobj_lines_v` `al`) where ((`fol`.`fun_object_id` = `fo`.`id`) and (`fol`.`object_line_id` = `al`.`id`));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ct_job_steps_v`
+--
+DROP TABLE IF EXISTS `ct_job_steps_v`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ct_job_steps_v` AS select `s`.`id` AS `id`,`s`.`job_id` AS `job_id`,`s`.`step` AS `step`,`s`.`function_id` AS `function_id`,`s`.`variant_id` AS `variant_id`,`s`.`creation_date` AS `creation_date`,`s`.`created_by` AS `created_by`,`s`.`last_update_date` AS `last_update_date`,`s`.`last_updated_by` AS `last_updated_by`,`j`.`function_name` AS `function_name`,`j`.`description` AS `function_desc`,`j`.`controller` AS `controller`,`j`.`action` AS `action`,`v`.`variant_name` AS `variant_name`,`v`.`description` AS `variant_desc`,`v`.`method` AS `method` from ((`ct_job_steps` `s` join `ct_functions` `j` on((`j`.`id` = `s`.`function_id`))) left join `ct_function_variants` `v` on((`v`.`id` = `s`.`variant_id`)));
 
 -- --------------------------------------------------------
 

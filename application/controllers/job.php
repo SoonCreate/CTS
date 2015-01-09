@@ -186,6 +186,9 @@ class Job extends CI_Controller {
 
     //由此方法开始分配任务并执行
     function run(){
+        //跳过权限验证
+        set_sess('uid',-1);
+
         //获取有效并可以开始运行的作业
         $jm = new Job_model();
         $jsm = new Job_step_model();
@@ -199,13 +202,30 @@ class Job extends CI_Controller {
                     //判断步骤
                     $steps = $jsm->find_all_by_view(array('job_id'=>$job['id']));
                     if(!empty($steps)){
+                        $jhm = new Job_history_model();
+                        //记录
+                        $jhm->starting($job);
+
+                        $error = false;
+
+                        //步骤开始
                         foreach($steps as $step){
-                            
+                            if(!$error){
+                                $error = $jhm->run_step($step);
+                            }else{
+                                break;
+                            }
                         }
+                        //保存数据
+                        $jhm->ending();
+
                     }
                 }
             }
         }
+
+        //登出
+//        clear_all_sess();
     }
 
 }

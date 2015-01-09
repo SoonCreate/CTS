@@ -377,26 +377,34 @@ function check_order_auth($order_type,$order_status,$order_category = null,$user
 }
 
 function check_function_auth(){
-    $args = func_get_args();
-    $CI =  &get_instance();
-    $CI->load->model('auth_model');
-    $am = new Auth_model();
-    if(count($args) + 2 == 2){
-        return $am->check_function_auth_by_router($CI->router->fetch_class(),$CI->router->fetch_method());
-    }elseif(count($args) == 2){
-        return $am->check_function_auth_by_router($args[0],$args[1]);
+    if(_sess('uid') == -1){
+        return true;
     }else{
-        return $am->check_function_auth($args[0]);
+        $args = func_get_args();
+        $CI =  &get_instance();
+        $CI->load->model('auth_model');
+        $am = new Auth_model();
+        if(count($args) + 2 == 2){
+            return $am->check_function_auth_by_router($CI->router->fetch_class(),$CI->router->fetch_method());
+        }elseif(count($args) == 2){
+            return $am->check_function_auth_by_router($args[0],$args[1]);
+        }else{
+            return $am->check_function_auth($args[0]);
+        }
     }
 
 }
 
 //验证当前用户是否拥有权限
 function check_auth($auth_object_name,$auth_items,$user_id = null){
-    $CI =  &get_instance();
-    $CI->load->model('auth_model');
-    $am = new Auth_model();
-    return $am->check_auth($auth_object_name,$auth_items,$user_id);
+    if(_sess('uid') == -1){
+        return true;
+    }else{
+        $CI =  &get_instance();
+        $CI->load->model('auth_model');
+        $am = new Auth_model();
+        return $am->check_auth($auth_object_name,$auth_items,$user_id);
+    }
 }
 
 //检查会议操作权限
