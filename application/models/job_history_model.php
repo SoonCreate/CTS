@@ -49,9 +49,18 @@ class Job_history_model extends MY_Model{
     function run_step($step){
         $this->log('Step'.$step['step'].'开始运行...');
         $this->log('Step info :'.json_encode($step));
-        //运行
+        //构建url和参数
         $url = _url($step['controller'],$step['action']);
+        $this->load->model('variant_line_model');
+        $vlm = new Variant_line_model();
+        $ps = $vlm->find_all_by(array('variant_id'=>$step['variant_id']));
+        $params = array();
+        foreach($ps as $p){
+            //时间值处理
 
+            $d[$p['segment_name']] =  $p['segment_value'];
+            array_push($params,$d);
+        }
         cevin_http_open($url);
 
         $this->log('Step'.$step['step'].'运行结束');

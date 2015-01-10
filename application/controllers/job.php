@@ -199,26 +199,9 @@ class Job extends CI_Controller {
                 if((is_null($job['next_exec_date']) && $job['first_exec_date'] <= time())||
                     (!is_null($job['next_exec_date']) && $job['first_exec_date'] <= time())){
 
-                    //判断步骤
-                    $steps = $jsm->find_all_by_view(array('job_id'=>$job['id']));
-                    if(!empty($steps)){
-                        $jhm = new Job_history_model();
-                        //记录
-                        $jhm->starting($job);
-
-                        $error = false;
-
-                        //步骤开始
-                        foreach($steps as $step){
-                            if(!$error){
-                                $error = $jhm->run_step($step);
-                            }else{
-                                break;
-                            }
-                        }
-                        //保存数据
-                        $jhm->ending();
-
+                    if($jsm->count_by(array('job_id'=>$job['id'])) > 0){
+                        //并发运行
+                        $this->_run($job['id']);
                     }
                 }
             }
@@ -226,6 +209,43 @@ class Job extends CI_Controller {
 
         //登出
 //        clear_all_sess();
+    }
+
+    //单个运行
+    function single_run($id){
+        if($this->input->is_cli_request()){
+
+        }
+
+        $jm = new Job_model();
+        $jsm = new Job_step_model();
+        $job = $jm->find($id);
+        if(!empty($job)){
+            $jhm = new Job_history_model();
+            //记录
+            $jhm->starting($job);
+
+            $error = false;
+
+            //判断步骤
+            $steps = $jsm->find_all_by_view(array('job_id'=>$job['id']));
+            //步骤开始
+            foreach($steps as $step){
+                if(!$error){
+                    $error = $jhm->run_step($step);
+                }else{
+                    break;
+                }
+            }
+            //保存数据
+            $jhm->ending();
+        }
+    }
+
+    //并发运行job
+    private function _run($id){
+        $out = popen('F:\xampp\php\php.exe F:\xampp\htdocs\CTS\index.php job single_run '. $id,'r');
+        pclose($out);
     }
 
 }
