@@ -50,53 +50,11 @@ class Job_history_model extends MY_Model{
         $this->log('Step'.$step['step'].'开始运行...');
         $this->log('Step info :'.json_encode($step));
         //运行
-        $url = site_url($step['controller'].'/'.$step['action']);
+        $url = _url($step['controller'],$step['action']);
 
-        $this->sock_get($url);
+        cevin_http_open($url);
 
         $this->log('Step'.$step['step'].'运行结束');
-    }
-
-    //fsocket模拟get提交
-    function sock_get($url)
-    {
-        $info = parse_url($url);
-        $fp = fsockopen($info["host"], 80, $errno, $errstr, 10);
-        //参数
-        if(isset($info["query"])){
-            $head = "GET ".$info['path']."?".$info["query"]." HTTP/1.0rn";
-        }else{
-            $head = "GET ".$info['path']." HTTP/1.0rn";
-        }
-
-        $head .= "Host: ".$info['host']."rn";
-        $head .= "rn";
-        $write = fputs($fp, $head);
-//        print_r($write);
-//        while (!feof($fp))
-//        {
-//            $line = fread($fp,4096);
-//            echo $line;
-//        }
-    }
-
-    function sock_post($url, $query)
-    {
-        $info = parse_url($url);
-        $fp = fsockopen($info["host"], 80, $errno, $errstr, 10);
-        $head = "POST ".$info['path']."?".$info["query"]." HTTP/1.0rn";
-        $head .= "Host: ".$info['host']."rn";
-        $head .= "Referer: http://".$info['host'].$info['path']."rn";
-        $head .= "Content-type: application/x-www-form-urlencodedrn";
-        $head .= "Content-Length: ".strlen(trim($query))."rn";
-        $head .= "rn";
-        $head .= trim($query);
-        $write = fputs($fp, $head);
-        while (!feof($fp))
-        {
-            $line = fread($fp,4096);
-            echo $line;
-        }
     }
 
     //最后将数据刷新到outpu表，并统计时间

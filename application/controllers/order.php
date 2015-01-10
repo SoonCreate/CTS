@@ -657,9 +657,9 @@ class Order extends CI_Controller {
             }
             $this->db->trans_complete();
             if($this->db->trans_status() === TRUE){
-                echo 'god';
+                message_db_success();
             }else{
-                echo 'shit';
+                message_db_failure();
             }
 
         }
