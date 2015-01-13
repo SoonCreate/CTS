@@ -3,14 +3,15 @@
 class Job_history_model extends MY_Model{
 
     public $id;
-    public $data;
+    public $job_id;
+    public $data = array();
     public $canceled = false;
 
     function __construct(){
         parent::__construct();
-        $this->add_validate('job_id','required');
         $this->add_validate('status','required');
         $this->load->model('job_output_model');
+        $this->load->model('job_model');
     }
 
     //日志单行刷入
@@ -18,17 +19,23 @@ class Job_history_model extends MY_Model{
         $jom = new Job_output_model();
         $o = $jom->find_by(array('history_id'=>$this->id));
         if(!empty($o)){
-            $data['log'] = $o['log'].date('Y-m-d H:i:s').'  '.$log.'\n';
+            $data['log'] = $o['log'].date('Y-m-d H:i:s').'  '.$log.' /r/n ';
             $jom->update($o['id'],$data);
         }
     }
 
     //数据单行刷入
     function data($data){
-        $this->data = $this->data .$data;
+        array_push($this->data,$data);
     }
 
     function starting($job){
+        $this->job_id = $job['id'];
+
+        //更新job的下次运行时间
+        $jm = new Job_model();
+        $jm->refresh_next_exec_date($job);
+
         //开始运行，日志
         $data['job_id'] = $job['id'];
         $data['status'] = 'running';
@@ -61,15 +68,19 @@ class Job_history_model extends MY_Model{
             $d[$p['segment_name']] =  $p['segment_value'];
             array_push($params,$d);
         }
-        cevin_http_open($url);
+        //具体步骤的数据
+        $data['step'] = $step['step'];
+        $data['data'] = cevin_http_open($url);
+        $this->data($data);
 
         $this->log('Step'.$step['step'].'运行结束');
+        return $this->_analyze_response($data['data']);
     }
 
     //最后将数据刷新到outpu表，并统计时间
     function ending(){
         $jom = new Job_output_model();
-        $data['output'] = $this->data;
+        $data['output'] = json_encode($this->data);
         $jom->update_by(array('history_id'=>$this->id),$data);
         //结束时间
         $h['end_date'] = time();
@@ -79,6 +90,27 @@ class Job_history_model extends MY_Model{
             $h['status'] = 'finished';
         }
         $this->update($this->id,$h);
+    }
+
+    //返回结果判断是否有错误
+    private function _analyze_response($data_string){
+        log_message('error',$data_string);
+        $data = json_decode($data_string);
+        if(is_null($data)){
+            return true;
+        }else{
+            $pass = true;
+            //解析json
+            if(isset($data->message)){
+                foreach($data->message as $m){
+                    if($m->type == 'E'){
+                        $pass = false;
+                        break;
+                    }
+                }
+            }
+            return $pass;
+        }
     }
 
 }

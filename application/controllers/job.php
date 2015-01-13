@@ -188,7 +188,6 @@ class Job extends CI_Controller {
     function run(){
         //跳过权限验证
         set_sess('uid',-1);
-
         //获取有效并可以开始运行的作业
         $jm = new Job_model();
         $jsm = new Job_step_model();
@@ -200,6 +199,7 @@ class Job extends CI_Controller {
                     (!is_null($job['next_exec_date']) && $job['first_exec_date'] <= time())){
 
                     if($jsm->count_by(array('job_id'=>$job['id'])) > 0){
+
                         //并发运行
                         $this->_run($job['id']);
                     }
@@ -213,38 +213,53 @@ class Job extends CI_Controller {
 
     //单个运行
     function single_run($id){
+        set_sess('uid',-1);
+        //必须是job客户端访问
         if($this->input->is_cli_request()){
+            $jm = new Job_model();
+            $jsm = new Job_step_model();
+            $job = $jm->find($id);
+            if(!empty($job)){
+                $jhm = new Job_history_model();
+                $error = false;
 
-        }
+                //判断步骤
+                $steps = $jsm->find_all_by_view(array('job_id'=>$job['id']));
 
-        $jm = new Job_model();
-        $jsm = new Job_step_model();
-        $job = $jm->find($id);
-        if(!empty($job)){
-            $jhm = new Job_history_model();
-            //记录
-            $jhm->starting($job);
+                //程序异常处理
+                try {
+                    //记录
+                    $jhm->starting($job);
 
-            $error = false;
+                    //步骤开始
+                    foreach($steps as $step){
+                        if(!$error){
+                            $error = $jhm->run_step($step);
+                        }else{
+                            break;
+                        }
+                    }
 
-            //判断步骤
-            $steps = $jsm->find_all_by_view(array('job_id'=>$job['id']));
-            //步骤开始
-            foreach($steps as $step){
-                if(!$error){
-                    $error = $jhm->run_step($step);
-                }else{
-                    break;
+                    //保存数据
+                    $jhm->ending();
+
+                } catch (Exception $e) {
+                    //提前结束
+                    $jhm->log($e->getMessage());
+                    $jhm->ending();
                 }
             }
-            //保存数据
-            $jhm->ending();
+        }else{
+            show_404();
         }
+
     }
 
     //并发运行job
     private function _run($id){
-        $out = popen('F:\xampp\php\php.exe F:\xampp\htdocs\CTS\index.php job single_run '. $id,'r');
+        $out = popen(_config('php_dir').' '.FCPATH.'index.php job single_run '. $id,'r');
+        $data = fread($out, 1024);
+        log_message('error',$data);
         pclose($out);
     }
 

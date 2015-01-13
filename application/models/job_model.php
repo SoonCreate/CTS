@@ -15,6 +15,37 @@ class Job_model extends MY_Model{
         return $data;
     }
 
+    //job运行开始时计算
+    function refresh_next_exec_date($job){
+        if($job['period_flag'] && $job['period_value']){
+            $n = $job['next_exec_date'];
+            $period_value = string_to_number($job['period_value']);
+            if(is_null($n) || !$n){
+                $n = $job['first_exec_date'];
+            }
+            switch($job['period_type']){
+                case 'minute':
+                    $n = $n + $period_value * 60;
+                    break;
+                case 'hour' :
+                    $n = $n + $period_value * 60 * 60;
+                    break;
+                case 'day' :
+                    $n = $n+ $period_value * 60 * 60 * 24;
+                    break;
+                case 'month' :
+                    $n = strtotime('+'.$period_value.' month',$n);
+                    break;
+                case 'year' :
+                    $n = strtotime('+'.$period_value.' year',$n);
+                    break;
+            }
+            $data['next_exec_date'] = $n;
+            log_message('error',$n);
+            $this->update($job['id'],$data,true);
+        }
+    }
+
     private function _validate(){
         $this->clear_validate();
         $this->add_validate('description','required|max_length[255]');

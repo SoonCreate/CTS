@@ -301,6 +301,7 @@ $lang['label_role_from'] = "复制角色";
 
 //作业
 $lang['label_job_name'] = "作业名称";
+$lang['label_job_id'] = "作业";
 $lang['label_job_create'] = "作业创建";
 $lang['label_job_edit'] = "作业编辑";
 $lang['label_history'] = "运行记录";

@@ -803,11 +803,11 @@ function cevin_http_open($url, $conf = array())
 
     $post = '';
     $purl = parse_url($url);
-
+//log_message('error',$url);
     $arr = array(
         'post' => FALSE,
         'return' => TRUE,
-        'cookie' => 'C:/cookie.txt',);
+        'cookie' => FCPATH);
     $arr = array_merge($arr, $conf);
     $ch = curl_init();
 
@@ -836,6 +836,9 @@ function cevin_http_open($url, $conf = array())
     }
 
     $result = curl_exec($ch);
+//    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//    log_message('error',$statusCode);
+//    log_message('error',$result);
     curl_close($ch);
 
     return $result;
@@ -847,6 +850,11 @@ function cevin_http_open($url, $conf = array())
  */
 function sw_http_open($url, $conf = array()) {
     $return = '';
+    $post = '';
+    $cookie = '';
+    $ip = '';
+    $limit = 0;
+    $block = true;
     if(!is_array($conf))
     {
         return $return;
@@ -858,7 +866,7 @@ function sw_http_open($url, $conf = array()) {
     !isset($matches['port']) && $matches['port'] = '';
     $host = $matches['host'];
     $path = $matches['path'] ? $matches['path'].($matches['query'] ? '?'.$matches['query'] : '') : '/';
-    $port = !emptyempty($matches['port']) ? $matches['port'] : 80;
+    $port = !empty($matches['port']) ? $matches['port'] : 80;
 
     $conf_arr = array(
         'limit'=>0,
@@ -882,7 +890,7 @@ function sw_http_open($url, $conf = array()) {
         //$out .= "Referer: $boardurl/r/n";
         $out .= "Accept-Language: zh-cn/r/n";
         $out .= "Content-Type: application/x-www-form-urlencoded/r/n";
-        $out .= "User-Agent: $_SERVER[HTTP_USER_AGENT]/r/n";
+        $out .= "User-Agent: ".$_SERVER['HTTP_USER_AGENT']."/r/n";
         $out .= "Host: $host/r/n";
         $out .= 'Content-Length: '.strlen($post)."/r/n";
         $out .= "Connection: Close/r/n";
@@ -894,7 +902,7 @@ function sw_http_open($url, $conf = array()) {
         $out .= "Accept: */*/r/n";
         //$out .= "Referer: $boardurl/r/n";
         $out .= "Accept-Language: zh-cn/r/n";
-        $out .= "User-Agent: $_SERVER[HTTP_USER_AGENT]/r/n";
+        $out .= "User-Agent: ".$_SERVER['HTTP_USER_AGENT']."/r/n";
         $out .= "Host: $host/r/n";
         $out .= "Connection: Close/r/n";
         $out .= "Cookie: $cookie/r/n/r/n";

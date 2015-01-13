@@ -113,17 +113,30 @@ function _f($key,$value,$is_full_text = FALSE,$is_related_time = FALSE){
             }
             if($is_related_time){
                 if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
-                    $value = related_time(date('Y-m-d H:i:s',$value));
+                    if($value){
+                        $value = related_time(date('Y-m-d H:i:s',$value));
+                    }else{
+                        $value = '';
+                    }
                 }
             }else{
                 if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
-                    $value = date('Y-m-d H:i:s',$value);
+                    if($value){
+                        $value = date('Y-m-d H:i:s',$value);
+                    }else{
+                        $value = '';
+                    }
+
                 }
             }
 
         }else{
             if(strpos($key,'_date') > 0 && !strpos($key,'_date_') && !is_null($value)) {
-                $value = date('Y-m-d H:i:s',$value);
+                if($value){
+                    $value = date('Y-m-d H:i:s',$value);
+                }else{
+                    $value = '';
+                }
             }
         }
 

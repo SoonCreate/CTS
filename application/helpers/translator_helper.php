@@ -74,9 +74,12 @@ function _text($line,$param = array())
 if ( ! function_exists('env_language')) {
     function env_language()
     {
+        $CI = & get_instance();
+        print_r($CI->input->server());
         //判断浏览器语言
         $language = "en-us";
-        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 4); //只取前4位，这样只判断最优先的语言。如果取前5位，可能出现en,zh的情况，影响判断。
+        //$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 4); //只取前4位，这样只判断最优先的语言。如果取前5位，可能出现en,zh的情况，影响判断。
+        $lang = substr($CI->input->server('HTTP_ACCEPT_LANGUAGE'), 0, 4);
         if (preg_match("/zh/i", $lang))
             $language = "zh-CN";
 //        else if (preg_match("/zh/i", $lang))
