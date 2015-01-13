@@ -17,7 +17,7 @@
             <td>
                 <?= render_link(array('job','step_edit',array('id'=>$o['id'])),label('edit'))?>
                 &nbsp;|&nbsp;
-                <?= render_link(array('job','step_destroy',array('id'=>$o['id'])),label('destroy'))?>
+                <?= render_link(array('job','step_destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
             </td>
 
         </tr>

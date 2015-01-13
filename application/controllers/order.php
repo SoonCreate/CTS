@@ -665,4 +665,14 @@ class Order extends CI_Controller {
         }
     }
 
+    //发送报警信息
+    function send_alarm_message_job(){
+
+    }
+
+    //定期清理垃圾上传文件
+    function clear_upload_files_job(){
+
+    }
+
 }

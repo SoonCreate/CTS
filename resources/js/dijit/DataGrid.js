@@ -179,8 +179,20 @@ define(["dojo/_base/declare", "gridx/Grid",
                                 if(i != 0){
                                     value = value + "&nbsp;|&nbsp;";
                                 }
-                                value = value + '<a href="#" onclick="goto(\'' + url(data[i]["url"] + '?'+ data[i]["param"] +'='+rowId) + '\','+
-                                data[i]["target"] +','+ data[i]["noRender"] +')">' + data[i]["label"] + '</a>';
+                                //直接访问连接
+                                if(data[i]["realLink"]){
+                                    value = value + '<a href="'+ url(data[i]["url"] + '?'+ data[i]["param"] +'='+rowId)+'">'+ data[i]["label"] + '</a>';
+                                }else{
+                                    //定义来连接点击动作
+                                    if(data[i]["onClick"]){
+                                        value = value + '<a href="#" onclick="'+data[i]["onClick"]+'">' + data[i]["label"] + '</a>';
+                                    }else{
+                                        value = value + '<a href="#" onclick="goto(\'' + url(data[i]["url"] + '?'+ data[i]["param"] +'='+rowId) + '\','+
+                                        data[i]["target"] +','+ data[i]["noRender"] +')">' + data[i]["label"] + '</a>';
+                                    }
+
+                                }
+
                             }
                             return value;
                         }

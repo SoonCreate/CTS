@@ -134,7 +134,6 @@ class Job extends CI_Controller {
             show_404();
         }else{
             if($_POST){
-                $jsm = new Job_step_model();
                 if($jsm->update($step['id'],_data('step','function_id','variant_id'))){
                     go_back();
                     message_db_success();
@@ -148,40 +147,120 @@ class Job extends CI_Controller {
     }
 
     function step_destroy(){
-
+        $jsm = new Job_step_model();
+        $step = $jsm->find(v('id'));
+        if(empty($step)){
+            show_404();
+        }else{
+            if($jsm->delete($step['id'])){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
+        }
     }
 
     function histories(){
+        $jm = new Job_model();
+        $job = $jm->find(v('job_id'));
+        if(empty($job)){
+            show_404();
+        }else{
+            render();
+        }
+    }
 
+    function history_data(){
+
+        $start = 0;
+        $end = 0 ;
+        if(isset($_SERVER['HTTP_RANGE'])){
+            $idx = stripos($_SERVER['HTTP_RANGE'],'-');
+            $start = intval(substr($_SERVER['HTTP_RANGE'],6,$idx-6));
+            $end = intval(substr($_SERVER['HTTP_RANGE'],$idx+1));
+        }
+
+        $jhm = new Job_history_model();
+
+        $totalCnt = $jhm->count_by(array('job_id'=>v('job_id')));
+
+        $data["identifier"] = 'id';
+        $data["label"] = 'subject';
+
+        $jhm->order_by('id','desc');
+        $jhm->limit($end+1,$start);
+        $histories = $jhm->find_all_by(array('job_id'=>v('job_id')));
+        for($i=0;$i<count($histories);$i++){
+            if(!is_null($histories[$i]['end_date'])){
+                $histories[$i]['experience'] = $histories[$i]['end_date'] - $histories[$i]['start_date'];
+            }
+            $histories[$i]['status'] = get_label('vl_job_status',$histories[$i]['status']);
+            $histories[$i] = _format_row($histories[$i],true);
+        }
+        $data['items'] = $histories;
+
+        if(isset($_SERVER['HTTP_RANGE'])){
+            header('Content-Range:'.$_SERVER['HTTP_RANGE'].'/'.$totalCnt);
+            $output = $data['items'];
+        }
+        echo json_encode($output);
+
+
+    }
+
+    function history_structure(){
+        $structure = array();
+        array_push($structure,_structure('id',null,'40px'));
+        array_push($structure,_structure('status',null,'100px'));
+        array_push($structure,_structure('start_date',null,'200px'));
+        array_push($structure,_structure('end_date',null,'200px'));
+        array_push($structure,_structure('experience',null,'200px'));
+        echo json_encode($structure);
     }
 
     function history_log(){
-
+        $jhm = new Job_history_model();
+        $h = $jhm->find(v('id'));
+        if(empty($h)){
+            show_404();
+        }else{
+            $jom = new Job_output_model();
+            $o = $jom->find_by(array('history_id'=>$h['id']));
+            $data['content'] =  str_replace("\r\n","<br/>",$o['log']);
+            render($data);
+        }
     }
 
     function history_output(){
-
-    }
-
-    //发送报警信息
-    function send_alarm_message(){
-
-        send_mail('yacole@163.com','helper方法测试','测试');
-    }
-
-    //定期清理垃圾上传文件
-    function clear_upload_files(){
-
-    }
-
-    public function message($to = 'World')
-    {
-        if($this->input->is_cli_request()){
-            echo "Hello {$to}!".PHP_EOL;
+        //根据类型直接下载
+        //分析有多少步骤有输出
+        $jhm = new Job_history_model();
+        $h = $jhm->find(v('id'));
+        if(empty($h)){
+            show_404();
         }else{
-            echo '11';
+            $jom = new Job_output_model();
+            $o = $jom->find_by(array('history_id'=>$h['id']));
+            $d =  json_decode($o['output']);
+            $content = '';
+            $filename = $o['id'].'.'.$o['output_type'];
+            switch($o['output_type']){
+                case 'txt' :
+                    foreach($d as $s){
+                        $content = $content . 'Step '.$s->step."\r\n";
+                        $content = $content .$s->data."\r\n";
+                    }
+                    break;
+                case 'xlsx':
+                    break;
+                case 'pdf' :
+                    break;
+                case 'doc' :
+                    break;
+            }
+            //                    $data = file_get_contents(v('path')); // 读文件内容
+            force_download($filename, $content);
         }
-
     }
 
     //由此方法开始分配任务并执行
@@ -196,7 +275,7 @@ class Job extends CI_Controller {
             if(is_null($job['inactive_date']) || (!is_null($job['inactive_date']) && $job['inactive_date'] > time())){
                 //判断第一次和后续
                 if((is_null($job['next_exec_date']) && $job['first_exec_date'] <= time())||
-                    (!is_null($job['next_exec_date']) && $job['first_exec_date'] <= time())){
+                    (!is_null($job['next_exec_date']) && $job['next_exec_date'] <= time())){
 
                     if($jsm->count_by(array('job_id'=>$job['id'])) > 0){
 

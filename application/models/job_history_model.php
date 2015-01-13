@@ -19,7 +19,7 @@ class Job_history_model extends MY_Model{
         $jom = new Job_output_model();
         $o = $jom->find_by(array('history_id'=>$this->id));
         if(!empty($o)){
-            $data['log'] = $o['log'].date('Y-m-d H:i:s').'  '.$log.' /r/n ';
+            $data['log'] = $o['log'].date('Y-m-d H:i:s').'  '.$log."\r\n";
             $jom->update($o['id'],$data);
         }
     }
@@ -68,13 +68,18 @@ class Job_history_model extends MY_Model{
             $d[$p['segment_name']] =  $p['segment_value'];
             array_push($params,$d);
         }
-        //具体步骤的数据
-        $data['step'] = $step['step'];
-        $data['data'] = cevin_http_open($url);
-        $this->data($data);
+        $result = cevin_http_open($url);
+
+        //如果有返回数据
+        if($result){
+            //具体步骤的数据
+            $data['step'] = $step['step'];
+            $data['data'] = $result;
+            $this->data($data);
+        }
 
         $this->log('Step'.$step['step'].'运行结束');
-        return $this->_analyze_response($data['data']);
+        return $this->_analyze_response($result);
     }
 
     //最后将数据刷新到outpu表，并统计时间
@@ -94,7 +99,6 @@ class Job_history_model extends MY_Model{
 
     //返回结果判断是否有错误
     private function _analyze_response($data_string){
-        log_message('error',$data_string);
         $data = json_decode($data_string);
         if(is_null($data)){
             return true;
@@ -104,6 +108,7 @@ class Job_history_model extends MY_Model{
             if(isset($data->message)){
                 foreach($data->message as $m){
                     if($m->type == 'E'){
+                        $this->canceled = true;
                         $pass = false;
                         break;
                     }

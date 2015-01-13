@@ -36,6 +36,7 @@ $lang['label_all'] = "所有";
 $lang['label_owner'] = "所有者";
 $lang['label_segment_name'] = "段名";
 $lang['label_export'] = "Excel导出";
+$lang['label_data'] = "数据";
 
 
 $lang['label_notice_read_all'] = "全部标记成已读";
@@ -312,6 +313,7 @@ $lang['label_next_exec_date'] = "下次运行时间";
 $lang['label_inactive_date'] = "失效时间";
 $lang['label_period_type'] = "周期";
 $lang['label_period_value'] = "值";
+$lang['label_experience'] = "耗时（秒）";
 
 //名词
 $lang['label_functions'] = "功能";
