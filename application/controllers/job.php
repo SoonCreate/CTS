@@ -243,17 +243,84 @@ class Job extends CI_Controller {
             $o = $jom->find_by(array('history_id'=>$h['id']));
             $d =  json_decode($o['output']);
             $content = '';
-            $filename = $o['id'].'.'.$o['output_type'];
+            $filename = date('ymd').'.'.$o['output_type'];
             switch($o['output_type']){
                 case 'txt' :
                     foreach($d as $s){
                         $content = $content . 'Step '.$s->step."\r\n";
-                        $content = $content .$s->data."\r\n";
+                        $content = $content .unicode_to_word($s->data)."\r\n";
                     }
                     break;
                 case 'xlsx':
+                    $this->load->library('PHPExcel');
+                    $this->load->library('PHPExcel/IOFactory');
+                    $objPHPExcel = new PHPExcel();
+                    $objPHPExcel->getProperties()->setTitle($filename)->setDescription("none");
+                    $sheet = 0;
+                    foreach($d as $s){
+                        if($sheet > 0){
+                            $objPHPExcel->createSheet();
+                        }
+                        $objPHPExcel->setActiveSheetIndex($sheet);
+                        $objPHPExcel->getActiveSheet()->setTitle('step '.$s->step);
+
+                        $data = array();
+                        $fields = array();
+                        //判断数据
+                        if(is_array($s->data)){
+                            $data = $s->data;
+                            foreach($data[0] as $key=>$value){
+                                array_push($fields,$key);
+                            }
+                        }else{
+                            if(isset($s->data->items)){
+                                $data = $s->data->items;
+                                foreach($data[0] as $key=>$value){
+                                    array_push($fields,$key);
+                                }
+                            }else{
+                                $a['data'] = $s->data;
+                                array_push($data,$a);
+                                $fields = array('data');
+                            }
+                        }
+
+                        // Field names in the first row
+                        $col = 0;
+                        foreach ($fields as $field)
+                        {
+                            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1, label($field));
+                            $col++;
+                        }
+
+                        // Fetching the table data
+                        $row = 2;
+                        foreach($data as $row_data){
+                            $col = 0;
+                            foreach ($fields as $field)
+                            {
+                                //中文需转义
+                                $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, unicode_to_word($row_data[$field]));
+                                $col++;
+                            }
+                            $row++;
+                        }
+
+                        $sheet ++;
+
+                    }
+                    $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
+                    //发送标题强制用户下载文件
+                    header('Content-Type: application/vnd.ms-excel');
+                    header('Content-Disposition: attachment;filename="'.$filename.'"');
+                    header('Cache-Control: max-age=0');
+                    $objWriter->save('php://output');
                     break;
                 case 'pdf' :
+                    foreach($d as $s){
+                        $content = $content . 'Step '.$s->step."\r\n";
+                        $content = $content .$s->data."\r\n";
+                    }
                     break;
                 case 'doc' :
                     break;

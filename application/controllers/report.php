@@ -73,39 +73,11 @@ class Report extends CI_Controller {
         if($_POST){
             $data = $this->_time_data();
             if(!is_null($data)){
+
                 $fields = array('id','title','status','leader','manager','creation_date','release_to_confirm',
                     'confirm_to_allocate','allocate_to_done','done_to_close','total_time');
-                // Starting the PHPExcel library
-                $this->load->library('PHPExcel');
-                $this->load->library('PHPExcel/IOFactory');
-                $objPHPExcel = new PHPExcel();
-                $objPHPExcel->getProperties()->setTitle("time_statistics_export")->setDescription("none");
-//                $objPHPExcel->setActiveSheetIndex(0);
-                // Field names in the first row
-                $col = 0;
-                foreach ($fields as $field)
-                {
-                    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1, label($field));
-                    $col++;
-                }
-                // Fetching the table data
-                $row = 2;
-                foreach($data["items"] as $row_data){
-                    $col = 0;
-                    foreach ($fields as $field)
-                    {
-                        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $row_data[$field]);
-                        $col++;
-                    }
-                    $row++;
-                }
 
-                $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
-                //发送标题强制用户下载文件
-                header('Content-Type: application/vnd.ms-excel');
-                header('Content-Disposition: attachment;filename="time_statistics_export_'.date('ymd').'.xls"');
-                header('Cache-Control: max-age=0');
-                $objWriter->save('php://output');
+                export_to_excel($data['items'],'time_statistics_export_'.date('ymd'),$fields);
             }
 
         }else{

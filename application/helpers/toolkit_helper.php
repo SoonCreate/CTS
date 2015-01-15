@@ -305,6 +305,10 @@ function string_to_number($s){
     return intval($s);
 }
 
+function unicode_to_word($s){
+    return $code = preg_replace("#\\\u([0-9a-f]+)#ie", "iconv('UCS-2', 'UTF-8', pack('H4', '\\1'))", (string)$s);
+}
+
 //判断数组中是否含有这些key
 function is_all_set($data,$keys){
     if(count($keys)>0 && $data && count($data) > 0){
@@ -937,3 +941,65 @@ function sw_http_open($url, $conf = array()) {
     }
 }
 
+//数据或json导出excel
+function export_to_excel($data_string,$filename,$fields = array()){
+    global $CI;
+    $is_json = false;
+    //数组
+    if(!is_array($data_string)){
+        $data = json_decode($data_string);
+        if(is_null($data)){
+            //纯字符串
+            force_download($filename.'.xlsx', $data_string);
+        }else{
+            $is_json = true;
+        }
+    }else{
+        $data = $data_string;
+    }
+    if(!empty($data)){
+        $CI->load->library('PHPExcel');
+        $CI->load->library('PHPExcel/IOFactory');
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->getProperties()->setTitle($filename)->setDescription("none");
+
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        if(empty($fields)){
+            foreach($data[0] as $key=>$value){
+                array_push($fields,$key);
+            }
+        }
+        // Field names in the first row
+        $col = 0;
+        foreach ($fields as $field)
+        {
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1, label($field));
+            $col++;
+        }
+
+        // Fetching the table data
+        $row = 2;
+        foreach($data as $row_data){
+            $col = 0;
+            foreach ($fields as $field)
+            {
+                //json中文处理
+                if($is_json){
+                    $row_data[$field] = unicode_to_word($row_data[$field]);
+                }
+                $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $row_data[$field]);
+                $col++;
+            }
+            $row++;
+        }
+
+        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        //发送标题强制用户下载文件
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$filename.'.xlsx"');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
+    }
+
+}
