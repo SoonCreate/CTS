@@ -3,18 +3,15 @@
 function _url($controller,$action,$params = null){
     $paramstr = '';
     if(!is_null($params)){
-        $i = 0;
-        foreach($params as $key=>$value){
-            if($i < 1){
-                $paramstr = $paramstr . '?'.$key .'=' . $value;
-            } else{
-                $paramstr = $paramstr . '&'.$key .'=' . $value;
-            }
-            $i = $i + 1;
+        if(is_array($params))
+        {
+            $paramstr = http_build_query($params);
+        } else {
+            $paramstr = $params;
         }
     }
 //    return 'http://'._config('site_url').site_url($controller.'/'.$action.$paramstr);
-    return site_url($controller.'/'.$action.$paramstr);
+    return site_url($controller.'/'.$action.'?'.$paramstr);
 }
 
 //将结果集装换成JSON
@@ -829,13 +826,14 @@ function cevin_http_open($url, $conf = array())
 
     if($arr['post'] != FALSE)
     {
-        curl_setopt($ch, CURL_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
         if(is_array($arr['post']))
         {
             $post = http_build_query($arr['post']);
         } else {
             $post = $arr['post'];
         }
+//        log_message('error',$post);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     }
 

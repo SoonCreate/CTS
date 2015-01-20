@@ -41,7 +41,6 @@ class Job_model extends MY_Model{
                     break;
             }
             $data['next_exec_date'] = $n;
-            log_message('error',$n);
             $this->update($job['id'],$data,true);
         }
     }

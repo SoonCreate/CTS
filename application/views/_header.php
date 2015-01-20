@@ -63,7 +63,7 @@
                 i ++ ;
             }
         }
-        return url;
+        return encodeURI(url);
     }
 
 </script>

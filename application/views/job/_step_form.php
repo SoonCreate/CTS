@@ -3,15 +3,20 @@
 <?= render_select_add_options('variant_id','')?>
 <script type="text/javascript">
     onWsoLoad(function () {
-        _onFunctionSelectChange();
+        _onFunctionSelectChange(<?= _v('variant_id')?>);
     });
-    _onFunctionSelectChange = function(){
+    _onFunctionSelectChange = function(variant_id){
         var o = dijitObject('function_id');
         var v = dijitObject('variant_id');
         if(o != undefined){
             $ajax.get(url("functions/variant_options",{id : o.getValue(),bg: 1}),{handleAs: "json"}).then(function(data){
                 v.set("options",data);
-                v.set("value", v.getValue());
+                if(variant_id){
+                    v.set("value", variant_id);
+                }else{
+                    v.set("value", v.getValue());
+                }
+
             });
         }
     }

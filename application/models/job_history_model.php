@@ -56,19 +56,54 @@ class Job_history_model extends MY_Model{
     function run_step($step){
         $this->log('Step'.$step['step'].'开始运行...');
         $this->log('Step info :'.json_encode($step));
-        //构建url和参数
-        $url = _url($step['controller'],$step['action']);
+        $url = null;
+        $conf = array();
         $this->load->model('variant_line_model');
+        $this->load->model('variant_model');
         $vlm = new Variant_line_model();
+        $fvm = new Variant_model();
+        $variant = $fvm->find($step['variant_id']);
         $ps = $vlm->find_all_by(array('variant_id'=>$step['variant_id']));
-        $params = array();
-        foreach($ps as $p){
-            //时间值处理
-
-            $d[$p['segment_name']] =  $p['segment_value'];
-            array_push($params,$d);
+        if(!empty($variant)){
+            $params = array();
+            foreach($ps as $p){
+                //时间值处理
+                switch($p['data_type']){
+                    case 'number' :
+                        $p['segment_value'] = string_to_number($p['segment_value']);
+                        break;
+                    case 'boolean' :
+                        $p['segment_value'] = string_to_boolean($p['segment_value']);
+                        break;
+                    case 'date' :
+                        if($p['now_flag']){
+                            $p['segment_value'] = date('Y-m-d',time());
+                        }
+                        break;
+                    case 'time' :
+                        if($p['now_flag']){
+                            $p['segment_value'] = date('H:i:s',time());
+                        }
+                        break;
+                    case 'datetime':
+                        if($p['now_flag']){
+                            $p['segment_value'] = date('Y-m-d H:i:s',time());
+                        }
+                        break;
+                }
+//                log_message('error',$p['segment_name'] .':'.$p['segment_value']);
+                $params[$p['segment_name']] = $p['segment_value'];
+            }
+            if($variant['method'] == 'POST'){
+//                //构建url和参数
+                $url = _url($step['controller'],$step['action']);
+                $conf['post'] = $params;
+            }else{
+                $url = _url($step['controller'],$step['action'],$params);
+            }
         }
-        $result = cevin_http_open($url);
+//        log_message('error',$url);
+        $result = cevin_http_open($url,$conf);
 
         //如果有返回数据
         if($result){

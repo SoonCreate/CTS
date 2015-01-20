@@ -367,7 +367,7 @@ class Job extends CI_Controller {
             $job = $jm->find($id);
             if(!empty($job)){
                 $jhm = new Job_history_model();
-                $error = false;
+                $goon = true;
 
                 //判断步骤
                 $steps = $jsm->find_all_by_view(array('job_id'=>$job['id']));
@@ -379,8 +379,8 @@ class Job extends CI_Controller {
 
                     //步骤开始
                     foreach($steps as $step){
-                        if(!$error){
-                            $error = $jhm->run_step($step);
+                        if($goon){
+                            $goon = $jhm->run_step($step);
                         }else{
                             break;
                         }
@@ -404,8 +404,8 @@ class Job extends CI_Controller {
     //并发运行job
     private function _run($id){
         $out = popen(_config('php_dir').' '.FCPATH.'index.php job single_run '. $id,'r');
-        $data = fread($out, 1024);
-        log_message('error',$data);
+//        $data = fread($out, 1024);
+//        log_message('error',$data);
         pclose($out);
     }
 
