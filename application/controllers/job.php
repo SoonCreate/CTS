@@ -242,14 +242,21 @@ class Job extends CI_Controller {
             $jom = new Job_output_model();
             $o = $jom->find_by(array('history_id'=>$h['id']));
             $d =  json_decode($o['output']);
+            //判断是否每步骤都会输出
+            $cnt = count($d);
             $content = '';
             $filename = date('ymd').'.'.$o['output_type'];
             switch($o['output_type']){
                 case 'txt' :
-                    foreach($d as $s){
-                        $content = $content . 'Step '.$s->step."\r\n";
-                        $content = $content .unicode_to_word($s->data)."\r\n";
+                    if($cnt == 1){
+                        $content = unicode_to_word($d[0]->data);
+                    }else{
+                        foreach($d as $s){
+                            $content = $content . 'Step '.$s->step."\r\n";
+                            $content = $content .unicode_to_word($s->data)."\r\n";
+                        }
                     }
+
                     break;
                 case 'xlsx':
                     $this->load->library('PHPExcel');
@@ -317,12 +324,20 @@ class Job extends CI_Controller {
                     $objWriter->save('php://output');
                     break;
                 case 'pdf' :
-                    foreach($d as $s){
-                        $content = $content . 'Step '.$s->step."\r\n";
-                        $content = $content .$s->data."\r\n";
-                    }
+                    //fpdf dompdf 中文支持 后续实现
                     break;
                 case 'doc' :
+                    if($cnt == 1){
+                        $content = unicode_to_word($d[0]->data);
+                    }else{
+                        foreach($d as $s){
+                            $content = $content . '<h1>Step '.$s->step."</h1>";
+                            $content = $content .unicode_to_word($s->data);
+                        }
+                    }
+
+                    $data['content'] = $content;
+                    $content = $this->load->view('doc_template',$data,true);
                     break;
             }
             //                    $data = file_get_contents(v('path')); // 读文件内容
