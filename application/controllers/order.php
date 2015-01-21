@@ -242,7 +242,7 @@ class Order extends CI_Controller {
                     validation_error();
                 }
             }else{
-                render();
+                $this->load->view('order/change_reason');
             }
         }
     }
@@ -386,31 +386,37 @@ class Order extends CI_Controller {
             if($order['pcd_change_times'] - 1  < _config('pcd_change_times') ){
                 if($_POST){
 
-                    //格式化提交的日期
-                    $_POST['plan_complete_date'] = str_replace('T',' ',$_POST['plan_complete_date'] . $_POST['plan_complete_time']);
-
                     $_POST['plan_complete_date'] = strtotime($_POST['plan_complete_date']);
                     if($_POST['plan_complete_date'] < time()){
                         add_validation_error('plan_complete_date','不能选择在过去的时间');
-                        add_validation_error('plan_complete_time','');
                     }else{
                         $data = _data('plan_complete_date');
-                        $data['pcd_change_times'] = $order['pcd_change_times'] + 1;
-                        if($om->do_update($order['id'],$data,true)){
+                        //如果为相同则不计算次数
+                        if($data['plan_complete_date'] == $order['plan_complete_date']){
                             go_back();
                             message_db_success();
                         }else{
-                            message_db_failure();
+                            $data['pcd_change_times'] = $order['pcd_change_times'] + 1;
+                            if($om->do_update($order['id'],$data,true)){
+                                go_back();
+                                message_db_success();
+                            }else{
+                                message_db_failure();
+                            }
                         }
                     }
 
                 }else{
                     if(is_null($order['plan_complete_date']) || !$order['plan_complete_date']){
-                        $order['plan_complete_date'] = date('Y-m-d',time());
+                        //默认为下班时间，如果超出则默认明天的下班时间
+                        $default_d = default_end_date();
+                        if($default_d < time()){
+                            $order['plan_complete_date'] = default_end_date('+1 day');
+                        }else{
+                            $order['plan_complete_date'] = $default_d;
+                        }
                     }else{
-                        $order['plan_complete_date'] = date('Y-m-d H:m:s',$order['plan_complete_date']);
-                        $order['plan_complete_time'] = 'T'.substr($order['plan_complete_date'],11,9);
-                        $order['plan_complete_date'] = substr($order['plan_complete_date'],0,10);
+                        $order['plan_complete_date'] = date('Y-m-d H:i:s',$order['plan_complete_date']);
                     }
                     render($order);
                 }

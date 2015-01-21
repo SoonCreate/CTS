@@ -550,6 +550,7 @@ class Order_model extends MY_Model{
         array_push($structure,_structure('content',null,'160px'));
         array_push($structure,_structure('status',null,'60px'));
         array_push($structure,_structure('creation_date',null,'130px'));
+        array_push($structure,_structure('plan_complete_date',null,'130px'));
         return $structure;
     }
 }

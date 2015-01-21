@@ -119,20 +119,37 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
         beforeSubmit();
     }
     require(["dojo/dom-form","dojo/request"],function(domForm,request){
-        //fix form中有name为action组件时优先调用组件值的情况 20141017
-        request.post(object.attributes["action"]["value"], {
-            // Send the username and password
-            data: domForm.toObject(object),
-            // Wait 2 seconds for a response，由于机器性能不同，可能反馈的效率不一，设置10秒以防万一
-            timeout: 10000,
-            handleAs : "json"
-        }).then(function(response){
-            clearCurrentStatus(object);
-            handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,object);
-        },function(e){
-            showMessage({type : 'E',content : "请求出现未知出错，请联系管理员！"});
-            console.log(e);
-        });
+        var data = domForm.toObject(object);
+        //提交前验证
+        var pass = true;
+        var cnt = 0;
+        for(var key in data){
+            var obj = dijitObject(key);
+
+            if(obj && 'validate' in obj && !obj.validate()){
+                _renderSingleError(obj,cnt);
+                pass = false;
+                cnt = cnt + 1;
+            }
+        }
+        if(pass){
+            //fix form中有name为action组件时优先调用组件值的情况 20141017
+            request.post(object.attributes["action"]["value"], {
+                data: data,
+                // Wait 2 seconds for a response，由于机器性能不同，可能反馈的效率不一，设置10秒以防万一
+                timeout: 10000,
+                handleAs : "json"
+            }).then(function(response){
+                clearCurrentStatus(object);
+                handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,object);
+            },function(e){
+                showMessage({type : 'E',content : "请求出现未知出错，请联系管理员！"});
+                console.log(e);
+            });
+        }else{
+            return false;
+        }
+
     });
     return false;
 }
@@ -342,23 +359,41 @@ function renderValidError(lines,target){
         for (var key in lines[i]) {
             var object = dijitObject(key);
             if(object){
-                //激活
-                //object.focus();
-                object.set("state","Error");
-                //object.displayMessage(lines[i][key]);
-                if(target == undefined){
-                    target = currentWso().domNode;
-                }
-                //object.displayMessage("gogo");
-                var nodes = $("div#error_"+fixDijitId(key),target);
-                for(var y=0;y<nodes.length;y++){
-                    nodes[y].innerHTML = lines[i][key];
-                }
+                _renderSingleError(object,i,lines[i][key],target);
             }
         }
 
     }
 
+}
+
+function _renderSingleError(object,index,invalidMessage,target){
+    if(object){
+        //第一个报错控件激活
+        if(index == 0){
+            object.focus();
+            object.displayMessage(object.getErrorMessage());
+        }else{
+            object.displayMessage();
+        }
+        object.set("state","Error");
+
+        if(target == undefined){
+            target = currentWso().domNode;
+        }
+        console.info(target);
+        console.info("div#error_"+object.id);
+        var nodes = $("div#error_"+object.id,target);
+        console.info(nodes);
+        for(var y=0;y<nodes.length;y++){
+            if(invalidMessage){
+                nodes[y].innerHTML = invalidMessage;
+            }else{
+                nodes[y].innerHTML = object.getErrorMessage();
+            }
+
+        }
+    }
 }
 
 //用于控件的唯一性标识

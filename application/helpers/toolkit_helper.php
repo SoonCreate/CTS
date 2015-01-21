@@ -11,7 +11,12 @@ function _url($controller,$action,$params = null){
         }
     }
 //    return 'http://'._config('site_url').site_url($controller.'/'.$action.$paramstr);
-    return site_url($controller.'/'.$action.'?'.$paramstr);
+    if($paramstr){
+        return site_url($controller.'/'.$action.'?'.$paramstr);
+    }else{
+        return site_url($controller.'/'.$action);
+    }
+
 }
 
 //将结果集装换成JSON
@@ -778,13 +783,34 @@ function build_structure(){
     return $structure;
 }
 
-//开始时间
-function default_start_date(){
-    return date('Y-m-d').' '._config('time_begin');
+
+/**
+ * 默认上班时间
+ * @param null $time    同strtotime()的time参数，可用于加减时间
+ * @return bool|string  时间字符串：Y-m-d H:i:s
+ */
+function default_start_date($time = null){
+    $default_d =  date('Y-m-d').' '._config('time_begin');
+    if(is_null($time)){
+        return $default_d;
+    }else{
+        return date('Y-m-d H:i:s',strtotime($time,strtotime($default_d)));
+    }
+
 }
 
-function default_end_date(){
-    return date('Y-m-d').' '._config('time_end');
+/**
+ * 默认下班时间
+ * @param null $time    同strtotime()的time参数，可用于加减时间
+ * @return bool|string  时间字符串：Y-m-d H:i:s
+ */
+function default_end_date($time = null){
+    $default_d = date('Y-m-d').' '._config('time_end');
+    if(is_null($time)){
+        return $default_d;
+    }else{
+        return date('Y-m-d H:i:s',strtotime($time,strtotime($default_d)));
+    }
 }
 
 //CURL

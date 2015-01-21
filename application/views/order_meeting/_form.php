@@ -1,6 +1,6 @@
 <?= render_form_input('title',TRUE);?>
-<?= render_form_dateTimeBox('start_date',true)?>
-<?= render_form_dateTimeBox('end_date',true)?>
+<?= render_form_dateTimeBox('start_date',true,false,null,true)?>
+<?= render_form_dateTimeBox('end_date',true,false,null,true)?>
 <?= render_form_input('site',TRUE);?>
 <?= render_form_input('anchor',TRUE);?>
 <?= render_form_input('recorder');?>
@@ -13,7 +13,7 @@
     <dd></dd>
 </dl>
 <?= render_form_textarea('discuss') ?>
-<?= render_form_input_data('order_id',_url('order_meeting','choose_orders_data',array('id'=>_v('order_id'))),true,false,true,true)?>
+<?= render_form_input_data('order_id',_url('order_meeting','choose_orders_data',array('id'=>_v('order_id'))),true,false,null,true,true)?>
 <?= render_button_group()?>
 <script type="text/javascript">
     function _onActorClick(){

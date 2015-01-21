@@ -829,3 +829,13 @@ html, body {
     background-color: #fff;
     color:#1ABC9C;
 }
+
+/*失效的time控件列表不显示*/
+.sc .dijitTimePickerItemDisabled{
+     display: none;
+}
+
+.sc .dijitBottonMessageError{
+    font-weight : bold;
+    color: #d46464;
+}

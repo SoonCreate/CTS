@@ -1,6 +1,6 @@
 define(["dojo/_base/declare",
-        "dijit/form/DateTextBox",
-        "dijit/form/TimeTextBox",
+        "sckj/form/DateTextBox",
+        "sckj/form/TimeTextBox",
         "dijit/_WidgetBase",
         "dijit/_TemplatedMixin",
         "dojo/dom-construct",
@@ -12,6 +12,9 @@ define(["dojo/_base/declare",
         postName : "",
         dateTextBox : null,
         timeTextBox : null,
+        //控制选择范围
+        minTime : "T00:00:00",
+        maxTime : "T23:59:59",
         constructor : function(args){
             //默认属性
             if(args.name != undefined || args.id != undefined ){
@@ -29,7 +32,7 @@ define(["dojo/_base/declare",
             var o = this;
             var date = new Date(this.value);
             this.dateTextBox = new DateTextBox({
-                id : this.id+"_date",
+                id : this.name+"_date",
                 name : this.name+"_date",
                 value : date,
                 constraints: {
@@ -40,11 +43,13 @@ define(["dojo/_base/declare",
                 }
             });
             this.timeTextBox = new TimeTextBox({
-                id : this.id+"_time",
+                id : this.name+"_time",
                 name : this.name+"_time",
                 value : date,
                 constraints: {
-                    timePattern : "HH:mm:ss"
+                    timePattern : "HH:mm:ss",
+                    min : o.minTime,
+                    max : o.maxTime
                 },
                 onChange : function(){
                     o._fixValue();

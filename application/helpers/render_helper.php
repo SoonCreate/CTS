@@ -212,7 +212,7 @@ function render_no_auth_error(){
  * @return string   domNode内容
  */
 function render_form_error($field){
-    return '<div id="error_'.$field.'_'._sess('cm').'_'._sess('mid').'"></div>';
+    return '<div id="error_'.$field.'_'._sess('cm').'_'._sess('mid').'" class="dijitBottonMessageError"></div>';
 }
 
 
@@ -290,7 +290,7 @@ function render_radio_group($name,$label = null,$valuelist_name,$parent_segment_
  * @param int $checked_value    选中后的值，默认为1
  * @param null $label   标签
  * @param bool $checked 是否默认被选中
- * @param array $attributes 其他参数
+ * @param array $attributes 其他参数，参照dojo CheckBox API 文档
  * @return string   domNode
  */
 function render_single_checkbox($name,$checked_value = 1,$label = null,$checked = FALSE,$attributes = array()){
@@ -377,7 +377,7 @@ function render_form_close($with_submit_button = false,$label = null,$class = 's
  * @param string $name  字段
  * @param bool $required    是否必输
  * @param null $label   标签
- * @param array $attributes 其他参数
+ * @param array $attributes 其他参数，参照dojo TextBox API 文档
  * @param string $type  输出类型
  * @param bool $disabled    是否不能修改，即无效
  * @param string $remark    备注，位于控件后方
@@ -411,7 +411,7 @@ function _render_input_by_type($name,$required = FALSE,$label = null,$attributes
  * @param bool $required
  * @param bool $disabled
  * @param null $label
- * @param array $attributes
+ * @param array $attributes 其他参数，参照dojo TextBox API 文档
  * @param string $remark
  * @return string
  */
@@ -419,6 +419,20 @@ function render_form_input($name,$required = FALSE,$disabled = FALSE,$label = nu
     return _render_input_by_type($name,$required,$label,$attributes,'text',$disabled,$remark);
 }
 
+/**
+ * 可通过值集选择的输入框控件
+ * @param string $name 字段
+ * @param string $valuelist_name    值集
+ * @param bool $required    是否必输
+ * @param bool $disabled    是否失效
+ * @param null $label   标签
+ * @param bool $muliple 是否多选
+ * @param bool $all_value   是否可选所有值
+ * @param bool $pagination  是否分页
+ * @param string $page_size 单页条目数
+ * @param array $attributes 其他参数，参照dojo TextBox API 文档
+ * @return string   domNode
+ */
 function render_form_input_vl($name,$valuelist_name,$required = FALSE,$disabled = FALSE,$label = null,
                                   $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array()){
     $echo = _dijit_header($name,$label,$required);
@@ -446,12 +460,24 @@ function render_form_input_vl($name,$valuelist_name,$required = FALSE,$disabled 
     return $echo;
 }
 
-//来自远程数据
-function render_form_input_data($name,$data_url,$required = FALSE,$disabled = FALSE,
+
+/**
+ * 来自远程数据支撑的文本框
+ * @param string $name  字段
+ * @param string $data_url  数据来源url
+ * @param bool $required    是否必输
+ * @param bool $disabled    是否失效
+ * @param null $label   标签
+ * @param bool $muliple 是否多选
+ * @param bool $pagination  是否分页
+ * @param int $page_size    单页条目数
+ * @param array $attributes 其他参数，参照dojo TextBox API 文档
+ * @return string   domNode
+ */
+function render_form_input_data($name,$data_url,$required = FALSE,$disabled = FALSE,$label = null,
                                 $muliple = true,$pagination = false,$page_size = 10,$attributes = array()){
-    $echo = '';
-    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';
+    $echo = _dijit_header($name,$label,$required);
+    $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';
     if($required){
         $echo = $echo. ' required ';
     }
@@ -469,15 +495,30 @@ function render_form_input_data($name,$data_url,$required = FALSE,$disabled = FA
     foreach($attributes as $key=>$value){
         $echo = $echo. $key.': '.$value;
     }
-    $echo = $echo . ' " ';
-    $echo = $echo. '/>'. render_form_error($name).'</dd></dl>';
+    $echo = $echo . ' "/>';
+    $echo = $echo . _dijit_footer($name);
     return $echo;
 }
 
+/**
+ * 密码类型文本框
+ * @param string $name  字段
+ * @param bool $required    是否必输
+ * @param null $label   标签
+ * @param array $attributes 其他参数
+ * @param bool $disabled    是否失效
+ * @return string   domNode
+ */
 function render_form_password($name,$required = FALSE,$label = null,$attributes = array(),$disabled = FALSE){
     return _render_input_by_type($name,$required,$label,$attributes,'password',$disabled);
 }
 
+/**
+ * 隐藏文本框控件
+ * @param string $name  字段
+ * @param null $value   默认值，优先级高于系统变量
+ * @return string   domNode
+ */
 function render_form_hidden($name,$value = null){
     if(is_null($value)){
         return  '<input id="'.$name.'" name="'.$name.'" type="hidden" value="'._v($name).'" />';
@@ -526,16 +567,19 @@ function render_form_timebox($name,$required = FALSE,$h = '00',$m = '15',$s = '0
     }
     return $echo.'/>';
 }
-function render_form_dateTimeBox($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
-    $echo = '';
-    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTimeTextBox" trim="true" ';
+function render_form_dateTimeBox($name,$required = FALSE,$disabled = FALSE,$label = null,$work_time = false,$attributes = array()){
+    $echo = _dijit_header($name,$label,$required);
+    $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTimeTextBox" trim="true" ';
     if($required){
         $echo = $echo. ' required ';
     }
 
     if($disabled){
         $echo = $echo. ' disabled ';
+    }
+    //是否默认工作时间
+    if($work_time){
+        $echo = $echo . ' minTime="T'._config('time_begin').'" maxTime="T'._config('time_end').'" ';
     }
 
     if(is_array($attributes)){
@@ -546,7 +590,7 @@ function render_form_dateTimeBox($name,$required = FALSE,$attributes = array(),$
 
     $echo = $echo. '/>';
 
-    $echo = $echo.render_form_error($name).'</dd></dl>';
+    $echo = $echo._dijit_footer($name);
     return $echo;
 }
 
