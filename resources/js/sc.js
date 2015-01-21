@@ -673,3 +673,30 @@ function getFirstAndLastMonthDay( year, month){
     var lastdate = year + '-' + month + '-' + day.getDate();//获取当月最后一天日期
     return lastdate;
 }
+
+function uploadFileDialog(toUrl,params){
+    require(["dojox/layout/ContentPane","dojo/io/iframe"],function(ContentPane,iframe){
+        var cp = new ContentPane({
+            href : url(toUrl,params),
+            id : "uploadFileContentPane"
+        });
+        cp.startup();
+        dojoConfirm(cp,"文件上传",function(){
+            iframe.send({
+                form: "upload_file",
+                method: "POST",
+                timeOut: 2000,
+                handleAs: "json",
+                url : url(toUrl)
+            }).then(function(response) {
+                //成功
+                handleResponse(response,null,function(){
+                    refresh();
+                })
+            },function (error) {
+                //失败
+                console.info(error);
+            });
+        });
+    });
+}

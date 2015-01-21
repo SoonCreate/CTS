@@ -1,41 +1,46 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 //输出label语言文件下的注释
-function label($name){
-    $line = '';
-    if(env_language() == 'en-us'){
-        $words = explode('_',$name);
-        for($i =0;$i<count($words);$i++){
-            $words[$i] = ucfirst($words[$i]);
-        }
-        $line = join(' ',$words);
-    }else{
-        $line = _text('label_'.$name);
-        if(!$line){
+function label($name,$label = null){
+    if(is_null($label)){
+        $line = '';
+        if(env_language() == 'en-us'){
             $words = explode('_',$name);
-            $pass = true;
-            $lines = array();
             for($i =0;$i<count($words);$i++){
-                $w = _text('label_'.$words[$i]);
-                if(!$w){
-                    $pass = false;
-                    break;
-                }else{
-                    array_push($lines,$w);
-                }
+                $words[$i] = ucfirst($words[$i]);
             }
-            if($pass){
-                $line = join('',$lines);
-            }else{
+            $line = join(' ',$words);
+        }else{
+            $line = _text('label_'.$name);
+            if(!$line){
+                $words = explode('_',$name);
+                $pass = true;
+                $lines = array();
                 for($i =0;$i<count($words);$i++){
-                    $words[$i] = ucfirst($words[$i]);
+                    $w = _text('label_'.$words[$i]);
+                    if(!$w){
+                        $pass = false;
+                        break;
+                    }else{
+                        array_push($lines,$w);
+                    }
                 }
-                $line = join(' ',$words);
+                if($pass){
+                    $line = join('',$lines);
+                }else{
+                    for($i =0;$i<count($words);$i++){
+                        $words[$i] = ucfirst($words[$i]);
+                    }
+                    $line = join(' ',$words);
+                }
             }
         }
+
+        return $line;
+    }else{
+        return $label;
     }
 
-    return $line;
 }
 
 //根据浏览器语言支持多语言环境

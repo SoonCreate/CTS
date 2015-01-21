@@ -2,9 +2,9 @@
 <?= render_form_input('when_new_value');?>
 <?= render_form_input('when_old_value');?>
 <?= render_select_with_options('notice_type','vl_notice_type',true)?>
-<?= render_single_checkbox('notice_created_by',1,'通知到创建者')?>
-<?= render_single_checkbox('notice_manager',1,'通知到处理人')?>
-<?= render_single_checkbox('notice_leader',1,'通知到责任人')?>
+<?= render_single_checkbox('notice_created_by',1)?>
+<?= render_single_checkbox('notice_manager',1)?>
+<?= render_single_checkbox('notice_leader',1)?>
 <?= render_select_add_options('default_role_id',render_options('vl_roles',null,FALSE,true))?>
 <?= render_select_add_options('function_id',render_options('vl_functions',null,FALSE,true))?>
 <?= render_form_textarea('description')?>

@@ -20,7 +20,7 @@
             <?= render_form_password('password',true)?>
             <?= render_form_password('repassword',true)?>
             <?= render_form_input('full_name',true)?>
-            <?= render_radio('user_type',label('who_you_are'),'vl_register_select')?>
+            <?= render_radio_group('user_type',label('who_you_are'),'vl_register_select')?>
             <dl class="row dl-horizontal">
                 <dt>&nbsp;</dt>
                 <dd>

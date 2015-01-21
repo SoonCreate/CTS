@@ -7,5 +7,5 @@
     </div>
 <?= render_form_input('title',true);?>
 <?= render_form_textarea('content',true);?>
-<?= render_single_checkbox('need_reason_flag',1,'是否需要填写原因')?>
+<?= render_single_checkbox('need_reason_flag',1)?>
 <br/><br/>

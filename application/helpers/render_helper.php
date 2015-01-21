@@ -1,15 +1,56 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * Sooncreate AIP
+ *
+ * 速创科技AIP开源集成平台
+ *
+ * @package	Sooncreate
+ * @author		Sooncreate Studio
+ * @copyright	Copyright (c) 2014.
+ * @license
+ * @link		http://www.sooncreate.com
+ * @since		Version 1.0
+ * @filesource
+ */
 
-//渲染函数
+// ------------------------------------------------------------------------
+
+/**
+ * System Initialization File
+ *
+ * 用于渲染模版的控件库
+ *
+ * @package	Sooncreate
+ * @category	helper
+ * @author		Sooncreate Studio
+ * @link
+ */
+
+ // ------------------------------------------------------------------------
+
+/**
+ * 加载wso模版，代替原来的view函数，自动加载action命名的view文件
+ * @param null $data
+ */
 function render($data = NULL){
     render_by_layout('wso',NULL,$data);
 }
 
+/**
+ * 加载wso模版，另指定view文件
+ * @param null $view
+ * @param null $data
+ */
 function render_view($view = NULL,$data = NULL){
     render_by_layout('wso',$view,$data);
 }
 
-//模板
+/**
+ * 用于默认加载url对应默认路由后的controller/action，查找对应的view文件
+ * @param null $layout  模版名称，位于view目录下，以layout_开头
+ * @param null $view
+ * @param null $data
+ */
 function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
     $CI =  &get_instance();
     if(is_null($view)){
@@ -23,18 +64,18 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
     }
 }
 
-//渲染函数
-//function render($data = NULL){
-//    $CI =  &get_instance();
-//    $CI->load->view($CI->router->fetch_directory().'/'.$CI->router->fetch_class().'/'.$CI->router->fetch_method(),$data);
-//}
-
-//function redirect_to($controller,$action,$params = null){
-//    redirect(_url($controller,$action,$params));
-//}
-
+/**
+ * 生成用于前端使用的超链接，js的goto方法
+ *
+ * @param string|array $url  url字符串或者数组
+ * @param string $label    显示的标签
+ * @param string $title 对应a标签的title，注释
+ * @param string $class 定义a标签的style
+ * @param string $noRender  对应goto方法的noRender参数，如果为true则不跳转，出现提示框
+ * @return string
+ */
 function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
-    $g = url_goto($url);
+    $g = parse_ciUrl($url);
     if(isset($g['blank_flag']) && $g['blank_flag']){
         return '<a href="'.$g['url'].'" title="'.$title.'" class="'.$class.'" target="_blank">'.$label.'</a>';
     }else{
@@ -43,7 +84,13 @@ function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
 
 }
 
-function url_goto($url){
+/**
+ * 解析url
+ * @param string|array $url  url字符串或者数组
+ * @return mixed    哈希数组返回：url字符串和模块id，模块id用于前端模块选择
+ */
+function parse_ciUrl($url){
+    //默认当前模块
     $module_id = _sess('mid');
     $link = '';
     $params = array();
@@ -56,6 +103,7 @@ function url_goto($url){
         $CI =  &get_instance();
         $CI->load->model('module_line_model');
         $mlm = new Module_line_model();
+        //优先获取当前模块下注册的功能
         $cml = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action,'module_id'=>_sess('mid')));
         if(!empty($cml)){
             $params['cm'] = $cml['id'];
@@ -80,6 +128,48 @@ function url_goto($url){
     return $g;
 }
 
+
+/**
+ * 控件头
+ * @param string $name 字段名称
+ * @param null $label   自定义标签
+ * @param bool $required    是否必输项
+ * @param bool $auto_label_tag 自动生成label tag
+ * @return string
+ */
+function _dijit_header($name,$label = null,$required = false,$auto_label_tag = true){
+    $has_tag_label = render_label($name,$required,$label);
+    $label = label($name,$label);
+    if($auto_label_tag){
+        $label = $has_tag_label;
+    }else{
+        if($required){
+            $label = '<label>*'.$label.'</label>';
+        }else{
+            $label = '<label>'.$label.'</label>';
+        }
+    }
+    return '<dl class="row dl-horizontal"> <dt>'.$label.'</dt><dd>';
+}
+
+/**
+ * 控件结尾，自动带上报错dom
+ * @param $name
+ * @return string
+ */
+function _dijit_footer($name){
+    return  render_form_error($name).'</dd></dl>';
+}
+
+/**
+ * 与render_link函数功能相近
+ * @param string $url
+ * @param string $label
+ * @param string $title
+ * @param string $class 用于显示标签前方的图片字体
+ * @param string $noRender
+ * @return string
+ */
 function render_link_button($url,$label,$title = '',$class = '',$noRender = 'false'){
     $bt =  '<button data-dojo-type="sckj/form/Button">';
     if($class){
@@ -89,6 +179,11 @@ function render_link_button($url,$label,$title = '',$class = '',$noRender = 'fal
     return render_link($url,$bt,$title,null,$noRender);
 }
 
+/**
+ * 用于提示“整页”错误
+ * @param string $message   报错内容
+ * @param string $heading   报错抬头
+ */
 function render_error($message = '',$heading = ''){
     if($heading == ''){
         $heading = label('error');
@@ -98,6 +193,9 @@ function render_error($message = '',$heading = ''){
     render_view('error',$data);
 }
 
+/**
+ *  用于“整页”显示无权限报错
+ */
 function render_no_auth_error(){
     global $CI;
     $CI->load->model('message_model','message');
@@ -108,20 +206,34 @@ function render_no_auth_error(){
     }
 }
 
+/**
+ * 用于form验证失败后的报错提示的显示，一般位于控件dom后面，显示于下方
+ * @param string $field    字段名
+ * @return string   domNode内容
+ */
 function render_form_error($field){
     return '<div id="error_'.$field.'_'._sess('cm').'_'._sess('mid').'"></div>';
 }
 
-//输出到view里面的option
+
+/**
+ * 用于select控件的option项目
+ * @param string $valuelist_name   值集名称
+ * @param null $parent_segment_value    所属父值集项目
+ * @param bool $all_value   是否可勾选“所有值”
+ * @param bool $blank_row   是否可勾选“空值”
+ * @return string   domNode
+ */
 function render_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE,$blank_row = FALSE){
     $options = get_options($valuelist_name,$parent_segment_value ,$all_value,$blank_row);
-    $echo = "";
-    foreach($options as $o){
-        $echo = $echo . '<option value="'.$o['value'].'">'.$o['label'].'</option>';
-    }
-    return $echo;
+    return render_options_by_array($options);
 }
 
+/**
+ * 已知options数组的情况下，生产option项目
+ * @param array $options  来自方法get_options或现成的数组
+ * @return string   domNode
+ */
 function render_options_by_array($options){
     if(is_array($options)){
         $echo = "";
@@ -134,51 +246,75 @@ function render_options_by_array($options){
     }
 }
 
-//输出到view里的radio
-function render_radio($name,$label = null,$valuelist_name,$parent_segment_value = null){
+
+/**
+ * radio控件，结合值集输出
+ * @param string $name
+ * @param null $label   如果为null，默认输出label($name)
+ * @param string $valuelist_name
+ * @param null $parent_segment_value
+ * @return string
+ */
+function render_radio_group($name,$label = null,$valuelist_name,$parent_segment_value = null){
     $options = get_options($valuelist_name,$parent_segment_value );
-    if(is_null($label)){
-        $label = label($name);
-    }
-    $echo = "";
-    $echo = $echo . '<dl class="row dl-horizontal"> <dt><label>'.$label.'</label></dt><dd>';
-    for($i=0;$i<count($options);$i++){
-        if($i>0){
-            $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
-                '"/>'.render_label($options[$i]['value'],false,$options[$i]['label']);
-        }else{
-            $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'" type="radio" value="'.$options[$i]['value'].
-                '" checked/>'.render_label($options[$i]['value'],false,$options[$i]['label']);
+    $label = label($name,$label);
+    //输出开始
+    $echo = _dijit_header($name,$label,false,true);
+    //如果有值则循环选择值，无值则选择第一个
+    $value = _v($name);
+    if($value){
+        for($i=0;$i<count($options);$i++){
+            $checked = '';
+            if($options[$i]['value'] == $value){
+                $checked = 'checked';
+            }
+            $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'"
+            type="radio" value="'.$options[$i]['value'].'" '.$checked.' />'.render_label($options[$i]['value'],false,$options[$i]['label']);
+        }
+    }else{
+
+        for($i=0;$i<count($options);$i++){
+            $checked = '';
+            if($i == 0){
+                $checked = 'checked';
+            }
+            $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$name.'" id="'.$options[$i]['value'].'"
+            type="radio" value="'.$options[$i]['value'].'" '.$checked.' />'.render_label($options[$i]['value'],false,$options[$i]['label']);
         }
     }
-    $echo = $echo .'</dd></dl>';
+    //输出结束
+    $echo = $echo ._dijit_footer($name);
     return $echo;
 }
 
-function render_single_checkbox($name,$value,$label = null,$checked = FALSE,$id = null,$attributes = array()){
-    $echo = '';
-    $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name,false,$label).'</dt>';
-    $echo = $echo .'<dd><input name="'.$name.'" ';
-    if(is_null($id)){
-       $id = $name;
-    }
-    $echo = $echo . 'id="'.$id.'"';
-    $echo = $echo .' data-dojo-type="sckj/form/CheckBox" type="checkbox" value="'.$value.'" ';
+
+/**
+ * 单个复选框
+ * @param string $name
+ * @param int $checked_value    选中后的值，默认为1
+ * @param null $label   标签
+ * @param bool $checked 是否默认被选中
+ * @param array $attributes 其他参数
+ * @return string   domNode
+ */
+function render_single_checkbox($name,$checked_value = 1,$label = null,$checked = FALSE,$attributes = array()){
+    $echo = _dijit_header($name,$label,false);
+    $echo = $echo .'<input name="'.$name.'" data-dojo-type="sckj/form/CheckBox" type="checkbox" value="'.$checked_value.'" ';
     if($checked){
         $echo = $echo . ' checked ';
     }else{
-        if(_v($name) == $value){
+        if(_v($name) == $checked_value){
             $echo = $echo . ' checked ';
         }
     }
-
+    //其他属性依次输出
     foreach($attributes as $key=>$value){
         $echo = $echo. $key.' = '.'"'.$value.'"';
     }
 
     $echo = $echo .' />';
 
-    $echo = $echo .'</dd></dl>';
+    $echo = $echo ._dijit_footer($name);
     return $echo;
 }
 
@@ -210,52 +346,41 @@ function render_options_with_value(){
     return $echo;
 }
 
-function render_radio_with_value(){
-    $args = func_get_args();
-    $echo = '';
-    if(count($args) === 3){
-        $options = get_options($args[1] );
-        if($args[2]){
-            foreach($options as $o){
-                if($o['value'] === $args[2]){
-                    $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
-                        '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
-                }else{
-                    $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
-                        '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
-                }
-            }
-        }else{
-            $echo = $echo . render_radio($args[0],null,$args[1]);
-        }
-    }elseif(count($args) > 3){
-        $options = get_options($args[1],$args[2] );
-        foreach($options as $o){
-            if($o['value'] === $args[3]){
-                $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
-                    '" checked/><label for="'.$o['value'].'">'.$o['label'].'</label>';
-            }else{
-                $echo = $echo. '<input data-dojo-type="sckj/form/RadioButton" name="'.$args[0].'" id="'.$o['value'].'" type="radio" value="'.$o['value'].
-                    '"/><label for="'.$o['value'].'">'.$o['label'].'</label>';
-            }
-        }
-    }elseif(count($args) +  2 == 2){
-        $echo = $echo. '';
-    }
-    return $echo;
-}
-
-//输出文件链接
+/**
+ * 输出文件链接，点击即下载
+ * @param array $file  文件对象，来自数据库
+ * @return string
+ */
 function render_file_link($file){
     return '<a href="'._url('welcome','file_download',array('name'=>$file['client_name'],'path'=>base_url(_config('upload_path')).'/'.$file['file_name'])).'"
     title="'.$file['description'].'">'.$file['client_name'].'</a>';
 }
 
+/**
+ * 表单头，与前端配合实现ajax提交
+ * @param string $controller 控制器
+ * @param string $action    函数
+ * @param string $beforeSubmit  前端js方法名，设置钩子：form提交前运行
+ * @param string $remoteFail    前端js方法名，设置钩子：form提交后，服务端运行失败时运行
+ * @param string $remoteSuccess 前端js方法名，设置钩子：form提交后，服务端运行成功时运行
+ * @param string $remoteNoBack  前端js方法名，设置钩子：form提交后，服务端无返回值时运行
+ * @return string   domNode
+ */
 function render_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail= 'null',$remoteSuccess= 'null',$remoteNoBack= 'null'){
     return  '<form id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'"
     onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
 }
 
+/**
+ * 文件上传form，同render_form_open
+ * @param $controller
+ * @param $action
+ * @param string $beforeSubmit
+ * @param string $remoteFail
+ * @param string $remoteSuccess
+ * @param string $remoteNoBack
+ * @return string
+ */
 function render_file_form_open($controller,$action,$beforeSubmit = 'null',$remoteFail= 'null',$remoteSuccess= 'null',$remoteNoBack= 'null'){
     return  '<form encType="multipart/form-data" id="'.$controller.'_'.$action.'" method="post" action="'._url($controller,$action).'"
     onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
@@ -549,14 +674,12 @@ function render_button_group($buttons = array(),$has_submit = TRUE){
     return $echo;
 }
 
-function render_label($id,$required = FALSE,$label = null){
-    if(is_null($label)){
-        $label = label($id);
-    }
+function render_label($name,$required = FALSE,$label = null){
+    $label = label($name,$label);
     if($required){
-        return '<label for="'.$id.'_'._sess('cm').'_'._sess('mid').'">'.'* '.$label."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'_'._sess('mid').'">'.'* '.$label."</label>";
     }else{
-        return '<label for="'.$id.'_'._sess('cm').'_'._sess('mid').'">'.$label."</label>";
+        return '<label for="'.$name.'_'._sess('cm').'_'._sess('mid').'">'.$label."</label>";
     }
 }
 

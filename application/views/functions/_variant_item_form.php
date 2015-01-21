@@ -1,7 +1,7 @@
 <?= render_form_input('segment_name',true) ?>
 <?= render_form_input('segment_value') ?>
 <?= render_select_with_options('data_type','vl_data_type',true,array('onChange'=>'_changeNowFlagDisabledState()'))?>
-<?= render_single_checkbox('now_flag',1,null,false,null,array('onChange'=>'_changeSegmentValueDisabledState(this)'))?>
+<?= render_single_checkbox('now_flag',1,null,false,array('onChange'=>'_changeSegmentValueDisabledState(this)'))?>
 <script type="text/javascript">
     onWsoLoad(function () {
         _changeNowFlagDisabledState();

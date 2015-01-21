@@ -62,7 +62,7 @@
 
     <dl class="row dl-horizontal"><dt>
             <?php if(!is_order_locked($status)){?>
-                <a href="#" onclick="_orderUploadDialog()"><?= label('upload_file')?></a>
+                <a href="#" onclick="uploadFileDialog('order/upload_file',{id : <?= _v('id')?>})"><?= label('upload_file')?></a>
             <?php }?>
             <?= label('attachment')?></dt>
         <dd>
@@ -87,11 +87,11 @@
 <div id="orderShowLogsGrid"></div>
 <script type="text/javascript">
 
-    require(["dojo/ready","sckj/DataGrid"], function(ready,Grid){
-        ready(function(){
+    require(["sckj/DataGrid"], function(Grid){
+        onWsoLoad(function(){
             var grid = new Grid({
                 asyncCache : false,
-                url : url('order/log_data?id=<?=$id?>'),
+                url : url('order/log_data?id=<?= _v('id')?>'),
                 pageSize : 10,
                 autoWidth : false,
                 autoHeight : true,
@@ -117,32 +117,5 @@
 //            //直接定义class时 IE8不支持，只能事后set
 //            domConstruct.create("div",{innerHTML : content,id: "content_"+d["id"]},node);
 //        });
-    }
-
-    function _orderUploadDialog(){
-        require(["dojox/layout/ContentPane","dojo/io/iframe"],function(ContentPane,iframe){
-            var cp = new ContentPane({
-                href : url("order/upload_file?id=<?= _v('id')?>"),
-                id : "uploadFileContentPane"
-            });
-            cp.startup();
-            dojoConfirm(cp,"文件上传",function(){
-                iframe.send({
-                    form: "upload_file",
-                    method: "POST",
-                    timeOut: 2000,
-                    handleAs: "json",
-                    url : url("order/upload_file")
-                }).then(function(response) {
-                    //成功
-                    handleResponse(response,null,function(){
-                        refresh();
-                    })
-                },function (error) {
-                    //失败
-                    console.info(error);
-                });
-            });
-        });
     }
 </script>
