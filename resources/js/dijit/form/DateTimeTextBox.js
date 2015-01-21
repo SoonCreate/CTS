@@ -100,6 +100,19 @@ define(["dojo/_base/declare",
                 this.timeTextBox.set(attr, value);
             }
             this.inherited(arguments);
+        },
+
+        /*重写验证相关函数*/
+        focus : function(){
+            this.dateTextBox.focus();
+        },
+
+        displayMessage : function (message) {
+
+        },
+
+        getErrorMessage : function () {
+            return "";
         }
     });
 });

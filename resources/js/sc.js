@@ -372,24 +372,30 @@ function _renderSingleError(object,index,invalidMessage,target){
         //第一个报错控件激活
         if(index == 0){
             object.focus();
-            object.displayMessage(object.getErrorMessage());
-        }else{
-            object.displayMessage();
+            //判断函数存在与否
+            //if("displayMessage" in object && "getErrorMessage" in object){
+            //    object.displayMessage(object.getErrorMessage());
+            //}
         }
+        //else{
+        //    object.displayMessage();
+        //}
         object.set("state","Error");
 
         if(target == undefined){
             target = currentWso().domNode;
         }
-        console.info(target);
-        console.info("div#error_"+object.id);
+        //console.info(target);
+        //console.info("div#error_"+object.id);
         var nodes = $("div#error_"+object.id,target);
-        console.info(nodes);
+        //console.info(nodes);
         for(var y=0;y<nodes.length;y++){
             if(invalidMessage){
                 nodes[y].innerHTML = invalidMessage;
             }else{
-                nodes[y].innerHTML = object.getErrorMessage();
+                if("getErrorMessage" in object){
+                    nodes[y].innerHTML = object.getErrorMessage();
+                }
             }
 
         }

@@ -238,7 +238,7 @@ $lang['label_show'] = "查看";
 $lang['label_file'] = "文件";
 $lang['label_meeting_cancel'] = "会议取消";
 $lang['label_cancel_reason'] = "取消原因";
-$lang['label_cancel_remark'] = "补充";
+$lang['label_cancel_remark'] = "取消原因补充";
 $lang['label_notice_actor'] = "提醒参与者";
 
 //会话管理
