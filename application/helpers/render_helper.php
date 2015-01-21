@@ -173,7 +173,7 @@ function _dijit_footer($name){
 function render_link_button($url,$label,$title = '',$class = '',$noRender = 'false'){
     $bt =  '<button data-dojo-type="sckj/form/Button">';
     if($class){
-        $bt = $bt + '<i class="'.$class.' icon-1x"></i>';
+        $bt = $bt . '<i class="'.$class.' icon-1x"></i>';
     }
     $bt =  $bt .$label.'</button>';
     return render_link($url,$bt,$title,null,$noRender);
@@ -234,16 +234,12 @@ function render_options($valuelist_name,$parent_segment_value = null,$all_value 
  * @param array $options  来自方法get_options或现成的数组
  * @return string   domNode
  */
-function render_options_by_array($options){
-    if(is_array($options)){
-        $echo = "";
-        foreach($options as $o){
-            $echo = $echo . '<option value="'.$o['value'].'">'.$o['label'].'</option>';
-        }
-        return $echo;
-    }else{
-        return '';
+function render_options_by_array($options = array()){
+    $echo = "";
+    foreach($options as $o){
+        $echo = $echo . '<option value="'.$o['value'].'">'.$o['label'].'</option>';
     }
+    return $echo;
 }
 
 
@@ -308,41 +304,15 @@ function render_single_checkbox($name,$checked_value = 1,$label = null,$checked 
         }
     }
     //其他属性依次输出
-    foreach($attributes as $key=>$value){
-        $echo = $echo. $key.' = '.'"'.$value.'"';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. $key.' = '.'"'.$value.'"';
+        }
     }
 
     $echo = $echo .' />';
 
     $echo = $echo ._dijit_footer($name);
-    return $echo;
-}
-
-//根据值输出options
-function render_options_with_value(){
-    $args = func_get_args();
-    $value = '';
-    $echo = '';
-    if(count($args) == 2){
-        $options = get_options($args[0]);
-        $value = $args[1];
-    }elseif(count($args) == 3){
-        $options = get_options($args[0],$args[1]);
-        $value = $args[2];
-    }elseif(count($args) > 3){
-        $options = get_options($args[0],$args[1],$args[3]);
-        $value = $args[2];
-    }
-    foreach($options as $o){
-        if($o['value'] ==  $value){
-            $echo = $echo. '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
-        }else{
-            $echo =$echo. '<option value="'.$o['value'].'">'.$o['label'].'</option>';
-        }
-    }
-    if(count($args) +  2 == 2){
-        $echo = $echo.'<option value=""></option>';
-    }
     return $echo;
 }
 
@@ -386,20 +356,73 @@ function render_file_form_open($controller,$action,$beforeSubmit = 'null',$remot
     onsubmit="return formSubmit(this,'.$beforeSubmit.','.$remoteFail.','.$remoteSuccess.','.$remoteNoBack.');">';
 }
 
-function render_form_close(){
-    return '</form>';
-}
-
-//控件综合输出
-function render_form_input($name,$required = FALSE,$attributes = array(),$disabled = FALSE,$remark = ""){
-    return _render_input_by_type($name,$required,$attributes,'text',$disabled,$remark);
-}
-
-function render_form_input_vl($name,$valuelist_name,$required = FALSE,$disabled = FALSE,
-                                  $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array()){
+/**
+ * 表单结尾
+ * @param bool $with_submit_button  默认不附带提交按钮
+ * @param null $label   提交按钮标签
+ * @param string $class 提交按钮样式
+ * @return string   domNode
+ */
+function render_form_close($with_submit_button = false,$label = null,$class = 'success'){
     $echo = '';
-    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';
+    //有参数则输出submit按钮
+    if($with_submit_button){
+        $echo = $echo . render_submit_button($label = null,$class = 'success');
+    }
+    return $echo .'</form>';
+}
+
+/**
+ * 文本框控件，根据类型区分输出input还是password
+ * @param string $name  字段
+ * @param bool $required    是否必输
+ * @param null $label   标签
+ * @param array $attributes 其他参数
+ * @param string $type  输出类型
+ * @param bool $disabled    是否不能修改，即无效
+ * @param string $remark    备注，位于控件后方
+ * @return string   domNode
+ */
+function _render_input_by_type($name,$required = FALSE,$label = null,$attributes = array(),$type = 'text',$disabled = FALSE,$remark = ""){
+    $echo = _dijit_header($name,$label,$required);
+    $echo = $echo .'<input name="'.$name.'"  value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" trim="true" ';
+    if($required){
+        $echo = $echo. ' required ';
+    }
+
+    if($disabled){
+        $echo = $echo. ' disabled ';
+    }
+    //输出参数
+    $echo = $echo . ' data-dojo-props = " ';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. $key.': '.'\''.$value.'\'';
+        }
+    }
+    $echo = $echo . ' " ';
+    $echo = $echo. '/>'.$remark. render_form_error($name).'</dd></dl>';
+    return $echo;
+}
+
+/**
+ * 文本框，同_render_input_by_type
+ * @param $name
+ * @param bool $required
+ * @param bool $disabled
+ * @param null $label
+ * @param array $attributes
+ * @param string $remark
+ * @return string
+ */
+function render_form_input($name,$required = FALSE,$disabled = FALSE,$label = null,$attributes = array(),$remark = ""){
+    return _render_input_by_type($name,$required,$label,$attributes,'text',$disabled,$remark);
+}
+
+function render_form_input_vl($name,$valuelist_name,$required = FALSE,$disabled = FALSE,$label = null,
+                                  $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array()){
+    $echo = _dijit_header($name,$label,$required);
+    $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';
     if($required){
         $echo = $echo. ' required ';
     }
@@ -410,16 +433,16 @@ function render_form_input_vl($name,$valuelist_name,$required = FALSE,$disabled 
 
     $echo = $echo . ' data-dojo-props = " ';
 
-    if(empty($attributes)){
+    if(!is_array($attributes) || (is_array($attributes) && empty($attributes))){
         $attributes = array('vlDialogOptions'=>'{
-        valuelistName : \''.$valuelist_name.'\',pagination:'.boolean_to_string($pagination).',selectRowMultiple:'.boolean_to_string($muliple).',allValue:'.
-            boolean_to_string($all_value).',pageSize:'.$page_size.',valueSegment:\'value\'}');
+        valuelistName : \''.$valuelist_name.'\',pagination:'.boolean_to_string($pagination).',selectRowMultiple:'.
+            boolean_to_string($muliple).',allValue:'.boolean_to_string($all_value).',pageSize:'.$page_size.',valueSegment:\'value\'}');
     }
     foreach($attributes as $key=>$value){
         $echo = $echo. $key.': '.$value;
     }
-    $echo = $echo . ' " ';
-    $echo = $echo. '/>'. render_form_error($name).'</dd></dl>';
+    $echo = $echo . ' " />';
+    $echo = $echo . _dijit_footer($name);
     return $echo;
 }
 
@@ -439,7 +462,7 @@ function render_form_input_data($name,$data_url,$required = FALSE,$disabled = FA
 
     $echo = $echo . ' data-dojo-props = " ';
 
-    if(empty($attributes)){
+    if(!is_array($attributes) || (is_array($attributes) && empty($attributes))){
         $attributes = array('gridDialogOptions'=>'{
         dataUrl : \''.$data_url.'\',pagination:'.boolean_to_string($pagination).',selectRowMultiple:'.boolean_to_string($muliple).',pageSize:'.$page_size.'}');
     }
@@ -451,8 +474,8 @@ function render_form_input_data($name,$data_url,$required = FALSE,$disabled = FA
     return $echo;
 }
 
-function render_form_password($name,$required = FALSE,$attributes = array(),$disabled = FALSE){
-    return _render_input_by_type($name,$required,$attributes,'password',$disabled);
+function render_form_password($name,$required = FALSE,$label = null,$attributes = array(),$disabled = FALSE){
+    return _render_input_by_type($name,$required,$label,$attributes,'password',$disabled);
 }
 
 function render_form_hidden($name,$value = null){
@@ -478,8 +501,10 @@ function render_form_datetextbox($name,$required = FALSE,$attributes = array(),$
         $echo = $echo. ' disabled ';
     }
 
-    foreach($attributes as $key=>$value){
-        $echo = $echo. $key.' = '.'"'.$value.'"';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. $key.' = '.'"'.$value.'"';
+        }
     }
 
     $echo = $echo. '/>';
@@ -513,34 +538,15 @@ function render_form_dateTimeBox($name,$required = FALSE,$attributes = array(),$
         $echo = $echo. ' disabled ';
     }
 
-    foreach($attributes as $key=>$value){
-        $echo = $echo. $key.' = '.'"'.$value.'"';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. $key.' = '.'"'.$value.'"';
+        }
     }
 
     $echo = $echo. '/>';
 
     $echo = $echo.render_form_error($name).'</dd></dl>';
-    return $echo;
-}
-
-function _render_input_by_type($name,$required = FALSE,$attributes = array(),$type = 'text',$disabled = FALSE,$remark = ""){
-    $echo = '';
-    $echo = $echo. '<dl class="row dl-horizontal"><dt>'.render_label($name,$required).'</dt>
-    <dd><input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="'.$type.'" data-dojo-type="sckj/form/TextBox" trim="true" ';
-    if($required){
-        $echo = $echo. ' required ';
-    }
-
-    if($disabled){
-        $echo = $echo. ' disabled ';
-    }
-
-    $echo = $echo . ' data-dojo-props = " ';
-    foreach($attributes as $key=>$value){
-        $echo = $echo. $key.': '.'\''.$value.'\'';
-    }
-    $echo = $echo . ' " ';
-    $echo = $echo. '/>'.$remark. render_form_error($name).'</dd></dl>';
     return $echo;
 }
 
@@ -572,9 +578,12 @@ function render_form_combobox($name,$data,$required = FALSE,$search_attr = null,
         $echo = $echo. ' disabled ';
     }
 
-    foreach($attributes as $key=>$value){
-        $echo = $echo. ' '.$key.' = '.'"'.$value.'"';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. ' '.$key.' = '.'"'.$value.'"';
+        }
     }
+
 
     $echo = $echo. '/>'.render_form_error($name).'</dd></dl>';
     return $echo;
@@ -592,8 +601,10 @@ function render_form_textarea($name,$required = FALSE,$attributes = array(),$dis
         $echo = $echo. ' disabled ';
     }
 
-    foreach($attributes as $key=>$value){
-        $echo = $echo. $key.'= '.'"'.$value.'"';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. $key.'= '.'"'.$value.'"';
+        }
     }
 
     $echo = $echo. ' />'._v($name).'</textarea>'.render_form_error($name).'</dd></dl>';
@@ -613,8 +624,10 @@ function render_select_with_options($name,$valuelist_name,$required = FALSE,$att
         $echo = $echo. ' disabled ';
     }
 
-    foreach($attributes as $key=>$value){
-        $echo = $echo. $key.'= '.'"'.$value.'"';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. $key.'= '.'"'.$value.'"';
+        }
     }
 
     $echo = $echo. ' >';
@@ -636,8 +649,10 @@ function render_select_add_options($name,$options,$required = FALSE,$attributes 
         $echo = $echo. ' disabled ';
     }
 
-    foreach($attributes as $key=>$value){
-        $echo = $echo. $key.'= '.'"'.$value.'"';
+    if(is_array($attributes)){
+        foreach($attributes as $key=>$value){
+            $echo = $echo. $key.'= '.'"'.$value.'"';
+        }
     }
 
     $echo = $echo. ' >';
@@ -650,10 +665,8 @@ function render_form_header($title){
     return '<div class="row paneltitle"><h3>'.label($title).'</h3></div>';
 }
 
-function render_submit_button($label = '',$class = 'success'){
-    if(!$label){
-        $label = label('submit');
-    }
+function render_submit_button($label = null,$class = 'success'){
+    $label = label('submit',$label);
     return '<button type="submit" data-dojo-type="dijit/form/Button" class="'.$class.'" >'.$label.'</button>';
 }
 
@@ -723,4 +736,33 @@ function render_order_button_group($order_id,$order_type,$current_status){
         }
     }
     return join('&nbsp;',$buttons);
+}
+
+//根据值输出options
+function render_options_with_value(){
+    $args = func_get_args();
+    $value = '';
+    $echo = '';
+    $options = array();
+    if(count($args) == 2){
+        $options = get_options($args[0]);
+        $value = $args[1];
+    }elseif(count($args) == 3){
+        $options = get_options($args[0],$args[1]);
+        $value = $args[2];
+    }elseif(count($args) > 3){
+        $options = get_options($args[0],$args[1],$args[3]);
+        $value = $args[2];
+    }
+    foreach($options as $o){
+        if($o['value'] ==  $value){
+            $echo = $echo. '<option value="'.$o['value'].'" selected>'.$o['label'].'</option>';
+        }else{
+            $echo =$echo. '<option value="'.$o['value'].'">'.$o['label'].'</option>';
+        }
+    }
+    if(count($args) +  2 == 2){
+        $echo = $echo.'<option value=""></option>';
+    }
+    return $echo;
 }

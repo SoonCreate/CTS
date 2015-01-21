@@ -1,4 +1,4 @@
-<?= render_form_input('segment',null,array(),true);?>
+<?= render_form_input('segment',false,true);?>
 <?= render_form_hidden('segment');?>
 <?= render_form_input('segment_value',true);?>
 <?= render_form_input('segment_desc',true);?>
