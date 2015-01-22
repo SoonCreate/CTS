@@ -1,7 +1,7 @@
 <table>
     <tr>
         <td colspan="2">
-            <?= render_select_with_options('order_type','vl_order_type',true,array('onChange'=>'_refreshData(this)'))?>
+            <?= render_select_with_options('order_type','vl_order_type',true,null,false,array('onChange'=>'_refreshData(this)'))?>
         </td>
     </tr>
     <tr>

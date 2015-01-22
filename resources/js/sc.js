@@ -119,6 +119,7 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
         beforeSubmit();
     }
     require(["dojo/dom-form","dojo/request"],function(domForm,request){
+        clearCurrentStatus(object);
         var data = domForm.toObject(object);
         //提交前验证
         var pass = true;
@@ -140,7 +141,7 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
                 timeout: 10000,
                 handleAs : "json"
             }).then(function(response){
-                clearCurrentStatus(object);
+                //clearCurrentStatus(object);
                 handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,object);
             },function(e){
                 showMessage({type : 'E',content : "请求出现未知出错，请联系管理员！"});
@@ -393,6 +394,12 @@ function _renderSingleError(object,index,invalidMessage,target){
             if(invalidMessage){
                 nodes[y].innerHTML = invalidMessage;
             }else{
+                //先检验是否必输
+                if("_missingMsg" in object){
+                    //摘自源码
+                    var isValid = object.disabled || object.isValid();
+                    nodes[y].innerHTML = isValid ? "" : object._missingMsg;
+                }
                 if("getErrorMessage" in object){
                     nodes[y].innerHTML = object.getErrorMessage();
                 }

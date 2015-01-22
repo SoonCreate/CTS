@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <?= render_select_with_options('message_type','vl_message_type',true,array('onChange'=>'_refreshNoticeGridData(this)'))?>
+    <?= render_select_with_options('message_type','vl_message_type',true,null,false,array('onChange'=>'_refreshNoticeGridData(this)'))?>
     <div id="noticeList"></div>
 </div>
 
