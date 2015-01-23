@@ -1,5 +1,5 @@
 <?= render_form_input('step',true)?>
-<?= render_select_add_options('function_id',render_options('vl_functions',null,false,true),true,false,array('onChange'=>'_onFunctionSelectChange'))?>
+<?= render_select_with_options('function_id','vl_functions',true,null,false,array('onChange'=>'_onFunctionSelectChange'))?>
 <?= render_select_add_options('variant_id','')?>
 <script type="text/javascript">
     onWsoLoad(function () {

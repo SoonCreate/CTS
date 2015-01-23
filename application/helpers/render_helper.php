@@ -171,7 +171,7 @@ function _dijit_footer($name){
  * @return string
  */
 function render_link_button($url,$label,$title = '',$class = '',$noRender = 'false'){
-    $bt =  '<button data-dojo-type="sckj/form/Button">';
+    $bt =  '<button data-dojo-type="sckj/form/Btuton">';
     if($class){
         $bt = $bt . '<i class="'.$class.' icon-1x"></i>';
     }
@@ -739,18 +739,18 @@ function render_form_textArea($name,$required = FALSE,$disabled = FALSE,$label =
 /**
  * 下拉菜单结合值集控件
  * @param string $name
- * @param $valuelist_name
+ * @param string $valuelist_name   值集
  * @param bool $required
  * @param null $label
  * @param bool $disabled
  * @param array $attributes
- * @param null $parentSegmentValue
- * @param null $allValue
- * @param null $blankValue
+ * @param null $parentSegmentValue  父值集
+ * @param bool $allValue    是否包含所有值项目
+ * @param bool $blankValue  是否包含空值项目
  * @return string
  */
 function render_select_with_options($name,$valuelist_name,$required = FALSE,$label = null,
-                                    $disabled = false,$attributes = array(),$parentSegmentValue = null,$allValue = null,$blankValue = null){
+                                    $disabled = false,$attributes = array(),$parentSegmentValue = null,$allValue = false,$blankValue = false){
     $echo = _dijit_header($name,$label,$required);
     $echo = $echo . '<select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
@@ -775,17 +775,18 @@ function render_select_with_options($name,$valuelist_name,$required = FALSE,$lab
 
 
 /**
- * @param $name
- * @param $options
+ * 已有opitons情况下的下拉列表控件
+ * @param string $name
+ * @param string $options
  * @param bool $required
  * @param bool $disabled
+ * @param null $label
  * @param array $attributes
  * @return string
  */
-function render_select_add_options($name,$options,$required = FALSE,$disabled = false,$attributes = array()){
-    $echo = '';
-    $echo = $echo . '<dl class="row dl-horizontal"> <dt>'.render_label($name,$required).'</dt>';
-    $echo = $echo. '<dd> <select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
+function render_select_add_options($name,$options,$required = FALSE,$disabled = false,$label = null,$attributes = array()){
+    $echo = _dijit_header($name,$label,$required);
+    $echo = $echo . '<select name="'.$name.'" id="'.$name.'" data-dojo-type="sckj/form/Select" value="'._v($name).'"';
     if($required){
         $echo = $echo. ' required ';
     }

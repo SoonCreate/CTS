@@ -13,7 +13,7 @@
     };
 </script>
 <!-- 加载dojo -->
-<script type="text/javascript" src="<?= base_url() ?>/../../dojo/dojo/dojo.js"></script>
+<script type="text/javascript" src="//cdn.sooncreate.com/dojo/1.10.2/dojo/dojo.js"></script>
 
 <script type="text/javascript">
     //    history.forward();
@@ -85,8 +85,8 @@
 <script type="text/javascript" src="<?= base_url() ?>resources/js/sc.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>resources/js/toolkit.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/../../dojo/dojo/resources/dojo.css" />
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/../../dojo/dijit/themes/sc/sc.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.sooncreate.com/dojo/1.10.2/dojo/resources/dojo.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.sooncreate.com/dojo/1.10.2/dijit/themes/sc/sc.css" />
 
 <link rel="stylesheet" href="<?= base_url() ?>resources/css/main.css" />
 <link href="<?php echo base_url(); ?>resources/css/gs.css" rel="stylesheet">
@@ -97,7 +97,7 @@
 <!--[if IE 7]>
 <!--<link rel="stylesheet" href="resources/css/font-awesome-ie7.min.css">-->
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="<?= base_url() ?>/../../dojo/dojox/widget/Toaster/Toaster.css" >
+<link rel="stylesheet" type="text/css" href="//cdn.sooncreate.com/dojo/1.10.2/dojox/widget/Toaster/Toaster.css" >
 <link href="<?= base_url() ?>resources/css/Gridx.css" rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

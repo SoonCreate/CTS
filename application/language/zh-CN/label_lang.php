@@ -37,6 +37,7 @@ $lang['label_owner'] = "所有者";
 $lang['label_segment_name'] = "段名";
 $lang['label_export'] = "Excel导出";
 $lang['label_data'] = "数据";
+$lang['label_select_field'] = "选择字段";
 
 
 $lang['label_notice_read_all'] = "全部标记成已读";
@@ -185,6 +186,8 @@ $lang['label_field_valuelist_id'] = "字段对应的值集";
 $lang['label_log_type_edit'] = "日志类型编辑";
 $lang['label_when_new_value'] = "当新值为";
 $lang['label_when_old_value'] = "当旧值为";
+$lang['label_new_value'] = "新值";
+$lang['label_old_value'] = "旧值";
 $lang['label_notice_rule_create'] = "通知规则创建";
 $lang['label_default_role_id'] = "通知到角色";
 $lang['label_notice_rule_edit'] = "通知规则编辑";
