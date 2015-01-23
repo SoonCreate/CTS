@@ -803,21 +803,39 @@ function render_select_add_options($name,$options,$required = FALSE,$disabled = 
 
     $echo = $echo. ' >';
     $echo = $echo. $options;
-    $echo = $echo.   '</select> '.render_form_error($name).'</dd></dl>';
+    $echo = $echo.   '</select> '._dijit_footer($name);
     return $echo;
 }
 
+/**
+ * 表单头
+ * @param string $title 标题
+ * @return string
+ */
 function render_form_header($title){
     return '<div class="row paneltitle"><h3>'.label($title).'</h3></div>';
 }
 
+/**
+ * 提交按钮控件
+ * @param null $label   标签
+ * @param string $class 样式
+ * @return string
+ */
 function render_submit_button($label = null,$class = 'success'){
     $label = label('submit',$label);
     return '<button type="submit" data-dojo-type="dijit/form/Button" class="'.$class.'" >'.$label.'</button>';
 }
 
-function render_button($name,$onclick = "",$class = 'normal'){
-    return '<button type="button" data-dojo-type="dijit/form/Button" class="'.$class.'" onclick="'.$onclick.'">'.label($name).'</button>';
+/**
+ * 普通按钮控件按
+ * @param string $label_name    字段
+ * @param string $onclick   onclick事件
+ * @param string $class 样式
+ * @return string
+ */
+function render_button($label_name,$onclick = "",$class = 'normal'){
+    return '<button type="button" data-dojo-type="dijit/form/Button" class="'.$class.'" onclick="'.$onclick.'">'.label($label_name).'</button>';
 }
 
 function render_button_group($buttons = array(),$has_submit = TRUE){
