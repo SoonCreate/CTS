@@ -845,13 +845,20 @@ function cevin_http_open($url, $conf = array())
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     }
 
+    //这是你想用PHP取回的URL地址。你也可以在用curl_init()函数初始化时设置这个选项。
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, $arr['return']);
     curl_setopt($ch, CURLOPT_COOKIEJAR, $arr['cookie']);
+    //传递一个包含cookie数据的文件的名字的字符串。这个cookie文件可以是Netscape格式，或是堆存在文件中的HTTP风格的头。
     curl_setopt($ch, CURLOPT_COOKIEFILE, $arr['cookie']);
+    //是否抓取跳转后的页面:设为0，则不会自动301，302跳转
+//    curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
+    curl_setopt($ch, CURLOPT_VERBOSE,1);
+    curl_setopt($ch, CURLOPT_NOPROGRESS,1);
 
     if($arr['post'] != FALSE)
     {
+        //传递一个作为HTTP “POST”操作的所有数据的字符串
         curl_setopt($ch, CURLOPT_POST, TRUE);
         if(is_array($arr['post']))
         {
@@ -860,13 +867,15 @@ function cevin_http_open($url, $conf = array())
             $post = $arr['post'];
         }
 //        log_message('error',$post);
+        //传递一个作为HTTP “POST”操作的所有数据的字符串
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     }
-
+//    curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');//解释gzip
+//    curl_setopt($ch, CURLOPT_NOBODY, 0);
     $result = curl_exec($ch);
-//    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-//    log_message('error',$statusCode);
-//    log_message('error',$result);
+//    $statusCode = curl_getinfo($ch);
+//    print_r($statusCode);
+//    if (curl_errno($ch)) {echo 'Errno'.curl_error($ch);}
     curl_close($ch);
 
     return $result;

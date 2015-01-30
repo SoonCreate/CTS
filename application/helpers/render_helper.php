@@ -67,7 +67,7 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
 /**
  * 生成用于前端使用的超链接，js的goto方法
  *
- * @param string|array $url  url字符串或者数组
+ * @param mixed $url  url字符串或者数组
  * @param string $label    显示的标签
  * @param string $title 对应a标签的title，注释
  * @param string $class 定义a标签的style
@@ -75,7 +75,7 @@ function render_by_layout($layout = NULL,$view = NULL,$data = NULL){
  * @return string
  */
 function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
-    $g = parse_ciUrl($url);
+    $g = _parse_ciUrl($url);
     if(isset($g['blank_flag']) && $g['blank_flag']){
         return '<a href="'.$g['url'].'" title="'.$title.'" class="'.$class.'" target="_blank">'.$label.'</a>';
     }else{
@@ -86,10 +86,10 @@ function render_link($url,$label,$title = '',$class = '',$noRender = 'false'){
 
 /**
  * 解析url
- * @param string|array $url  url字符串或者数组
+ * @param mixed $url  url字符串或者数组
  * @return mixed    哈希数组返回：url字符串和模块id，模块id用于前端模块选择
  */
-function parse_ciUrl($url){
+function _parse_ciUrl($url){
     //默认当前模块
     $module_id = _sess('mid');
     $link = '';
@@ -154,7 +154,7 @@ function _dijit_header($name,$label = null,$required = false,$auto_label_tag = t
 
 /**
  * 控件结尾，自动带上报错dom
- * @param $name
+ * @param string $name
  * @return string
  */
 function _dijit_footer($name){
@@ -171,7 +171,7 @@ function _dijit_footer($name){
  * @return string
  */
 function render_link_button($url,$label,$title = '',$class = '',$noRender = 'false'){
-    $bt =  '<button data-dojo-type="sckj/form/Btuton">';
+    $bt =  '<button data-dojo-type="sckj/form/Button">';
     if($class){
         $bt = $bt . '<i class="'.$class.' icon-1x"></i>';
     }
@@ -838,6 +838,12 @@ function render_button($label_name,$onclick = "",$class = 'normal'){
     return '<button type="button" data-dojo-type="dijit/form/Button" class="'.$class.'" onclick="'.$onclick.'">'.label($label_name).'</button>';
 }
 
+/**
+ * 按钮组，默认带提交按钮
+ * @param array $buttons    按钮组
+ * @param bool $has_submit  是否包含提交按钮
+ * @return string
+ */
 function render_button_group($buttons = array(),$has_submit = TRUE){
     $echo = '';
     $echo = $echo .'<div class="fixbottom">';
@@ -851,6 +857,13 @@ function render_button_group($buttons = array(),$has_submit = TRUE){
     return $echo;
 }
 
+/**
+ * label生成
+ * @param string $name  字段
+ * @param bool $required    是否必输，自动生成前部的 * 号
+ * @param null $label   默认以$name为标签，可替换成$label
+ * @return string
+ */
 function render_label($name,$required = FALSE,$label = null){
     $label = label($name,$label);
     if($required){
@@ -860,7 +873,11 @@ function render_label($name,$required = FALSE,$label = null){
     }
 }
 
-//输出当前页地址
+/**
+ * 当前页路径
+ * @param null $current_page    当前页标签
+ * @return string
+ */
 function render_path($current_page = null){
     global $CI;
     $CI->load->model('module_line_model');
@@ -873,7 +890,13 @@ function render_path($current_page = null){
     }
 }
 
-//输出单据功能点按钮
+/**
+ * 单据功能点按钮，位于单据顶部，通过后台配置实现
+ * @param int $order_id   唯一性标识
+ * @param string $order_type    单据类型
+ * @param string $current_status    当前状态
+ * @return string
+ */
 function render_order_button_group($order_id,$order_type,$current_status){
     global $CI;
     $CI->load->model('status_function_model');
@@ -902,7 +925,11 @@ function render_order_button_group($order_id,$order_type,$current_status){
     return join('&nbsp;',$buttons);
 }
 
-//根据值输出options
+
+/**
+ * 通过参数自动判断，并输出options
+ * @return string
+ */
 function render_options_with_value(){
     $args = func_get_args();
     $value = '';
