@@ -1,5 +1,42 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * Sooncreate AIP
+ *
+ * 速创科技AIP开源集成平台
+ *
+ * @package	Sooncreate
+ * @author		Sooncreate Studio
+ * @copyright	Copyright (c) 2014.
+ * @license
+ * @link		http://www.sooncreate.com
+ * @since		Version 1.0
+ * @filesource
+ */
 
+// ------------------------------------------------------------------------
+
+/**
+ * System Initialization File
+ *
+ * 工具库
+ *
+ * @package	Sooncreate
+ * @category	helper
+ * @author		Sooncreate Studio
+ * @link
+ */
+
+// ------------------------------------------------------------------------
+
+$CI =&get_instance();
+
+/**
+ * url生成函数
+ * @param string $controller 控制器
+ * @param string $action    方法
+ * @param null $params  参数
+ * @return mixed
+ */
 function _url($controller,$action,$params = null){
     $paramstr = '';
     if(!is_null($params)){
@@ -19,7 +56,11 @@ function _url($controller,$action,$params = null){
 
 }
 
-//将结果集装换成JSON
+/**
+ * 从结果集中获取第一行
+ * @param object $rs    数据库查询返回的结果集
+ * @return null
+ */
 function first_row($rs){
     $row = $rs->result_array();
     if(count($row) > 0){
@@ -29,18 +70,27 @@ function first_row($rs){
     }
 }
 
-
-//设置时间戳
+/**
+ * 数据库更新时自动附加时间戳和最后更新者
+ * @param array $data   数据
+ * @return mixed
+ */
 function set_last_update($data){
     $data['last_update_date'] = time();
     if(_sess('uid')){
         $data['last_updated_by'] = _sess('uid');
     }else{
+        //默认-1为系统自动创建
         $data['last_updated_by'] =  -1;
     }
     return $data;
 }
 
+/**
+ * 数据库插入数据时自动附加时间戳和创建者
+ * @param array $data   数据
+ * @return mixed
+ */
 function set_creation_date($data){
     $data['last_update_date'] = time();
     $data['creation_date'] = time();;
@@ -48,13 +98,20 @@ function set_creation_date($data){
         $data['last_updated_by'] = _sess('uid');
         $data['created_by'] = _sess('uid');
     }else{
+        //默认-1为系统自动创建
         $data['last_updated_by'] =  -1;
         $data['created_by'] =  -1;
     }
     return $data;
 }
 
-//姓名或公司名
+/**
+ * 返回公司名或者姓名全称
+ * @param int $id   用户id
+ * @param bool $only_me 如果为真，只显示自己，其他人都为"对方"
+ * @param bool $render_me   显示自己名字时，如果为真，则只显示"我"
+ * @return mixed|null|string
+ */
 function full_name($id,$only_me = FALSE,$render_me = TRUE){
     if($id == -1){
         return label('administrator');
@@ -91,13 +148,24 @@ function full_name($id,$only_me = FALSE,$render_me = TRUE){
 
 }
 
-//获取session值
+/**
+ * 获取session值
+ * @param string $key   session字段
+ * @return mixed
+ */
 function _sess($key){
     global $CI;
+    //如果session没有在autoload里面，则需要加载
 //    $CI->load->library('session');
     return $CI->session->userdata($key);
 }
-//设置session
+
+
+/**
+ * 设置session
+ * @param string $key   session字段
+ * @param null $value   具体值
+ */
 function set_sess($key,$value = NULL){
     global $CI;
 //    $CI->load->library('session');
@@ -109,17 +177,29 @@ function set_sess($key,$value = NULL){
     $CI->session->set_userdata($newdata);
 }
 
+/**
+ * 消除某一个session
+ * @param string $key   session字段
+ */
 function unset_sess($key){
     global $CI;
     $CI->session->unset_userdata($key);
 }
 
+/**
+ *消除所有session
+ */
 function clear_all_sess(){
     global $CI;
     $CI->session->sess_destroy();
 }
 
-//默认行
+/**
+ * 查找默认行：针对某一值集的默认选择
+ * @param string $name  值集名称
+ * @param string $parent_segment_value  父值集项目
+ * @return array
+ */
 function default_line($name,$parent_segment_value){
     $valuelist_name = 'default_'.$name;
     $options = get_options($valuelist_name,$parent_segment_value);
@@ -130,7 +210,12 @@ function default_line($name,$parent_segment_value){
     }
 }
 
-//默认行
+/**
+ * 默认值：针对某一值集的默认选择
+ * @param string $name  值集名称
+ * @param string $parent_segment_value  父值集项目
+ * @return null
+ */
 function default_value($name,$parent_segment_value){
     $valuelist_name = 'default_'.$name;
     $options = get_options($valuelist_name,$parent_segment_value);
@@ -141,7 +226,12 @@ function default_value($name,$parent_segment_value){
     }
 }
 
-//获取值集对应的值
+/**
+ * 获取值集标签对应的值
+ * @param string $valuelist_name    值集名称
+ * @param string $label 标签
+ * @return null
+ */
 function get_value($valuelist_name,$label){
     $options = get_options($valuelist_name);
     $value = null;
@@ -156,6 +246,13 @@ function get_value($valuelist_name,$label){
     return $value;
 }
 
+/**
+ * 获取值集值对应的标签
+ * @param string $valuelist_name    值集名称
+ * @param string $value 值
+ * @param null $parent_segment_value    父值集项目
+ * @return mixed|null|string
+ */
 function get_label($valuelist_name,$value,$parent_segment_value = null){
     if($value == _config('all_values')){
         $label = label('all');
@@ -175,7 +272,14 @@ function get_label($valuelist_name,$value,$parent_segment_value = null){
     return $label;
 }
 
-//获取值列表
+/**
+ * 获取值列表
+ * @param string    $valuelist_name 值集名称
+ * @param null $parent_segment_value    父值集项目
+ * @param bool $all_value   是否包含所有值
+ * @param bool $blank_row   是否包含空值
+ * @return array
+ */
 function get_options($valuelist_name,$parent_segment_value = null,$all_value = FALSE,$blank_row = FALSE){
     global $CI;
     $CI->load->model('valuelist_model');
@@ -211,6 +315,11 @@ function get_options($valuelist_name,$parent_segment_value = null,$all_value = F
     return $rt;
 }
 
+/**
+ * 获取系统配置（非ci配置），系统级别配置
+ * @param string $config_name   配置名称
+ * @return array|bool|int|string
+ */
 function _config($config_name){
     global $CI;
     $CI->load->model('config_model');
@@ -240,6 +349,12 @@ function _config($config_name){
     return $value;
 }
 
+/**
+ * 获取用户配置，用户级别配置，如果无修改则返回系统级别配置
+ * @param string $config_name   配置名称
+ * @param null $user_id 用户id，默认为当前用户id
+ * @return array|bool|int|string
+ */
 function _user_config($config_name,$user_id = null){
     global $CI;
     $CI->load->model('user_config_model');
@@ -269,17 +384,12 @@ function _user_config($config_name,$user_id = null){
     return $value;
 }
 
-//判断结果集是否大于0条数据
-function is_exists($rs){
-    if(count($rs->result_array()) > 0){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-//如果为0则不输出
-function format_zero_to_space($value){
+/**
+ * 输出值，如果为0则不输出
+ * @param string|int $value 值
+ * @return string
+ */
+function zero_to_space($value){
     if($value == 0 || $value == '0'){
         return '';
     }else{
@@ -288,7 +398,7 @@ function format_zero_to_space($value){
 }
 
 function string_to_boolean($s){
-    if(strcasecmp($s,'TRUE') == 0){
+    if(is_bool($s) && strcasecmp($s,'TRUE') == 0){
         return TRUE;
     }else{
         return FALSE;
@@ -387,7 +497,7 @@ function check_function_auth(){
         return true;
     }else{
         $args = func_get_args();
-        $CI =  &get_instance();
+        global $CI;
         $CI->load->model('auth_model');
         $am = new Auth_model();
         if(count($args) + 2 == 2){
@@ -406,7 +516,7 @@ function check_auth($auth_object_name,$auth_items,$user_id = null){
     if(_sess('uid') == -1){
         return true;
     }else{
-        $CI =  &get_instance();
+        global $CI;
         $CI->load->model('auth_model');
         $am = new Auth_model();
         return $am->check_auth($auth_object_name,$auth_items,$user_id);

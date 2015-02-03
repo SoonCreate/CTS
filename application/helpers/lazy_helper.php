@@ -1,22 +1,58 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * Sooncreate AIP
+ *
+ * 速创科技AIP开源集成平台
+ *
+ * @package	Sooncreate
+ * @author		Sooncreate Studio
+ * @copyright	Copyright (c) 2014.
+ * @license
+ * @link		http://www.sooncreate.com
+ * @since		Version 1.0
+ * @filesource
+ */
 
+// ------------------------------------------------------------------------
+
+/**
+ * System Initialization File
+ *
+ * 懒人函数库，草稿来源互联网，加入了速创调整形成正式版
+ *
+ * @package	Sooncreate
+ * @category	helper
+ * @author		Sooncreate Studio
+ * @link
+ */
+
+// ------------------------------------------------------------------------
+
+/**
+ *	常量：项目根目录
+ */
 define('ROOT', dirname(FCPATH).'/');
 @date_default_timezone_set('Asia/Shanghai'); 
 
-// lazy core common function
+//获取全局ci变量
 $CI =&get_instance();
 
-// 迅捷函数
-// =======================
-// 单字母懒人函数
-
+/**
+ * 替代ci的input->get_post方法
+ * @param string $name 字段名
+ * @return mixed
+ */
 function v( $name )
 {
 	global $CI;
 	return $CI->input->get_post( $name );
 }
 
-// for the textarea contaings rich text
+/**
+ * 针对textArea提交的内容进行过滤，避免xss攻击
+ * @param string $name	字段名
+ * @return mixed
+ */
 function x( $name )
 {
 	$name = strip_tags( $name , '<a><img><u><b><strong><i><br/><br><p>' );
@@ -24,9 +60,11 @@ function x( $name )
 	return $CI->security->xss_clean( $name );	
 }
 
-// no tag = clear all tag
-// and change \r\n into br/
-// for the textarea only contains text
+/**
+ * 去除所有的html标签
+ * @param $name
+ * @return mixed|string
+ */
 function n( $name )
 {
 	$name = strip_tags( $name );
@@ -34,14 +72,24 @@ function n( $name )
 	return $name; 
 }
 
+/**
+ * 针对textArea提交的内容进行过滤，替换换行符
+ * @param string $name 字段名
+ * @return mixed|string
+ */
 function r( $name )
 {
 	$name = strip_tags( $name , '<a><img><li><ol><ul><em><strong>' );
 	$name = str_replace( "\n" , "<br/>" , $name );
 	return $name; 
 }
-// only allow a string; max length is 255 ; clear all \r\n
-// for the noraml line text
+
+
+/**
+ * 去除所有html标签，用空格替换换行符
+ * @param string $name	字段名
+ * @return mixed|string
+ */
 function z( $name )
 {
 	$name = strip_tags( $name );
@@ -49,38 +97,65 @@ function z( $name )
 	return $name; 
 }
 
+/**
+ * 仅去除所有html标签
+ * @param string $name	字段名
+ * @return string
+ */
 function t( $name )
 {
 	$name = strip_tags( $name );
 	return $name;
 }
 
-//数据库转意
+/**
+ * 数据库转意
+ * @param string $name 字段名
+ * @return mixed
+ */
 function s( $name )
 {
 	global $CI;
 	return $CI->db->escape( $name );
 }
 
-function u( $name )
+/**
+ * 替换urlecode方法
+ * @param string $url	被解析的url
+ * @return string
+ */
+function u( $url )
 {
-	return urlencode( $name );
+	return urlencode( $url );
 }
 
+/**
+ * 获取ci系统配置
+ * @param string $name	配置名
+ * @return mixed
+ */
 function c( $name )
 {
 	global $CI;
 	return $CI->config->item( $name );
 }
 
+/**
+ * 输出返回链接
+ * @param string $name	链接标签
+ * @return string
+ */
 function b( $name )
 {
 	return '<a href="javascript:history.back(1)">' . $name . '</a>';
 }
 
-
-//
-
+/**
+ * 获取数据库数据
+ * @param null $sql	sql字符串
+ * @param null $key	单个字段返回
+ * @return array
+ */
 function lazy_get_data( $sql = NULL , $key = NULL )
 {
 	global $CI;
@@ -113,6 +188,11 @@ function lazy_get_data( $sql = NULL , $key = NULL )
 	return $data;
 }
 
+/**
+ * 获取单行数据
+ * @param null $sql	sql字符串
+ * @return mixed
+ */
 function lazy_get_line( $sql = NULL )
 {
 	$data = lazy_get_data( $sql );
@@ -122,11 +202,23 @@ function lazy_get_line( $sql = NULL )
 	}
 }
 
+/**
+ * 返回第一个字段的值
+ * @param null $sql
+ * @return mixed
+ */
 function lazy_get_var( $sql = NULL )
 {
 	$data = lazy_get_line( $sql );
 	return $data[ @reset(@array_keys( $data )) ];
 }
+
+
+/**
+ * 返回第一个字段的值数组 data[key] => key
+ * @param null $sql
+ * @return array
+ */
 function lazy_get_vars( $sql = NULL )
 {
 	$data = lazy_get_data( $sql );
@@ -144,14 +236,24 @@ function lazy_get_vars( $sql = NULL )
 	}
 	return $vars;
 }
+
+/**
+ * 直接运行sql返回结果集
+ * @param $sql
+ * @return mixed
+ */
 function lazy_run_sql( $sql )
 {
 	global $CI;
 	if( !$CI->db ) $CI->load->database();
 	
-	return $CI->db->simple_query( $sql );
+	return $CI->db->query( $sql );
 }
 
+/**
+ * 获取刚插入id号
+ * @return mixed
+ */
 function lazy_last_id()
 {
 	global $CI;
@@ -162,10 +264,16 @@ function lazy_last_id()
 
 
 
-
-// 控制器相关迅捷函数
+/*
+ * 控制器相关迅捷函数
+ *
+ */
 // =================================
 
+/**
+ * 根据url获取action
+ * @return string
+ */
 function method()
 {
 	global $CI;
@@ -175,6 +283,10 @@ function method()
 		return 'index';
 }
 
+/**
+ * 根据url获取controller
+ * @return string
+ */
 function module()
 {
 	global $CI;
@@ -184,295 +296,27 @@ function module()
 		return 'index';
 }
 
-// 模板相关迅捷函数
-// =================================
-
-
-function layout( $data = '' , $layout = 'default' , $base = 'index' )
+/**
+ * 内容截断，多余的内容以'...'结束
+ * @param string $str	内容字符串
+ * @param int $finish	结束位置
+ * @return string
+ */
+function word_substr($str,$finish)
 {
-	echo  get_layout( $data , $layout , $base );
-}
-function get_layout( $data = '' , $layout = 'default' , $base = 'index' )
-{
-	global $CI;
-
-	if( !isset( $data['ci_module'] ) )
-		$data['ci_module'] = module();
-	
-	if( !isset( $data['ci_method'] ) )
-		$data['ci_method'] = method();
-	$data['ci_layout'] = $layout;
-
-	return $CI->load->view( 'layout/' . $layout .'/' . basename( $base ) . '.tpl.html' , $data ,true );
-
-}
-
-
-function microtime_float()
-{
-   list($usec, $sec) = explode(" ", microtime());
-   return ((float)$usec + (float)$sec);
-}
-function get_style()
-{
-	global $CI;
-	$CI->load->library('session');
-	$style = $CI->session->userdata('u2_style');
-	if(!$style)
+	if(mb_strlen($str , 'utf-8') < $finish)
 	{
-		$style = 'default';
+		return $str;
 	}
-	return $style;
-}
-
-function format_uid($uid = NULL)
-{
-	if($uid == NULL)
-	{
-		global $CI;
-		$CI->load->library('session');
-		$uid = $CI->session->userdata('id');
-	}
-	else
-	{
-		$uid = intval($uid);
-	}
-	return $uid;
-}
-
-function myhash( $id = NULL )
-{
-	$id = format_uid($id);
-
-	$f1 = $id % 10000 ; 
-	$f2 = (int)($id / 10000) ;
-	
-	$f3 = $f1 % 100;
-	$f4 = (int)($f1 / 100);
-
-	return $f2 . '/' . $f4 . '/' . $f3 . '/';
-}
-
-function myhashstr( $str )
-{
-	return $str{0} . $str{1} . '/' . $str{2} . $str{3} . '/' ;
-}
-
-//内容截断
-function word_substr($srt,$finish)
-{
-	if(mb_strlen($srt , 'utf-8') < $finish)
-	{
-		return $srt;
-	}
-	return mb_substr($srt,0,$finish,'utf-8').'...';
-}
-
-
-function get_data_by_array( $table , $array , $fkey , $id_field = 'id' , $where = '' )
-{
-	$ids = array();
-	foreach( $array as $item )
-	{
-		$ids[] = $item[$id_field];
-	}
-	
-	if( count( $ids ) > 0 )
-	{
-		$sql = "SELECT * FROM `" . $table .   "` WHERE `" . $fkey . "` IN ( " . join( ' , ' , $ids ) . " ) $where";
-		$data = lazy_get_data( $sql );
-		
-		if( is_array( $data ) )
-		{
-			$ret = array();
-			foreach( $data as $item )
-			{
-				$ret[$item[$fkey]] = $item;
-			}
-			
-			return $ret;
-		}
-		else
-		{
-			return false;
-		}
-		
-	}	
-	
-	
+	return mb_substr($str,0,$finish,'utf-8').'...';
 }
 
 /**
-function check_admin()
-{
-	if( !is_admin() )
-	{
-		info_page( _text('system_limit_rights'), '/user/login', _text('system_admin_login') );
-	}
-}
-**/
-function newpassword()
-{
-	$password = array_merge( range( 'a' , 'z' ) , range( '0' , '9' ));
-	$password = array_rand( $password , 20 );
-	return $password = md5( rand( 1 , 10000 ). join( '' ,  $password ).format_uid() );
-}
-
-function get_count( $save = true )
-{
-	if($save)
-	{
-		save_count();
-	}
-	if( isset($GLOBALS['__sql_count']) )
-	{
-		return $GLOBALS['__sql_count'];
-	}
-	return 0;
-}
-function save_count()
-{
-	$sql = "select found_rows()";
-	$GLOBALS['__sql_count'] = lazy_get_var( $sql );
-}
-
-function get_pager(  $page , $page_all , $url_base ,$request_url = NULL )
-{
-	$middle = NULL;
-	if( $page_all < 1 ) return false;
-		
-
-	if( $page != 1 ) $first = '&nbsp;<a href="' . $url_base . '/1/' . $request_url . '" title="首页"><img src="/static/images/arrow_fat_left.gif"></a>&nbsp;';
-	else $first = '&nbsp;<a title="首页"><img src="/static/images/arrow_fat_left.gif"></a>&nbsp;';
-
-	if( $page != $page_all ) $last = '<a href="' . $url_base . '/'.$page_all .'/' .  $request_url . '" title="末页"><img src="/static/images/arrow_fat_right.gif"></a>&nbsp;';
-	else $last = '&nbsp;<a title="末页"><img src="/static/images/arrow_fat_right.gif"></a>&nbsp;';
-
-	if( $page > 1 ) $pre = '&nbsp;<a href="' . $url_base . '/' . ($page-1) . '/' .$request_url . '" title="上一页"><img src="/static/images/arrow_dash_left.gif"></a>&nbsp;';
-	else $pre = '&nbsp;<a title="上一页"><img src="/static/images/arrow_dash_left.gif"></a>&nbsp;';
-
-	if( $page < $page_all ) $next = '<a href="' . $url_base . '/' . ($page+1) . '/'.$request_url . '"  title="下一页"><img src="/static/images/arrow_dash_right.gif"></a>&nbsp;';
-	else $next = '&nbsp;<a title="下一页"><img src="/static/images/arrow_dash_right.gif"></a>&nbsp;';
-
-	$show = 3; // 前后各显示?页
-	$long = $show * 2 + 1;
-	$begin = $page - $show;
-	if( $begin < 1 ) $begin = 1;
-
-	//echo "first begin $begin ";
-
-	$end = $page + $show;
-
-	if( ($t = $end - $begin) < $long )
-	{
-		$end = $begin+$long-1;
-	}
-
-	//echo " first end $end ";
-
-	if( $end > $page_all )
-	{
-		//echo " end > $page_all ";
-		
-		// if( ($t = $end - $begin) < $long ) $begin = $begin - $t;
-		$moved = $end - $page_all;
-
-		$begin = $begin - $moved;
-		
-		$end = $page_all;
-		
-		//echo " the modified end $end , beging $begin";
-		
-		if( $begin < 1 ) $begin = 1;
-	}
-
-	//echo " $begin - $end ";
-
-
-
-	for( $i = $begin ; $i <= $end ; $i++ )
-	{
-		if( $i == $page  )
-			$middle .= '<a class="current">&nbsp;' . $i . '&nbsp;</a>';
-		else
-			$middle .= '<a href="' . $url_base . '/' . $i .'/' .$request_url . '">&nbsp;' . $i . '&nbsp;</a>';
-	}
-
-	if( $page_all > $long )
-		$middle .= '<a>&nbsp;...&nbsp;</a>';
-
-	return '<div class="pager" >' . $first .  $pre .  $middle . $next . $last . '</div>';
-
-}
-function get_ajax_pager(  $page , $page_all , $url_base = NULL ,$extra = NULL , $jsfunc = 'show_ajax_pager' ,$request_url = NULL )
-{
-	
-	$middle = NULL;
-	if( $page_all < 1 ) return false;
-		
-
-	if( $page != 1 ) $first = '&nbsp;<a href="JavaScript:void(0)" onclick=\''.$jsfunc.'("' . $url_base . '/1/' . $request_url . ' " ," '.$extra.'" )\' title="首页"><img src="/static/images/arrow_fat_left.gif"></a>&nbsp;';
-	else $first = '&nbsp;<a title="首页"><img src="/static/images/arrow_fat_left.gif"></a>&nbsp;';
-
-	if( $page != $page_all ) $last = '<a href="JavaScript:void(0)" onclick=\''.$jsfunc.'("' . $url_base . '/'.$page_all .'/' .  $request_url .'","'.$extra.'" )\' title="末页"><img src="/static/images/arrow_fat_right.gif"></a>&nbsp;';
-	else $last = '&nbsp;<a title="末页"><img src="/static/images/arrow_fat_right.gif"></a>&nbsp;';
-
-	if( $page > 1 ) $pre = '&nbsp;<a href="JavaScript:void(0)" onclick=\''.$jsfunc.'("' . $url_base . '/' . ($page-1) . '/' .$request_url . '","'.$extra.'" )\' title="上一页"><img src="/static/images/arrow_dash_left.gif"></a>&nbsp;';
-	else $pre = '&nbsp;<a title="上一页"><img src="/static/images/arrow_dash_left.gif"></a>&nbsp;';
-
-	if( $page < $page_all ) $next = '<a href="JavaScript:void(0)" onclick=\''.$jsfunc.'("' . $url_base . '/' . ($page+1) . '/'.$request_url .'","'.$extra.'" )\'  title="下一页"><img src="/static/images/arrow_dash_right.gif"></a>&nbsp;';
-	else $next = '&nbsp;<a title="下一页"><img src="/static/images/arrow_dash_right.gif"></a>&nbsp;';
-	$show = 4; // 前后各显示?页
-	$long = $show * 2 + 1;
-	$begin = $page - $show;
-	if( $begin < 1 ) $begin = 1;
-
-	//echo "first begin $begin ";
-
-	$end = $page + $show;
-
-	if( ($t = $end - $begin) < $long )
-	{
-		$end = $begin+$long-1;
-	}
-
-	//echo " first end $end ";
-
-	if( $end > $page_all )
-	{
-		//echo " end > $page_all ";
-		
-		// if( ($t = $end - $begin) < $long ) $begin = $begin - $t;
-		$moved = $end - $page_all;
-
-		$begin = $begin - $moved;
-		
-		$end = $page_all;
-		
-		//echo " the modified end $end , beging $begin";
-		
-		if( $begin < 1 ) $begin = 1;
-	}
-
-	//echo " $begin - $end ";
-
-
-
-	for( $i = $begin ; $i <= $end ; $i++ )
-	{
-		if( $i == $page  )
-			$middle .= '<a class="current">&nbsp;' . $i . '&nbsp;</a>';
-		else
-			$middle .= '<a href="JavaScript:void(0)" onclick=\''.$jsfunc.'("' . $url_base . '/' . $i .'/' .$request_url .'","'.$extra.'")\' >&nbsp;' . $i . '&nbsp;</a>';
-	}
-
-	if( $page_all > $long )
-		$middle .= '<a>&nbsp;...&nbsp;</a>';
-
-	return '<div class="pager" >' . $first .  $pre .  $middle . $next . $last . '</div>';
-
-}
-
+ * 中文注释时间
+ * @param int $t	时间戳
+ * @param string $o	替换用的数组，见程序中的$obj
+ * @return mixed|string
+ */
 function related_time( $t, $o='' )
 {	
 	$obj = array(
@@ -522,32 +366,11 @@ function related_time( $t, $o='' )
 	return $ret;
 }
 
-function elog( $error )
-{
-	file_put_contents( 'elog.txt' , $error ."\r\n" , FILE_APPEND );
-}
-function img1( $str )
-{
-	return trim( reset( explode( "\n" , $str ) ) );
-}
-function img2( $str )
-{
-	$m = explode( "\n" , $str );
-	array_shift($m);
-	return $m;
-}
-function jsnl2br( $str )
-{
-	$str = str_replace( "\r" , "" , $str );
-	$str = str_replace( "\n" , "' + \"\\r\\n\" +'" , $str );
-	return $str;
-}
-function add_slashes_on_quote( $str )
-{
-	return str_replace( "'" , "\\'" , $str );
-}
-
-function deldir( $dir ) 
+/**
+ * 清除目录文件
+ * @param $dir
+ */
+function deldir( $dir )
 { 
 	if ( @rmdir( $dir )==false && is_dir($dir) ) 
 	{ 
@@ -570,7 +393,13 @@ function deldir( $dir )
 	 }
 }
 
-//重新设置大小到当前目录，文件名为xxx_thumb.xx
+/**
+ * 重新设置大小到当前目录，文件名为xxx_thumb.xx
+ * @param string $source_image 文件路径
+ * @param int $w	新图片宽度
+ * @param int $h	新图片高度
+ * @return bool
+ */
 function resize_photo($source_image,$w,$h){
 	global $CI;
 	$config['image_library'] = 'gd2';
@@ -590,6 +419,11 @@ function resize_photo($source_image,$w,$h){
 	}
 }
 
+/**
+ * 获取缩略图名称
+ * @param string $filename	文件名
+ * @return string	缩略图文件名
+ */
 function get_thumb_name($filename){
 	$idx = strrpos($filename,'.');
 	$tail = substr($filename,$idx);
@@ -598,7 +432,13 @@ function get_thumb_name($filename){
 	return $filename;
 }
 
-//form表单字段输出
+
+/**
+ * 获取变量值
+ * @param string $field_name 字段名称
+ * @param string $value	默认值，当变量没有被赋值时，返回默认值
+ * @return mixed|string
+ */
 function _v($field_name,$value = ''){
     if(v($field_name)){
         return v($field_name);
