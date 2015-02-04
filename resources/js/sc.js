@@ -1,4 +1,21 @@
-//前端触发后端链接
+/**
+ * @fileOverview 核心js工具包
+ * @author Sooncreate Studio
+ * @version 1.0
+ */
+//-----------------------------------------------
+
+
+/**
+ * @description 前端工作区的页面跳转函数
+ * @since version 1.0
+ *
+ * @param {string} url  url链接
+ * @param {string} target   模块id
+ * @param {boolean} noRender   如果为真则不跳转，提示框确认后执行
+ * @param {boolean} noRecord   如果为真则不记录返回历史
+ * @param {string} message   替换提示框的内容
+ */
 function goto(url,target,noRender,noRecord,message){
     var wso = $dijit.byId('module_'+target);
     if(wso == undefined){
@@ -30,10 +47,20 @@ function goto(url,target,noRender,noRecord,message){
 
 }
 
+/**
+ * @description 跳转到功能选择菜单
+ * @since version 1.0
+ */
 function menu(){
     goto(url('welcome/my_functions?module_id='+$env.mid));
 }
 
+/**
+ * @description 记录url到返回列表
+ * @since version 1.0
+ *
+ * @param {string} url  url链接
+ */
 function recordWso(url){
     if($env.history == undefined){
         $env.history = new Array();
@@ -46,6 +73,13 @@ function recordWso(url){
     //console.info($env.history);
 }
 
+/**
+ * @description 正则表达式判断是否为url
+ * @since version 1.0
+ *
+ * @param {string} str_url  url链接
+ * @return {boolean}
+ */
 function isURL(str_url){
     var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
         + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" //ftp的user@
@@ -66,6 +100,10 @@ function isURL(str_url){
     }
 }
 
+/**
+ * @description 返回上个历史页面
+ * @since version 1.0
+ */
 function goback(){
     if("history" in $env){
         if($env.history.length > 0 ){
@@ -76,6 +114,12 @@ function goback(){
     }
 }
 
+/**
+ * @description 刷新当前页面
+ * @since version 1.0
+ *
+ * @param {function} then  刷新后执行此function
+ */
 function refresh(then){
     currentWso().refresh();
     if(then){
@@ -83,27 +127,33 @@ function refresh(then){
     }
 }
 
-function currentGoto(url){
-    var wso = currentWso();
-    wso.set("href",url);
-}
-
+/**
+ * @description 当前整个页面跳转
+ * @since version 1.0
+ *
+ * @param {string} url  url链接
+ */
 function redirect(url){
     window.location.href = url;
 }
 
+/**
+ * @description 判断是否为数组类型
+ * @since version 1.0
+ *
+ * @param {object} obj  判断对象
+ * @return {boolean}
+ */
 function isArray(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
 }
 
-//刷新当前页
-function refreshCurrentPane(){
-    var wso = currentWso();
-    if(wso){
-        wso.refresh();
-    }
-}
-
+/**
+ * @description 获取当前工作区
+ * @since version 1.0
+ *
+ * @return {object} 工作区
+ */
 function currentWso(){
     var wso = null;
     var worksapce = $dijit.byId("mainTabContainer");
@@ -112,7 +162,18 @@ function currentWso(){
     }
     return wso;
 }
-//form对象，form提交前处理，服务端反馈为报错，服务端反馈为正常，服务端没有返回
+
+/**
+ * @description form的AJAX提交
+ * @since version 1.0
+ *
+ * @param {object} object  form对象
+ * @param {function} beforeSubmit  提交前运行
+ * @param {function} remoteFail  服务端返回包含报错信息时运行
+ * @param {function} remoteSuccess  服务端返回成功时运行
+ * @param {function} remoteNoBack  服务端无返回内容时运行
+ * @return {boolean}
+ */
 function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
     //钩子 提交前
     if(beforeSubmit){
@@ -155,7 +216,12 @@ function formSubmit(object,beforeSubmit,remoteFail,remoteSuccess,remoteNoBack){
     return false;
 }
 
-//清楚当前错误（dijitTextBoxError）class的dom并清除状态
+/**
+ * @description 清除当前错误（dijitTextBoxError）class的dom并清除控件状态
+ * @since version 1.0
+ *
+ * @param {object} object  判断对象
+ */
 function clearCurrentStatus(object){
     var nodes = $(".dijitTextBoxError",object);
     for(var i = 0; i<nodes.length;i++){
@@ -170,7 +236,16 @@ function clearCurrentStatus(object){
     }
 }
 
-//处理返回值
+/**
+ * @description 处理服务端的返回
+ * @since version 1.0
+ *
+ * @param {object} response  json对象，服务端返回值
+ * @param {function} remoteFail  服务端返回包含报错信息时运行
+ * @param {function} remoteSuccess  服务端返回成功时运行
+ * @param {function} remoteNoBack  服务端无返回内容时运行
+ * @param {object} target  工作区对象，决定作用范围
+ */
 function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,target){
     if(response){
         var errorStatus = false;
@@ -267,6 +342,12 @@ function handleResponse(response,remoteFail,remoteSuccess,remoteNoBack,target){
 
 }
 
+/**
+ * @description 分类型显示消息：I|W|E 代表 消息|警告|错误 ，显示效果也不同
+ * @since version 1.0
+ *
+ * @param {object} message  消息对象
+ */
 function showMessage(message){
     //type of message; possible values in messageTypes enumeration ("message", "warning", "error", "fatal")
     var messageType = "message";
@@ -295,7 +376,12 @@ function showMessage(message){
 
 }
 
-//显示message help
+/**
+ * @description 结合系统消息配置，可获取当前报错的帮助手册
+ * @since version 1.0
+ *
+ * @param {object} toaster  消息发布控件
+ */
 function showMessageHelp(toaster){
     var data = toaster.remortData;
     if(data && data.help){
@@ -305,7 +391,12 @@ function showMessageHelp(toaster){
     }
 }
 
-//未使用，备用。主要用于在表单抬头提示验证信息
+/**
+ * @description 备用。主要用于在表单抬头提示验证信息
+ * @since version 1.0
+ *
+ * @param {object} lines  json对象，服务端返回的消息
+ */
 function addFormAlertLine(lines){
     require(["dojo/dom-construct","dojo/dom-style"],
         function(domConstruct,domStyle){
@@ -322,11 +413,20 @@ function addFormAlertLine(lines){
         });
 }
 
-//当前的form错误提示区域
+/**
+ * @description 备用，获取当前form抬头的报错区域
+ * @since version 1.0
+ *
+ * @return {object}
+ */
 function currentAlertPane(){
     return  $dom.byId($env.cm+"_formalert");
 }
 
+/**
+ * @description 备用，关闭当前form抬头的报错区域
+ * @since version 1.0
+ */
 function formAlertclose(){
     require(["dojo/dom-style"],
         function(domStyle){
@@ -336,6 +436,10 @@ function formAlertclose(){
         });
 }
 
+/**
+ * @description 备用，清除当前form抬头的报错信息
+ * @since version 1.0
+ */
 function clearFormAlertLine(){
     var ul = new Object;
     require(["dojo/dom-construct"],
@@ -354,6 +458,13 @@ function clearFormAlertLine(){
     return ul;
 }
 
+/**
+ * @description 渲染表单验证的报错提示，位于控件底部
+ * @since version 1.0
+ *
+ * @param {object} lines  服务端返回验证消息
+ * @param {object} target  作用于工作区对象
+ */
 function renderValidError(lines,target){
 
     for(var i=0;i<lines.length;i++){
@@ -368,6 +479,15 @@ function renderValidError(lines,target){
 
 }
 
+/**
+ * @description 渲染单个控件对象的验证报错提示
+ * @since version 1.0
+ *
+ * @param {object} object  表单控件对象
+ * @param {int} index  位于form中的位置
+ * @param {string} invalidMessage  自定义报错信息
+ * @param {object} target  作用于工作区对象
+ */
 function _renderSingleError(object,index,invalidMessage,target){
     if(object){
         //第一个报错控件激活
@@ -409,7 +529,13 @@ function _renderSingleError(object,index,invalidMessage,target){
     }
 }
 
-//用于控件的唯一性标识
+/**
+ * @description 生成控件唯一性标识id
+ * @since version 1.0
+ *
+ * @param {string} id  控件原始id
+ * @return {string} 生成后id
+ */
 function fixDijitId(id){
     var rtId = "";
     if($env){
@@ -426,8 +552,16 @@ function fixDijitId(id){
     return rtId;
 }
 
-//效果同js原先的confirm
-//content ：弹出框内容 ； callback ： 确认后要执行的内容
+/**
+ * @description 替代js原生的confirm方法
+ * @since version 1.0
+ *
+ * @param {string} content  提示内容
+ * @param {string} title  提示标题
+ * @param {function} callback  点击[确认]后运行
+ * @param {function} cancel  点击[取消]后运行
+ * @param {string} type  I|W|E 代表 消息|警告|错误
+ */
 function dojoConfirm(content,title,callback,cancel,type){
     require(["sckj/Dialog","dijit/form/Button"],
         function(Dialog,Button){
@@ -512,13 +646,25 @@ function dojoConfirm(content,title,callback,cancel,type){
 
 }
 
-/*
-bug :I need to load "extendedSelect/Row" together with “IndirectSelect” to provide
-the select/deselect all function for rows; at the same time, I need to load "select/Row"
-to listen to the onSelect event. Unfortunately, when "extendedSelect/Row" & "select/Row"
-are loaded together, the onSelect event isn't captured. When only "select/Row" is loaded, it works fine
+/**
+ * @description 表格格式的弹出框
+ * bug :I need to load "extendedSelect/Row" together with “IndirectSelect” to provide
+ * the select/deselect all function for rows; at the same time, I need to load "select/Row"
+ * to listen to the onSelect event. Unfortunately, when "extendedSelect/Row" & "select/Row"
+ * are loaded together, the onSelect event isn't captured. When only "select/Row" is loaded, it works fine
+ * @since version 1.0
+ *
+ * @param {string} title  弹出框标题
+ * @param {object} structure  json对象，grid的结构
+ * @param {string} dataUrl  数据来源url
+ * @param {string} valueSegment  值字段，选择行时返回该字段的值
+ * @param {boolean} selectRowMultiple  是否多行选择
+ * @param {object} target  目标控件对象，返回值到该控件
+ * @param {boolean} pagination  是否分页
+ * @param {int} pageSize  单页条目数
+ * @param {function} onSelect  行被选择时运行
+ * @param {function} onReturn  目标控件被赋值后运行
  */
-//包含grid的dialog
 function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,target,pagination,pageSize,onSelect,onReturn){
     require(["sckj/DataGrid"],
         function(Grid){
@@ -586,7 +732,19 @@ function gridDialog(title,structure,dataUrl,valueSegment,selectRowMultiple,targe
         });
 }
 
-//值集选择框
+/**
+ * @description 值列表选择提示框
+ * @since version 1.0
+ *
+ * @param {string} valuelist_name  值集名称
+ * @param {string} parent_segment_value  父值集项目名称
+ * @param {Boolean} all_value  是否包含"所有值"选择
+ * @param {string} valueSegment  值字段，选择行时返回该字段的值
+ * @param {boolean} selectRowMultiple  是否多行选择
+ * @param {object} target  目标控件对象，返回值到该控件
+ * @param {boolean} pagination  是否分页
+ * @param {int} pageSize  单页条目数
+ */
 function vlGridDialog(valuelist_name,parent_segment_value,all_value,valueSegment,selectRowMultiple,target,pagination,pageSize){
     var structure = [{field : "label",name : "条目",width:"300px"}];
     var params = new Object();
@@ -625,6 +783,10 @@ function vlGridDialog(valuelist_name,parent_segment_value,all_value,valueSegment
 
 }
 
+/**
+ * @description 关闭提示框
+ * @since version 1.0
+ */
 function closeDialog(){
     var di = $dijit.byId("confirmDialog");
     if(di){
@@ -632,12 +794,22 @@ function closeDialog(){
     }
 }
 
+/**
+ * @description 关闭提示框并刷新当前工作区
+ * @since version 1.0
+ */
 function closeDialogAndRefresh(){
     closeDialog();
     refresh();
 }
 
-//根据id fix之后返回控件对象
+/**
+ * @description 返回唯一标识处理后的控件对象
+ * @since version 1.0
+ *
+ * @param {string} id  控件id
+ * @return {object} 控件对象
+ */
 function dijitObject(id){
     //return $dijit.byId(fixDijitId(id));
     //fix 频繁切换后获取对象失败
@@ -649,7 +821,12 @@ function dijitObject(id){
     }
 }
 
-//刷新未读消息数量:后续等待优化，采用ajax长轮询
+/**
+ * @description 刷新未读消息数量:后续等待优化，采用ajax长轮询
+ * @since version 1.0
+ *
+ * @param {int} n 未读消息数量
+ */
 function refresh_notice_count(n){
     if(n){
         $dom.byId("scbadge").innerHTML = n;
@@ -661,7 +838,14 @@ function refresh_notice_count(n){
 
 }
 
-//工具栏加入功能按钮
+/**
+ * @description 往工具栏加入功能按钮
+ * @since version 1.0
+ *
+ * @param {string} label  按钮标签
+ * @param {function} onclick  点击事件
+ * @param {string} title  鼠标漂浮按钮上时的提示内容
+ */
 function toolbarAddButton(label,onclick,title){
     require(["dijit/ToolbarSeparator","sckj/form/Button"], function (ToolbarSeparator,Button) {
         onWsoLoad(function() {
