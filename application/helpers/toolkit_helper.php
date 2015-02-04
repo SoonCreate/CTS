@@ -18,7 +18,7 @@
 /**
  * System Initialization File
  *
- * 工具库
+ * 系统工具包
  *
  * @package	Sooncreate
  * @category	helper
@@ -397,6 +397,11 @@ function zero_to_space($value){
     }
 }
 
+/**
+ * 字符串转布尔类型
+ * @param string $s
+ * @return bool
+ */
 function string_to_boolean($s){
     if(is_bool($s) && strcasecmp($s,'TRUE') == 0){
         return TRUE;
@@ -405,6 +410,11 @@ function string_to_boolean($s){
     }
 }
 
+/**
+ * 布尔转字符串
+ * @param bool $s
+ * @return string
+ */
 function boolean_to_string($s){
     if($s){
         return 'true';
@@ -413,15 +423,30 @@ function boolean_to_string($s){
     }
 }
 
+/**
+ * 字符串转数字
+ * @param string $s
+ * @return int
+ */
 function string_to_number($s){
     return intval($s);
 }
 
+/**
+ * unicode转中文
+ * @param string $s
+ * @return mixed
+ */
 function unicode_to_word($s){
     return $code = preg_replace("#\\\u([0-9a-f]+)#ie", "iconv('UCS-2', 'UTF-8', pack('H4', '\\1'))", (string)$s);
 }
 
-//判断数组中是否含有这些key
+/**
+ * 判断数组中是否含有这些key
+ * @param array $data   数据
+ * @param array $keys   字段数组
+ * @return bool
+ */
 function is_all_set($data,$keys){
     if(count($keys)>0 && $data && count($data) > 0){
         $return = true;
@@ -438,6 +463,12 @@ function is_all_set($data,$keys){
     }
 }
 
+/**
+ * 严重是否所有字段都拥有值
+ * @param array $data   数据
+ * @param array $keys   字段数组
+ * @return bool
+ */
 function is_all_has_value($data,$keys){
     if(count($keys)>0 && $data && count($data) > 0){
         $return = true;
@@ -460,7 +491,10 @@ function is_all_has_value($data,$keys){
     }
 }
 
-//检验必输项
+/**
+ * 验证是否必输，获取参数列表，并整合output到前端
+ * @return bool
+ */
 function validate_required(){
     $fields = func_get_args();
     $return = true;
@@ -473,7 +507,14 @@ function validate_required(){
     return $return;
 }
 
-//判断是否为分类控制，再进行权限判断。默认为分类为all
+/**
+ * 验证单据操作权限
+ * @param string $order_type    单据类型
+ * @param string $order_status  单据状态
+ * @param null $order_category  单据分类
+ * @param null $user_id 用户id，默认当前用户
+ * @return bool
+ */
 function check_order_auth($order_type,$order_status,$order_category = null,$user_id = null){
     global $CI;
     $CI->load->model('auth_model');
@@ -492,6 +533,14 @@ function check_order_auth($order_type,$order_status,$order_category = null,$user
     return $am->check_auth('category_control',$data,$user_id);
 }
 
+/**
+ * 验证访问的功能是否拥有权限，根据参数个数：
+ * 1. 无参数时，获取url路由中的控制器和方法
+ * 2. 两个参数时，默认第一个为控制器和第二为方法
+ * 3. 一个参数时，默认为系统注册的方法名
+ *
+ * @return bool
+ */
 function check_function_auth(){
     if(_sess('uid') == -1){
         return true;
@@ -511,7 +560,13 @@ function check_function_auth(){
 
 }
 
-//验证当前用户是否拥有权限
+/**
+ * 权限对象验证
+ * @param string $auth_object_name  权限对象名称
+ * @param array $auth_items 权限对象项目
+ * @param null $user_id 用户id，默认为当前用户id
+ * @return bool
+ */
 function check_auth($auth_object_name,$auth_items,$user_id = null){
     if(_sess('uid') == -1){
         return true;
@@ -523,7 +578,13 @@ function check_auth($auth_object_name,$auth_items,$user_id = null){
     }
 }
 
-//检查会议操作权限
+/**
+ * 检查会议操作权限
+ * @param string $order_type 投诉单类型
+ * @param string $order_category    投诉单分类
+ * @param string $action    具体权限：create|edit|inactive
+ * @return bool
+ */
 function check_meeting_auth($order_type,$order_category,$action){
     if(check_auth('meeting_control',array('ao_order_type'=>$order_type,'ao_order_category'=>$order_category,'ao_action'=>$action))){
         return true;
@@ -532,6 +593,13 @@ function check_meeting_auth($order_type,$order_category,$action){
     }
 }
 
+/**
+ * 单据是否允许走下一步状态：需要验证是否满足条件
+ * @param string $order_type    单据类型
+ * @param string $current_status    当前状态
+ * @param string $next_status   下一步状态
+ * @return bool
+ */
 function is_order_allow_next_status($order_type,$current_status,$next_status){
     global $CI;
     $CI->load->model('order_model');
@@ -539,6 +607,11 @@ function is_order_allow_next_status($order_type,$current_status,$next_status){
     return $om->is_allow_next_status($order_type,$current_status,$next_status);
 }
 
+/**
+ * 检查当前状态是否为系统配置的冻结状态，一般'closed'为冻结
+ * @param string $status    状态
+ * @return bool
+ */
 function is_order_locked($status){
     $lock = _config('status_for_lock');
     if($status === $lock){
@@ -548,7 +621,14 @@ function is_order_locked($status){
     }
 }
 
-//发送消息、通知、短信、邮件
+/**
+ * 发送消息、通知、短信、邮件，自动根据用户配置发送相应类型的消息
+ * @param int $user_id  用户id
+ * @param string $subject   标题
+ * @param string $message   消息内容
+ * @param null $notice_id   关联站内通知
+ * @return bool 是否发送成功
+ */
 function send_message($user_id,$subject,$message,$notice_id = null){
     global $CI;
     $CI->load->model('user_model');
@@ -566,7 +646,19 @@ function send_message($user_id,$subject,$message,$notice_id = null){
 }
 
 
-//邮件发送方法
+/**
+ * 发送email邮件
+ *
+ * @param string $to    接收人邮件地址
+ * @param string $subject  邮件标题
+ * @param string $message   邮件内容
+ * @param array $attach 附件，文件路径数组
+ * @param null $from    发件人邮件地址，如果配置SMTP则必须是登陆的邮件地址
+ * @param null $cc  抄送
+ * @param null $bcc 密送
+ * @param null $notice_id   关联站内通知
+ * @return bool
+ */
 function send_mail($to,$subject,$message,$attach = array(),$from = NULL,$cc = NULL,$bcc = NULL,$notice_id = NULL){
     global $CI;
     $config['protocol']     = _config('mail_protocol');
@@ -656,7 +748,14 @@ function send_mail($to,$subject,$message,$attach = array(),$from = NULL,$cc = NU
 
 }
 
-//信息机短信发送
+/**
+ * 信息机短信发送
+ *
+ * @param string $tel_number    手机号码
+ * @param string $msg   短信内容
+ * @param null $notice_id   关联站内短信
+ * @return bool
+ */
 function send_sms($tel_number,$msg,$notice_id = null){
     global $CI;
     $error_message = array();
@@ -754,6 +853,10 @@ function send_sms($tel_number,$msg,$notice_id = null){
     return $pass;
 }
 
+/**
+ * 加载文件上传的系统配置
+ * @return mixed
+ */
 function load_upload_config(){
     $config['upload_path'] = FCPATH._config('upload_path');
     $config['allowed_types'] = _config('upload_allowed_types');
@@ -768,7 +871,12 @@ function load_upload_config(){
     return $config;
 }
 
-//判断链接是否存在
+/**
+ * 判断链接是否存在
+ *
+ * @param string $url
+ * @return bool
+ */
 function url_exists($url){
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_NOBODY, true);
@@ -785,12 +893,18 @@ function url_exists($url){
     }
 }
 
+/**
+ * 替代elements方法，获取post参数，如果不存在则用NULL代替
+ * @return array
+ */
 function _data(){
     //处理post提交的数据
     return elements(func_get_args(),$_POST,NULL);
 }
 
-//刷新环境
+/**
+ *刷新当前运行环境，当前处于哪个模块的哪个功能
+ */
 function refresh_env(){
     global $CI;
     $CI->load->model('module_line_model');
@@ -825,11 +939,21 @@ function refresh_env(){
 
 }
 
-//表名
+/**
+ * 获取数据库表注释
+ * @param string $table 表名
+ * @return mixed|null|string
+ */
 function table_comment($table){
     return get_label('vl_tables',$table);
 }
-//字段名
+
+/**
+ * 获取数据库表的某个字段的注释
+ * @param string $table 表名
+ * @param string $field 字段名
+ * @return string
+ */
 function field_comment($table,$field){
     global $CI;
     $query = $CI->db->query( "select COLUMN_NAME,COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS
@@ -845,6 +969,11 @@ function field_comment($table,$field){
     return $field;
 }
 
+/**
+ * 获取数据库表的字段列表，字段名和注释
+ * @param string $table 表名
+ * @return array
+ */
 function field_list($table){
     if(_user_config('technical_name')){
         //fix bug table_schema服务器版本区分大小写
@@ -857,7 +986,15 @@ function field_list($table){
 
 }
 
-//生成grid的结构
+/**
+ * 生成前端grid控件的结构
+ * @param string $field 字段名
+ * @param null $label   表单抬头标题
+ * @param string $width 列宽
+ * @param string $data_type 列的数据类型
+ * @param bool $sortable    是否可排序
+ * @return mixed
+ */
 function _structure($field,$label = null,$width = '140px',$data_type = 'string',$sortable = true){
     if(is_null($label)){
         $label = label($field);
@@ -877,6 +1014,10 @@ function _structure($field,$label = null,$width = '140px',$data_type = 'string',
     return $s;
 }
 
+/**
+ * 生成前端grid控件的结构：空白列
+ * @return mixed
+ */
 function _blank_structure(){
     $s['field'] = '';
     $s['name'] = '';
@@ -884,6 +1025,10 @@ function _blank_structure(){
     return $s;
 }
 
+/**
+ * 构建前端grid控件的结构，参数为字段组，生成默认格式的列
+ * @return array
+ */
 function build_structure(){
     $fields = func_get_args();
     $structure = array();
@@ -923,8 +1068,9 @@ function default_end_date($time = null){
     }
 }
 
-//CURL
 /**
+ * 通过curl方式模拟http访问，返回获取内容
+ *
  * 使用：
  * echo cevin_http_open('http://www.baidu.com');
  *
@@ -933,6 +1079,10 @@ function default_end_date($time = null){
  * 或
  * $post = 'aa=ddd&ee=d';
  * echo cevin_http_open('http://www.baidu.com',array('post'=>$post));
+ *
+ * @param string $url   url
+ * @param array $conf   配置，参考程序中的$arr
+ * @return string   输出结果
  */
 function cevin_http_open($url, $conf = array())
 {
@@ -991,9 +1141,12 @@ function cevin_http_open($url, $conf = array())
     return $result;
 }
 
-//Fsockopen
 /**
- *使用方法同CURL
+ * 通过Fsockopen方式模拟http访问，使用方法同CURL
+ *
+ * @param string $url   url
+ * @param array $conf   配置，参考程序中的$conf_arr
+ * @return string
  */
 function sw_http_open($url, $conf = array()) {
     $return = '';
@@ -1084,7 +1237,16 @@ function sw_http_open($url, $conf = array()) {
     }
 }
 
-//数据或json导出excel
+
+/**
+ * 数据或json导出excel
+ *
+ * @param array|string $data_string 数据，可为数组和json字符串
+ * @param string $filename  生成的文件名
+ * @param array $fields 自定义列，如果为空则，默认获取数据数组中的key
+ * @throws \PHPExcel_Exception
+ * @throws \PHPExcel_Reader_Exception
+ */
 function export_to_excel($data_string,$filename,$fields = array()){
     global $CI;
     $is_json = false;

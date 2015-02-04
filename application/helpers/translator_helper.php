@@ -1,6 +1,40 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * Sooncreate AIP
+ *
+ * 速创科技AIP开源集成平台
+ *
+ * @package	Sooncreate
+ * @author		Sooncreate Studio
+ * @copyright	Copyright (c) 2014.
+ * @license
+ * @link		http://www.sooncreate.com
+ * @since		Version 1.0
+ * @filesource
+ */
 
-//输出label语言文件下的注释
+// ------------------------------------------------------------------------
+
+/**
+ * System Initialization File
+ *
+ * 多语言工具包
+ *
+ * @package	Sooncreate
+ * @category	helper
+ * @author		Sooncreate Studio
+ * @link
+ */
+
+// ------------------------------------------------------------------------
+
+
+/**
+ * 输出label语言文件下的注释
+ * @param string $name  字段名
+ * @param null $label   标签，如果不为null则直接返回该值
+ * @return mixed|null|string
+ */
 function label($name,$label = null){
     if(is_null($label)){
         $line = '';
@@ -43,7 +77,13 @@ function label($name,$label = null){
 
 }
 
-//根据浏览器语言支持多语言环境
+
+/**
+ * 根据浏览器语言选择ci响应的语言文件
+ * @param string $line  字段名
+ * @param array $param  参数，依次替换返回内容中的%
+ * @return mixed
+ */
 function _text($line,$param = array())
 {
     $CI = & get_instance();
@@ -75,8 +115,11 @@ function _text($line,$param = array())
     return $line;
 }
 
-//view 中输出label
 if ( ! function_exists('env_language')) {
+    /**
+     * 返回当前浏览器语言环境
+     * @return string
+     */
     function env_language()
     {
         $CI = & get_instance();
@@ -108,9 +151,15 @@ if ( ! function_exists('env_language')) {
     }
 }
 
-//view 中输出label
 if ( ! function_exists('lang'))
 {
+    /**
+     * 替代原来的lang方法，view 中输出label
+     *
+     * @param string $line  字段
+     * @param string $id    指定具体控件id
+     * @return string
+     */
     function lang($line, $id = '')
     {
         if ($id != '')
