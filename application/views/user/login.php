@@ -127,7 +127,10 @@ require(["dojo/dom-form","dojo/request","dojo/dom","dijit/registry","dojo/dom-st
                         var password = $dijit.byId("password");
                         var code = $dijit.byId("code");
                         logonpost.set("disabled","disabled");
-                        regpost.set("disabled","disabled");
+                        //bug修复20150206：注册功能屏蔽时会出现undefined.set的情况
+                        if(regpost != undefined){
+                            regpost.set("disabled","disabled");
+                        }
                         username.set("disabled","disabled");
                         password.set("disabled","disabled");
                         code.set("disabled","disabled");
