@@ -86,7 +86,8 @@ class CI_DB_sqlsrv_driver extends CI_DB {
 	 */
 	function db_pconnect()
 	{
-		$this->db_connect(TRUE);
+//		$this->db_connect(TRUE); //changed by yacole 20150509
+		return $this->db_connect(TRUE);
 	}
 
 	// --------------------------------------------------------------------
@@ -271,7 +272,8 @@ class CI_DB_sqlsrv_driver extends CI_DB {
 	 */
 	function affected_rows()
 	{
-		return @sqlrv_rows_affected($this->conn_id);
+		return @sqlrv_rows_affected($this->conn_id);//changed by yacole 20150509
+//		return @sqlsrv_num_rows($this->result_id);
 	}
 
 	// --------------------------------------------------------------------

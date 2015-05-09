@@ -64,6 +64,22 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+#mssqlserver ODBC连接方式解决方案
+$db['erp']['hostname'] = "Driver={SQL Server Native Client 10.0};Server=localhost;Database=ReportServer;";
+$db['erp']['username'] = "sa";
+$db['erp']['password'] = "325604";
+$db['erp']['database'] = "ReportServer";
+$db['erp']['dbdriver'] = "odbc";
+$db['erp']['dbprefix'] = '';
+$db['erp']['pconnect'] = FALSE;
+$db['erp']['db_debug'] = TRUE;
+$db['erp']['cache_on'] = FALSE;
+$db['erp']['cachedir'] = '';
+$db['erp']['char_set'] = 'utf8';
+$db['erp']['dbcollat'] = 'utf8_general_ci';
+$db['erp']['swap_pre'] = '';
+$db['erp']['autoinit'] = TRUE;
+$db['erp']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
