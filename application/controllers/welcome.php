@@ -221,6 +221,10 @@ class Welcome extends CI_Controller {
         }
     }
 
+    function test(){
+        print_r(simple_query('select * from ct_users'));
+    }
+
 }
 
 /* End of file welcome.php */
