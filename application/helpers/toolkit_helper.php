@@ -1372,3 +1372,8 @@ function export_to_excel($data_string,$filename,$fields = array()){
 function now(){
     return date('Y-m-d H:i:s');
 }
+
+//用于构建后台作业的日志输出格式
+function job_log_string($log){
+    return now().' '.$log."\r\n";
+}

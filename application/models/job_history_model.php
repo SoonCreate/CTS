@@ -19,7 +19,7 @@ class Job_history_model extends MY_Model{
         $jom = new Job_output_model();
         $o = $jom->find_by(array('history_id'=>$this->id));
         if(!empty($o)){
-            $data['log'] = $o['log'].date('Y-m-d H:i:s').'  '.$log."\r\n";
+            $data['log'] = $o['log'].job_log_string($log);
             $jom->update($o['id'],$data);
         }
     }
@@ -54,7 +54,7 @@ class Job_history_model extends MY_Model{
     }
 
     function run_step($step){
-        $this->log('Step'.$step['step'].'开始运行...');
+        $this->log('Step'.$step['step'].' 开始运行...');
         $this->log('Step info :'.json_encode($step));
         $url = null;
         $conf = array();
@@ -116,7 +116,7 @@ class Job_history_model extends MY_Model{
             $this->data($data);
         }
 
-        $this->log('Step'.$step['step'].'运行结束');
+        $this->log('Step'.$step['step'].' 运行结束.');
         return $this->_analyze_response($result);
     }
 
@@ -133,6 +133,7 @@ class Job_history_model extends MY_Model{
             $h['status'] = 'finished';
         }
         $this->update($this->id,$h);
+        $this->log('Job end.');
     }
 
     //返回结果判断是否有错误

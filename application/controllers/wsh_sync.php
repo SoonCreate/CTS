@@ -31,7 +31,8 @@ class Wsh_sync extends CI_Controller {
 
         $erp = $this->load->database('erp',true,true);
         $erp->truncate('wsh_goods');
-        custz_message('I',now().': wsh_goods表数据清理完成');
+        echo job_log_string('wsh_goods表数据清理完成');
+        //统计成功/失败条目
         $fcnt = 0;
         $scnt = 0;
         foreach($goods as $o){
@@ -69,7 +70,7 @@ class Wsh_sync extends CI_Controller {
                 $fcnt = $fcnt + 1;
             }
         }
-        custz_message('I',now().': 成功插入数据['.$scnt.']，失败['.$fcnt.']条。');
+        echo job_log_string('成功插入数据['.$scnt.']，失败['.$fcnt.']条。');
     }
 
     function wsh_test(){

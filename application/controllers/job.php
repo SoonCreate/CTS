@@ -227,6 +227,7 @@ class Job extends CI_Controller {
             $jom = new Job_output_model();
             $o = $jom->find_by(array('history_id'=>$h['id']));
             $data['content'] =  str_replace("\r\n","<br/>",$o['log']);
+            $data['content'] = unicode_to_word($data['content']);
             render($data);
         }
     }
@@ -351,26 +352,37 @@ class Job extends CI_Controller {
 
     //由此方法开始分配任务并执行
     function run(){
-        //跳过权限验证
-        set_sess('uid',-1);
-        //获取有效并可以开始运行的作业
         $jm = new Job_model();
-        $jsm = new Job_step_model();
-        $jobs = $jm->find_all();
-        foreach($jobs as $job){
-            if(is_null($job['inactive_date']) || (!is_null($job['inactive_date']) && $job['inactive_date'] > time())){
-                //判断第一次和后续
-                if((is_null($job['next_exec_date']) && $job['first_exec_date'] <= time())||
-                    (!is_null($job['next_exec_date']) && $job['next_exec_date'] <= time())){
+        $job_id = v('id');
+        if($job_id){
+            //手动运行
+            $job = $jm->find($job_id);
+            if(!empty($job)){
+                $this->_run($job_id);
+            }
+        }else{
+            //跳过权限验证
+            set_sess('uid',-1);
+            //获取有效并可以开始运行的作业
 
-                    if($jsm->count_by(array('job_id'=>$job['id'])) > 0){
+            $jsm = new Job_step_model();
+            $jobs = $jm->find_all();
+            foreach($jobs as $job){
+                if(is_null($job['inactive_date']) || (!is_null($job['inactive_date']) && $job['inactive_date'] > time())){
+                    //判断第一次和后续
+                    if((is_null($job['next_exec_date']) && $job['first_exec_date'] <= time())||
+                        (!is_null($job['next_exec_date']) && $job['next_exec_date'] <= time())){
 
-                        //并发运行
-                        $this->_run($job['id']);
+                        if($jsm->count_by(array('job_id'=>$job['id'])) > 0){
+
+                            //并发运行
+                            $this->_run($job['id']);
+                        }
                     }
                 }
             }
         }
+
 
         //登出
 //        clear_all_sess();

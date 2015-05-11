@@ -28,6 +28,8 @@
                 <?= render_link(array('job','destroy',array('id'=>$o['id'])),label('destroy'),null,null,true)?>
                 &nbsp;|&nbsp;
                 <?= render_link(array('job','histories',array('job_id'=>$o['id'])),label('history'))?>
+                &nbsp;|&nbsp;
+                <?= render_link(array('job','run',array('job_id'=>$o['id'])),'手动运行',null,null,true)?>
             </td>
 
         </tr>
