@@ -16,32 +16,58 @@ class Job_model extends MY_Model{
     }
 
     //job运行开始时计算
-    function refresh_next_exec_date($job){
+    function refresh_next_exec_date($job,$start_date){
         if($job['period_flag'] && $job['period_value']){
-            $n = $job['next_exec_date'];
+            $n = $job['first_exec_date'];
+//            log_message('error',$start_date);
             $period_value = string_to_number($job['period_value']);
-            if(is_null($n) || !$n){
-                $n = $job['first_exec_date'];
+//            if(is_null($n) || !$n){
+//                $n = $job['first_exec_date'];
+//            }
+            //如果手动运行，或提前运行，则不更新下次运行时间
+            if($start_date >= $job['next_exec_date']){
+                $os = $start_date - $n;
+                switch($job['period_type']){
+                    case 'minute':
+                        $single = $period_value * 60;
+                        //进1取整
+                        $n = $n + ceil($os/$single)*$single;
+                        break;
+                    case 'hour' :
+                        $single = $period_value * 60 * 60;
+                        //进1取整
+                        $n = $n + ceil($os/$single)*$single;
+                        break;
+                    case 'day' :
+                        $single = $period_value * 60 * 60 * 24;
+                        //进1取整
+                        $n = $n + ceil($os/$single)*$single;
+                        break;
+                    case 'month' :
+                        //计算月份差
+                        $cy = interval_month($n,$start_date);
+                        if($cy == 0){
+                            $cy = 1;
+                        }
+                        $yc = ceil($cy/$period_value)*$period_value;
+                        log_message('error',$yc);
+                        //获取本应下次运行时间
+                        $n = strtotime('+'.$yc.' month',$n);
+                        break;
+                    case 'year' :
+                        $cy = date("Y",$start_date)-date("Y",$n);
+                        if($cy == 0){
+                            $cy = 1;
+                        }
+                        $nc = ceil($cy/$period_value)*$period_value;
+                        $n = strtotime('+'.$nc.' year',$n);
+                        break;
+                }
+                $data['next_exec_date'] = $n;
+                log_message('error',$n);
+                $this->update($job['id'],$data,true);
             }
-            switch($job['period_type']){
-                case 'minute':
-                    $n = $n + $period_value * 60;
-                    break;
-                case 'hour' :
-                    $n = $n + $period_value * 60 * 60;
-                    break;
-                case 'day' :
-                    $n = $n+ $period_value * 60 * 60 * 24;
-                    break;
-                case 'month' :
-                    $n = strtotime('+'.$period_value.' month',$n);
-                    break;
-                case 'year' :
-                    $n = strtotime('+'.$period_value.' year',$n);
-                    break;
-            }
-            $data['next_exec_date'] = $n;
-            $this->update($job['id'],$data,true);
+
         }
     }
 

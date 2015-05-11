@@ -1377,3 +1377,8 @@ function now(){
 function job_log_string($log){
     return now().' '.$log."\r\n";
 }
+
+//获取月份差
+function interval_month($from,$to){
+    return abs(date("Y",$to)-date("Y",$from))*12+date("m",$to)-date("m",$from);
+}

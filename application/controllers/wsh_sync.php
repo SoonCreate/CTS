@@ -62,6 +62,7 @@ class Wsh_sync extends CI_Controller {
             $d['pre_sale'] = $p['pre_sale'];
             $d['sku'] =  NULL;
             $d['sort'] = $p['order'];
+            $d['creation_date'] = now();
             //urt8 转 gbk
             $d = utf8togbk($d);
             if($erp->insert('wsh_goods',$d)){

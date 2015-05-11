@@ -31,15 +31,16 @@ class Job_history_model extends MY_Model{
 
     function starting($job){
         $this->job_id = $job['id'];
+        $start_date = time();
 
         //更新job的下次运行时间
         $jm = new Job_model();
-        $jm->refresh_next_exec_date($job);
+        $jm->refresh_next_exec_date($job,$start_date);
 
         //开始运行，日志
         $data['job_id'] = $job['id'];
         $data['status'] = 'running';
-        $data['start_date'] = time();
+        $data['start_date'] = $start_date;
         $this->id = $this->insert($data);
 
         //output

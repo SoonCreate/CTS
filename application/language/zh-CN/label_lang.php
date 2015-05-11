@@ -321,6 +321,8 @@ $lang['label_inactive_date'] = "失效时间";
 $lang['label_period_type'] = "周期";
 $lang['label_period_value'] = "值";
 $lang['label_experience'] = "耗时（秒）";
+$lang['label_last_exec_date'] = "上次运行时间";
+$lang['label_manual_run'] = "手动运行";
 
 //名词
 $lang['label_functions'] = "功能";

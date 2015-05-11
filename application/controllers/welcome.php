@@ -222,7 +222,8 @@ class Welcome extends CI_Controller {
     }
 
     function test(){
-        print_r(simple_query('select * from ct_users'));
+        $myFirstMonts=mktime(0,0,0,5,11,2015);//已2012年4月为初始月份
+        echo abs(date("Y",time())-date("Y",$myFirstMonts))*12+date("m",time())-date("m",$myFirstMonts);
     }
 
 }

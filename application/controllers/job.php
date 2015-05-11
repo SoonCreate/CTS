@@ -13,7 +13,20 @@ class Job extends CI_Controller {
 
     function index(){
         $jm = new Job_model();
-        $data['objects'] = _format($jm->find_all(),true);
+        $jhm = new Job_history_model();
+        $jobs = $jm->find_all();
+        for($i=0;$i<count($jobs);$i++){
+            $jobs[$i]['last_exec_date'] = null;
+            $this->db->select_max('id');
+            $maxid = $jhm->find_by(array('job_id'=>$jobs[$i]['id']));
+            if(!empty($maxid)){
+                $h = $jhm->find($maxid['id']);
+                if(!empty($h)){
+                    $jobs[$i]['last_exec_date'] = $h['start_date'];
+                }
+            }
+        }
+        $data['objects'] = _format($jobs,true);
         render($data);
     }
 
@@ -383,9 +396,8 @@ class Job extends CI_Controller {
             }
         }
 
-
         //登出
-//        clear_all_sess();
+        clear_all_sess();
     }
 
     //单个运行

@@ -8,6 +8,7 @@
     <th><?= label('next_exec_date')?></th>
     <th><?= label('created_by')?></th>
     <th><?= label('creation_date')?></th>
+    <th><?= label('last_exec_date')?></th>
     <th><?= label('operation')?></th>
     </thead>
     <?php foreach($objects as $o):?>
@@ -20,6 +21,7 @@
             <td><?= $o['next_exec_date']?></td>
             <td><?= $o['created_by']?></td>
             <td><?= $o['creation_date']?></td>
+            <td><?= $o['last_exec_date']?></td>
             <td>
                 <?= render_link(array('job','edit',array('id'=>$o['id'])),label('edit'))?>
                 &nbsp;|&nbsp;
@@ -29,7 +31,7 @@
                 &nbsp;|&nbsp;
                 <?= render_link(array('job','histories',array('job_id'=>$o['id'])),label('history'))?>
                 &nbsp;|&nbsp;
-                <?= render_link(array('job','run',array('job_id'=>$o['id'])),'手动运行',null,null,true)?>
+                <?= render_link(array('job','run',array('job_id'=>$o['id'])),label('manual_run'),null,null,true)?>
             </td>
 
         </tr>
