@@ -101,6 +101,9 @@ class Job_history_model extends MY_Model{
             }else{
                 $url = _url($step['controller'],$step['action'],$params);
             }
+        }else{
+            //20150511 修复没有变式情况下无法正常获取url的问题
+            $url = _url($step['controller'],$step['action']);
         }
 //        log_message('error',$url);
         $result = cevin_http_open($url,$conf);

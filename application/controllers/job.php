@@ -241,104 +241,108 @@ class Job extends CI_Controller {
         }else{
             $jom = new Job_output_model();
             $o = $jom->find_by(array('history_id'=>$h['id']));
-            $d =  json_decode($o['output']);
-            //判断是否每步骤都会输出
-            $cnt = count($d);
-            $content = '';
+            //20150511 内容为空下载时不生成文件bug修复
+            $content = ' ';
             $filename = date('ymd').'.'.$o['output_type'];
-            switch($o['output_type']){
-                case 'txt' :
-                    if($cnt == 1){
-                        $content = unicode_to_word($d[0]->data);
-                    }else{
-                        foreach($d as $s){
-                            $content = $content . 'Step '.$s->step."\r\n";
-                            $content = $content .unicode_to_word($s->data)."\r\n";
-                        }
-                    }
-
-                    break;
-                case 'xlsx':
-                    $this->load->library('PHPExcel');
-                    $this->load->library('PHPExcel/IOFactory');
-                    $objPHPExcel = new PHPExcel();
-                    $objPHPExcel->getProperties()->setTitle($filename)->setDescription("none");
-                    $sheet = 0;
-                    foreach($d as $s){
-                        if($sheet > 0){
-                            $objPHPExcel->createSheet();
-                        }
-                        $objPHPExcel->setActiveSheetIndex($sheet);
-                        $objPHPExcel->getActiveSheet()->setTitle('step '.$s->step);
-
-                        $data = array();
-                        $fields = array();
-                        //判断数据
-                        if(is_array($s->data)){
-                            $data = $s->data;
-                            foreach($data[0] as $key=>$value){
-                                array_push($fields,$key);
-                            }
+            //排除没有输出的bug
+            if(!is_null($o['output'])){
+                $d =  json_decode($o['output']);
+                //判断是否每步骤都会输出
+                $cnt = count($d);
+                switch($o['output_type']){
+                    case 'txt' :
+                        if($cnt == 1){
+                            $content = unicode_to_word($d[0]->data);
                         }else{
-                            if(isset($s->data->items)){
-                                $data = $s->data->items;
+                            foreach($d as $s){
+                                $content = $content . 'Step '.$s->step."\r\n";
+                                $content = $content .unicode_to_word($s->data)."\r\n";
+                            }
+                        }
+
+                        break;
+                    case 'xlsx':
+                        $this->load->library('PHPExcel');
+                        $this->load->library('PHPExcel/IOFactory');
+                        $objPHPExcel = new PHPExcel();
+                        $objPHPExcel->getProperties()->setTitle($filename)->setDescription("none");
+                        $sheet = 0;
+                        foreach($d as $s){
+                            if($sheet > 0){
+                                $objPHPExcel->createSheet();
+                            }
+                            $objPHPExcel->setActiveSheetIndex($sheet);
+                            $objPHPExcel->getActiveSheet()->setTitle('step '.$s->step);
+
+                            $data = array();
+                            $fields = array();
+                            //判断数据
+                            if(is_array($s->data)){
+                                $data = $s->data;
                                 foreach($data[0] as $key=>$value){
                                     array_push($fields,$key);
                                 }
                             }else{
-                                $a['data'] = $s->data;
-                                array_push($data,$a);
-                                $fields = array('data');
+                                if(isset($s->data->items)){
+                                    $data = $s->data->items;
+                                    foreach($data[0] as $key=>$value){
+                                        array_push($fields,$key);
+                                    }
+                                }else{
+                                    $a['data'] = $s->data;
+                                    array_push($data,$a);
+                                    $fields = array('data');
+                                }
                             }
-                        }
 
-                        // Field names in the first row
-                        $col = 0;
-                        foreach ($fields as $field)
-                        {
-                            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1, label($field));
-                            $col++;
-                        }
-
-                        // Fetching the table data
-                        $row = 2;
-                        foreach($data as $row_data){
+                            // Field names in the first row
                             $col = 0;
                             foreach ($fields as $field)
                             {
-                                //中文需转义
-                                $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, unicode_to_word($row_data[$field]));
+                                $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1, label($field));
                                 $col++;
                             }
-                            $row++;
+
+                            // Fetching the table data
+                            $row = 2;
+                            foreach($data as $row_data){
+                                $col = 0;
+                                foreach ($fields as $field)
+                                {
+                                    //中文需转义
+                                    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, unicode_to_word($row_data[$field]));
+                                    $col++;
+                                }
+                                $row++;
+                            }
+
+                            $sheet ++;
+
+                        }
+                        $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
+                        //发送标题强制用户下载文件
+                        header('Content-Type: application/vnd.ms-excel');
+                        header('Content-Disposition: attachment;filename="'.$filename.'"');
+                        header('Cache-Control: max-age=0');
+                        $objWriter->save('php://output');
+                        break;
+                    case 'pdf' :
+                        //fpdf dompdf 中文支持 后续实现
+                        break;
+                    case 'doc' :
+                        if($cnt == 1){
+                            $content = unicode_to_word($d[0]->data);
+                        }else{
+                            foreach($d as $s){
+                                $content = $content . '<h1>Step '.$s->step."</h1>";
+                                $content = $content .unicode_to_word($s->data);
+                            }
                         }
 
-                        $sheet ++;
-
-                    }
-                    $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');
-                    //发送标题强制用户下载文件
-                    header('Content-Type: application/vnd.ms-excel');
-                    header('Content-Disposition: attachment;filename="'.$filename.'"');
-                    header('Cache-Control: max-age=0');
-                    $objWriter->save('php://output');
-                    break;
-                case 'pdf' :
-                    //fpdf dompdf 中文支持 后续实现
-                    break;
-                case 'doc' :
-                    if($cnt == 1){
-                        $content = unicode_to_word($d[0]->data);
-                    }else{
-                        foreach($d as $s){
-                            $content = $content . '<h1>Step '.$s->step."</h1>";
-                            $content = $content .unicode_to_word($s->data);
-                        }
-                    }
-
-                    $data['content'] = $content;
-                    $content = $this->load->view('doc_template',$data,true);
-                    break;
+                        $data['content'] = $content;
+                        $content = $this->load->view('doc_template',$data,true);
+                        break;
+                }
             }
             //                    $data = file_get_contents(v('path')); // 读文件内容
             force_download($filename, $content);

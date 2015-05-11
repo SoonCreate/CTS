@@ -4,5 +4,5 @@
 $config['login_no_check'] = array(
     'user' => array('login','register','get_code','check_code','forget_password','logout','third_part_login'),
     'welcome' => array('index','demo_env','demo'),
-    'wshSync'=> array('goods_sync_job','orders_sync_job','customers_sync_job')
+    'wsh_sync'=> array('goods_sync_job','orders_sync_job','customers_sync_job')
 );

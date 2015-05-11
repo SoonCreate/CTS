@@ -441,6 +441,66 @@ function unicode_to_word($s){
     return $code = preg_replace("#\\\u([0-9a-f]+)#ie", "iconv('UCS-2', 'UTF-8', pack('H4', '\\1'))", (string)$s);
 }
 
+// Returns true if $string is valid UTF-8 and false otherwise.
+function is_utf8($word)
+{
+    if (preg_match("/^([".chr(228)."-".chr(233)."]{1}[".chr(128)."-".chr(191)."]{1}[".chr(128)."-".chr(191)."]{1}){1}/",$word) == true
+        || preg_match("/([".chr(228)."-".chr(233)."]{1}[".chr(128)."-".chr(191)."]{1}[".chr(128)."-".chr(191)."]{1}){1}$/",$word) == true
+        || preg_match("/([".chr(228)."-".chr(233)."]{1}[".chr(128)."-".chr(191)."]{1}[".chr(128)."-".chr(191)."]{1}){2,}/",$word) == true)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+} // function is_utf8
+
+/**
+ * 数组混合GBK、UTF-8 换转为UTF-8
+ * @param unknown_type $arr
+ */
+function gbktoutf8($arr){
+    if(is_array($arr) && count($arr)){
+        foreach($arr as $key=>$value){
+            if(is_array($value)){
+                $arrRs[$key] = gbktoutf8($value);
+            }else{
+                if(!is_utf8($value)){
+                    $arrRs[$key] = iconv('GBK','UTF-8',$value);
+                }else{
+                    $arrRs[$key] = $value;
+                }
+            }
+        }
+        return $arrRs;
+    }
+    return null;
+}
+
+/**
+ * 数组混合GBK、UTF-8 换转为gbk
+ * @param array $arr 目标数组
+ */
+function utf8togbk($arr){
+    if(is_array($arr) && count($arr)){
+        foreach($arr as $key=>$value){
+            if(is_array($value)){
+                $arrRs[$key] = utf8togbk($value);
+            }else{
+                //判断字符编码是否utf8字符(如果不是utf8字符则转换)
+                if(is_utf8($value)){
+                    $arrRs[$key] = iconv('UTF-8','GBK',$value);
+                }else{
+                    $arrRs[$key] = $value;
+                }
+            }
+        }
+        return $arrRs;
+    }
+    return 0;
+}
+
 /**
  * 判断数组中是否含有这些key
  * @param array $data   数据
@@ -1307,4 +1367,8 @@ function export_to_excel($data_string,$filename,$fields = array()){
         $objWriter->save('php://output');
     }
 
+}
+
+function now(){
+    return date('Y-m-d H:i:s');
 }

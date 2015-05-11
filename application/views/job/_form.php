@@ -3,7 +3,7 @@
 <?= render_select_with_options('output_type','vl_output_type',true)?>
 <?= render_form_dateTimeBox('first_exec_date',true)?>
 <?= render_form_dateTimeBox('inactive_date')?>
-<?= render_single_checkbox('period_flag',1,null,false,array('onChange'=>'_onPeriodFlagChecked()'))?>
+<?= render_single_checkbox('period_flag',1,null,false,false,array('onChange'=>'_onPeriodFlagChecked()'))?>
 <?= render_select_with_options('period_type','vl_period_type')?>
 <?= render_form_input('period_value')?>
 
