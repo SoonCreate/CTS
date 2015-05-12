@@ -466,7 +466,8 @@ class User extends CI_Controller {
         if(empty($config)){
             show_404();
         }else{
-            $uc = $ucm->find_by_view(array('config_id'=>$config_id));
+            //20150512 修改未根据当前用户限定更新范围的bug
+            $uc = $ucm->find_by_view(array('config_id'=>$config_id,'user_id'=>_sess('uid')));
             if(empty($uc)){
                 $data['config_id'] = $config_id;
                 $data['user_id'] = _sess('uid');

@@ -394,10 +394,9 @@ class Job extends CI_Controller {
                     }
                 }
             }
+            //登出
+//            clear_all_sess();
         }
-
-        //登出
-        clear_all_sess();
     }
 
     //单个运行

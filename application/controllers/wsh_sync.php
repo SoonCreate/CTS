@@ -80,16 +80,174 @@ class Wsh_sync extends CI_Controller {
                 if($erp->insert('wsh_goods',$d)){
                     $scnt = $scnt + 1;
                 }else{
+                    echo job_log_string('物料：['. $d['prod_name'].'] 插入失败！');
                     $fcnt = $fcnt + 1;
                 }
             }
-            echo job_log_string('成功插入数据['.$scnt.']，失败['.$fcnt.']条。');
+            echo job_log_string('成功插入数据['.$scnt.']，失败['.$fcnt.']条');
+        }
+    }
+
+    function orders_sync_job(){
+        //获取远程数据
+        $orders =  $this->_remote_data('orders');
+        if($orders){
+            $erp = $this->load->database('erp',true,true);
+            //统计成功/失败条目
+            $fcnt = 0;
+            $scnt = 0;
+            $ufcnt = 0;
+            $uscnt = 0;
+            foreach($orders as $o){
+//            print_r($o->Products);
+//            $d = $o['Products'];
+                $order = $o['Orders'];
+                $d['id'] = intval($order['id']);
+                //判断是否ERP数据库表中已存在数据
+                $od = $erp->query('select * from wsh_orders where id = '.$order['id'])->result_array();
+
+                $d['uid'] = intval($order['uid']);
+                $d['orderid'] = $order['orderid'];
+                $d['ip'] = $order['ip'];
+                $d['name'] = $order['name'];
+                $d['mobile'] = $order['mobile'];
+                $d['phone'] = $order['phone'];
+                $d['zip'] = $order['zip'];
+                $d['province'] = $order['province'];
+                $d['city'] = $order['city'];
+                $d['area'] = $order['area'];
+                $d['address'] = $order['address'];
+                $d['delivery_time'] = $order['delivery_time'];
+                $d['logi_company'] = $order['logi_company'];
+                $d['logi_no'] = $order['logi_no'];
+                $d['seller_mark'] = $order['seller_mark'];
+                $d['paytype'] = $order['paytype'];
+                $d['alipay_trade_no'] = $order['alipay_trade_no'];
+                $d['tenpay_trade_no'] = $order['tenpay_trade_no'];
+                $d['wxpay_trade_no'] = $order['wxpay_trade_no'];
+                $d['coupon_name'] = $order['coupon_name'];
+                $d['customer_mark'] = $order['customer_mark'];
+                $d['order_status'] = $order['order_status'];
+                $d['createtime'] = $order['createtime'];
+                $d['appeal_status'] = intval($order['appeal_status']);
+                $d['seller_id'] = intval($order['seller_id']);
+                $d['r_points'] = intval($order['r_points']);
+                $d['totalprice'] = floatval($order['totalprice']);
+                $d['seller_cut'] = floatval($order['seller_cut']);
+                $d['delivery_fee'] = floatval($order['delivery_fee']);
+                $d['discount'] = floatval($order['discount']);
+                $d['point_discount'] = floatval($order['point_discount']);
+                $d['should_pay'] = floatval($order['should_pay']);
+                $d['is_income'] = intval($order['is_income']);
+
+                //urt8 转 gbk
+                $d = utf8togbk($d);
+                if(empty($od)){
+                    $d['creation_date'] = now();
+                    $lines = $order['OrdersProducts'];
+
+                    $erp->trans_start();
+                    //插入订单抬头
+                    $erp->insert('wsh_orders',$d);
+                    //插入订单明细行
+                    if(is_array($lines)){
+                        foreach($lines as $line){
+                            $line['order_id'] = $order['id'];
+                            $line['creation_date'] = now();
+                            $line = utf8togbk($line);
+                            $erp->insert('wsh_order_lines',$line);
+                        }
+                    }
+                    $erp->trans_complete();
+                    if($erp->trans_status() === TRUE){
+                        $scnt = $scnt + 1;
+                    }else{
+                        echo job_log_string( '订单：['.$d['orderid'].'] 插入失败！');
+                        $fcnt = $fcnt + 1;
+                    }
+                }else{
+                    $row = gbktoutf8($od[0]);
+                    $order_status = $row['order_status'];
+                    //判断更新范围
+                    if($order_status != '完成' && $order_status != '取消'){
+                        $d['last_update_date'] = now();
+                        if($erp->update('wsh_orders',$d,array('id'=>$d['id']))){
+                            $uscnt = $uscnt + 1;
+                        }else{
+                            echo job_log_string( '订单：['.$d['orderid'].'] 插入失败！');
+                            $ufcnt = $ufcnt + 1;
+                        }
+                    }
+                }
+
+            }
+            echo job_log_string('成功插入数据['.$scnt.']，失败['.$fcnt.']条;成功更新数据['.$uscnt.']，失败['.$ufcnt.']条');
+        }
+    }
+
+    function  users_sync_job(){
+        //获取远程数据
+        $users =  $this->_remote_data('users');
+        if($users){
+            $erp = $this->load->database('erp',true,true);
+            $erp->truncate('wsh_users');
+            $erp->truncate('wsh_user_address');
+            echo job_log_string('wsh_users,wsh_user_address表数据清理完成');
+            //统计成功/失败条目
+            $fcnt = 0;
+            $scnt = 0;
+            foreach($users as $o){
+                $user = $o['WxUserInfo'];
+                $d['id'] = NULL;
+                $d['nickname'] = $user['nickname'];
+                $d['mobile'] = $user['mobile'];
+                $d['sex'] = $user['sex'];
+                $d['country'] = $user['country'];
+                $d['province'] = $user['province'];
+                $d['city'] = $user['city'];
+                $d['headimgurl'] = $user['headimgurl'];
+                $d['shop_id'] = $user['shop_id'];
+                $d['staff_id'] = $user['staff_id'];
+                $d['login_count'] = $user['login_count'];
+                $d['lastloginip'] = $user['lastloginip'];
+                $d['lastlogintime'] = $user['lastlogintime'];
+                $d['registime'] = $user['registime'];
+                $d['sign_days'] = $user['sign_days'];
+                $d['sign_time'] = $user['sign_time'];
+                $d['points'] = $user['points'];
+                $d['creation_date'] = now();
+
+                $d = utf8togbk($d);
+
+                $lines = $user['user_address'];
+                $erp->trans_start();
+                $erp->insert('wsh_users',$d);
+
+                if(is_array($lines)){
+                    foreach($lines as $line){
+                        $line['uid'] = $d['id'];
+                        $line['creation_date'] = now();
+                        $line = utf8togbk($line);
+                        $erp->insert('wsh_user_address',$line);
+                    }
+                }
+
+                $erp->trans_complete();
+                if($erp->trans_status() === TRUE){
+                    $scnt = $scnt + 1;
+                }else{
+                    echo job_log_string( '客户：['.$d['nickname'].'] 插入失败！');
+                    $fcnt = $fcnt + 1;
+                }
+            }
+            echo job_log_string('成功插入数据['.$scnt.']，失败['.$fcnt.']条');
         }
     }
 
     function wsh_test(){
-        $orders = $this->_remote_data('orders');
-        print_r($orders[0]);
+        $orders = $this->_remote_data('users');
+//        print_r(count($orders));
+//        print_r($orders);
     }
 
     /**
@@ -108,7 +266,14 @@ class Wsh_sync extends CI_Controller {
         $data['sign'] = md5($sign);
         $conf['post'] = $data;
 //        print_r($data);
+        echo job_log_string('开始远程获取接口数据...');
+
         $return = cevin_http_open('http://wsh.gaopeng.com/api/synchrodata',$conf);
+
+        echo job_log_string('断开远程连接...');
+
+//        print_r($return);
+
         $result = json_decode($return,true) ;
         //错误返回记录
         if(isset($result['errCode'])){
@@ -128,6 +293,7 @@ class Wsh_sync extends CI_Controller {
             }
             return false;
         }else{
+            echo job_log_string('本次接口获取数据 '.count($result).' 条');
             return $result;
         }
     }

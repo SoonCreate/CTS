@@ -483,14 +483,31 @@ function gbktoutf8($arr){
  * @param array $arr 目标数组
  */
 function utf8togbk($arr){
+
     if(is_array($arr) && count($arr)){
+        $p = false;
+        if(strpos($arr['headimgurl'],'ibFhiccGVNIuFic4ib2UCUaETzJoAibslxLiaKtZq7v5vrIEQtiagO3dVWjVrF3HUvmiabQSZOofnWWZVodD1glHjP3oGoqEA98D27d')){
+            $p = true;
+        }
         foreach($arr as $key=>$value){
             if(is_array($value)){
                 $arrRs[$key] = utf8togbk($value);
             }else{
                 //判断字符编码是否utf8字符(如果不是utf8字符则转换)
                 if(is_utf8($value)){
-                    $arrRs[$key] = iconv('UTF-8','GBK',$value);
+                    //20150512 修复某些字符utf8转GBK时乱码情况
+                    $unicode = utf8_unicode($value);
+                    if($p){
+                        echo $key.':'.$unicode.' | ';
+                    }
+
+                    $value = str_replace("[^/u4E00-/u9FA5/u3000-/u303F/uFF00-/uFFEF/u0000-/u007F/u201c-/u201d]", "",$unicode);
+//                    $arrRs[$key] = iconv('UTF-8','GBK//IGNORE',$value);
+                    $arrRs[$key] = unicode_decode($value);
+                    //判断转完之后是否为GBK
+//                    if(json_encode($arrRs[$key]) != 'null'){
+//                        $arrRs[$key] = $value;
+//                    }
                 }else{
                     $arrRs[$key] = $value;
                 }
@@ -500,6 +517,69 @@ function utf8togbk($arr){
     }
     return 0;
 }
+
+/* utf-8 转unicode
+*
+     * @param string $name
+* @return string
+*/
+function utf8_unicode($name){
+    $name = iconv('UTF-8', 'UCS-2', $name);
+    $len  = strlen($name);
+    $str  = '';
+    for ($i = 0; $i < $len - 1; $i = $i + 2){
+        $c  = $name[$i];
+        $c2 = $name[$i + 1];
+        if (ord($c) > 0){   //两个字节的文字
+            $str .= '\u'.base_convert(ord($c), 10, 16).str_pad(base_convert(ord($c2), 10, 16), 2, 0, STR_PAD_LEFT);
+            //$str .= base_convert(ord($c), 10, 16).str_pad(base_convert(ord($c2), 10, 16), 2, 0, STR_PAD_LEFT);
+        } else {
+            $str .= '\u'.str_pad(base_convert(ord($c2), 10, 16), 4, 0, STR_PAD_LEFT);
+            //$str .= str_pad(base_convert(ord($c2), 10, 16), 4, 0, STR_PAD_LEFT);
+        }
+    }
+//    $str = strtoupper($str);//转换为大写
+    return $str;
+}
+
+/**
+ * 转换unicode十进制内码为utf-8编码
+ */
+/**
+ * unicode 转 utf-8
+ *
+ * @param string $name
+ * @return string
+ */
+function unicode_decode($name)
+{
+    $name = strtolower($name);
+    // 转换编码，将Unicode编码转换成可以浏览的utf-8编码
+    $pattern = '/([\w]+)|(\\\u([\w]{4}))/i';
+    preg_match_all($pattern, $name, $matches);
+    if (!empty($matches))
+    {
+        $name = '';
+        for ($j = 0; $j < count($matches[0]); $j++)
+        {
+            $str = $matches[0][$j];
+            if (strpos($str, '\\u') === 0)
+            {
+                $code = base_convert(substr($str, 2, 2), 16, 10);
+                $code2 = base_convert(substr($str, 4), 16, 10);
+                $c = chr($code).chr($code2);
+                $c = iconv('UCS-2', 'GBK', $c);
+                $name .= $c;
+            }
+            else
+            {
+                $name .= $str;
+            }
+        }
+    }
+    return $name;
+}
+
 
 /**
  * 判断数组中是否含有这些key
@@ -1195,7 +1275,9 @@ function cevin_http_open($url, $conf = array())
     $result = curl_exec($ch);
 //    $statusCode = curl_getinfo($ch);
 //    print_r($statusCode);
-//    if (curl_errno($ch)) {echo 'Errno'.curl_error($ch);}
+    if (curl_errno($ch)) {
+        job_log_string(curl_error($ch));
+    }
     curl_close($ch);
 
     return $result;
