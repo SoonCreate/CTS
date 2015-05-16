@@ -479,9 +479,8 @@ function utf8togbk($arr){
                 $arrRs[$key] = utf8togbk($value);
             }else{
                 //判断字符编码是否utf8字符(如果不是utf8字符则转换)
-                //20150512 修复某些字符utf8转GBK时乱码情况，用mb_detect_encoding代替is_utf8
                 if(mb_detect_encoding($value) == 'UTF-8'){
-
+                    //20150512 修复某些字符utf8转GBK时乱码情况
 //                    $unicode = utf8_unicode($value);
 //                    if($p){
 //                        echo $key.':'.$unicode.' | ';
@@ -490,10 +489,10 @@ function utf8togbk($arr){
 //                    $value = str_replace("[^/u4E00-/u9FA5/u3000-/u303F/uFF00-/uFFEF/u0000-/u007F/u201c-/u201d]", "",$unicode);
                     $arrRs[$key] = iconv('UTF-8','GBK//IGNORE',$value);
 //                    $arrRs[$key] = unicode_decode($value);
-                    //判断转完之后是否为GBK
-//                    if(json_encode($arrRs[$key]) != 'null'){
-//                        $arrRs[$key] = $value;
-//                    }
+                    //判断转完之后是否为GBK，对以上逻辑的补充，可增加转换成功率
+                    if(json_encode($arrRs[$key]) != 'null'){
+                        $arrRs[$key] = $value;
+                    }
                 }else{
                     $arrRs[$key] = $value;
                 }

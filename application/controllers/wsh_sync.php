@@ -198,7 +198,7 @@ class Wsh_sync extends CI_Controller {
             $scnt = 0;
             foreach($users as $o){
                 $user = $o['WxUserInfo'];
-                $d['id'] = NULL;
+                $d['id'] = $user['id'];
                 $d['nickname'] = $user['nickname'];
                 $d['mobile'] = $user['mobile'];
                 $d['sex'] = $user['sex'];
@@ -244,10 +244,64 @@ class Wsh_sync extends CI_Controller {
         }
     }
 
+    /**
+     *  微商户客户同步到ERP客户
+     */
+    function add_user_to_erp_customer(){
+        //确定导入范围为已有订单的客户
+        $erp = $this->load->database('erp',true,true);
+        $sql = 'select * from wsh_users as c where
+              exists(select 1 from wsh_orders as o where c.id = o.uid)
+            and not exists(select 1 from customer as e where e.wsh_uid = c.id);';
+        $cs = $erp->query($sql)->result_array();
+
+        //统计成功/失败条目
+        $fcnt = 0;
+        $scnt = 0;
+
+        if(!empty($cs)){
+            foreach($cs as $c){
+                $data['cust_type'] = '门店';
+                $data['cust_id'] = $this->_customer_id();
+                $data['wsh_uid'] = $c['id'];
+                $data['cust_name'] = $c['nickname'];
+                $address = $this->_user_address($c['id']);
+                if($address){
+                    $data['tel'] = $address['mobile'];
+                    if(is_null($data['cust_name'] )){
+                        $data['cust_name']  = $address['name'] ;
+                    }
+                    $data['contact'] = $address['name'] ;
+                    $data['area'] = $address['area'];
+                    $data['address'] = $address['province'].$address['city'].$address['area'].$address['address'];
+                }else{
+                    //客户名称为必输
+                    if(is_null($data['cust_name'] )){
+                        $data['cust_name']  = '无' ;
+                    }
+                    $data['tel'] = $c['mobile'];
+                    $data['contact'] = $c['nickname'];
+                    $data['area'] = $c['city'];
+                    $data['address'] = NULL;
+                }
+
+                $data = utf8togbk($data);
+
+                if($erp->insert('customer',$data)) {
+                    $scnt = $scnt + 1;
+                }else{
+                    echo job_log_string('客户：['. $data['cust_name'].'] 插入失败！');
+                    $fcnt = $fcnt + 1;
+                }
+
+            }
+        }
+        echo job_log_string('成功插入数据['.$scnt.']，失败['.$fcnt.']条');
+    }
+
     function wsh_test(){
         $orders = $this->_remote_data('users');
-//        print_r(count($orders));
-//        print_r($orders);
+        print_r($orders);
     }
 
     /**
@@ -295,6 +349,31 @@ class Wsh_sync extends CI_Controller {
         }else{
             echo job_log_string('本次接口获取数据 '.count($result).' 条');
             return $result;
+        }
+    }
+
+    //新建客户记录获取用户id
+    function _customer_id(){
+        $erp = $this->load->database('erp',true,true);
+        //cust_id计算逻辑：获取最大字符串，然后自增一并补前导零
+        $last_row = $erp->query('select max(cust_id) as id from customer')->result_array();
+        if(empty($last_row)){
+            $id = 1;
+        }else{
+            $id = intval($last_row[0]['id']) + 1;
+        }
+        $customer_id = sprintf('%06d',$id);
+        return $customer_id;
+    }
+
+    //获取微商户客户地址
+    function _user_address($uid){
+        $erp = $this->load->database('erp',true,true);
+        $row = $erp->query('select * from wsh_user_address where uid = '.$uid)->result_array();
+        if(empty($row)){
+            return false;
+        }else{
+            return $row[0];
         }
     }
 

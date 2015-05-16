@@ -65,7 +65,7 @@ $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
 #mssqlserver ODBC连接方式解决方案
-$db['erp']['hostname'] = "Driver={SQL Server Native Client 10.0};Server=localhost;Database=ZTT;";
+$db['erp']['hostname'] = "Driver={SQL Server Native Client 10.0};Server=localhost;Database=ZTT_new;";
 $db['erp']['username'] = "sa";
 $db['erp']['password'] = "325604";
 $db['erp']['database'] = "ReportServer";
