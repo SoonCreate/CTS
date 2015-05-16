@@ -470,28 +470,21 @@ function gbktoutf8($arr){
 function utf8togbk($arr){
 
     if(is_array($arr) && count($arr)){
-//        $p = false;
-//        if(strpos($arr['headimgurl'],'ibFhiccGVNIuFic4ib2UCUaETzJoAibslxLiaKtZq7v5vrIEQtiagO3dVWjVrF3HUvmiabQSZOofnWWZVodD1glHjP3oGoqEA98D27d')){
-//            $p = true;
-//        }
         foreach($arr as $key=>$value){
             if(is_array($value)){
                 $arrRs[$key] = utf8togbk($value);
             }else{
                 //判断字符编码是否utf8字符(如果不是utf8字符则转换)
                 if(mb_detect_encoding($value) == 'UTF-8'){
-                    //20150512 修复某些字符utf8转GBK时乱码情况
-//                    $unicode = utf8_unicode($value);
-//                    if($p){
-//                        echo $key.':'.$unicode.' | ';
-//                    }
 
-//                    $value = str_replace("[^/u4E00-/u9FA5/u3000-/u303F/uFF00-/uFFEF/u0000-/u007F/u201c-/u201d]", "",$unicode);
                     $arrRs[$key] = iconv('UTF-8','GBK//IGNORE',$value);
-//                    $arrRs[$key] = unicode_decode($value);
+
                     //判断转完之后是否为GBK，对以上逻辑的补充，可增加转换成功率
+                    //20150516 修复某些字符utf8转GBK时乱码情况
                     if(json_encode($arrRs[$key]) != 'null'){
-                        $arrRs[$key] = $value;
+                        $unicode = utf8_unicode($value);
+                        $value = str_replace("[^/u4E00-/u9FA5/u3000-/u303F/uFF00-/uFFEF/u0000-/u007F/u201c-/u201d]", "",$unicode);
+                        $arrRs[$key] = unicode_decode($value);
                     }
                 }else{
                     $arrRs[$key] = $value;
@@ -553,7 +546,7 @@ function unicode_decode($name)
                 $code = base_convert(substr($str, 2, 2), 16, 10);
                 $code2 = base_convert(substr($str, 4), 16, 10);
                 $c = chr($code).chr($code2);
-                $c = iconv('UCS-2', 'UTF-8', $c);
+                $c = iconv('UCS-2', 'GBK', $c);
                 $name .= $c;
             }
             else

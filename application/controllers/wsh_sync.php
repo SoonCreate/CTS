@@ -300,7 +300,7 @@ class Wsh_sync extends CI_Controller {
     }
 
     function wsh_test(){
-        $orders = $this->_remote_data('users');
+        $orders = $this->_remote_data('orders');
         print_r($orders);
     }
 
