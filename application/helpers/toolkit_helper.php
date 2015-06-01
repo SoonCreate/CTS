@@ -451,7 +451,7 @@ function gbktoutf8($arr){
             if(is_array($value)){
                 $arrRs[$key] = gbktoutf8($value);
             }else{
-                if(!is_utf8($value)){
+                if(mb_detect_encoding($value) != 'UTF-8'){
                     $arrRs[$key] = iconv('GBK','UTF-8',$value);
                 }else{
                     $arrRs[$key] = $value;
