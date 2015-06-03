@@ -139,6 +139,7 @@ class Wsh_sync extends CI_Controller {
                 $d['point_discount'] = floatval($order['point_discount']);
                 $d['should_pay'] = floatval($order['should_pay']);
                 $d['is_income'] = intval($order['is_income']);
+                $d['is_translate'] = 0;
 
                 //urt8 转 gbk
                 $d = utf8togbk($d);
@@ -152,10 +153,16 @@ class Wsh_sync extends CI_Controller {
                     //插入订单明细行
                     if(is_array($lines)){
                         foreach($lines as $line){
-                            $line['order_id'] = $order['id'];
-                            $line['creation_date'] = now();
                             $line = utf8togbk($line);
-                            $erp->insert('wsh_order_lines',$line);
+                            $ld['order_id'] = $order['id'];
+                            $ld['mid'] = $line['product_id'];
+                            $ld['product_name'] = $line['product_name'];
+                            $ld['product_code'] = $line['product_code'];
+                            $ld['quantity'] = intval($line['quantity']);
+                            $ld['price'] = floatval($line['price']);
+                            $ld['creation_date'] = now();
+//                            $line = utf8togbk($line);
+                            $erp->insert('wsh_order_lines',$ld);
                         }
                     }
                     $erp->trans_complete();
@@ -311,11 +318,11 @@ class Wsh_sync extends CI_Controller {
      */
     private function _remote_data($type){
         $data['mark'] = $type;
-        $data['app_key'] = '1178';
+        $data['app_key'] = '1178'; //19023
         $data['time'] = time();
         $data['type'] = 'export';
         $data['format'] = 'json';
-        $sign = 'app_key='.$data['app_key'].'&app_secret=0a3f08d7ab7ef7e3ec292e65d90a0254&time='.$data['time'];
+        $sign = 'app_key='.$data['app_key'].'&app_secret=0a3f08d7ab7ef7e3ec292e65d90a0254&time='.$data['time'];//e2b5171eb23ece4287495f49a2f535e5
 //        echo $sign;
         $data['sign'] = md5($sign);
         $conf['post'] = $data;
