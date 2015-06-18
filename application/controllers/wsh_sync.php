@@ -261,7 +261,7 @@ class Wsh_sync extends CI_Controller {
 
         if(!empty($cs)){
             foreach($cs as $c){
-                $data['cust_type'] = '门店';
+                $data['cust_type'] = '微信';
                 $data['cust_id'] = $this->_customer_id();
                 $data['wsh_uid'] = $c['id'];
                 $data['cust_name'] = $c['nickname'];
