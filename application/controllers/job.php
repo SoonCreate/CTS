@@ -4,7 +4,7 @@ class Job extends CI_Controller {
 
     function __construct(){
         parent::__construct();
-        header('Content-Type: text/html; charset=utf-8');
+//        header('Content-Type: text/html; charset=utf-8');
         $this->load->model('job_model');
         $this->load->model('job_step_model');
         $this->load->model('job_history_model');
@@ -401,6 +401,7 @@ class Job extends CI_Controller {
 
     //单个运行
     function single_run($id){
+//        log_message('error',$id);
         set_sess('uid',-1);
         //必须是job客户端访问
         if($this->input->is_cli_request()){

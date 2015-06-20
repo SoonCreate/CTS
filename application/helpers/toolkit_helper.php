@@ -474,26 +474,34 @@ function utf8togbk($arr){
             if(is_array($value)){
                 $arrRs[$key] = utf8togbk($value);
             }else{
-                //判断字符编码是否utf8字符(如果不是utf8字符则转换)
-                if(mb_detect_encoding($value) == 'UTF-8'){
-
-                    $arrRs[$key] = iconv('UTF-8','GBK//IGNORE',$value);
-
-                    //判断转完之后是否为GBK，对以上逻辑的补充，可增加转换成功率
-                    //20150516 修复某些字符utf8转GBK时乱码情况
-                    if(json_encode($arrRs[$key]) != 'null'){
-                        $unicode = utf8_unicode($value);
-                        $value = str_replace("[^/u4E00-/u9FA5/u3000-/u303F/uFF00-/uFFEF/u0000-/u007F/u201c-/u201d]", "",$unicode);
-                        $arrRs[$key] = unicode_decode($value);
-                    }
-                }else{
-                    $arrRs[$key] = $value;
-                }
+                $arrRs[$key] = _toGBK($value);
             }
+            //替换英文单引号，sql中插入会报错，单引号为特殊字符
+            $arrRs[$key] = str_replace("'","''",$arrRs[$key]);
         }
         return $arrRs;
     }
     return 0;
+}
+
+function _toGBK($value){
+    $rt = '';
+    //判断字符编码是否utf8字符(如果不是utf8字符则转换)
+    if(mb_detect_encoding($value) == 'UTF-8'){
+
+        $rt = iconv('UTF-8','GBK//IGNORE',$value);
+
+        //判断转完之后是否为GBK，对以上逻辑的补充，可增加转换成功率
+        //20150516 修复某些字符utf8转GBK时乱码情况
+        if(json_encode($rt) != 'null'){
+            $unicode = utf8_unicode($value);
+            $value = str_replace("[^/u4E00-/u9FA5/u3000-/u303F/uFF00-/uFFEF/u0000-/u007F/u201c-/u201d]", "",$unicode);
+            $rt = unicode_decode($value);
+        }
+    }else{
+        $rt = $value;
+    }
+    return $rt;
 }
 
 /* utf-8 转unicode

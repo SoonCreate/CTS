@@ -31,7 +31,7 @@ class Wsh_sync extends CI_Controller {
 
     function __construct(){
         parent::__construct();
-        header('Content-Type: text/html; charset=utf-8');
+        //header('Content-Type: text/html; charset=utf-8');
     }
 
     /**
@@ -257,42 +257,65 @@ class Wsh_sync extends CI_Controller {
     function add_user_to_erp_customer(){
         //确定导入范围为已有订单的客户
         $erp = $this->load->database('erp',true,true);
-        $sql = 'select * from wsh_users as c where
-              exists(select 1 from wsh_orders as o where c.id = o.uid)
-            and not exists(select 1 from customer as e where e.wsh_uid = c.id);';
-        $cs = $erp->query($sql)->result_array();
+//        $sql = 'select * from wsh_users as c where
+//              exists(select 1 from wsh_orders as o where c.id = o.uid)
+//            and not exists(select 1 from customer as e where e.wsh_uid = c.id);';
+        //修复已下达订单的客户不在wsh_users表中，直接从order表拿客户数据 20150620
+        //获取uid集合
+        $sql = "select distinct uid from wsh_orders as o where not exists(select 1 from customer as c where c.wsh_uid = o.uid)
+              and o.order_status not in ('待付款','取消')
+              and  o.province <> '到店自取'
+              and  o.name <> '' ";
+        $cs = $erp->query(_toGBK($sql))->result_array();
 
         //统计成功/失败条目
         $fcnt = 0;
         $scnt = 0;
 
         if(!empty($cs)){
-            foreach($cs as $c){
-                $data['cust_type'] = '微信';
-                $data['cust_id'] = $this->_customer_id();
-                $data['wsh_uid'] = $c['id'];
-                $data['cust_name'] = $c['nickname'];
-                $address = $this->_user_address($c['id']);
-                if($address){
-                    $data['tel'] = $address['mobile'];
-                    if(is_null($data['cust_name'] )){
-                        $data['cust_name']  = $address['name'] ;
-                    }
-                    $data['contact'] = $address['name'] ;
-                    $data['area'] = $address['area'];
-                    $data['address'] = $address['province'].$address['city'].$address['area'].$address['address'];
-                }else{
-                    //客户名称为必输
-                    if(is_null($data['cust_name'] )){
-                        $data['cust_name']  = '无' ;
-                    }
+            foreach($cs as $row){
+                //获取客户信息
+                $sql = "select top 1 * from wsh_users where id = ".$row['uid'];
+                $users = $erp->query($sql)->result_array();
+                if(empty($users)){
+                    //获取单条订单数据
+                    $sql = "select top 1 * from wsh_orders where uid = ".$row['uid'];
+                    $rs = $erp->query($sql)->result_array();
+                    $c = $rs[0];
+                    $data['cust_type'] = _toGBK('微信');
+                    $data['cust_id'] = $this->_customer_id();
+                    $data['wsh_uid'] = $c['uid'];
+                    $data['cust_name'] = $c['name'];
                     $data['tel'] = $c['mobile'];
-                    $data['contact'] = $c['nickname'];
-                    $data['area'] = $c['city'];
-                    $data['address'] = NULL;
+                    $data['contact'] = $data['cust_name'];
+                    $data['area'] = $c['area'];
+                    $data['address'] = $c['province'].$c['city'].$c['area'].$c['address'];
+                }else{
+                    $c = $users[0];
+                    $data['cust_type'] = _toGBK('微信');
+                    $data['cust_id'] = $this->_customer_id();
+                    $data['wsh_uid'] = $c['id'];
+                    $data['cust_name'] = $c['nickname'];
+                    $address = $this->_user_address($c['id']);
+                    if($address){
+                        $data['tel'] = $address['mobile'];
+                        if(is_null($data['cust_name'] ) || $data['cust_name'] == ''){
+                            $data['cust_name']  = $address['name'] ;
+                        }
+                        $data['contact'] = $address['name'] ;
+                        $data['area'] = $address['area'];
+                        $data['address'] = $address['province'].$address['city'].$address['area'].$address['address'];
+                    }else{
+                        //客户名称为必输
+                        if(is_null($data['cust_name'] ) || $data['cust_name'] == ''){
+                            $data['cust_name']  = '未知' ;
+                        }
+                        $data['tel'] = $c['mobile'];
+                        $data['contact'] = $c['nickname'];
+                        $data['area'] = $c['city'];
+                        $data['address'] = NULL;
+                    }
                 }
-
-                $data = utf8togbk($data);
 
                 if($erp->insert('customer',$data)) {
                     $scnt = $scnt + 1;
@@ -307,7 +330,7 @@ class Wsh_sync extends CI_Controller {
     }
 
     function wsh_test(){
-        $orders = $this->_remote_data('orders');
+        $orders = $this->_remote_data('users');
         print_r($orders);
     }
 
@@ -318,11 +341,11 @@ class Wsh_sync extends CI_Controller {
      */
     private function _remote_data($type){
         $data['mark'] = $type;
-        $data['app_key'] = '1178'; //19023
+        $data['app_key'] = '19023'; //19023
         $data['time'] = time();
         $data['type'] = 'export';
         $data['format'] = 'json';
-        $sign = 'app_key='.$data['app_key'].'&app_secret=0a3f08d7ab7ef7e3ec292e65d90a0254&time='.$data['time'];//e2b5171eb23ece4287495f49a2f535e5
+        $sign = 'app_key='.$data['app_key'].'&app_secret=e2b5171eb23ece4287495f49a2f535e5&time='.$data['time'];//e2b5171eb23ece4287495f49a2f535e5
 //        echo $sign;
         $data['sign'] = md5($sign);
         $conf['post'] = $data;
