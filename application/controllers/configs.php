@@ -33,7 +33,7 @@ class Configs extends CI_Controller {
                                 $slm = new Status_line_model();
                                 $this->db->trans_start();
                                 foreach($order_types as $t){
-                                    $line = $slm->find_by_view(array('status_code'=>default_value('status',$t['value']),'segment_value'=>'reopen'));
+                                    $line = $slm->find_by_view(array('status_code'=>default_value('status',$t['value']),'step_value'=>'reopen'));
                                     if(!empty($line)){
                                         $slm->update($line['id'],array('inactive_flag'=> !$v));
                                     }
