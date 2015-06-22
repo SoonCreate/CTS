@@ -26,7 +26,7 @@
  * @link
  */
 
- // ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
 /**
  * 加载wso模版，代替原来的view函数，自动加载action命名的view文件
@@ -449,7 +449,7 @@ function render_form_input($name,$required = FALSE,$disabled = FALSE,$label = nu
  * @return string   domNode
  */
 function render_input_with_options($name,$valuelist_name,$parentSegmentValue = 'undefined',$required = FALSE,$disabled = FALSE,$label = null,
-                                  $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array()){
+                                   $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array()){
     $echo = _dijit_header($name,$label,$required);
     $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';
     if($required){
@@ -554,8 +554,13 @@ function render_form_hidden($name,$value = null){
  * @return string   domNode
  */
 function render_form_dateTextBox($name,$required = FALSE,$disabled = FALSE,$label = null,$attributes = array(),$datetime = null){
+    //如果为转换则自动转换成日期格式
+    $data = _v($name);
+    if(is_numeric($data)){
+        $data = date('Y-m-d',$data);
+    }
     $echo = _dijit_header($name,$label,$required);
-    $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTextBox" trim="true" data-dojo-props ="constraints: {
+    $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'.$data.'" type="text" data-dojo-type="sckj/form/DateTextBox" trim="true" data-dojo-props ="constraints: {
             datePattern: \'y-M-d\'
         }"';
     if($required){
@@ -592,7 +597,11 @@ function render_form_dateTextBox($name,$required = FALSE,$disabled = FALSE,$labe
  * @return string
  */
 function render_form_timeTextBox($name,$required = FALSE,$disabled = FALSE,$attributes = array(),$h = '00',$m = '15',$s = '00'){
-    $echo = '<input data-dojo-type="sckj/form/TimeTextBox" name="'.$name.'" id="'.$name.'" value="'._v($name).'" data-dojo-props ="constraints: {
+    $data = _v($name);
+    if(is_numeric($data)){
+        $data = date('H:i:s',$data);
+    }
+    $echo = '<input data-dojo-type="sckj/form/TimeTextBox" name="'.$name.'" id="'.$name.'" value="'.$data.'" data-dojo-props ="constraints: {
             timePattern: \'HH:mm:ss\',
             clickableIncrement: \'T'.$h.':'.$m.':'.$s.'\',
             visibleIncrement:\'T'.$h.':'.$m.':'.$s.'\'
@@ -625,7 +634,13 @@ function render_form_timeTextBox($name,$required = FALSE,$disabled = FALSE,$attr
  */
 function render_form_dateTimeBox($name,$required = FALSE,$disabled = FALSE,$label = null,$work_time = false,$attributes = array()){
     $echo = _dijit_header($name,$label,$required);
-    $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'._v($name).'" type="text" data-dojo-type="sckj/form/DateTimeTextBox" trim="true" ';
+
+    $data = _v($name);
+    if(is_numeric($data)){
+        $data = date('Y-m-d H:i:s',$data);
+    }
+
+    $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'.$data.'" type="text" data-dojo-type="sckj/form/DateTimeTextBox" trim="true" ';
     if($required){
         $echo = $echo. ' required ';
     }
@@ -684,7 +699,7 @@ function render_form_comboBox($name,$required = FALSE,$disabled = FALSE,$label =
 
     $echo = $echo. '<input data-dojo-type="'.$dojo_type.'" data-dojo-props="store:stateStore_'._sess('cm').', searchAttr:\''.
         $search_attr.'\',labelAttr:\''.$label_attr.'\'"'.
-           'name="'.$name.'" id="'.$name.'" value="'._v($name).'"';
+        'name="'.$name.'" id="'.$name.'" value="'._v($name).'"';
 
     if($required){
         $echo = $echo. ' required ';
