@@ -180,7 +180,7 @@ class Order extends CI_Controller {
             //是否只能看到自己的订单
             $am = new Auth_model();
             $pass = true;
-            if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE')) ){
+            if(!$am->check_auth('only_mine_control',array('ao_true_or_false'=>'FALSE','ao_order_type'=>$order['order_type'])) ){
                 if($order['created_by'] == _sess('uid') || $order['leader_id'] == _sess('uid') || $order['manager_id'] == _sess('uid')){
                     $pass = true;
                 }else{

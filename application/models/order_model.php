@@ -39,73 +39,76 @@ class Order_model extends MY_Model{
 
         $totalCnt = 0;
 
-        //获取数据
-        if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'TRUE'))){
-            //与自己相关的用户id字段
-            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
+        //根据类型验证权限
+        foreach($types as $t){
+            //可以看他人的验证优先级比只能看自己的优先级高
+            if($am->check_auth('only_mine_control',array('ao_true_or_false'=>'FALSE','ao_order_type'=>$t))){
+                //分页显示
+                if(!is_null($end)){
+                    $om->limit($end+1,$start);
+                }
 
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
+                if($title){
+                    $this->db->like('title',$title);
+                }
 
-            //fix ：Error in Body._buildRowContent: Row is not in cache
-            if($title){
-                $this->db->like('title',$title);
+                if($status){
+                    $this->db->where('status',$status) ;
+                }
+
+                //获取允许查看的订单类型
+                $this->db->where_in('order_type',$types);
+                $om->order_by('id','DESC');
+                $os = $om->find_all();
+
+                if($title){
+                    $this->db->like('title',$title);
+                }
+                if($status){
+                    $this->db->where('status',$status) ;
+                }
+                //获取允许查看的订单类型
+                $this->db->where_in('order_type',$types);
+                $totalCnt = $totalCnt + $om->count_by();
+            }else{
+                //与自己相关的用户id字段
+                $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
+
+                //获取允许查看的订单类型
+                $this->db->where_in('order_type',$types);
+
+                //fix ：Error in Body._buildRowContent: Row is not in cache
+                if($title){
+                    $this->db->like('title',$title);
+                }
+                if(!is_null($status)){
+                    $this->db->where('status',$status) ;
+                }
+                $totalCnt = $om->count_by();
+
+                //分页显示
+                if(!is_null($end)){
+                    $om->limit($end+1,$start);
+                }
+
+                $om->order_by('id','DESC');
+
+                //与自己相关的用户id字段
+                $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
+
+                //获取允许查看的订单类型
+                $this->db->where_in('order_type',$types);
+
+                //fix ：Error in Body._buildRowContent: Row is not in cache
+                if($title){
+                    $this->db->like('title',$title);
+                }
+                if($status){
+                    $this->db->where('status',$status) ;
+                }
+
+                $os = $om->find_all();
             }
-            if(!is_null($status)){
-                $this->db->where('status',$status) ;
-            }
-            $totalCnt = $om->count_by();
-
-            //分页显示
-            if(!is_null($end)){
-                $om->limit($end+1,$start);
-            }
-
-            $om->order_by('id','DESC');
-
-            //与自己相关的用户id字段
-            $this->db->where('(created_by = '._sess('uid').' OR leader_id = '._sess('uid').' OR manager_id = '._sess('uid').')');
-
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-
-            //fix ：Error in Body._buildRowContent: Row is not in cache
-            if($title){
-                $this->db->like('title',$title);
-            }
-            if($status){
-                $this->db->where('status',$status) ;
-            }
-
-            $os = $om->find_all();
-        }else{
-            //分页显示
-            if(!is_null($end)){
-                $om->limit($end+1,$start);
-            }
-
-            if($title){
-                $this->db->like('title',$title);
-            }
-
-            if($status){
-                $this->db->where('status',$status) ;
-            }
-
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-            $om->order_by('id','DESC');
-            $os = $om->find_all();
-
-            if($title){
-                $this->db->like('title',$title);
-            }
-            if($status){
-                $this->db->where('status',$status) ;
-            }
-            //获取允许查看的订单类型
-            $this->db->where_in('order_type',$types);
-            $totalCnt = $om->count_by();
         }
 
         $os = _format($os,true);
