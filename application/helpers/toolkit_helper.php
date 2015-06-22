@@ -403,7 +403,9 @@ function zero_to_space($value){
  * @return bool
  */
 function string_to_boolean($s){
-    if(is_bool($s) && strcasecmp($s,'TRUE') == 0){
+    //is_bool PHP: 5.4.7 无法运行 bug?
+//    if(is_bool($s) && strcasecmp($s,'TRUE') == 0){
+    if(strcasecmp($s,'TRUE') == 0){
         return TRUE;
     }else{
         return FALSE;
