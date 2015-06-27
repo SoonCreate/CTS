@@ -29,8 +29,14 @@
             "dijit/registry",
             "dojo/ready",
             "dojo/request",
+            "dojo/on",
+            "dojo/mouse",
+            "dojo/dom-class",
+            "dijit/popup",
+            "dijit/Menu",
+            "dijit/MenuItem",
             "dojo/domReady!"],
-        function(parser,dom,query,registry,ready,request){
+        function(parser,dom,query,registry,ready,request,on,mouse,domClass,popup,Menu,MenuItem){
             ready(function(){
                 $ = query;
                 $dom = dom;
@@ -45,6 +51,64 @@
                 },null,"W");
 
                 <?php }?>
+
+                //监控左侧导航按钮
+                dojo.forEach(registry.byId("mainTabContainer").tablist.containerNode.childNodes,function(node){
+                    var pMenu = new Menu({
+                        //失去焦点时隐藏
+                        onBlur : function () {
+                            popup.close(this);
+                        }
+                    });
+                    pMenu.addChild(new MenuItem({
+                        label : '菜单项一',
+                        style : "height:40px;width:100px"
+                    }));
+                    pMenu.addChild(new MenuItem({
+                        label : '菜单项2'
+                    }));pMenu.addChild(new MenuItem({
+                        label : '菜单项3'
+                    }));pMenu.addChild(new MenuItem({
+                        label : '菜单项4'
+                    }));pMenu.addChild(new MenuItem({
+                        label : '菜单项4'
+                    }));
+                    pMenu.addChild(new MenuItem({
+                        label : '菜单项4'
+                    }));
+                    pMenu.addChild(new MenuItem({
+                        label : '菜单项4'
+                    }));
+                    pMenu.addChild(new MenuItem({
+                        label : '菜单项4'
+                    }));
+                    pMenu.addChild(new MenuItem({
+                        label : '菜单项4'
+                    }));
+
+
+
+                    //鼠标移动上去时弹出菜单
+                    on(node,mouse.enter,function(evt){
+                        //只有被打开的页签才显示菜单项
+                        if(domClass.contains(node,"dijitTabChecked")){
+                            console.info('googd');
+                            popup.open({
+                                popup: pMenu,
+                                around: node,
+                                orient : [ "after"]
+//                                x: 10,
+//                                y: 10
+//                                onExecute: null,
+//                                onCancel: null,
+//                                orient: pMenu.isLeftToRight() ? 'L' : 'R'
+                            });
+                            //默认聚焦
+                            pMenu.focus();
+                        }
+                    });
+
+                });
 
             });
         });
