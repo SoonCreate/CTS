@@ -34,12 +34,12 @@
              if (is_array ($def)) {
                 $ix = 0;
                 while ( $ix < count ($def) &&
-                      !( $def[$ix][name] == $name && $def[$ix][type] == "TABLE") )
+                      !( $def[$ix]['name'] == $name && $def[$ix]['type'] == "TABLE") )
                    $ix++;
                 if ( $ix != count ($def) ) {
-                   $members = &$def[$ix][def];
+                   $members = &$def[$ix]['def'];
                    for ($j=0; $j<count ($members); $j++)
-                      $this->rowStruct[] = $members[$j][name];
+                      $this->rowStruct[] = $members[$j]['name'];
                 }
              }
              $this->Rows();

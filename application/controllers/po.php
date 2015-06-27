@@ -16,6 +16,51 @@ class Po extends CI_Controller {
 
 	}
 
+    function test(){
+        $this->load->library('sapclasses/sap');
+        $sap = new SAPConnection();
+        $sap->Connect(array(
+            "ASHOST"=>"192.168.249.20"		// application server
+        ,"SYSNR"=>"00"				// system number
+        ,"CLIENT"=>"260"			// client
+        ,"USER"=>"ybchenyy"			// user
+        ,"PASSWD"=>"32560485617"		// password
+//				,"language"=>"ZH"
+//				,"own_codepage"=>"8400"
+//				,"CODEPAGE"=>"1100"
+//                ,"UNICODE"=>"1"
+//                ,"dest"=>"phprfc_230"
+//				,"partner_codepage"=>"8400"
+        ))  ;
+        if ($sap->GetStatus() == SAPRFC_OK ) $sap->Open ();
+        if ($sap->GetStatus() != SAPRFC_OK ) {
+            $sap->PrintStatus();
+            exit;
+        }
+
+        $fce = &$sap->NewFunction ("SO_USER_LIST_READ");
+        print_r($fce->GetDefinition());
+        if ($fce == false ) {
+            $sap->PrintStatus();
+            exit;
+        }
+
+        $fce->USER_GENERIC_NAME = "*";
+        $fce->Call();
+        // $fce->Debug();
+
+        if ($fce->GetStatus() == SAPRFC_OK) {
+            echo "<table><tr><td>SAP-Name</td><td>User-Number</td></tr>";
+            $fce->USER_DISPLAY_TAB->Reset();
+            while ( $fce->USER_DISPLAY_TAB->Next() )
+                echo "<tr><td>".$fce->USER_DISPLAY_TAB->row["SAPNAM"]."</td><td>".$fce->USER_DISPLAY_TAB->row["ADRNAME"]."</td></tr>";
+            echo "</table>";
+        } else
+            $fce->PrintStatus();
+
+        $sap->Close();
+    }
+
     function me23n(){
         $po_number = v('po_number');
         if($_POST){

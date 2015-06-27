@@ -1,7 +1,5 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-
-
 function callRFC($func_name='',$parameters){
     $sap_connection =  array(
         "ASHOST"=>"192.168.249.20"		// application server

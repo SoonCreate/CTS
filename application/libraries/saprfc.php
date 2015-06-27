@@ -70,7 +70,7 @@ class Saprfc {
 	   	{
 		   	$this->rfc_conn=@saprfc_open($this->logindata);
 			//bug fix 支持中文 20150627
-			saprfc_set_code_page($this->rfc_conn,"4110");
+			@saprfc_set_code_page($this->rfc_conn,"4110");
 			if (!$this->rfc_conn) {
 				return $this->setStatus(SAPRFC_ERROR,"saprfc::login()\nOpen RFC connection with saprfc_open() failed with error:\n".@saprfc_error());
 			}

@@ -16,7 +16,7 @@ define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/do
             //刷新前效果
             perRefresh : function(){
                 domStyle.set(this.domNode, "opacity", "1");
-                baseFx.fadeOut({node: this.domNode ,duration:100}).play();
+                //baseFx.fadeOut({node: this.domNode ,duration:100}).play();
             },
 
             onLoad : function(){
@@ -42,6 +42,7 @@ define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/do
                         }
                     }).play();
                 }
+                domStyle.set(this.domNode, "opacity", "0");
                 //动画加载
                 baseFx.fadeIn({node: this.domNode,duration:100 }).play();
                 if($env){

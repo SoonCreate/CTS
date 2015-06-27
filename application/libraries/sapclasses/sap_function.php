@@ -131,23 +131,23 @@
          {
             $interface = $this->def[$i];
             $buf.= "  \t array (\n";
-            $buf.= "  \t\t \"name\"=>\"".$interface[name]."\",\n";
-            $buf.= "  \t\t \"type\"=>\"".$interface[type]."\",\n";
-            $buf.= "  \t\t \"optional\"=>\"".$interface[optional]."\",\n";
+            $buf.= "  \t\t \"name\"=>\"".$interface['name']."\",\n";
+            $buf.= "  \t\t \"type\"=>\"".$interface['type']."\",\n";
+            $buf.= "  \t\t \"optional\"=>\"".$interface['optional']."\",\n";
             $buf.= "  \t\t \"def\"=> array (\n";
-            $typedef = $interface[def];
+            $typedef = $interface['def'];
             for ( $j=0; $j<count($typedef); $j++ )
             {
-               $buf.= "  \t\t\t array (\"name\"=>\"".$typedef[$j][name].
-                      "\",\"abap\"=>\"".$typedef[$j][abap]."\",\"len\"=>".
-                      $typedef[$j][len].",\"dec\"=>".$typedef[$j][dec].
-		      ",\"offset\"=>".$typedef[$j][offset].")";
+               $buf.= "  \t\t\t array (\"name\"=>\"".$typedef[$j]['name'].
+                      "\",\"abap\"=>\"".$typedef[$j]['abap']."\",\"len\"=>".
+                      $typedef[$j]['len'].",\"dec\"=>".$typedef[$j]['dec'].
+		      ",\"offset\"=>".$typedef[$j]['offset'].")";
                if ($j < (count($typedef)-1) )  $buf.= ",\n";
                                          else  $buf.= "\n";
             }
             $buf.= "  \t\t\t)\n";
             $buf.= "  \t)";
-            if ($i < (count($def)-1) ) $buf.= ",\n";
+            if ($i < (count($this->def)-1) ) $buf.= ",\n";
                                   else $buf.= "\n";
          }
          $buf.= "); \n";
@@ -179,8 +179,8 @@
          for ( $i=0; $i<count($this->def); $i++ )
          {
              $interface = &$this->def[$i];
-             $name = strtoupper($interface[name]);
-             $type = $interface[type];
+             $name = strtoupper($interface['name']);
+             $type = $interface['type'];
              if (  isset ($this->$name) )
              {
                  if ($type == "TABLE" && is_object ($this->$name) )
@@ -210,10 +210,10 @@
          for ( $i=0; $i<count($this->def); $i++ )
          {
              $interface = &$this->def[$i];
-             $name = strtoupper($interface[name]);
-             $type = $interface[type];
-             $members = &$interface[def];
-             if ( $type != "TABLE" && $members[0][name] != "")
+             $name = strtoupper($interface['name']);
+             $type = $interface['type'];
+             $members = &$interface['def'];
+             if ( $type != "TABLE" && $members[0]['name'] != "")
                  $type.="_STRUCT";
              switch ($type) {
                 case 'IMPORT'  :
@@ -289,8 +289,8 @@
          for ( $i=0; $i<count($this->def); $i++ )
          {
              $interface = &$this->def[$i];
-             $name = strtoupper($interface[name]);
-             $type = $interface[type];
+             $name = strtoupper($interface['name']);
+             $type = $interface['type'];
              switch ($type) {
                 case 'IMPORT'  :
                       if ($this->server == true)
