@@ -23,12 +23,12 @@ class Po extends CI_Controller {
             redirect_to('po','me23n',$data);
         }else{
             if($po_number){
-                $import['PURCHASEORDER'] = '4500043151';
+                $import['PURCHASEORDER'] = $po_number;
                 $export = array('PO_HEADER');
                 $table['PO_ITEMS'] = array();
                 $parameters = rfc_parameters($import,$export,$table);
                 $data = callRFC("BAPI_PO_GETDETAIL",$parameters);
-                print_r($data['PO_HEADER']);
+//                print_r($data['PO_HEADER']);
                 render_view('po/me23n_main',$data);
             }else{
                 render_view('po/me23n_search');
