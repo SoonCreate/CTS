@@ -56,54 +56,60 @@
                 dojo.forEach(registry.byId("mainTabContainer").tablist.containerNode.childNodes,function(node){
                     //鼠标移动上去时弹出菜单
                     on(node,mouse.enter,function(evt){
-                        //只有被打开的页签才显示菜单项
-                        if(domClass.contains(node,"dijitTabChecked")){
-                            //远程加载菜单
-                            request.get(url("welcome/module_function_list",{mid : $env.mid}),{handleAs : "json"}).then(function(data){
-                                //长度等于1无需显示菜单
-                                if(data && data.length > 1){
-                                    var pMenu = new Menu({
-                                        //失去焦点时隐藏
-                                        onBlur : function () {
-                                            popup.close(this);
-                                            this.destroy();
-                                            this.destroyRecursive();
-                                        }
-                                    });
+                        _navStartup(node);
+                    });
+                    //鼠标点击时弹出菜单
+                    on(node,'click',function(evt){
+                        _navStartup(node);
+                    });
+                });
 
-                                    for(var i=0;i<data.length;i++){
-                                        var fn = data[i];
-                                        pMenu.addChild(new MenuItem({
-                                            label : fn["function_desc"],
-                                            iconClass : "dijitEditorIcon icon-2x " + fn["function_display_class"],
-                                            fn : fn,
-                                            onClick : function(){
-                                                var fun = this.fn;
-                                                goto(url(fun["controller"] + "/" + fun["action"]),$env.mid);
-                                            }
-                                        }));
+            });
+            _navStartup  = function(node){
+                //只有被打开的页签才显示菜单项
+                if(domClass.contains(node,"dijitTabChecked")){
+                    //远程加载菜单
+                    request.get(url("welcome/module_function_list",{mid : $env.mid}),{handleAs : "json"}).then(function(data){
+                        //长度等于1无需显示菜单
+                        if(data && data.length > 1){
+                            var pMenu = new Menu({
+                                //失去焦点时隐藏
+                                onBlur : function () {
+                                    popup.close(this);
+                                    this.destroy();
+                                    this.destroyRecursive();
+                                }
+                            });
+
+                            for(var i=0;i<data.length;i++){
+                                var fn = data[i];
+                                pMenu.addChild(new MenuItem({
+                                    label : fn["function_desc"],
+                                    iconClass : "dijitEditorIcon icon-2x " + fn["function_display_class"],
+                                    fn : fn,
+                                    onClick : function(){
+                                        var fun = this.fn;
+                                        goto(url(fun["controller"] + "/" + fun["action"]),$env.mid);
                                     }
-                                    popup.open({
-                                        popup: pMenu,
-                                        around: node,
-                                        orient : [ "after"]
+                                }));
+                            }
+                            popup.open({
+                                popup: pMenu,
+                                around: node,
+                                orient : [ "after"]
 //                                x: 10,
 //                                y: 10
 //                                onExecute: null,
 //                                onCancel: null,
 //                                orient: pMenu.isLeftToRight() ? 'L' : 'R'
-                                    });
-                                    //默认聚焦
-                                    pMenu.focus();
-                                }
                             });
-
+                            //默认聚焦
+                            pMenu.focus();
                         }
                     });
 
-                });
-
-            });
+                }
+            }
         });
 
     function url(s,parmas){

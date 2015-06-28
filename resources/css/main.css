@@ -678,12 +678,12 @@ html, body {
     top: 0px;
     display:inline-block;
     background: #29BB9C;
-    width:178px;
-    height:19px;
-    padding: 7px 10px;
+    width:60px;
+    height:18px;
+    padding: 4px 5px 4px 10px;
     color:#fff;
     font-family:"Microsoft Yahei";
-    font-weight: bold;
+    /*font-weight: bold;*/
     z-index: 999999;
     margin-right: 10px;
     margin:0 !important;
@@ -830,6 +830,21 @@ html, body {
     color:#1ABC9C;
 }
 
+/*调整工具栏样式*/
+.sc .dijitToolbar {
+    /*border-bottom: 1px solid #b5bcc7;
+    background-color: #efefef;
+    background-image: url("images/standardGradient.png");
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+    background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+    background-image: -o-linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+    _background-image: none;*/
+    padding: 12px 0 11px 15px;
+    zoom: 1;
+
+}
 /*失效的time控件列表不显示*/
 .sc .dijitTimePickerItemDisabled{
      display: none;

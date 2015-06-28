@@ -6,7 +6,7 @@
     <?php $this->load->view('_perloading') ?>
 </head>
 <body class="sc">
-<div id="preloader"><i class=""></i>Loading......</div>
+<div id="preloader"><i class=""></i><?= label('loading')?> ...</div>
 
 <div data-dojo-type="dijit/layout/BorderContainer" id="mainContainer"
      data-dojo-props="gutters:false">

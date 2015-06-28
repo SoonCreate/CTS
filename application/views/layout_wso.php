@@ -15,9 +15,14 @@
 <div id="toolbar" data-dojo-type="sckj/Toolbar" class="fixtop">
 <!--    <div data-dojo-type="dijit/form/Button" id="toolbar1.cut"-->
 <!--         data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut', showLabel:false">Cut</div>-->
-    <?= render_button('menu','menu()') ?>
-    <?= render_button('back','goback()') ?>
-    <?= render_button('refresh','refresh()') ?>
+<!--    --><?//= render_button('menu','menu()') ?>
+    <button type="button" data-dojo-type="sckj/form/Button"
+            id = "wsoGoBack"
+            iconClass="icon-reply icon-large"
+            onclick="goback()"
+            showLabel = "false"
+            title="<?= label('back')?>"></button>
+    <?= render_icon_button('icon-refresh icon-large','refresh','refresh()')?>
 </div>
 
 <div class="formalert row" id="<?= _sess('cm')?>_formalert" style="display: none">

@@ -853,6 +853,21 @@ function render_button($label_name,$onclick = "",$class = 'normal'){
     return '<button type="button" data-dojo-type="dijit/form/Button" class="'.$class.'" onclick="'.$onclick.'">'.label($label_name).'</button>';
 }
 
+function render_icon_button($iconClass = '',$label_name = null,$onclick = "",$class = '',$disabled = false){
+    if($disabled === true){
+        $disabled = 'disabled';
+    }else{
+        $disabled = '';
+    }
+    return '<button type="button" data-dojo-type="sckj/form/Button"
+            iconClass="'.$iconClass.'"
+            onclick="'.$onclick.'"
+            showLabel = "false"
+            class = "'.$class.'"
+            title="'.label($label_name).'"
+            '.$disabled.'></button>';
+}
+
 /**
  * 按钮组，默认带提交按钮
  * @param array $buttons    按钮组

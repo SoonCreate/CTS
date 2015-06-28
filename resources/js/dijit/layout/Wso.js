@@ -1,5 +1,5 @@
-define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/dom-style"],
-    function(declare,ContentPane,baseFx,domStyle){
+define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/dom-style","dojo/dom"],
+    function(declare,ContentPane,baseFx,domStyle,dom){
         return declare("",[ContentPane],{
             //模块id
             mid : "",
@@ -16,6 +16,9 @@ define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/do
             //刷新前效果
             perRefresh : function(){
                 domStyle.set(this.domNode, "opacity", "1");
+                var p = dom.byId("preloader");
+                domStyle.set(p, "opacity", "1");
+                domStyle.set(p,"display","block");
                 //baseFx.fadeOut({node: this.domNode ,duration:100}).play();
             },
 
@@ -33,7 +36,7 @@ define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/do
             refresh_env : function(){
                 var wso = this;
                 //预加载，加载后动画
-                if($dom.byId("preloader")){
+                if(dom.byId("preloader")){
                     baseFx.fadeOut({  //Get rid of the loader once parsing is done
                         node: "preloader",
                         //,
@@ -52,9 +55,22 @@ define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/do
                     wso.cm = $env.cm;
                     console.log("current module line id : "+ $env.cm +" mid : "+ $env.mid + " fid : " + $env.fid );
                 }
+
+                //每次刷新更新状态
+                this._refreshBackButton();
+
                 //如果性能过差，可以考虑注释
                 //refresh_notice_count();
                 //console.info(dijitObject('toolbar'));
+            },
+            //更新返回按钮状态，如果无返回则无法点击
+            _refreshBackButton : function(){
+                var backButton = dijitObject('wsoGoBack');
+                if($env.history == undefined || $env.history.length == 0){
+                    backButton.set("disabled",true);
+                }else{
+                    backButton.set("disabled",false);
+                }
             }
         });
     });
