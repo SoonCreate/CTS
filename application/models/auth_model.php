@@ -203,7 +203,17 @@ class Auth_model extends MY_Model{
         $this->db->distinct();
         $this->db->order_by('module_sort');
         $this->db->select('module_name,module_id,module_desc,module_display_class');
-        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1))->result_array();
+        $rs = $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1))->result_array();
+        if(!empty($rs)){
+            $default_module_display_class = _config('module_icon');
+        }
+        //设置功能默认图标
+        for($i = 0;$i < count($rs) ; $i++){
+            if(is_null($rs[$i]['module_display_class']) || $rs[$i]['module_display_class'] == ''){
+                $rs[$i]['module_display_class'] = $default_module_display_class;
+            }
+        }
+        return $rs;
     }
 
     //默认展示拥有权限的模块下的功能
@@ -212,7 +222,17 @@ class Auth_model extends MY_Model{
         $this->db->order_by('sort');
         $this->db->order_by('function_desc','desc');
         $this->db->select('function_name,function_id,function_desc,controller,action,id,function_display_class');
-        return $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1,'module_id'=>$module_id))->result_array();
+        $rs = $this->db->get_where('user_functions_v',array('user_id'=>_sess('uid'),'display_flag'=>1,'module_id'=>$module_id))->result_array();
+        if(!empty($rs)){
+            $default_function_display_icon = _config('function_icon');
+        }
+        //设置功能默认图标
+        for($i = 0;$i < count($rs) ; $i++){
+            if(is_null($rs[$i]['function_display_class']) || $rs[$i]['function_display_class'] == ''){
+                $rs[$i]['function_display_class'] = $default_function_display_icon;
+            }
+        }
+        return $rs;
     }
 
     function can_choose_managers($order){

@@ -35,7 +35,7 @@
                     <div data-dojo-type="sckj/layout/Wso" id="<?= 'module_'. $m['module_id']?>"
                          mid = "<?= $m['module_id'] ?>"
                          title="<?= $label ?>"
-                         iconClass="<?= $m['module_display_class'] ? $m['module_display_class'] : 'icon-globe'?> icon-3x"
+                         iconClass="<?= $m['module_display_class'] ?> icon-3x"
                          data-dojo-props=" href:'<?= $m['url']?>'"></div>
              <?php  endforeach;?>
             <?php endif;?>

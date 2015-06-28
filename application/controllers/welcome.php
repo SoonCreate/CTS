@@ -134,6 +134,14 @@ class Welcome extends CI_Controller {
         render_view('my_functions',$data);
     }
 
+    /**
+     *  根据模块获取功能菜单
+     */
+    function module_function_list(){
+        $am = new Auth_model();
+        echo json_encode($am->can_choose_functions(v('mid')));
+    }
+
     //用户功能页跳转，并记录唯一性ID
     function go(){
         $this->load->model('module_line_model');
