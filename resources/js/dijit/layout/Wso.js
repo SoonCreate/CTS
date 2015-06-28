@@ -16,9 +16,7 @@ define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/do
             //刷新前效果
             perRefresh : function(){
                 domStyle.set(this.domNode, "opacity", "1");
-                var p = dom.byId("preloader");
-                domStyle.set(p, "opacity", "1");
-                domStyle.set(p,"display","block");
+                showLoading();
                 //baseFx.fadeOut({node: this.domNode ,duration:100}).play();
             },
 
@@ -36,15 +34,8 @@ define(["dojo/_base/declare","dojox/layout/ContentPane","dojo/_base/fx","dojo/do
             refresh_env : function(){
                 var wso = this;
                 //预加载，加载后动画
-                if(dom.byId("preloader")){
-                    baseFx.fadeOut({  //Get rid of the loader once parsing is done
-                        node: "preloader",
-                        //,
-                        onEnd: function() {
-                            domStyle.set("preloader","display","none");
-                        }
-                    }).play();
-                }
+                hideLoading();
+
                 domStyle.set(this.domNode, "opacity", "0");
                 //动画加载
                 baseFx.fadeIn({node: this.domNode,duration:100 }).play();

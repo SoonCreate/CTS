@@ -932,3 +932,25 @@ function uploadFileDialog(toUrl,params){
         });
     });
 }
+
+function showLoading(){
+    require(["dojo/dom","dojo/dom-style"],function(dom,domStyle){
+        var p = dom.byId("preloader");
+        domStyle.set(p, "opacity", "1");
+        domStyle.set(p,"display","block");
+    });
+}
+
+function hideLoading(){
+    require(["dojo/dom","dojo/dom-style","dojo/_base/fx"],function(dom,domStyle,baseFx){
+        if(dom.byId("preloader")){
+            baseFx.fadeOut({  //Get rid of the loader once parsing is done
+                node: "preloader",
+                //,
+                onEnd: function() {
+                    domStyle.set("preloader","display","none");
+                }
+            }).play();
+        }
+    });
+}
