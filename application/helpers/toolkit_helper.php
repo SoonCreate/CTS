@@ -1044,6 +1044,7 @@ function refresh_env(){
             set_sess('cm',$ml['id']);
             set_sess('mid',$ml['module_id']);
             set_sess('fid',$ml['function_id']);
+            set_sess('wso_title',$ml['function_desc']);
         }
     }else{
         $controller = $CI->router->fetch_class();
@@ -1053,6 +1054,7 @@ function refresh_env(){
             set_sess('cm',$cml['id']);
             set_sess('mid',$cml['module_id']);
             set_sess('fid',$cml['function_id']);
+            set_sess('wso_title',$cml['function_desc']);
         }else{
             //如果当前连接不属于当前模块，随意获取某一mid
             $mls = $mlm->find_by_view(array('controller'=>$controller,'action'=>$action));
@@ -1061,10 +1063,10 @@ function refresh_env(){
                 set_sess('cm',$mls['id']);
                 set_sess('mid',$mls['module_id']);
                 set_sess('fid',$mls['function_id']);
+                set_sess('wso_title',$mls['function_desc']);
             }
         }
     }
-
 }
 
 /**

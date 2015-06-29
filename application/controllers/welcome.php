@@ -131,6 +131,9 @@ class Welcome extends CI_Controller {
 //        }
 
         $data['functions'] = $functions;
+        //不显示标题
+        unset_sess('wso_title');
+
         render_view('my_functions',$data);
     }
 

@@ -23,6 +23,14 @@
             showLabel = "false"
             title="<?= label('back')?>"></button>
     <?= render_icon_button('icon-refresh icon-large','refresh','refresh()')?>
+    <!-- 功能标题 -->
+    <div style="float: right;
+    margin-right: 11px;
+    font-size: large;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;" ><?= _sess('wso_title')?></div>
 </div>
 
 <div class="formalert row" id="<?= _sess('cm')?>_formalert" style="display: none">
