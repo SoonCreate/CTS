@@ -76,7 +76,8 @@ class Po extends CI_Controller {
 //                print_r($data['PO_HEADER']);
                 render_view('po/me23n_main',$data);
             }else{
-                render_view('po/me23n_search');
+                $data['po_number'] = '4500043151';
+                render_view('po/me23n_search',$data);
             }
         }
     }

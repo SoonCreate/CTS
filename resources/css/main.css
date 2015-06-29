@@ -108,6 +108,12 @@ html, body {
     border-radius: 0px !important;
 }
 
+.dijitTabContainerLeft-tabs .wsoBack {
+    border: 0px solid #29BB9C;
+    background-color:#2C3E50;
+    float:right;margin-top:-40px;
+}
+
 .dijitTabContainerLeft-tabs .dijitTabChecked {
     margin:0 0px 10px 0 !important;
     border: 0px solid #B5BCC7;
@@ -297,7 +303,7 @@ html, body {
     margin-left:20px !important;
     display:inline-block;
     float:left;
-    min-width:500px;
+    /*min-width:500px;*/
 }
 .userd dl dt label,
 .userd dl dd label{

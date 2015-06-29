@@ -57,17 +57,17 @@
                 var tablistNode = registry.byId("mainTabContainer").tablist.containerNode;
 
                 //在第一个node之前插入按钮
-                var backButton = new Button({
-                    id : "wsoGoBack",
-                    iconClass : "icon-reply icon-large"
-                    onclick : function(){
-                        goback();
-                    },
-                    showLabel : false,
-                    style : "float:right;margin: 0 10px 10px 0;"
-                });
-                backButton.startup();
-                domConstruct.place(backButton.domNode,tablistNode,"first");
+//                var backButton = new Button({
+//                    id : "wsoGoBack",
+//                    class : "wsoBack",
+//                    iconClass : "icon-arrow-left icon-large",
+//                    onclick : function(){
+//                        goback();
+//                    },
+//                    showLabel : false
+//                });
+//                backButton.startup();
+//                domConstruct.place(backButton.domNode,tablistNode,"first");
 
                 //监控左侧导航按钮
                 dojo.forEach(tablistNode.childNodes,function(node){
