@@ -841,9 +841,8 @@ html, body {
     background-image: -o-linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
     background-image: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
     _background-image: none;*/
-    padding: 12px 0 11px 15px;
+    padding: 10px 0 11px 15px;
     zoom: 1;
-
 }
 /*失效的time控件列表不显示*/
 .sc .dijitTimePickerItemDisabled{

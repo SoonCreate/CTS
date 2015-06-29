@@ -35,8 +35,10 @@
             "dijit/popup",
             "dijit/Menu",
             "dijit/MenuItem",
+            "dojo/dom-construct",
+            "dijit/form/Button",
             "dojo/domReady!"],
-        function(parser,dom,query,registry,ready,request,on,mouse,domClass,popup,Menu,MenuItem){
+        function(parser,dom,query,registry,ready,request,on,mouse,domClass,popup,Menu,MenuItem,domConstruct,Button){
             ready(function(){
                 $ = query;
                 $dom = dom;
@@ -52,8 +54,23 @@
 
                 <?php }?>
 
+                var tablistNode = registry.byId("mainTabContainer").tablist.containerNode;
+
+                //在第一个node之前插入按钮
+                var backButton = new Button({
+                    id : "wsoGoBack",
+                    iconClass : "icon-reply icon-large"
+                    onclick : function(){
+                        goback();
+                    },
+                    showLabel : false,
+                    style : "float:right;margin: 0 10px 10px 0;"
+                });
+                backButton.startup();
+                domConstruct.place(backButton.domNode,tablistNode,"first");
+
                 //监控左侧导航按钮
-                dojo.forEach(registry.byId("mainTabContainer").tablist.containerNode.childNodes,function(node){
+                dojo.forEach(tablistNode.childNodes,function(node){
                     //鼠标移动上去时弹出菜单
                     on(node,mouse.enter,function(evt){
                         _navStartup(node);
@@ -90,6 +107,10 @@
                                     onClick : function(){
                                         var fun = this.fn;
                                         goto(url(fun["controller"] + "/" + fun["action"]),$env.mid);
+                                        //点击关闭当前
+                                        popup.close(this);
+                                        pMenu.destroy();
+                                        pMenu.destroyRecursive();
                                     }
                                 }));
                             }

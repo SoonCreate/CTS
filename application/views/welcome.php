@@ -24,7 +24,6 @@
 
         <div data-dojo-type="dijit/layout/TabContainer" id="mainTabContainer"
              data-dojo-props="region: 'center',tabPosition:'left-h',tabStrip:true" class=" "><!--,persist:true-->
-
             <?php if(isset($modules)):?>
             <?php  foreach($modules as $m) :
                     $label = $m['module_desc'];

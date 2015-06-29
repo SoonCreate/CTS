@@ -25,7 +25,7 @@
     <?= render_icon_button('icon-refresh icon-large','refresh','refresh()')?>
     <!-- 功能标题 -->
     <div style="float: right;
-    margin-right: 11px;
+    margin-right: 15px;
     font-size: large;
     -webkit-user-select:none;
     -moz-user-select:none;
