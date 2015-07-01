@@ -19,7 +19,7 @@ class Status extends CI_Controller {
     function create(){
         if($_POST){
             $sm = new Status_model();
-            if($sm->insert(_data('status_code','description','sys_order_id'))){
+            if($sm->insert(_data('status_code','description','form_id'))){
                 go_back();
                 message_db_success();
             }else{

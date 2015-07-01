@@ -108,9 +108,10 @@
                                         var fun = this.fn;
                                         goto(url(fun["controller"] + "/" + fun["action"]),$env.mid);
                                         //点击关闭当前
-                                        popup.close(this);
-                                        pMenu.destroy();
-                                        pMenu.destroyRecursive();
+                                        //fix bug Cannot read property 'className' of null 20150701
+                                        popup.close(pMenu);
+//                                        pMenu.destroy();
+//                                        pMenu.destroyRecursive();
                                     }
                                 }));
                             }

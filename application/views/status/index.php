@@ -2,14 +2,14 @@
     <thead>
         <th><?= label('status_code')?></th>
         <th><?= label('description')?></th>
-        <th><?= label('order_name')?></th>
+        <th><?= label('form_desc')?></th>
         <th><?= label('operation')?></th>
     </thead>
     <?php foreach($objects as $o):?>
     <tr>
         <td><?= $o['status_code']?></td>
         <td><?= $o['description']?></td>
-        <td><?= $o['order_name']?></td>
+        <td><?= $o['form_desc']?></td>
         <td>
             <?= render_link(array('status','edit',array('id'=>$o['id'])),label('edit'))?>
             &nbsp;|&nbsp;

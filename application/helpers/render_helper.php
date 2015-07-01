@@ -449,7 +449,7 @@ function render_form_input($name,$required = FALSE,$disabled = FALSE,$label = nu
  * @return string   domNode
  */
 function render_input_with_options($name,$valuelist_name,$parentSegmentValue = 'undefined',$required = FALSE,$disabled = FALSE,$label = null,
-                                   $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array()){
+                                   $muliple = true,$all_value = false,$pagination = false,$page_size = 'undefined',$attributes = array(),$value_field = 'value'){
     $echo = _dijit_header($name,$label,$required);
     $echo = $echo. '<input name="'.$name.'" id="'.$name.'" value="'._v($name).'"  data-dojo-type="sckj/form/ScTextBox" trim="true" ';
     if($required){
@@ -465,7 +465,7 @@ function render_input_with_options($name,$valuelist_name,$parentSegmentValue = '
     if(!is_array($attributes) || (is_array($attributes) && empty($attributes))){
         $attributes = array('vlDialogOptions'=>'{
         valuelistName : \''.$valuelist_name.'\',parentSegmentValue : \''.$parentSegmentValue.'\',pagination:'.boolean_to_string($pagination).',selectRowMultiple:'.
-            boolean_to_string($muliple).',allValue:'.boolean_to_string($all_value).',pageSize:'.$page_size.',valueSegment:\'value\'}');
+            boolean_to_string($muliple).',allValue:'.boolean_to_string($all_value).',pageSize:'.$page_size.',valueSegment:\''.$value_field.'\'}');
     }
     foreach($attributes as $key=>$value){
         $echo = $echo. $key.': '.$value;
