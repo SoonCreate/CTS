@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2015-07-06 10:34:04
+-- Generation Time: 2015-07-06 16:14:57
 -- 服务器版本： 5.6.24
 -- PHP Version: 5.6.8
 
@@ -423,14 +423,15 @@ CREATE TABLE IF NOT EXISTS `ct_forms` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   `group_id` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统表单表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='系统表单表';
 
 --
 -- 转存表中的数据 `ct_forms`
 --
 
 INSERT INTO `ct_forms` (`id`, `table_name`, `form_name`, `description`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `group_id`) VALUES
-(1, 'ct_orders', 'tsd', '投诉单', NULL, NULL, NULL, NULL, NULL, 0);
+(1, 'ct_orders', 'tsd', '投诉单', NULL, NULL, NULL, NULL, NULL, 0),
+(3, 'ct_authobj_lines', 'asfdasfd', 'asfdasfd', '', 1436187783, 44, 1436187783, 44, 6);
 
 -- --------------------------------------------------------
 
@@ -457,8 +458,23 @@ CREATE TABLE IF NOT EXISTS `ct_form_fields` (
   `creation_date` int(10) unsigned DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
   `last_update_date` int(10) unsigned DEFAULT NULL,
-  `last_updated_by` int(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `last_updated_by` int(10) DEFAULT NULL,
+  `inactive_flag` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `ct_form_fields`
+--
+
+INSERT INTO `ct_form_fields` (`id`, `form_id`, `field_name`, `field_type`, `field_size`, `label`, `help_text`, `required_flag`, `disabled_flag`, `hidden_flag`, `default_value`, `control`, `valuelist_field`, `valuelist_id`, `validation_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `inactive_flag`) VALUES
+(1, 3, 'id', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
+(2, 3, 'object_id', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
+(3, 3, 'valuelist_id', 'int', '10', '项目值集', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
+(4, 3, 'default_value', 'text', '6553', '默认值', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
+(5, 3, 'creation_date', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
+(6, 3, 'created_by', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
+(7, 3, 'last_update_date', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
+(8, 3, 'last_updated_by', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0);
 
 -- --------------------------------------------------------
 
@@ -474,14 +490,15 @@ CREATE TABLE IF NOT EXISTS `ct_form_groups` (
   `last_update_date` int(10) unsigned DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   `description` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='表单分组';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='表单分组';
 
 --
 -- 转存表中的数据 `ct_form_groups`
 --
 
 INSERT INTO `ct_form_groups` (`id`, `name`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `description`) VALUES
-(5, 'asdfdf', 44, 1436171585, 1436171585, 44, 'asdfas');
+(5, 'asdfdf', 44, 1436171585, 1436171585, 44, 'asdfas'),
+(6, 'asdfasfdas', 44, 1436185062, 1436185062, 44, 'fdasfdasfd');
 
 -- --------------------------------------------------------
 
@@ -5361,17 +5378,17 @@ ALTER TABLE `ct_files`
 -- AUTO_INCREMENT for table `ct_forms`
 --
 ALTER TABLE `ct_forms`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `ct_form_fields`
 --
 ALTER TABLE `ct_form_fields`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `ct_form_groups`
 --
 ALTER TABLE `ct_form_groups`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `ct_functions`
 --

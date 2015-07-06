@@ -1116,6 +1116,23 @@ function field_list($table){
 
 }
 
+
+/**
+ * 获取数据库表数据字典
+ * @param $table
+ * @param null $field
+ * @return array
+ */
+function columns($table,$field = null){
+    if(is_null($field)){
+       return lazy_get_data("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = 'cts'
+        AND  table_name = '".$table."' order by ORDINAL_POSITION");
+    }else{
+        return lazy_get_data("select * from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = 'cts'
+        AND  table_name = '".$table."' AND column_name = '".$field."'");
+    }
+}
+
 /**
  * 生成前端grid控件的结构
  * @param string $field 字段名

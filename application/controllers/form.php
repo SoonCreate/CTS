@@ -7,6 +7,7 @@ class Form extends CI_Controller {
         header('Content-Type: text/html; charset=utf-8');
         $this->load->model('form_group_model');
         $this->load->model('form_model');
+        $this->load->model('form_field_model');
     }
 
     public function index()
@@ -54,20 +55,54 @@ class Form extends CI_Controller {
     }
 
     function create(){
-        $this->load->view('form/create');
+        if($_POST){
+            $fm = new Form_model();
+            $form_id = $fm->insert(_data('group_id','form_name','description','table_name','help'));
+            if($form_id){
+                message_db_success();
+                redirect_to('form','fields',array('id'=>$form_id));
+            }else{
+                validation_error();
+            }
+        }else{
+            $this->load->view('form/create');
+        }
+
     }
 
     function edit(){
-
+        $fm = new Form_model();
+        $form = $fm->find(v('id'));
+        if(!empty($form)){
+            if($_POST){
+                if($fm->update($form['id'],_data('group_id','description','table_name','help'))){
+                    message_db_success();
+                    redirect_to('form','index');
+                }else{
+                    validation_error();
+                }
+            }else{
+                $this->load->view('form/edit',$form);
+            }
+        }else{
+            show_404();
+        }
     }
 
     function destroy(){
-
+        $fm = new Form_model();
+        $form = $fm->find(v('id'));
+        if(!empty($form)){
+            if($fm->delete($form['id'])){
+                message_db_success();
+            }else{
+                message_db_failure();
+            }
+        }else{
+            show_404();
+        }
     }
 
-    function form_group(){
-
-    }
 
     function form_group_create(){
         if($_POST){
@@ -123,12 +158,24 @@ class Form extends CI_Controller {
     }
 
     function fields(){
-
+        $fm = new Form_model();
+        $form = $fm->find(v('id'));
+        if(!empty($form)){
+            //默认刷新现有的字段
+            if($fm->refresh_fields($form['id'])){
+                $ffm = new Form_field_model();
+                $data['objects'] = $ffm->find_all_by(array('form_id'=>$form['id']));
+                $this->load->view('form/fields',$data);
+            }else{
+                message_db_failure();
+            }
+        }else{
+            show_404();
+        }
     }
 
     function field_update(){
 
     }
-
 
 }
