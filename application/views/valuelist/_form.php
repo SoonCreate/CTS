@@ -1,5 +1,5 @@
 <?= render_form_input('description',TRUE);?>
-<?= render_single_checkbox('object_flag',1,label('from_table'),false,array('onChange'=>'_onObjectFlagChecked()'))?>
+<?= render_single_checkbox('object_flag',1,label('from_table'),false,false,array('onChange'=>'_onObjectFlagChecked()'))?>
 <?= render_select_add_options('source_view',render_options('vl_tables',null,false,true));?>
 <?= render_form_input('label_fieldname');?>
 <?= render_form_input('value_fieldname');?>
