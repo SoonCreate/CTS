@@ -59,8 +59,8 @@ class Form extends CI_Controller {
             $fm = new Form_model();
             $form_id = $fm->insert(_data('group_id','form_name','description','table_name','help'));
             if($form_id){
+                redirect_to('form','index');
                 message_db_success();
-                redirect_to('form','fields',array('id'=>$form_id));
             }else{
                 validation_error();
             }
@@ -77,7 +77,6 @@ class Form extends CI_Controller {
             if($_POST){
                 if($fm->update($form['id'],_data('group_id','description','table_name','help'))){
                     message_db_success();
-                    redirect_to('form','index');
                 }else{
                     validation_error();
                 }
@@ -93,7 +92,12 @@ class Form extends CI_Controller {
         $fm = new Form_model();
         $form = $fm->find(v('id'));
         if(!empty($form)){
-            if($fm->delete($form['id'])){
+            $this->db->trans_start();
+            $ffm = new Form_field_model();
+            $ffm->delete_by(array('form_id'=>$form['id']));
+            $fm->delete($form['id']);
+            $this->db->trans_complete();
+            if($this->db->trans_status()){
                 message_db_success();
             }else{
                 message_db_failure();
@@ -104,7 +108,7 @@ class Form extends CI_Controller {
     }
 
 
-    function form_group_create(){
+    function group_create(){
         if($_POST){
             $fgm = new Form_group_model();
             if($fgm->insert(_data('name','description'))){
@@ -114,12 +118,12 @@ class Form extends CI_Controller {
                 validation_error();
             }
         }else{
-            $this->load->view('form/form_group_create');
+            $this->load->view('form/group_create');
         }
 
     }
 
-    function form_group_edit(){
+    function group_edit(){
         $fgm = new Form_group_model();
         $data = $fgm->find(v('id'));
         if(!empty($data)){
@@ -131,14 +135,14 @@ class Form extends CI_Controller {
                     validation_error();
                 }
             }else{
-                $this->load->view('form/form_group_edit',$data);
+                $this->load->view('form/group_edit',$data);
             }
         }else{
             show_404();
         }
     }
 
-    function form_group_destroy(){
+    function group_destroy(){
         $fgm = new Form_group_model();
         $data = $fgm->find(v('id'));
         if(!empty($data)){
@@ -157,25 +161,43 @@ class Form extends CI_Controller {
         }
     }
 
-    function fields(){
-        $fm = new Form_model();
-        $form = $fm->find(v('id'));
-        if(!empty($form)){
-            //默认刷新现有的字段
-            if($fm->refresh_fields($form['id'])){
-                $ffm = new Form_field_model();
-                $data['objects'] = $ffm->find_all_by(array('form_id'=>$form['id']));
-                $this->load->view('form/fields',$data);
-            }else{
-                message_db_failure();
-            }
+    function field_edit(){
+        $ffm = new Form_field_model();
+        $field = $ffm->find(v('id'));
+        if(!empty($field)){
+           if($_POST){
+                if($ffm->update($field['id'],$_POST)){
+                    data('form_id',$field['form_id']);
+                    message_db_success();
+                }else{
+                    validation_error();
+                }
+           }else{
+               $this->load->view('form/field_edit',$field);
+           }
         }else{
             show_404();
         }
     }
 
-    function field_update(){
-
+    function field_data(){
+        $fm = new Form_model();
+        $form = $fm->find(v('id'));
+        if(!empty($form)){
+            $fm->refresh_fields($form['id']);
+            $ffm = new Form_field_model();
+            $rows = $ffm->find_all_by(array('form_id'=>$form['id']));
+            for($i=0;$i<count($rows);$i++){
+                $rows[$i]['inactive'] = $rows[$i]['inactive_flag'] ;
+                $rows[$i] = _format_row($rows[$i],true);
+            }
+            $data["identifier"] = 'id';
+            $data["label"] = 'field_name';
+            $data['items'] = $rows;
+            echo json_encode($data);
+        }else{
+            show_404();
+        }
     }
 
 }

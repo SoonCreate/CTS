@@ -130,9 +130,12 @@ define(["dojo/_base/declare", "gridx/Grid",
                 }
                 //绑定事件
                 this.connect(this.select.row, 'onSelected', lang.hitch(this, "onRowSelect"));
+                this.connect(this.body, 'onRender', lang.hitch(this, "onBodyRender"));
             },
 
             onRowSelect : function(row){},
+            onBodyRender : function(){},
+            afterRefresh : function(store){},
 
             //构造操作列
             pushOperationColumn : function(structure){
@@ -185,7 +188,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                                 }else{
                                     //定义来连接点击动作
                                     if(data[i]["onClick"]){
-                                        value = value + '<a href="#" onclick="'+data[i]["onClick"]+'">' + data[i]["label"] + '</a>';
+                                        value = value + '<a href="#" rowId="'+rowId+'" onclick="'+data[i]["onClick"]+'">' + data[i]["label"] + '</a>';
                                     }else{
                                         value = value + '<a href="#" onclick="goto(\'' + url(data[i]["url"] + '?'+ data[i]["param"] +'='+rowId) + '\','+
                                         data[i]["target"] +','+ data[i]["noRender"] +')">' + data[i]["label"] + '</a>';
@@ -217,6 +220,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                 this.model.setStore(store);
                 this.body.refresh();
                 this._setSelected(store);
+                this.afterRefresh(store);
             },
 
             refreshByUrl : function (url) {
@@ -303,8 +307,10 @@ define(["dojo/_base/declare", "gridx/Grid",
                         });
                     }
                 }
-            }
+            },
+            renderRow : function(rowId){
 
+            }
 
         });
 

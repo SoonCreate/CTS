@@ -32,7 +32,7 @@
             fmWorkSpace = new ContentPane({
                 region: "center",
                 id : "fmWorkSpace",
-                href : url("form/create")
+                href : url("form/group_create")
             });
 //            cp2.set("class","centerPane");
             fmContainer.addChild(fmWorkSpace);
@@ -70,7 +70,7 @@
                         });
                     }else{
                         _doGroupAction(function(item){
-                            fmWorkSpace.set("href",url("form/form_group_edit",{id : item["group_id"]}));
+                            fmWorkSpace.set("href",url("form/group_edit",{id : item["group_id"]}));
                         });
                     }
                 }
@@ -119,19 +119,19 @@
 
         //插入功能按钮
         toolbarAddButton("创建组", function () {
-            fmWorkSpace.set("href",url("form/form_group_create"));
+            fmWorkSpace.set("href",url("form/group_create"));
         });
 
         toolbarAddButton("编辑组", function () {
             _doGroupAction(function(selectedNode){
-                fmWorkSpace.set("href",url("form/form_group_edit",{id : selectedNode["group_id"]}));
+                fmWorkSpace.set("href",url("form/group_edit",{id : selectedNode["group_id"]}));
             });
 
         });
 
         toolbarAddButton("删除组", function () {
             _doGroupAction(function(selectedNode){
-                goto(url("form/form_group_destroy",{id : selectedNode["group_id"]}),null,true,true,"是否删除分组？");
+                goto(url("form/group_destroy",{id : selectedNode["group_id"]}),null,true,true,"是否删除分组？");
             });
         });
 
@@ -166,12 +166,6 @@
         toolbarAddButton("删除表单", function () {
             _doFormAction(function(selectedNode){
                 goto(url("form/destroy",{id : selectedNode["form_id"]}),null,true,true,"是否删除表单？");
-            });
-        });
-
-        toolbarAddButton("表单字段", function () {
-            _doFormAction(function(selectedNode){
-                fmWorkSpace.set("href",url("form/fields",{id : selectedNode["form_id"]}));
             });
         });
 
