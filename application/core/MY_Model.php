@@ -11,6 +11,7 @@ class MY_Model extends CI_Model
      * This model's default database table. Automatically
      * guessed by pluralising the model name.
      */
+    protected $_db;
     protected $_table;
     protected $_view;
 
@@ -527,6 +528,7 @@ class MY_Model extends CI_Model
 
     /**
      * A wrapper to $this->db->limit()
+     * oracle limit无法正常使用，故find_by也无法使用
      */
     public function limit($limit, $offset = 0)
     {

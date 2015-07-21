@@ -99,13 +99,13 @@ $db['erp']['autoinit'] = TRUE;
 $db['erp']['stricton'] = FALSE;
 
 #oracle 连接方式解决方案
-$db['oracle']['hostname'] = "DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.249.13)(PORT=1521))(CONNECT_DATA=(SID=ztybplm)))";
+$db['oracle']['hostname'] = "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=192.168.249.13)(PORT=1521))(CONNECT_DATA=(SID=ztybplm)))";
 $db['oracle']['username'] = "ztplm";
 $db['oracle']['password'] = "a";
 $db['oracle']['database'] = "";
 $db['oracle']['dbdriver'] = "oci8";
 $db['oracle']['dbprefix'] = '';
-$db['oracle']['pconnect'] = FALSE;
+$db['oracle']['pconnect'] = TRUE;
 $db['oracle']['db_debug'] = TRUE;
 $db['oracle']['cache_on'] = FALSE;
 $db['oracle']['cachedir'] = '';

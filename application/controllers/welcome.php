@@ -233,8 +233,19 @@ class Welcome extends CI_Controller {
     }
 
     function test(){
-        $erp = $this->load->database('oracle',true,true);
-        $rows = $erp->query("select * from PLM_CUS_TIPART where plm_drawingno='GB/T818-2000'")->result_array();
+
+    }
+
+    /**
+     *oracle 连接测试
+     */
+    function oracle_test(){
+        //        $erp = $this->load->database('oracle',true,true);
+//        $rows = $erp->query("select * from PLM_CUS_TIPART where plm_drawingno='GB/T818-2000'")->result_array();
+//        $rows = $erp->get_where('PLM_CUS_TIPART',array('plm_drawingno'=>'GB/T818-2000'))->result_array();
+        $this->load->model('Oracle_demo_model');
+        $ffm = new Oracle_demo_model();
+        $rows = $ffm->find_all_by(array('plm_drawingno'=>'GB/T818-2000'));
         print_r($rows);
     }
 
