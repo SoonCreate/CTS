@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2015-07-06 16:14:57
+-- Generation Time: 2015-07-10 10:08:10
 -- 服务器版本： 5.6.24
 -- PHP Version: 5.6.8
 
@@ -423,7 +423,7 @@ CREATE TABLE IF NOT EXISTS `ct_forms` (
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   `group_id` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='系统表单表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='系统表单表';
 
 --
 -- 转存表中的数据 `ct_forms`
@@ -431,7 +431,7 @@ CREATE TABLE IF NOT EXISTS `ct_forms` (
 
 INSERT INTO `ct_forms` (`id`, `table_name`, `form_name`, `description`, `help`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `group_id`) VALUES
 (1, 'ct_orders', 'tsd', '投诉单', NULL, NULL, NULL, NULL, NULL, 0),
-(3, 'ct_authobj_lines', 'asfdasfd', 'asfdasfd', '', 1436187783, 44, 1436187783, 44, 6);
+(4, 'ct_orders', 'ct_order', '投诉单', '投诉单信息', 1436512864, 44, 1436512864, 44, 7);
 
 -- --------------------------------------------------------
 
@@ -445,11 +445,11 @@ CREATE TABLE IF NOT EXISTS `ct_form_fields` (
   `field_name` varchar(45) NOT NULL COMMENT '字段名',
   `field_type` varchar(45) NOT NULL COMMENT '字段类型',
   `field_size` varchar(4) DEFAULT NULL COMMENT '长度',
-  `label` varchar(45) NOT NULL COMMENT '字段短文本描述',
+  `label` varchar(255) DEFAULT NULL COMMENT '字段短文本描述',
   `help_text` longtext COMMENT '字段长文本描述，即帮助',
-  `required_flag` tinyint(1) NOT NULL COMMENT '是否必须输入',
-  `disabled_flag` tinyint(1) NOT NULL COMMENT '是否只读',
-  `hidden_flag` tinyint(1) NOT NULL COMMENT '是否隐藏',
+  `required_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否必须输入',
+  `disabled_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否只读',
+  `hidden_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否隐藏',
   `default_value` varchar(255) DEFAULT NULL COMMENT '默认值',
   `control` varchar(45) DEFAULT NULL COMMENT '控件',
   `valuelist_field` varchar(45) DEFAULT NULL COMMENT '控件填充值',
@@ -460,21 +460,34 @@ CREATE TABLE IF NOT EXISTS `ct_form_fields` (
   `last_update_date` int(10) unsigned DEFAULT NULL,
   `last_updated_by` int(10) DEFAULT NULL,
   `inactive_flag` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `ct_form_fields`
 --
 
 INSERT INTO `ct_form_fields` (`id`, `form_id`, `field_name`, `field_type`, `field_size`, `label`, `help_text`, `required_flag`, `disabled_flag`, `hidden_flag`, `default_value`, `control`, `valuelist_field`, `valuelist_id`, `validation_id`, `creation_date`, `created_by`, `last_update_date`, `last_updated_by`, `inactive_flag`) VALUES
-(1, 3, 'id', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
-(2, 3, 'object_id', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
-(3, 3, 'valuelist_id', 'int', '10', '项目值集', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
-(4, 3, 'default_value', 'text', '6553', '默认值', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
-(5, 3, 'creation_date', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
-(6, 3, 'created_by', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
-(7, 3, 'last_update_date', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0),
-(8, 3, 'last_updated_by', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436192060, 44, 1436192062, 44, 0);
+(10, 4, 'id', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(11, 4, 'order_type', 'varchar', '20', '投诉单类型', '', 1, 0, 0, NULL, 'textbox', '', 0, 0, 1436512913, 44, 1436515460, 44, 0),
+(12, 4, 'status', 'varchar', '20', '投诉单状态', '', 0, 0, 0, NULL, 'textbox', '', 0, 0, 1436512913, 44, 1436515460, 44, 0),
+(13, 4, 'severity', 'varchar', '20', '严重程度', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(14, 4, 'frequency', 'varchar', '20', '发生频率', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(15, 4, 'category', 'varchar', '20', '分类', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(16, 4, 'title', 'varchar', '100', '标题', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(17, 4, 'manager_id', 'int', '10', '处理人', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(18, 4, 'leader_id', 'int', '10', '责任人(部门领导)', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(19, 4, 'plan_complete_date', 'int', '10', '计划完成时间', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(20, 4, 'contact', 'varchar', '255', '联系人', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(21, 4, 'phone_number', 'varchar', '255', '办公室电话', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(22, 4, 'mobile_telephone', 'varchar', '255', '手机号码', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(23, 4, 'address', 'varchar', '255', '联系地址', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(24, 4, 'full_name', 'varchar', '255', '公司名称/员工姓名', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(25, 4, 'warning_times', 'int', '10', '报警次数', NULL, 0, 0, 0, '0', NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(26, 4, 'pcd_change_times', 'int', '10', '计划完成日期修改次数', NULL, 0, 0, 0, '0', NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(27, 4, 'creation_date', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(28, 4, 'created_by', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(29, 4, 'last_update_date', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0),
+(30, 4, 'last_updated_by', 'int', '10', '', NULL, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 1436512913, 44, 1436515460, 44, 0);
 
 -- --------------------------------------------------------
 
@@ -490,15 +503,14 @@ CREATE TABLE IF NOT EXISTS `ct_form_groups` (
   `last_update_date` int(10) unsigned DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL,
   `description` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='表单分组';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='表单分组';
 
 --
 -- 转存表中的数据 `ct_form_groups`
 --
 
 INSERT INTO `ct_form_groups` (`id`, `name`, `created_by`, `creation_date`, `last_update_date`, `last_updated_by`, `description`) VALUES
-(5, 'asdfdf', 44, 1436171585, 1436171585, 44, 'asdfas'),
-(6, 'asdfasfdas', 44, 1436185062, 1436185062, 44, 'fdasfdasfd');
+(7, 'default', 44, 1436512611, 1436512611, 44, '默认分组');
 
 -- --------------------------------------------------------
 
@@ -4183,7 +4195,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_header` (
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='值集信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='值集信息表';
 
 --
 -- 转存表中的数据 `ct_valuelist_header`
@@ -4228,7 +4240,9 @@ INSERT INTO `ct_valuelist_header` (`id`, `valuelist_name`, `description`, `objec
 (39, 'vl_output_type', '输出类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420519670, 44, 1420519670, 44),
 (40, 'vl_period_type', '周期类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1420765721, 44, 1420765721, 44),
 (41, 'vl_job_status', '后台作业状态', 0, NULL, NULL, NULL, NULL, 0, 1, 1420785456, 44, 1420785456, 44),
-(42, 'vl_form_groups', '表单分组列表', 1, 'description', 'id', 'ct_form_groups', '', NULL, 1, 1436171475, 44, 1436171475, 44);
+(42, 'vl_form_groups', '表单分组列表', 1, 'description', 'id', 'ct_form_groups', '', NULL, 1, 1436171475, 44, 1436171475, 44),
+(43, 'vl_field_types', '字段类型', 0, NULL, NULL, NULL, NULL, 0, 1, 1436510523, 44, 1436510523, 44),
+(44, 'vl_control', '控件库', 0, NULL, NULL, NULL, NULL, 0, 1, 1436510865, 44, 1436510865, 44);
 
 -- --------------------------------------------------------
 
@@ -4260,7 +4274,7 @@ CREATE TABLE IF NOT EXISTS `ct_valuelist_lines` (
   `created_by` int(11) DEFAULT NULL,
   `last_update_date` int(11) DEFAULT NULL,
   `last_updated_by` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8 COMMENT='值集明细表';
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8 COMMENT='值集明细表';
 
 --
 -- 转存表中的数据 `ct_valuelist_lines`
@@ -4359,7 +4373,17 @@ INSERT INTO `ct_valuelist_lines` (`id`, `valuelist_id`, `segment`, `segment_valu
 (101, 41, 10, 'running', '运行中', 0, 0, '', 1420785551, 44, 1420785551, 44),
 (102, 41, 20, 'finished', '已完成', 0, 1, '', 1420785631, 44, 1420785631, 44),
 (103, 41, 30, 'canceled', '已取消', 0, 2, '', 1420785657, 44, 1420785657, 44),
-(104, 40, 50, 'year', '年', 0, 4, '', 1421125174, 44, 1421125174, 44);
+(104, 40, 50, 'year', '年', 0, 4, '', 1421125174, 44, 1421125174, 44),
+(105, 43, 10, 'int', '整数', 0, 0, '', 1436510548, 44, 1436510548, 44),
+(106, 43, 20, 'text', '长文本', 0, 0, '', 1436510583, 44, 1436510639, 44),
+(107, 43, 30, 'varchar', '短文本', 0, 0, '', 1436510627, 44, 1436510649, 44),
+(108, 43, 40, 'tinyint', '布尔类型', 0, 0, '', 1436510730, 44, 1436510730, 44),
+(109, 43, 50, 'float', '浮点类型', 0, 0, '', 1436510752, 44, 1436510752, 44),
+(110, 44, 10, 'textbox', '文本框', 0, 0, '', 1436510893, 44, 1436510893, 44),
+(111, 44, 20, 'textarea', '文本域', 0, 0, '', 1436510905, 44, 1436510905, 44),
+(112, 44, 30, 'select', '下拉列表', 0, 0, '', 1436510913, 44, 1436510913, 44),
+(113, 44, 40, 'checkbox', '选择框', 0, 0, '', 1436510938, 44, 1436510938, 44),
+(114, 44, 50, 'radio', '单选框', 0, 0, '', 1436510963, 44, 1436510963, 44);
 
 -- --------------------------------------------------------
 
@@ -5378,17 +5402,17 @@ ALTER TABLE `ct_files`
 -- AUTO_INCREMENT for table `ct_forms`
 --
 ALTER TABLE `ct_forms`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `ct_form_fields`
 --
 ALTER TABLE `ct_form_fields`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `ct_form_groups`
 --
 ALTER TABLE `ct_form_groups`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `ct_functions`
 --
@@ -5583,12 +5607,12 @@ ALTER TABLE `ct_user_roles`
 -- AUTO_INCREMENT for table `ct_valuelist_header`
 --
 ALTER TABLE `ct_valuelist_header`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `ct_valuelist_lines`
 --
 ALTER TABLE `ct_valuelist_lines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=105;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=115;
 --
 -- AUTO_INCREMENT for table `ct_variant_lines`
 --

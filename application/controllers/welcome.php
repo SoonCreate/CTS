@@ -233,8 +233,9 @@ class Welcome extends CI_Controller {
     }
 
     function test(){
-        $myFirstMonts=mktime(0,0,0,5,11,2015);//已2012年4月为初始月份
-        echo abs(date("Y",time())-date("Y",$myFirstMonts))*12+date("m",time())-date("m",$myFirstMonts);
+        $erp = $this->load->database('oracle',true,true);
+        $rows = $erp->query("select * from PLM_CUS_TIPART where plm_drawingno='GB/T818-2000'")->result_array();
+        print_r($rows);
     }
 
 }
