@@ -12,6 +12,17 @@ class User extends CI_Controller {
         render();
 	}
 
+    function data(){
+        $um = new User_model();
+        $um->order_by('full_name');
+        $users = $um->find_all();
+        for($i=0;$i<count($users);$i++){
+            $users[$i]["sex"] = get_label('vl_sex',$users[$i]["sex"] );
+            $users[$i]["email"] = '<a href="mailto:' .$users[$i]["email"]. '">'.$users[$i]["email"].' </a>';
+        }
+        export_to_itemStore($users,'id','full_name');
+    }
+
     function user_data(){
         $start = 0;
         $end = 0 ;
@@ -28,6 +39,7 @@ class User extends CI_Controller {
         $users = $um->find_all();
         for($i=0;$i<count($users);$i++){
             $users[$i]["sex"] = get_label('vl_sex',$users[$i]["sex"] );
+            $users[$i]["email"] = '<a href="mailto:' .$users[$i]["email"]. '">'.$users[$i]["email"].' </a>';
         }
         $totalCnt = $um->count_all();
 
@@ -41,6 +53,17 @@ class User extends CI_Controller {
             $output = $data['items'];
         }
         echo json_encode($output);
+    }
+
+    function structure(){
+        $structure = array();
+        array_push($structure,_structure('username',null,'140px'));
+        array_push($structure,_structure('full_name',null,'200px'));
+        array_push($structure,_structure('email',null,'160px'));
+        array_push($structure,_structure('contact',null,'100px'));
+        array_push($structure,_structure('sex',null,'60px'));
+        array_push($structure,_structure('mobile_telephone',null,'120px','number'));
+        echo json_encode($structure);
     }
 
     function login(){

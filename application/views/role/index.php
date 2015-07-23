@@ -15,8 +15,6 @@
                     {name : "<?= label('description')?>",field : "description",width : "300px",dataType :"string"}
                 ],
                 operationColumn : {
-                    name : "<?= label('operation')?>",
-                    width : "500px",
                     data : [
                         {url : "role/edit",label: "<?= label('edit')?>"},
                         {url : "role/destroy",label: "<?= label('destroy')?>",noRender: true},

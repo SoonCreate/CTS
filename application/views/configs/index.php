@@ -1,21 +1,29 @@
-<table class="table">
-    <thead>
-        <th>配置名称</th>
-        <th>描述</th>
-        <th>值</th>
-        <th>操作</th>
-    </thead>
-    <?php foreach($objects as $o):?>
-    <tr>
-        <td><?= $o['config_name']?></td>
-        <td><?= $o['description']?></td>
-        <td><?= $o['config_value']?></td>
-        <td>
-            <?php if($o['editable_flag']):?>
-            <?= render_link(array('configs','edit',array('id'=>$o['id'])),label('edit'))?>
-            <?php endif;?>
-        </td>
+<div id="configsIndexGrid"></div>
+<script type="text/javascript">
+    require(["sckj/DataGrid",
+        "gridx/modules/Filter",
+        "gridx/modules/filter/QuickFilter"],function(Grid,Filter,QuickFilter){
+        var grid ;
+        onWsoLoad(function(){
+            $ajax.get(url("configs/structure"),{handleAs:"json"}).then(function(structure){
+                grid = new Grid({
+                    asyncCache : false,
+                    pageSize : 10,
+                    url : url("configs/data"),
+                    structure:structure,
+                    autoWidth : false,
+                    autoHeight : true,
+                    modules : [Filter,QuickFilter],
+                    operationColumn : {
+                        data : [
+                            {url : "configs/edit",label: "<?= label('edit')?>"}
+                        ]
+                    }
+                },"configsIndexGrid");
 
-    </tr>
-    <?php endforeach;?>
-</table>
+                grid.startup();
+            });
+
+        });
+    });
+</script>

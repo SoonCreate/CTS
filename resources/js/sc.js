@@ -15,8 +15,9 @@
  * @param {boolean} noRender   如果为真则不跳转，提示框确认后执行
  * @param {boolean} noRecord   如果为真则不记录返回历史
  * @param {string} message   替换提示框的内容
+ * @param {function} noRenderThen   norender执行完成之后运行，默认为refresh
  */
-function goto(url,target,noRender,noRecord,message){
+function goto(url,target,noRender,noRecord,message,noRenderThen){
     var wso = $dijit.byId('module_'+target);
     if(wso == undefined){
         wso = currentWso();
@@ -30,13 +31,17 @@ function goto(url,target,noRender,noRecord,message){
             wso.set("href",url);
             $dijit.byId("mainTabContainer").selectChild(wso,true);
         }else{
-            if(message == undefined){
+            if(!message){
                 message = "是否确定执行此操作？";
             }
             dojoConfirm(message,null,function(){
                 $ajax.get(url,{handleAs : "json"}).then(function(response){
                     handleResponse(response,null,function(){
-                        refresh();
+                        if(!noRenderThen){
+                            refresh();
+                        }else{
+                            noRenderThen(response);
+                        }
                     });
                 });
             },null,'W');

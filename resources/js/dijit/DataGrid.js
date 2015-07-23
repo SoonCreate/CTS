@@ -145,9 +145,11 @@ define(["dojo/_base/declare", "gridx/Grid",
                     if(oc["name"] == undefined){
                         oc["name"] = "操作";
                     }
-                    if(oc["width"] == undefined){
-                        oc["width"] = "300px";
+                    //根据操作计算宽度
+                    if(oc["data"].length > 0 && oc["width"] == undefined){
+                        oc["width"] = oc["data"].length * 50 + "px";
                     }
+
                     if(oc["dataType"] == undefined){
                         oc["dataType"] = "string";
                     }
@@ -191,7 +193,7 @@ define(["dojo/_base/declare", "gridx/Grid",
                                         value = value + '<a href="#" rowId="'+rowId+'" onclick="'+data[i]["onClick"]+'">' + data[i]["label"] + '</a>';
                                     }else{
                                         value = value + '<a href="#" onclick="goto(\'' + url(data[i]["url"] + '?'+ data[i]["param"] +'='+rowId) + '\','+
-                                        data[i]["target"] +','+ data[i]["noRender"] +')">' + data[i]["label"] + '</a>';
+                                        data[i]["target"] +','+ data[i]["noRender"] +',false,null,'+data[i]["noRenderThen"] +')">' + data[i]["label"] + '</a>';
                                     }
 
                                 }
@@ -212,14 +214,13 @@ define(["dojo/_base/declare", "gridx/Grid",
             refresh : function(store){
                 //重设标识，emptyInfo是在renderRows方法中被调用，refresh则会调用renderRows
                 this.body.emptyInfo = res.emptyInfo;
-                if(!store){
-                    store = this.store;
+                if(store){
+                    this.model.clearCache();
+                    //delete this.model.store;
+                    this.model.setStore(store);
+                    this._setSelected(store);
                 }
-                this.model.clearCache();
-                //delete this.model.store;
-                this.model.setStore(store);
                 this.body.refresh();
-                this._setSelected(store);
                 this.afterRefresh(store);
             },
 

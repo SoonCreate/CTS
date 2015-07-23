@@ -9,9 +9,14 @@ class Configs extends CI_Controller {
     }
 
     function index(){
+        render();
+    }
+
+    function data(){
         $cm = new Config_model();
-        $data['objects'] = $cm->find_all();
-        render($data);
+        $cm->order_by('config_name');
+        $data = $cm->find_all();
+        export_to_itemStore($data,'id','description');
     }
 
     function edit(){
@@ -90,4 +95,11 @@ class Configs extends CI_Controller {
         }
     }
 
+    function structure(){
+        $structure = array();
+        array_push($structure,_structure('config_name',null,'15%'));
+        array_push($structure,_structure('description',null,'60%'));
+        array_push($structure,_structure('config_value',null,'20%'));
+        echo json_encode($structure);
+    }
 }
