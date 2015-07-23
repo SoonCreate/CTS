@@ -245,8 +245,9 @@ class Welcome extends CI_Controller {
 //        $rows = $erp->get_where('PLM_CUS_TIPART',array('plm_drawingno'=>'GB/T818-2000'))->result_array();
         $this->load->model('Oracle_demo_model');
         $ffm = new Oracle_demo_model();
-        $rows = $ffm->find_all_by(array('plm_drawingno'=>'GB/T818-2000'));
-        print_r($rows);
+        $ffm->call_stored_function();
+//        $rows = $ffm->find_all_by(array('plm_drawingno'=>'GB/T818-2000'));
+//        print_r($rows);
     }
 
 }
